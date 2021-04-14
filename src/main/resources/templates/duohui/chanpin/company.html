@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<title>多汇供应链管理有限公司</title>
+<meta name="keywords" content="多汇供应链管理有限公司">
+<meta name="description" content="多汇供应链管理有限公司">
+<link th:href="@{/duohui/chanpin/css/base1.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/chanpin/css/main_001.css}" rel="stylesheet" type="text/css">
+
+<script th:src="@{/duohui/chanpin/js/jquery-1.js}" type="text/javascript"></script>
+<script th:src="@{/duohui/chanpin/js/public.js}" type="text/javascript"></script>
+<script type="text/javascript">        var _curWeb = "news";</script>
+<!--<script src="js/jquery-1.8.3.min.js}" type="text/javascript"></script>-->
+<script th:src="@{/duohui/chanpin/js/jquery-1.7.1.min.js}" type="text/javascript"></script>
+<!--下面是大图，上面是导航-->
+</head>
+<body>
+<div class="header ">
+  <div class="header_top">
+    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
+      <div class=" right  top" >
+        <ul class="duohui_menu fr font-f">
+          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/chanpin/images/shoucang.jpg}" /></a></span></li>
+          <li> <a class="bgt" href="gouwuche.html">购物车</a>
+            <ul>
+              <li><a  href="#">已加入购物车</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">我的业务体系</a>
+            <ul>
+              <li><a  href="#">信息平台</a></li>
+              <li><a href="#">产品平台</a></li>
+              <li><a  href="#">服务平台</a></li>
+              <li><a href="#">招投标平台</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="project.html">客服中心</a>
+            <ul>
+              <li><a  href="#">新手入门</a></li>
+              <li><a href="#">找回密码</a></li>
+              <li><a  href="#">注销店铺</a></li>
+              <li><a href="#">联系客服</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">会员中心</a>
+            <ul>
+              <li><a  href="#">会员中心</a></li>
+              <li><a href="#">我的资料</a></li>
+              <li><a href="#">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
+    <h1 class="logo fl"><a href="index.html" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
+    <div class="fr fabu"><a class="" href="mffbxx.html">发布产品信息</a></div>
+    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
+    <div class="sousuo fr mr30  ml10" >
+      <form>
+        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
+        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
+      </form>
+    </div>
+  </div>
+  <div class=" navbg clear clearfix">
+
+  </div>
+</div>
+
+<div class="huibg">
+<div class="clear clearfix mt10"></div>
+<div class="clear clearfix w1150"> <a href="#0"><img src="images/1_39.jpg}" width="1150"></a> </div>
+<div class="clear clearfix mt20"></div>
+<div class="weizhi w1150">
+  <p><em class="fl"></em><span class="ml10">您当前的位置 : : <a href="index.html">首页</a>><a href="newslist.html">品质保障</a></span></p>
+</div>
+<div class=" clear clearfix w1150  bor " style=" margin:0 auto;">
+  <div class="fenleisousuo clear clearfix">
+    <ul>
+      <li>
+        <div class="fenlist clear clearfix">
+          <dl>
+
+            <dt> 选择分类： </dt>
+            <dd class="on"><a href="#">全部</a></dd>
+            <dd><a href="#">钢筋</a></dd>
+            <dd><a href="#">水泥</a></dd>
+            <dd><a href="#">混凝土</a></dd>
+             <dd><a href="#">其他</a></dd>
+          </dl>
+        </div>
+      </li>
+      <li>
+        <div class="fenlist clear clearfix">
+          <dl>
+            <dt> 认证情况： </dt>
+            <dd class="on"><a href="#">全部</a></dd>
+            <dd><a href="#">电话核实</a></dd>
+            <dd><a href="#">手机认证</a></dd>
+            <dd><a href="#">实名认证</a></dd>
+            <dd><a href="#">企业认证</a></dd>
+            <dd><a href="#">现场认证</a></dd>
+          </dl>
+        </div>
+      </li>
+
+      <li>
+        <div class="fenlist clear clearfix">
+          <dl id="box">
+            <dt> 地区： </dt>
+            <div  style="width:970px; float:left;">
+              <dd class="on"><a href="#">全部</a></dd>
+              <dd class=""><a href="#">北京</a></dd>
+              <dd class=""><a href="#">上海</a></dd>
+              <dd class=""><a href="#">天津</a></dd>
+              <dd class=""><a href="#">广州</a></dd>
+              <dd class=""><a href="#">河北</a></dd>
+              <dd class=""><a href="#">河南</a></dd>
+              <dd class=""><a href="#">江苏</a></dd>
+              <dd class=""><a href="#">北京</a></dd>
+              <dd class=""><a href="#">上海</a></dd>
+              <dd class=""><a href="#">天津</a></dd>
+              <dd class=""><a href="#">广州</a></dd>
+              <dd class=""><a href="#">河北</a></dd>
+              <dd class=""><a href="#">河南</a></dd>
+              <dd class=""><a href="#">江苏</a></dd>
+              <dd class=""><a href="#">北京</a></dd>
+              <dd class=""><a href="#">上海</a></dd>
+              <dd class=""><a href="#">天津</a></dd>
+              <dd class=""><a href="#">广州</a></dd>
+              <dd class=""><a href="#">河北</a></dd>
+              <dd class=""><a href="#">河南</a></dd>
+              <dd class=""><a href="#">江苏</a></dd>
+
+            </div>
+          </dl>
+          <p id="tog" style="cursor:pointer; line-height:45px; height:45px; font-size:14px; color:#ff5400; font-weight:600;">展开</p>
+          <script>
+var len=$("#box dd").length;
+function int(){
+for(i=8;i<len;i++){
+$("#box dd").eq(i).addClass("hid");
+}
+}
+$("#tog").click(function(){
+var t=$(this).text();
+if(t=="展开"){
+$("#box .hid").addClass("show");
+$(this).text("收缩");
+}else{
+$("#box .hid").removeClass("show");
+$(this).text("展开");
+}
+});
+int();//初始化隐藏多余标签
+</script>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>
+<div class=" clear clearfix w1150 " style="padding:20px 0;  margin:0 auto;">
+  <div class=" w210 fr ">
+    <div class=" clear clearfix  newslei product-nr">
+      <div class="tjhy-title">
+        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">热卖推荐</a></h2>
+      </div>
+
+      <div class=" product-r gsmc" style=" width:210px;">
+        <ul>
+          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
+           <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
+
+        </ul>
+      </div>
+
+
+    </div>
+    <div class="clear clearfix mt20"></div>
+    <div class=" clear clearfix  newslei">
+      <div class="tjhy-title">
+        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">本月搜索排行</a></h2>
+      </div>
+      <div class="paixu mt20">
+        <ul>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="clear clearfix mt20"></div>
+    <div class=" clear clearfix  newslei">
+      <div class="tjhy-title">
+        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">按地区浏览</a></h2>
+      </div>
+      <div class="diqu mt10">
+        <ul>
+          <li><a href="#">北京</a></li>
+          <li><a href="#">上海</a></li>
+          <li><a href="#">天津</a></li>
+          <li><a href="#">河北</a></li>
+          <li><a href="#">河南</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class=" W920 fl bor" style="padding:0;">
+    <div class="tuwen">
+     <dl class="clear clearfix">
+        <dt> <a href="tucon.html"><img th:src="@{/duohui/chanpin/images/1_88.jpg}"></a> </dt>
+        <dd>
+          <h2><a href="tucon.html">公司名称</a></h2>
+
+          <p>材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字</p>
+            <div class=""><p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p><span><em >主营产品</em><i class="ml10">简要说明文字材料设备</i></span><span class="ml10"><em class="ml10" >地区</em><i class="ml10">石家庄</i></span></div>
+        </dd>
+      </dl>
+      <dl class="clear clearfix">
+        <dt> <a href="tucon.html"><img th:src="@{/duohui/chanpin/images/1_88.jpg}"></a> </dt>
+        <dd>
+          <h2><a href="tucon.html">公司名称</a></h2>
+
+          <p>材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字</p>
+            <div class=""><p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p><span><em >主营产品</em><i class="ml10">简要说明文字材料设备</i></span><span class="ml10"><em class="ml10" >地区</em><i class="ml10">石家庄</i></span></div>
+        </dd>
+      </dl>
+      <dl class="clear clearfix">
+        <dt> <a href="tucon.html"><img th:src="@{/duohui/chanpin/images/1_88.jpg}"></a> </dt>
+        <dd>
+          <h2><a href="tucon.html">公司名称</a></h2>
+
+          <p>材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字</p>
+            <div class=""><p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p><span><em >主营产品</em><i class="ml10">简要说明文字材料设备</i></span><span class="ml10"><em class="ml10" >地区</em><i class="ml10">石家庄</i></span></div>
+        </dd>
+      </dl><dl class="clear clearfix">
+        <dt> <a href="tucon.html"><img th:src="@{/duohui/chanpin/images/1_88.jpg}"></a> </dt>
+        <dd>
+          <h2><a href="tucon.html">公司名称</a></h2>
+
+          <p>材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字材料设备的简要说明文字</p>
+            <div class=""><p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p><span><em >主营产品</em><i class="ml10">简要说明文字材料设备</i></span><span class="ml10"><em class="ml10" >地区</em><i class="ml10">石家庄</i></span></div>
+        </dd>
+      </dl>
+    </div>
+    <div class="page clear clearfix">
+      <a>首页</a><a>上一页</a><a class="on">1</a><a href="">2</a><a href="">下一页</a><a href="">尾页</a>
+    </div>
+  </div>
+</div></div>
+<div class="footer clear clearfix">
+  <div class="w1200">
+    <div class=" W950 clear clearfix" style="margin:0 auto;">
+      <div class="fl list w210">
+        <dl>
+          <dt>新手上路</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">会员注册</a></dd>
+          <dd><a href="">会员登录</a></dd>
+          <dd><a href="">找回密码</a></dd>
+          <dd><a href="">发布信息</a></dd>
+          <dd><a href="">查找信息</a></dd>
+        </dl>
+      </div>
+      <div class="fl list w210 ml23">
+        <dl>
+          <dt>会员服务</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">工程年费会员</a></dd>
+          <dd><a href="">认证队伍</a></dd>
+          <dd><a href="">认证机械商</a></dd>
+          <dd><a href="">主材商家</a></dd>
+          <dd><a href="">广告服务</a></dd>
+        </dl>
+      </div>
+      <div class="fl list w210  ml23">
+        <dl>
+          <dt>认证服务</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">手机认证服务</a></dd>
+          <dd><a href="">实名认证服务</a></dd>
+          <dd><a href="">公司认证服务</a></dd>
+          <dd><a href="">现场认证服务</a></dd>
+        </dl>
+      </div>
+      <div class="fl list w210  ml23">
+        <dl>
+          <dt>支付方式</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">积分</a></dd>
+          <dd><a href="">积分充值</a></dd>
+          <dd><a href="">银行汇款积分</a></dd>
+          <dd><a href="">提现须知</a></dd>
+        </dl>
+      </div>
+    </div>
+    <div class="w1200 clear clearfix" style="height:1px; background:#e2e2e2; margin:30px;"></div>
+    <div class="clear clearfix footerdibu" style="padding-bottom:30px;">
+      <div class="mt20 clear clearfix"><a href="about.html">关于我们</a>|<a href="contact.html">联系方式</a>|<a href="contact.html">免责条款</a>|<a href="contact.html">网站地图</a>|<a href="contact.html">网站留言</a>|<a href="contact.html">广告服务</a></div>
+      <p>备案号   全国服务热线:0311-888888888    商务邮箱:123@qq.com</p>
+      <p>&copy;2017-2019 SYSTEM All Rights Reserved 免责声明：本站信息均为网友自行发布，交易所带来的风险本站概不负责！</p>
+      <p class="mt30" ><img th:src="@{/duohui/chanpin/images/1_121.jpg}"></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

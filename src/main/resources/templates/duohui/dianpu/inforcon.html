@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<title>多汇供应链管理有限公司</title>
+<meta name="keywords" content="多汇供应链管理有限公司">
+<meta name="description" content="多汇供应链管理有限公司">
+<link th:href="@{/duohui/dianpu/css/base1.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/dianpu/css/main_001.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/dianpu/css/huiyuan.css}" rel="stylesheet" type="text/css">
+<script th:src="@{/duohui/dianpu/js/jquery-1.js}" type="text/javascript"></script>
+<script th:src="@{/duohui/dianpu/js/public.js}" type="text/javascript"></script>
+<script type="text/javascript">        var _curWeb = "news";</script>
+<!--下面是大图，上面是导航-->
+</head>
+<body>
+<div class="header ">
+    <div class="header_top">
+    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
+      <div class=" right  top" >
+        <ul class="duohui_menu fr font-f">
+          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/dianpu/images/shoucang.jpg}" /></a></span></li>
+          <li> <a class="bgt" href="gouwuche.html">购物车</a>
+            <ul>
+              <li><a  href="#">已加入购物车</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">我的业务体系</a>
+            <ul>
+              <li><a  href="#">信息平台</a></li>
+              <li><a href="#">产品平台</a></li>
+              <li><a  href="#">服务平台</a></li>
+              <li><a href="#">招投标平台</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="project.html">客服中心</a>
+            <ul>
+              <li><a  href="#">新手入门</a></li>
+              <li><a href="#">找回密码</a></li>
+              <li><a  href="#">注销店铺</a></li>
+              <li><a href="#">联系客服</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">会员中心</a>
+            <ul>
+              <li><a  href="#">会员中心</a></li>
+              <li><a href="#">我的资料</a></li>
+              <li><a href="#">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="w1200 clearBoth clearfix" style="margin-top:10px;">
+    <h1 class="logo fl"><a href="index.html" target="_blank"><img th:src="@{/duohui/dianpu/images/logo.jpg}" title="筑汕网"  /></a> </h1>
+    <div class="fr fabu"><a class="mr30 fl" href="#"><img th:src="@{/duohui/dianpu/images/tel.png}"></a><a class=" tel  fl" href="#">400-0000-000</a></div>
+    <div class="fl" style="width:620px; margin-left:24px; padding-left:24px;margin-top:20px;border-left:1px solid #a0a0a0; display:inline-table;">
+      <div class="gsmc" >
+        <h2 class="fl">石家庄市专业刮腻子施工队</h2>
+        <p class="fl" style=" vertical-align:middle;"><b class="ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/dianpu/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/dianpu/images/shiming.png}"></em></p>
+      </div>
+      <span class="address">地址：石家庄裕华区</span> </div>
+  </div>
+  <div class="nav clear clearfix mt20">
+      <div class="w1200 clearfix">
+        <ul class="menu " id="menu"> <li ><a  href="index.html"> 首页 </a></li>
+        <li><a href="about.html"> 公司介绍</a> </li>
+        <li><a href="javascript:void(0)"> 产品展示</a>
+
+        <ul class="submenu">
+            <li><a href="product.html">在售</a></li>
+            <li><a href="product.html">库存</a></li>
+            <li><a href="product.html">新产品</a></li>
+            <li><a href="product.html">易货产品</a></li>
+          </ul>
+
+        </li>
+        <li><a href="special.html"> 服务项目</a></li>
+        <li><a href="information.html"> 供求信息 </a></li>
+        <li><a href="#contact">联系我们</a></li>
+      </ul>
+ </div>
+  </div>
+</div>
+<!-- Slideshow -->
+<script type="text/javascript" th:src="@{/duohui/dianpu/js/jquery-1.js}"></script>
+<script type="text/javascript" th:src="@{/duohui/dianpu/js/responsiveslides.js}"></script>
+<script type="text/javascript">
+$(function () {
+	// Slideshow
+	$("#slider").responsiveSlides({
+		auto: true,
+		pager: false,
+		nav: true,
+		speed: 500,
+		timeout:4000,
+		pager: true,
+		pauseControls: true,
+		namespace: "callbacks"
+	});
+});
+</script>
+<div class="callbacks_container">
+  <ul class="rslides callbacks callbacks1" id="slider">
+    <li class="" ><a ><img th:src="@{/duohui/dianpu/images/banner.jpg}" alt=""></a></li>
+    <li class="" ><a ><img th:src="@{/duohui/dianpu/images/banner.jpg}" alt=""></a></li>
+  </ul>
+</div>
+<div class="breadcrumbs clear clearfix mt30">
+    <p class="w1200"><em class=" left"></em><span class="ml10">您当前的位置  : <a href="index.html">首页</a>><a href="newslist.html">品质保障</a></span></p>
+  </div>
+<div class="clear clearfix main-ny">
+
+
+
+
+
+
+
+
+
+  <div class="w1200  product-nr ">
+
+  <div class="left w240 mt10">
+        <h3 class="title"><a class="lanse" href="#">类别</a></h3>
+        <div class="category mt30">
+          <ul>
+            <li class="on"><a href="product.html">在售</a></li>
+            <li><a href="product.html">库存</a></li>
+            <li><a href="product.html">新产品</a></li>
+            <li><a href="product.html">易货产品</a></li>
+          </ul>
+        </div>
+      </div>
+
+  <div class="right w920 mt10 ">
+        <h3 class="title"><a class="heise" href="#">供求详细页面</a></h3>
+
+        <div class=" W920 fl bor">
+     <h2 style=" text-align:center; color:#000; font-size:24px; line-height:50px;"><span>标题展示位置</span><img class="ml10" th:src="@{/duohui/dianpu/images/v.gif"></h2>
+
+ <div style="text-align:center; margin:0 auto;  display:block; line-height:60px;">
+<em class="ml10 yanzhensj">安全认证</em>   <em class="ml10">521次浏览</em>   <em class="ml10">信息ID：352667</em>   <em class="ml10">时间：2017-08-15</em>
+    </div>
+
+
+    <div class="clear line-height  border-top ">
+    <div class="gongchengpage sjbiaozhi renzhengbiaozhi">
+
+
+
+
+工程名称:万科精装，室内铺贴墙地砖<Br>
+工程地区:上海<Br>
+需要人数:15人<Br>
+工程工期:2个月<Br>
+单价:面议<Br>
+是否需要垫资:否<Br>
+与工程的关系:工程负责人<Br>
+承包方式:包清工<Br>
+结款方式:月进度结<Br>
+资质要求:质量可靠优先<Br>
+
+      </div>
+         <div class="clear clearfix mt20"></div>
+
+
+      <div class="border-top clear clearfix sjhaoma">
+
+    <span>联系方式</span>  <i class="ml23">***********</i><em class="fr btn1">点击查看完整号码</em>
+
+      </div>
+        <div class="box1"></div>
+    <div class="hint">
+            <div class="hint-in1">
+                  <div class="hint2">登录</div>
+                  <div class="hint3"></div>
+                </div>
+            <div class="hint-in2">
+                  <input type="text" class="kuang"  placeholder="请输入用户名"  />
+                  <input type="password" class="kuang" placeholder="请输入密码" />
+                </div>
+            <div class="hint-in3">确定</div>
+            <div class="zhuce" ><A href="#">注册</A></div>
+          </div>
+    <script type="text/javascript">
+$(document).ready(function($){
+
+	$(".btn1").click(function(event){
+		$(".hint").css({"display":"block"});
+		$(".box1").css({"display":"block"});
+	});
+
+	$(".hint-in3").click(function(event) {
+		$(".hint").css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+	$(".btn2").click(function(event) {
+		$(".hintl").css({"display":"block"});
+		$(".box1").css({"display":"block"});
+	});
+
+	$(".hint3").click(function(event) {
+		$(this).parent().parent().css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+	$(".hintl-in3").click(function(event) {
+		$(".hintl").css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+	$(".hintl-in4").click(function() {
+		$(".hintl").css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+		$(".btn3").click(function(event) {
+		$(".hintq").css({"display":"block"});
+		$(".box1").css({"display":"block"});
+	});
+	$(".hint3").click(function(event) {
+		$(this).parent().parent().css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+	$(".hintq-in3").click(function(event) {
+		$(".hintq").css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+	$(".hintq-in4").click(function() {
+		$(".hintq").css({"display":"none"});
+		$(".box1").css({"display":"none"});
+	});
+
+
+});
+</script>
+<div class="clear clearfix mt20"></div>
+<div class="clear clearfix border-top fencang">
+<span class="fr bdsharebuttonbox">
+
+<a data-cmd="more" class="mr10  bds_more">分享</a><a href="#" class="btn1 shoucang ml23">收藏</a>
+
+
+</span>
+
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+.fencang .bds_more{ background:url(../../../static/duohui/dianpu/images/fx.png) center left no-repeat; padding-left:30px; line-height:30px; height:30px; color:#1844a7}
+.fencang .shoucang{ background:url(../../../static/duohui/dianpu/images/fav.png) center left no-repeat; padding-left:30px; line-height:30px; height:30px;  color:#1844a7}
+.fencang .bds_more:hover,.fencang .shoucang:hover{ color:#900;}
+
+
+</style>
+</div>
+
+<div class="tjhy-title" style="  padding-bottom: 40px;">
+            <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">详细说明</a></h2>
+          </div>
+
+
+<div class="page " style="min-height:100px;">
+
+可包可点，价格详谈
+
+
+
+</div>
+<div class="clear clearfix">
+<em class="line-height red">（* 联系我时说明是在筑汕网上看到的！）</em>
+
+</div>
+      </div>
+  </div>
+
+        <h3 class="title mt20"><a class="heise" href="#">精品推荐</a></h3>
+        <div class="m_inttd w920">
+
+    <div class="m_intm" style="visibility: visible; overflow: hidden; position: relative; z-index: 2; left: -40px; width:1000px;">
+      <ul id="count1">
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img src="images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img src="images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+         <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img src="images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+         <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img src="images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+      </div>
+
+
+
+
+
+
+  </div>
+</div>
+
+
+
+<div class="footer clear clearfix">
+  <div class="w1200">
+    <div class="clear clearfix footerdibu" style="padding-bottom:30px;">
+      <div class="mt20 clear clearfix"><a href="about.html">关于我们</a>|<a href="contact.html">联系方式</a>|<a href="contact.html">免责条款</a>|<a href="contact.html">网站地图</a>|<a href="contact.html">网站留言</a>|<a href="contact.html">广告服务</a></div>
+      <p>备案号   全国服务热线:0311-888888888    商务邮箱:123@qq.com</p>
+      <p>&copy;2017-2019 SYSTEM All Rights Reserved 免责声明：本站信息均为网友自行发布，交易所带来的风险本站概不负责！</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.thymeleaf.org/thymeleaf-extras-shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>后台登录-X-admin2.2</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/xadmin/css/font.css}">
+    <link rel="stylesheet" th:href="@{/xadmin/css/xadmin.css}">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+
+<form class="layui-form">
+    <div class="layui-card basic">
+        <div class="layui-card-header">基本信息</div>
+        <div class="layui-card-body">
+
+            <input type="hidden" th:value="${record['id'] }" id="hiddenObjId" name="id">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属实体</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" disabled th:value="${record['entityIdName']}">
+                        <input type="hidden" name="entityId" th:value="${record['entityId']}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" lay-verify="required" lay-reqtext="名称不能为空" autocomplete="off" placeholder="请输入名称" class="layui-input" th:value="${record['name']}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">赋值编码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="assignmentCode" lay-verify="required" autocomplete="off" placeholder="请输入赋值编码"
+                               class="layui-input" th:value="${record['assignmentCode']}" onblur="copy()">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">取值编码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="displayCode" autocomplete="off" placeholder="请输入取值编码" class="layui-input" th:value="${record['displayCode']}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">sql代码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="dqlName" autocomplete="off" placeholder="请输入sql代码" class="layui-input" th:value="${record['dqlName']}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">顺序</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="sequence" autocomplete="off" placeholder="请输入顺序" class="layui-input" th:value="${record['sequence']}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-card table">
+        <div class="layui-card-header">表格相关</div>
+        <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">功能</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" th:checked="${record['isEffect'] eq 0?'false':'true'}" name="isEffect" value="1" title="展示">
+                        <input type="checkbox" th:checked="${record['isSort'] eq 1?'true':'false'}" name="isSort" value="1" title="排序">
+                        <input type="checkbox" th:checked="${record['isImport'] eq 1?'true':'false'}" name="isImport" value="1" title="导入">
+                        <input type="checkbox" th:checked="${record['isExport'] eq 1?'true':'false'}" name="isExport" value="1" title="导出">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">展示方式</label>
+                        <div class="layui-input-inline">
+                            <select class="una-select"
+                                    lay-verify="required"
+                                    name="displayModeDcode"
+                                    lay-search=""
+                                    data-param_name="parentCode"
+                                    data-param_value="field_display"
+                                    th:data-selected="${record['displayModeDcode']}"
+                                    data-option_value_field_title="code"
+                                    data-url="/sys/dictionary"></select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">展示长度</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="displayLength" autocomplete="off" placeholder="请输入展示长度" class="layui-input" th:value="${record['displayLength']==null?120:record['displayLength']}">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">列固定方式</label>
+                        <div class="layui-input-block">
+                            <input type="radio" th:checked="${record['fixedType'] eq 'left'?'true':'false'}" name="fixedType" value="left" title="居左">
+                            <input type="radio" th:checked="${record['fixedType'] eq 'right'?'true':'false'}" name="fixedType" value="right" title="居右">
+                            <input type="radio" th:checked="${record['fixedType'] != 'left'&&record['fixedType'] != 'right'?'true':'false'}" name="fixedType" value="none" title="不固定">
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="layui-card form">
+        <div class="layui-card-header">表单相关</div>
+        <div class="layui-card-body">
+
+            <div class="layui-form-item">
+                <!--<div class="layui-inline">
+                    <label class="layui-form-label">赋值类型</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" th:checked="${record.isManumotive eq 1 || record.isManumotive==null?'true':'false'}" name="isManumotive" value="1" title="手动">
+                        <input type="radio" th:checked="${record.isManumotive eq 0?'true':'false'}" name="isManumotive" value="0" title="自动">
+                    </div>
+                </div>-->
+                <div class="layui-inline">
+                    <label class="layui-form-label">可否修改</label>
+                    <div class="layui-input-inline">
+                        <input type="checkbox"
+                               th:checked="${record['isUpdate'] eq 0?'false':'true'}"
+                               name="isUpdate"
+                               value="1"
+                               title="是">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">批量修改</label>
+                    <div class="layui-input-inline">
+                        <input type="checkbox"
+                               th:checked="${record['isBatchUpdate'] eq 1?'true':'false'}"
+                               name="isBatchUpdate"
+                               value="1"
+                               title="是">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">赋值方式</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select una-switch-hide" name="assignmentModeDcode" lay-search=""
+                                data-param_name="parentCode"
+                                lay-verify="required"
+                                data-param_value="field_assignment"
+                                data-switch_hide_class="selectConfigUnit,fileSelectConfigUnit"
+                                data-switch_hide_option="100005"
+                                th:data-selected="${record['assignmentModeDcode']}"
+                                data-option_value_field_title="code"
+                                data-url="/sys/dictionary"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline fileSelectConfigUnit layui-hide">
+                    <label class="layui-form-label">可选上限</label>
+                    <div class="layui-input-inline">
+                        <input type="text"
+                               lay-verify="number"
+                               name="selectableLimitNum"
+                               autocomplete="off"
+                               placeholder="请输入可选数量上限"
+                               class="layui-input"
+                               th:value="${record['selectableLimitNum']==null?1:record['selectableLimitNum']}">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">格式校验</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select"
+                                name="formatDetectionTypeDcodes"
+                                lay-search=""
+                                data-param_name="parentCode"
+                                data-param_value="field_formatDetection"
+                                th:data-selected="${record['formatDetectionTypeDcodes']}"
+                                data-option_value_field_title="code"
+                                data-url="/sys/dictionary"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">数据检测</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select"
+                                name="dataDetectionTypeDcodes"
+                                lay-search=""
+                                data-param_name="parentCode"
+                                data-param_value="field_data_detection"
+                                th:data-selected="${record['dataDetectionTypeDcodes']}"
+                                data-option_value_field_title="code"
+                                data-url="/sys/dictionary"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">选项实体</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select una-select-linkage"
+                                name="optionEntityId"
+                                lay-filter="optionEntityId"
+                                lay-search=""
+                                data-sub_id="optionNameFieldIdSelectUnit,optionValueFieldIdSelectUnit"
+                                data-param_name="parentName"
+                                data-param_value="all"
+                                th:data-selected="${record['optionEntityId']}"
+                                data-url="/sys/entity"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">选项名字段</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select"
+                                id="optionNameFieldIdSelectUnit"
+                                name="optionNameFieldCode"
+                                lay-search=""
+                                data-param_name="entityId"
+                                data-option_value_field_title="assignmentCode"
+                                th:data-selected="${record['optionNameFieldCode']}"
+                                data-url="/sys/field"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">选项值字段</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select"
+                                id="optionValueFieldIdSelectUnit"
+                                name="optionValueFieldCode"
+                                lay-search=""
+                                data-param_name="entityId"
+                                data-option_value_field_title="assignmentCode"
+                                th:data-selected="${record['optionValueFieldCode']}"
+                                data-url="/sys/field"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">选项参数名</label>
+                    <div class="layui-input-inline">
+                        <input type="text"
+                               name="optionParamName"
+                               autocomplete="off"
+                               placeholder="请输入参数名"
+                               class="layui-input"
+                               th:value="${record['optionParamName']}">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">选项参数值</label>
+                    <div class="layui-input-inline">
+                        <input type="text"
+                               name="optionParamValue"
+                               autocomplete="off"
+                               placeholder="请输入参数值"
+                               class="layui-input"
+                               th:value="${record['optionParamValue']}">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">联动父元素</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select"
+                                name="selectParentId"
+                                lay-search=""
+                                data-param_name="entityId,assignmentModeDcode"
+                                th:data-param_value="${record['entityId']}+',field_assignment_singleselect'"
+                                th:data-selected="${record['selectParentId']}"
+                                data-url="/sys/field"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item selectConfigUnit layui-hide">
+                <div class="layui-form-item" th:style="${record['id']!=null&&record['id']!=''?'':'display:none'}">
+                    <label class="layui-form-label">触发隐藏</label>
+                    <div class="layui-input-block">
+                        <div class="una-select una-select-multiple"
+                             lay-search=""
+                             name="switchHideOption"
+                             th:data-param_name="${record['optionParamName']}"
+                             th:data-param_value="${record['optionParamValue']}"
+                             th:data-option_name_field_title="${record['optionNameFieldCode']}"
+                             th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                             th:data-selected="${record['switchHideOption']}"
+                             th:data-url="${record['optionEntityPath']}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" th:style="${record['id']!=null&&record['id']!=''?'':'display:none'}">
+                    <label class="layui-form-label">被隐藏字段</label>
+                    <div class="layui-input-block">
+                        <input type="text"
+                               name="switchHideIds"
+                               autocomplete="off"
+                               placeholder="请输入被隐藏字段"
+                               class="layui-input"
+                               th:value="${record['switchHideIds']}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">默认值</label>
+                    <div class="layui-input-inline">
+                        <input type="text"
+                               name="defaultValue"
+                               autocomplete="off"
+                               placeholder="请输入默认值"
+                               class="layui-input"
+                               th:value="${record['defaultValue']}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">注释</label>
+                    <div class="layui-input-inline">
+                        <input type="text"
+                               name="annotation"
+                               autocomplete="off"
+                               placeholder="请输入注释"
+                               class="layui-input"
+                               th:value="${record['annotation']}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">单选备选值</label>
+                <div class="layui-input-block">
+                    <input type="text"
+                           name="radioOptions"
+                           autocomplete="off"
+                           placeholder="请输入备选值，用,隔开"
+                           class="layui-input"
+                           th:value="${record['radioOptions']}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">选项查询语句</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入选项查询语句"
+                              class="layui-textarea"
+                              name="optionSql"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer footer" style="position: fixed;bottom: 0;text-align: center;width: 100%;padding: 5px;">
+        <div class="layui-btn-group">
+            <button type="submit" una-event="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="unaDataForm">提交</button>
+            <button type="button" una-event="reload" class="layui-btn layui-btn-normal layui-btn-sm">刷新</button>
+            <button type="button" una-event="close" class="layui-btn layui-btn-danger layui-btn-sm">返回</button>
+        </div>
+    </div>
+
+</form>
+
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/layui/layui.all.js}" charset="utf-8"></script>
+<script th:src="@{/xadmin/js/xadmin.js}" type="text/javascript"></script>
+<script th:src="@{/xadmin/js/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/una/js/public/bootstrapValidator.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/una/js/public/xm-select.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/public/loginChange.js}" charset="utf-8"></script>
+
+<script th:src="@{/una/js/private/una.common.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.data.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.fileRepository.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.form.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.highChart.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.invocation.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.laydate.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.layer.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.response.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.table.js}" charset="utf-8"></script>
+<script th:src="@{/una/js/private/una.validation.js}" charset="utf-8"></script>
+
+    <script>
+
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+            form.render();
+            loadCheckBoxNotNull();  //设置checkbox非空提交
+
+            //监听提交
+            form.on('submit(unaDataForm)', function(data){
+                var responseType = $("#showResponseType").val();
+                var href = $("#showResponseHref").val();
+                var target = $("#showResponseTarget").val();
+                    //加载层
+                    //var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+                    //如果要保存的表单内有“saveUrlForm”元素，则保存地址为该id的val值，否则保存地址为实体前缀+“save"
+                    /*var url=$(selector).closest("form").find("#saveUrlInForm").length>0?
+                        $(selector).closest("form").find("#saveUrlInForm").val():"save";*/
+                    //ajax保存数据
+                $.ajax({
+                    type: 'post',
+                    url: '[[${sysResponseParameter.sysEntity.path}]]/save',
+                    dataType: 'json',
+                    data: data.field,
+                    success: function (result) {
+                        if(result.code==200){
+                            //操作成功时，弹层提示添加成功，并且刷新父页面
+                            layer.msg(result.message,function () {
+                                parent.refreshTable("unaDataTable");
+                                closeIframeLayerFromInner();
+                            })
+                        }else{
+                            layer.msg(result.message,function () {})
+                        }
+
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+                    }
+                })
+                return false ;
+            });
+
+
+            form.on('select', function(data){
+                //判断类名，是否有下拉联动
+                if(data.elem.classList.contains("una-select-linkage")){
+                    var value = data.value
+                        ,subIds = data.elem.dataset.sub_id  //获取所有的联动子元素
+                        ,subIdArray= new Array(); //定义一数组
+                    if(subIds!=null)subIdArray=subIds.split(","); //字符分割
+                    //遍历联动子元素
+                    for (var i=0;i<subIdArray.length ;i++ ){
+                        var defaultValue = $("#"+subIdArray[i]).attr("data-param_value");
+                        var newParamValue;
+                        if(defaultValue!=null){
+                            newParamValue = defaultValue+value
+                            newParamValue = defaultValue.substring(0,(defaultValue.lastIndexOf(",")+1))+value;
+                        }else{
+                            newParamValue = value;
+                        }
+                        $("#"+subIdArray[i]).attr("data-param_value",newParamValue);
+                        prepareAutoSingleSelect($("#"+subIdArray[i]));
+                    }
+                }
+
+                //判断类名，是否有隐藏联动
+                if(data.elem.classList.contains("una-switch-hide")){
+                    var value = data.value
+                        ,switchHideClass = data.elem.dataset.switch_hide_class
+                        ,switchHideOption = data.elem.dataset.switch_hide_option
+                        ,optionArray = new Array(); //定义一数组
+                    if(switchHideOption!=null)optionArray = switchHideOption.split(",");
+
+                    if(switchHideClass!=null){
+                        classArray = new Array();
+                        classArray = switchHideClass.split(",");
+                        var selectedIndex;
+                        for (var i=0;i<optionArray.length ;i++ ){
+                            var ele = $("."+classArray[i]);
+                            if(optionArray[i]==value){
+                                //选中
+                                selectedIndex = i;
+                                //ele.removeClass("layui-hide");
+                            }else{
+                                //未选中
+                                ele.addClass("layui-hide");
+                            }
+                        }
+                        $("."+classArray[selectedIndex]).removeClass("layui-hide");
+
+                    }
+                }
+
+            });
+
+
+        });
+
+        /*
+        子窗口表单下方按钮组事件
+         */
+        $(document).on('click', '.layui-form button.layui-btn', function(){
+            var ele = $(this);
+            switch($(this).attr("una-event")){
+                case 'reload':
+                    window.location.reload();
+                    break;
+                case 'close':
+                    closeIframeLayerFromInner();
+                    break;
+            };
+
+        });
+
+        function copy(){
+            var assignmentCode = $("[name='assignmentCode']").val();
+                $("[name='displayCode']").val(assignmentCode);
+
+        }
+
+        /*加载多选下拉框组件*/
+        $("div.una-select-multiple").each(function () {
+
+            var e = $(this);
+            var paramValue = e.attr("data-param_value")
+                ,url = e.data("url")
+                ,paramName = e.data("param_name")
+                ,selectedVal = e.data("selected")
+                ,optionNameFieldCode = e.data("option_name_field_title")
+                ,optionValueFieldCode = e.data("option_value_field_title")
+                ,param=""
+                ,paramJson = {}
+                ,optionData=[]
+                ,name = e.attr("name");
+
+            if(url!=null&&url.indexOf("queryPlural")==-1)url = url +"/queryPlural";
+            if(optionNameFieldCode==null||optionNameFieldCode=="")optionNameFieldCode="title";
+            if(optionValueFieldCode==null||optionValueFieldCode=="")optionValueFieldCode="id";
+
+            if(paramName!=null&&paramName.indexOf(",")!=-1&&paramValue.indexOf(",")!=-1){
+                //传递了多个查询条件
+                var paramNameArray= new Array(); //定义一参数名数组
+                var paramValueArray= new Array(); //定义一参数值数组
+                paramNameArray=paramName.split(","); //字符分割
+                paramValueArray=paramValue.split(","); //字符分割
+                for (var i=0;i<paramNameArray.length ;i++ ){
+                    if(i>0)param = param + ",";
+                    var subParamValue = "";
+                    if(paramValueArray[i]!="null"){
+                        var transferParamValue = paramValueArray[i];
+                        if(transferParamValue.indexOf("&")!=-1){
+                            //如果选项包含&，用逗号替代
+                            transferParamValue = transferParamValue.replace("&",",");
+                        }
+                        subParamValue = transferParamValue;
+                    }
+                    param = param + paramNameArray[i]+":'"+subParamValue+"'";
+                }
+            }else{
+                var transferParamValue = paramValue;
+                if(paramValue!=null&&paramValue.indexOf("&")!=-1){
+                    //如果选项包含&，用逗号替代
+                    transferParamValue = transferParamValue.replace("&",",");
+                }
+                param = paramName+":'"+transferParamValue+"'";
+            }
+
+            //如果参数值为all，则查询参数为空
+            if(paramValue!='all')paramJson = eval('({' + param + '})');
+
+            if(paramValue!=null&&paramValue!=""){
+                if(selectedVal!=null&&selectedVal!="")var valueArray = selectedVal.split(',');
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: paramJson,
+                    async:false,
+                    dataType: 'json',
+                    success: function(result) {
+                        //创建选项
+                        $.each(result,function(index,record){
+                            if(valueArray!=null&&valueArray.contains(record[optionValueFieldCode])){
+                                //设定选中项
+                                record.selected=true;
+                            }
+                            optionData.push(record);
+                        })
+                        e.closest("div.form-group").find("img.una_loading").css("display","none");
+                    }
+                });
+
+            }
+
+            xmSelect.render({
+                el: '[name="'+name+'"]',
+                filterable: true,
+                name:name,
+                prop: {
+                    name: optionNameFieldCode,
+                    value: optionValueFieldCode,
+                },
+                data: optionData
+            })
+        })
+
+    </script>
+
+
+</body>
+</html>

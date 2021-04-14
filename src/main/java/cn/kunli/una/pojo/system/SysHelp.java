@@ -1,0 +1,41 @@
+package cn.kunli.una.pojo.system;
+
+
+import cn.kunli.una.pojo.BasePojo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+
+import javax.persistence.Transient;
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@Accessors(chain = true)
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+public class SysHelp extends BasePojo implements Serializable {
+
+    private Integer entityId;
+
+    private String pageUrl;
+
+    private String name;
+
+    private Integer viewAmount;
+
+    private String content;
+
+
+    private static final long serialVersionUID = 1L;
+
+
+
+
+
+    @Transient
+    private String entityName;
+
+
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysMenuMapper">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysMenu">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <!--<result column="permission_id" jdbcType="VARCHAR" property="permissionId" />
+        <association property="permissionCode" column="permission_id" javaType="java.lang.String"
+                     select="cn.kunli.una.mapper.SysPermissionMapper.selectCodeById" />-->
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysMenu"
+                    select="cn.kunli.una.mapper.SysMenuMapper.selectByParentIdCollection" property="children" />
+    </resultMap>
+    <!--实体类数据库字段-->
+
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select
+        record.*
+        ,sfct.name as permissionName
+        from sys_menu as record
+        LEFT JOIN sys_permission as sfct on record.permission_id = sfct.id
+        left join sys_user as sysAccount on record.creator_id = sysAccount.id
+        <where>
+            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,record.link_url,sfct.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.level != null">
+                and record.level = #{record.level}
+            </if>
+            <if test="record.parentId != null and record.parentId != ''">
+                and record.parent_id = #{record.parentId}
+            </if>
+            <if test="record.name != null and record.name != ''">
+                and record.name = #{record.name}
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+    </select>
+
+    <select id="selectByParentIdCollection" resultMap="BaseResultMap">
+        select
+        record.*
+        from sys_menu as record
+        where record.parent_id = #{parentId} and record.is_delete=0
+        order by record.sequence
+    </select>
+    <select id="selectTreeBySelective" resultType="cn.kunli.una.pojo.system.SysMenu">
+        SELECT DISTINCT smnu.id
+        ,smnu.name
+        ,smnu.type
+        ,smnu.link_url
+        ,smnu.sequence
+        ,smnu.level
+        ,smnu.parent_id
+        ,smnu.permission_id
+        ,smnu.icon_dcode
+        ,smnu.parent_id
+        ,smnu.is_effect
+        ,iconDic.style as icon
+        ,sysFile.file_url as iconFurl
+        FROM sys_menu as smnu
+        LEFT JOIN sys_role_permission as srfc on srfc.permission_id = smnu.permission_id AND srfc.scope != 0
+        LEFT JOIN sys_user as sysAccount on FIND_IN_SET(srfc.role_id,sysAccount.role_ids)
+        LEFT JOIN sys_dictionary as iconDic on iconDic.code = smnu.icon_dcode
+        LEFT JOIN sys_file as sysFile on sysFile.id = smnu.icon_fid
+        where (sysAccount.id = #{record.id} AND smnu.is_effect=1 and smnu.is_delete=0 OR
+        smnu.id in (
+        SELECT DISTINCT smnu1.parent_id FROM sys_menu as smnu1
+        LEFT JOIN sys_role_permission as srfc1 on srfc1.permission_id = smnu1.permission_id AND srfc1.scope != 0
+        LEFT JOIN sys_user as sysUser1 on FIND_IN_SET(srfc1.role_id,sysUser1.role_ids)
+        where (sysUser1.id = #{record.id} OR
+        smnu1.id in (
+        SELECT DISTINCT smnu2.parent_id FROM sys_menu as smnu2
+        LEFT JOIN sys_role_permission as srfc2 on srfc2.permission_id = smnu2.permission_id AND srfc2.scope != 0
+        LEFT JOIN sys_user as sysUser2 on FIND_IN_SET(srfc2.role_id,sysUser2.role_ids)
+        where sysUser2.id = #{record.id} AND smnu2.is_effect = 1 and smnu2.is_delete=0
+        ))AND smnu1.is_effect = 1 and smnu1.is_delete=0
+        ))AND smnu.is_effect = 1 and smnu.is_delete=0
+        ORDER BY smnu.parent_id,smnu.sequence
+    </select>
+</mapper>

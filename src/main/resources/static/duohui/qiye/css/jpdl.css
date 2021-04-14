@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+
+#box{margin:0; padding:0; list-style:none; height:auto;}
+#box .hid{display:none;}
+#box .show{display:block;}
+#box li{float:left; height:45px; line-height:45px;}
+#tog{font:14px/45px; color:#666;}
+.gsmc{ height:40px; margin:10px 0;}
+.gsmc b.biaozhi{overflow:hidden; background:url(../images/v1.png) bottom  no-repeat; width:16px;  display:inline-block; }
+.gsmc h2{ font-size:30px; color:#004b92; font-weight:600;}
+.gsmc b.v1{ background-position:0 0px;height:15px;width:16px;}
+.gsmc b.v2{ background-position:0 -15px;height:15px;width:16px;}
+.gsmc b.v3{ background-position:0 -30px;height:15px;width:16px;}
+.gsmc b.v4{ background-position:0 -45px;height:15px;width:16px;}
+.gsmc b.v5{ background-position:0 -60px;height:15px;width:16px;}
+.hui2 {color: #999; line-height:40px; display:block; width:100%;
+}
+.gsmc p em img{ margin-top:-7px;}
+
+

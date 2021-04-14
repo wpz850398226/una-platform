@@ -1,0 +1,121 @@
+table.nowrap th {
+	white-space: nowrap;
+	text-overflow: ellipsis
+}
+table.nowrap td {
+	white-space: nowrap;
+	text-overflow: ellipsis
+}
+td.center{
+	vertical-align: middle;
+}
+.tdFormTitle{
+	width: 13%;
+	text-align: right;
+}
+.tdFormContent{
+	width: 37%;
+	text-align: left;
+}
+.tdDetailTitle{
+	width: 25%;
+	text-align: right;
+}
+.tdDetailContent{
+	width: 25%;
+	text-align: left;
+}
+.pageFileLeft{
+	float: left;
+}
+.pageFileRight{
+	float: right;
+}
+.requiredFormUnit{
+	color:red;
+}
+.securityFormUnit{
+	color:blue;
+}
+.form-actions{
+	text-align: center;
+}
+.formActionBtn{
+	margin-left: 1%;
+	margin-right: 1%;
+}
+.floatLeft{
+	float: left; 
+}
+.floatRight{
+	float: right; 
+}
+.alertMessageDiv{
+	font-size: 15px;
+	padding: 20px;
+	text-align: center;
+	background-color: #405e8e;
+}
+.formInputSpan{
+	color: red;
+}
+.icon-spin{
+	margin-bottom: 100px;
+	margin-top: 100px;
+	color: blue;
+}
+#insertTable{
+	/* text-align: center; */
+}
+#addFormContent{
+	text-align: center;
+}
+#updateFormContent{
+	text-align: center;
+}
+
+.date-time-picker{
+	width: 100%;
+}
+/* .borderRadius{
+	background-color: #0099FF;
+	color: white;
+	border: none;
+	border-radius:4px;
+} */
+tr.quick-operation{
+	background-color: #e4efc9;
+}
+label.usualQuery-label{
+	float: right;
+}
+td.servicePhTdName{
+	background-color:#edf3f4;
+	width: 38.2%;
+}
+td.servicePhTdValue{
+	width:61.8%;
+}
+.table{
+	margin-bottom:0;
+}
+#saveObjForm {
+	padding-bottom: 30px;
+}
+#dataTable td{
+	vertical-align: middle;
+}
+.ztreeContainer ul.ztree{
+	margin-top:0;
+	border: 1px solid #c3c3c3;
+	background: #f5f5f5;
+	border-top: 0;
+	overflow-y: auto;
+	height: 360px;
+	width: 95%;
+	position: absolute;
+	z-index: 999;
+}
+form #edit-basic{
+	padding-bottom: 25px;
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <title>多边形编辑器吸附功能</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css}" />
+    <script src="https://webapi.amap.com/maps?v=2.0&key=b46acb8a8e249b56265567c7fbdd1e1b&plugin=AMap.PolygonEditor"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js}"></script>
+    <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/jquery-1.11.1.min.js}" ></script>
+    <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/underscore-min.js}" ></script>
+    <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/backbone-min.js}" ></script>
+    <script type="text/javascript" src='https://a.amap.com/jsapi_demos/static/demo-center/js/prety-json.js'></script>
+    <script th:src="@{/una/js/private/una.layer.js}" charset="utf-8"></script>
+    <script th:src="@{/una/js/public/loginChange.js}" charset="utf-8"></script>
+</head>
+<body>
+<div id="container"></div>
+<div class="input-card" style="width: 120px">
+    <button class="btn" onclick="createPolygon()" style="margin-bottom: 5px">新建</button>
+    <button class="btn" onclick="polyEditor.open()" style="margin-bottom: 5px">开始编辑</button>
+    <button class="btn" onclick="polyEditor.close();finishEdit()">结束编辑</button>
+    <button class="btn" onclick="submit()">完成</button>
+</div>
+<script type="text/javascript">
+    //初始化地图
+    var map = new AMap.Map('container', {
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 11, //初始地图级别
+    });
+
+    //获取并展示当前城市信息
+    function logMapinfo(){
+        map.getCity( function(info){
+            var node = new PrettyJSON.view.Node({
+                el: document.querySelector("#map-city"),
+                data: info
+            });
+        });
+    }
+
+    logMapinfo();
+    var pathStr='';     //坐标集字符串 1,2；3,4；。。
+
+    var textInputVal = '[[${textInputVal}]]';
+    if(textInputVal!=null&&textInputVal!=""){
+        var textInputArray = textInputVal.split(";");
+        var path=[];
+        for(var i=0;i<textInputArray.length;i++){
+            path.push(textInputArray[i].split(","));
+        }
+        /*var path2 = [
+            [116.474595, 40.001321], [116.473526, 39.999865], [116.476284, 40.000917]
+        ]*/
+        var polygon1 = new AMap.Polygon({
+            path: path
+        })
+
+        map.add([polygon1]);
+    }
+
+    map.setFitView();
+    var polyEditor = new AMap.PolygonEditor(map);
+    //polyEditor.addAdsorbPolygons([polygon1, polygon2]);
+
+    function createPolygon() {
+        polyEditor.close();
+        polyEditor.setTarget();
+        polyEditor.open();
+    }
+
+    polyEditor.setTarget(polygon1);
+    polyEditor.open();
+
+    //完成编辑
+    function finishEdit() {
+        var type = 'polygon';
+        // 获取面覆盖物
+        var overlays = map.getAllOverlays(type);
+        var path = overlays[0].getPath();
+        for(var i=0;i<path.length;i++){
+            if(i!=0)pathStr = pathStr + ";";
+            pathStr = pathStr + path[i]['lng']+","+path[i]['lat'];
+        }
+    }
+
+    //完成描点，提交到父页面
+    function submit() {
+        window.parent.document.getElementById('[[${textInputId}]]').value=pathStr;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
+
+</script>
+</body>
+</html>

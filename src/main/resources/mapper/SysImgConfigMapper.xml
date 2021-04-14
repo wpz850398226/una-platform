@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysImgConfigMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysImgConfig" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,name
+        ,module_dcode
+        ,code
+        ,description
+        ,value
+        ,link_url
+        ,company_id
+        ,sequence
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+        ,
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.name}
+        ,#{record.moduleDcode}
+        ,#{record.code}
+        ,#{record.description}
+        ,#{record.value}
+        ,#{record.path}
+        ,#{record.companyId}
+        ,#{record.sequence}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_img_config
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+    <!--条件查询-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+
+        ,sysDictionary.name as moduleDname
+        from sys_img_config as record
+
+        left join sys_dictionary as sysDictionary on sysDictionary.code = record.module_dcode
+        <where>
+            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.code != null and record.code != ''">
+                and record.code = #{record.code}
+            </if>
+            <if test="record.moduleDcode != null and record.moduleDcode != ''">
+                and record.module_dcode = #{record.moduleDcode}
+            </if>
+            <if test="record.moduleDcode != null and record.moduleDcode != ''">
+                and sysDictionary.code = #{record.moduleDcode}
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+    </select>
+
+</mapper>

@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<title>多汇供应链管理有限公司</title>
+<meta name="keywords" content="多汇供应链管理有限公司" />
+<meta name="description" content="多汇供应链管理有限公司" />
+<link th:href="@{/duohui/guanwang/css/base1.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/guanwang/css/main_001.css}" rel="stylesheet" type="text/css">
+<script type="text/javascript" th:src="@{/duohui/guanwang/js/jquery-1.11.3.min.js}"></script>
+<script type="text/javascript">
+
+$(function(){
+var myNav = document.getElementById("menu").getElementsByTagName("a");
+for(var i=0;i<myNav.length;i++){
+var links = myNav[i].getAttribute("href");
+var myURL = document.location.href;
+if(myURL.indexOf(links) != -1){
+
+myNav[i].className="on";
+myNav[i].parentNode.parentNode.previousElementSibling.className="on";
+
+}
+}
+			});
+</script>
+</head>
+<body>
+<div id="wrapper"  >
+  <div class="header_top">
+    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
+      <div class=" right  top" >
+        <ul class="duohui_menu fr font-f">
+          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/guanwang/images/shoucang.jpg}" /></a></span></li>
+          <li> <a class="bgt" href="gouwuche.html">购物车</a>
+            <ul>
+              <li><a  href="#">已加入购物车</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">我的业务体系</a>
+            <ul>
+              <li><a  href="#">信息平台</a></li>
+              <li><a href="#">产品平台</a></li>
+              <li><a  href="#">服务平台</a></li>
+              <li><a href="#">招投标平台</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="project.html">客服中心</a>
+            <ul>
+              <li><a  href="#">新手入门</a></li>
+              <li><a href="#">找回密码</a></li>
+              <li><a  href="#">注销店铺</a></li>
+              <li><a href="#">联系客服</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">会员中心</a>
+            <ul>
+              <li><a  href="#">会员中心</a></li>
+              <li><a href="#">我的资料</a></li>
+              <li><a href="#">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="header">
+    <div class="w1200 clearBoth clearfix"> <a class="logo left" href="index.html"><img th:src="@{/duohui/guanwang/images/logo.jpg}" border="0"></a>
+      <!--menu start-->
+      <ul class="menu right" id="menu">
+        <li class="on"> <a class="on"  href="index.html">首页</a> </li>
+        <li class="on" th:each="primaryMenu : ${gwMenuList}">
+          <a class=" " th:href="${primaryMenu.path}">[[${primaryMenu.name}]]</a>
+          <ul class="submenu">
+            <li th:each="secondaryMenu : ${primaryMenu.children}"><a th:href="${secondaryMenu.path}">[[${secondaryMenu.name}]]</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="pz_m_1" class=" section">
+    <script type="text/javascript" th:src="@{/duohui/guanwang/js/jquery-1.js}"></script>
+    <script type="text/javascript" th:src="@{/duohui/guanwang/js/responsiveslides.js}"></script>
+    <script type="text/javascript">
+$(function () {
+	// Slideshow
+	$("#slider").responsiveSlides({
+		auto: true,
+		pager: false,
+		nav: true,
+		speed: 500,
+		timeout:4000,
+		pager: true,
+		pauseControls: true,
+		namespace: "callbacks"
+	});
+});
+</script>
+    <div class="callbacks_container">
+      <ul class="rslides callbacks callbacks1" id="slider">
+        <li><a ><img th:src="@{/duohui/guanwang/images/banner.jpg}" alt=""></a></li>
+        <li><a ><img th:src="@{/duohui/guanwang/images/banner.jpg}" alt=""></a></li>
+        <li><a ><img th:src="@{/duohui/guanwang/images/banner.jpg}" alt=""></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="main" >
+    <div class=" aboutus  clearBoth clearfix">
+      <div class="w1200">
+        <h2 class="title clearBoth clearfix" > <a href="about.html" >关于我们</a><em>致力成为具有可持续化发展的工业贸易型领先企业！</em><i></i> </h2>
+        <div class="clearBoth clearfix" style="height:80px;"></div>
+        <div class=" left  aboutusnr wow bounce animated" >
+          <p><em style=" font-size:18px;">多汇供应链管理有限公司</em><Br />
+            <Br />
+            创建于2019年。是集多元化商品贸易为主的贸易公司！<Br />
+            <em style=" font-size:18px;">我们做什么――</em><Br />
+            <Br />
+            依托京津冀重工制造业相对集中的工业产业优势，充分发掘上游供应商与下游加工业、物流行业及其他配套产业资源，结合国家相关产业政策，服务于实体贸易，引入先进的供应链管理综合服务，打造具有联动性的产业链，促进制造流通业的健康发展，致力成为具有可持续化发展的工业贸易型领先企业！</p>
+          <a href="#" class="left mt20"><img th:src="@{/duohui/guanwang/images/nore.jpg}" /></a> </div>
+        <div class="abouttu right wow fadeInRight animated"><img th:src="@{/duohui/guanwang/images/abouttu.jpg}"/></div>
+      </div>
+    </div>
+    <div class="server clearBoth clearfix">
+      <div class="w1200 clearBoth clearfix">
+        <h2 class="title clearBoth clearfix" > <a href="about.html" style="color:#fff;" >业务体系</a><em style="color:#fff;" >主要涵盖产品平台、服务平台、信息平台、招投标等服务体系！</em><i style=" background:#fff;" ></i> </h2>
+        <div class="clearBoth clearfix" style="height:80px;"></div>
+        <div class="serverlist">
+          <ul>
+            <li><a href="#">
+              <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>信息平台</b> </div>
+              <div class="xia"><img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /></div>
+              </a> </li>
+            <li><a href="#">
+              <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>产品平台</b> </div>
+              <div class="xia"> <img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /></div>
+              </a> </li>
+            <li><a href="#">
+              <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>服务平台</b> </div>
+              <div class="xia"><img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /></div>
+              </a> </li>
+            <li><a href="#">
+              <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>招投标</b> </div>
+              <div class="xia"><img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /> </div>
+              </a> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="main-list clearBoth">
+      <div class="w1200">
+        <div class="list left mt20">
+          <h3 class="title"><em class="right mr10">+more</em><a href="#">政策法规</a></h3>
+          <dl>
+            <dt> <a class="left" href="#"><img th:src="@{/duohui/guanwang/images/duohui_41.jpg}" /></a>
+              <div class="right"><a href="#">集多元化商品贸易为主的贸易！</a>
+                <p>创建于2019年。是集多元化商品贸建于2
+                  019年。是集多元化商品贸易......</p>
+                <a href="#" class="more">更多</a></div>
+            </dt>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+          </dl>
+        </div>
+        <div class="list left mt20">
+          <h3 class="title"><em class="right mr10">+more</em><a href="#">行业动态</a></h3>
+          <dl>
+            <dt> <a class="left" href="#"><img th:src="@{/duohui/guanwang/images/duohui_41.jpg}" /></a>
+              <div class="right"><a href="#">集多元化商品贸易为主的贸易！</a>
+                <p>创建于2019年。是集多元化商品贸建于2
+
+                  019年。是集多元化商品贸易......</p>
+                <a href="#" class="more">更多</a></div>
+            </dt>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+          </dl>
+        </div>
+        <div class="list left mt20">
+          <h3 class="title"><em class="right mr10">+more</em><a href="#">公司公告</a></h3>
+          <dl>
+            <dt> <a class="left" href="#"><img th:src="@{/duohui/guanwang/images/duohui_41.jpg}" /></a>
+              <div class="right"><a href="#">集多元化商品贸易为主的贸易！</a>
+                <p>创建于2019年。是集多元化商品贸建于2
+                  019年。是集多元化商品贸易......</p>
+                <a href="#" class="more">更多</a></div>
+            </dt>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clearBoth clearfix" style="height:60px;"></div>
+  <div class="footer clearBoth">
+    <div class="w1200">
+      <div class="foot-nav"> <a href="#">关于我们</a><a>|</a> <a href="#">供求信息</a> <a>|</a> <a href="#">产品商城</a> <a>|</a> <a href="#">招投标</a> <a>|</a> <a href="#">产品及服务</a> <a>|</a> <a href="#">公司动态</a> <a>|</a> <a href="#">联系我们</a> </div>
+      <div class="banquan "> 咨询热线：400-635-1907        企业邮箱：yewubu@dhgyl.com<br />
+        河北省石家庄市裕华区槐安东路鑫科国际广场C座1806室<br />
+        版权所有：多汇供应链管理有限公司<br />
+        备案号： 冀ICP备19032765号 </div>
+    </div>
+  </div>
+  <link rel="stylesheet"  th:href="@{/duohui/guanwang/css/animate.min.css}">
+  <script th:src="@{/duohui/guanwang/js/wow.min.js}"></script>
+  <script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+	new WOW().init();
+};
+</script>
+</div>
+</body>
+</html>

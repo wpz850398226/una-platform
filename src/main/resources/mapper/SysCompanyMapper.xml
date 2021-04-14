@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysCompanyMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysCompany" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysCompany"
+                    select="cn.kunli.una.mapper.SysCompanyMapper.selectByParentIdCollection" property="children" />
+    </resultMap>
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,code
+        ,type_dcode
+        ,name
+        ,overview
+        ,acreage
+        ,headwaters
+        ,main_responsibility
+        ,industry_dcodes
+        ,registered_capital
+        ,registered_date
+        ,principal_role_id
+        ,legal_person_id
+        ,address
+        ,parent_id
+        ,index_url
+        ,contact_number
+        ,unified_social_credit_code
+        ,opening_bank_type_dic_id
+        ,opening_bank_name
+        ,corporate_account
+        ,region_id
+        ,latitude
+        ,longitude
+        ,file_ids
+        ,weight
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+        ,level_id
+        ,duty_time
+        ,on_duty_dept_id
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.code}
+        ,#{record.typeDcode}
+        ,#{record.name}
+        ,#{record.overview}
+        ,#{record.acreage}
+        ,#{record.headwaters}
+        ,#{record.mainResponsibility}
+        ,#{record.industryDcodes}
+        ,#{record.registeredCapital}
+        ,#{record.registeredDate}
+        ,#{record.principalRoleId}
+        ,#{record.legalPersonId}
+        ,#{record.address}
+        ,#{record.parentId}
+        ,#{record.indexUrl}
+        ,#{record.contactNumber}
+        ,#{record.unifiedSocialCreditCode}
+        ,#{record.openingBankTypeDicId}
+        ,#{record.openingBankName}
+        ,#{record.corporateAccount}
+        ,#{record.regionId}
+        ,#{record.latitude}
+        ,#{record.longitude}
+        ,#{record.fileIds}
+        ,#{record.weight}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+
+        ,#{record.levelId}
+        ,#{record.dutyTime}
+        ,#{record.onDutyDeptId}
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_company
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+    <!--条件查询-->
+    <sql id="baseQuery">
+        select record.*
+        ,regionTop.name as countyName
+        ,regionMiddle.name as districtName
+        ,regionMiddle.id as districtId
+        ,regionBottom.name as provinceName
+        ,regionBottom.id as provinceId
+        ,parentCompany.name as parentCompanyName
+        ,mainUser.name as legalPersonName
+        ,typeDic.name as typeName
+        ,sysRole.name as principalRoleTitle
+        from sys_company as record
+        left join sys_user as mainUser on mainUser.id = record.legal_person_id
+        left join sys_user as empUser on empUser.company_id = record.id
+        left join sys_company as parentCompany on parentCompany.id = record.parent_id
+        left join sys_region as regionTop on regionTop.id = record.region_id
+        left join sys_region as regionMiddle on regionMiddle.id = regionTop.parent_id
+        left join sys_region as regionBottom on regionBottom.id = regionMiddle.parent_id
+        left join sys_dictionary as typeDic on typeDic.code = record.type_dcode
+        left join sys_role as sysRole on sysRole.id = record.principal_role_id
+        <where>
+            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.employeeId != null and record.employeeId !=''">
+                and empUser.id = #{record.employeeId}
+            </if>
+            <if test="record.companyId != null and record.companyId !=''">
+                and record.id = #{record.companyId}
+            </if>
+            <if test="record.parentId != null and record.parentId !=''">
+                and (FIND_IN_SET(record.parent_id,#{record.parentId})
+                <if test="record.rootTreeIds != null and record.rootTreeIds !=''">
+                    or FIND_IN_SET(record.id,#{record.rootTreeIds})
+                </if>)
+            </if>
+            <if test="record.companyIds != null ">
+                and record.id in
+                <foreach item="item" index="index" collection="record.companyIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        group by record.id
+        <!--order by typeDic.sequence,record.sequence-->
+        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+    </sql>
+
+    <select id="selectByParentIdCollection" resultMap="BaseResultMap">
+ 	select *
+ 	from sys_company
+   	where is_delete = 0
+   	and parent_id = #{parentId}
+   	order by sequence,CONVERT(name USING gbk)
+  </select>
+
+
+
+
+    <!--条件查询（返回实体类）-->
+    <select id="selectBySelective" resultType="cn.kunli.una.pojo.system.SysCompany">
+        <include refid="baseQuery" />
+    </select>
+
+    <!--条件查询（返回封装类）-->
+    <select id="selectResultMapBySelective" resultMap="BaseResultMap">
+        <include refid="baseQuery" />
+    </select>
+
+</mapper>

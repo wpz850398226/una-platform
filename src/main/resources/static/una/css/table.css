@@ -1,0 +1,6 @@
+.table-function{
+	margin: 10px;
+}
+#formTable>tbody>tr>td{
+	border-top:0px;
+}

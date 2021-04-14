@@ -1,0 +1,128 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/*全局设置*/
+*{margin: 0; padding: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-style:normal;}
+	
+body,html{height:100%;}
+.apple{overflow-y:scroll;-webkit-overflow-scrolling: touch;}
+body {background:#fff; font-size:62.5%;line-height: 140%; color:#707070; font-family:微软雅黑, Arial, Helvetica, sans-serif;}
+img {border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; max-width: 100%;}
+ul,ol,li{list-style-type: none;}
+h1,h2,h3,h4,h5{ font-weight:normal;}
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {display: block;}
+
+input,textarea,select, button{font-family:微软雅黑, Arial, Helvetica, sans-serif; font-size:0.88em; color: #000;}
+
+
+a {color: #727171; text-decoration:none;}
+a:hover { text-decoration: none;}
+a:focus { background:none; }
+
+:focus{outline:0;}
+p.right{ width:640px; float:right;}
+
+/*清除样式*/
+.clearBoth{ clear:both;}
+
+.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.clearfix {display: inline-table; height: 1%; display: block;}
+
+.verticalAlign{vertical-align:middle; display:inline-block; height:100%; width:1px;margin-left:-1px;}
+/*最外层*/
+#wrapper{ width:100%; overflow:hidden; position:relative;}
+
+
+/*顶部 -------------------------------------------------------------------------------*/
+.header{ max-width:999px; margin:0 auto; position:relative; min-height:73px;}
+.header .logo{ display:block; max-width:205px; width:50%; padding:17px 0 15px 20px;}
+.header .logo img{width:100%;}
+.header .hotline{position:absolute;right:20px;top:40%; max-width:250px;height: auto;}
+.link-mobile{ display:block;width:20%; position:absolute;left:0;top:0;bottom:0;text-align:center; border-right:1px solid #ccc;}
+.link-mobile img{width:40%; vertical-align:middle; display:inline-block;}
+#menu_mobile_close{ display:none;}
+/*菜单 -------------------------------------------------------------------------------*/
+.menu{ display:block; position:relative; border-top:5px solid #ffa336; font-size:0.88em; z-index:1000; background:#356777; z-index:1;font-size: 1.3em;}
+.menu > ul{ max-width:999px; margin:0 auto; min-height:60px; overflow:hidden;}
+.menu > ul > li{ float:left; margin:0;  width:124px; text-align:center; background: url(../images/menu_line.png) no-repeat right center;}
+.menu > ul > li > a{ display:block; color:#fff; line-height:60px; height:60px; -webkit-transition:background-color linear .3s; transition:background-color linear .3s;}
+.menu > ul > li > a:hover{ background-color:#ffa336; color:#fff;}
+
+.menu > ul > li > a.sub span{padding:0 15px;background:url(../images/menu_ar.png) no-repeat right 8px;}
+
+.menu > ul > li.on > a{ background:#ffa336; color:#fff;}
+.menu > ul .submenu{min-height:55px;background:url(../images/alpha60.png) repeat 0 0;position:absolute; left:0; top:60px; width:100%; display: none;}
+.menu ul ul{ max-width:919px;padding-left:80px; margin:0 auto; background:#fff;  z-index:1000;}
+.menu ul ul li{width:152px; height:55px; line-height:55px; text-align:center; float:left;}
+.menu ul ul li a{ display:block;}
+.menu ul ul li a:hover{ color:#ffa336;}
+.menu ul ul li a span{ display:inline-block;width:100%; border-right:1px solid #9ab3bb; line-height:18px;}
+.menu-mobile,.link-mobile{ display:none;}
+.menu-mobile{ position:absolute; left:0; top:93px;bottom:0; width:100%; background:rgba(0,0,0,0.6); border-top:1px solid #f1f1f1; padding-bottom:20px; z-index:1100;font-size: 1.3em;}
+.menu-mobile a{ display:block; color: #727171; border-bottom:1px solid #f1f1f1; padding:10px 30px;}
+.menu-mobile > ul > li.on{color:#fff;}
+.menu-mobile > ul > li.on>a{color:#fff;background:#086978;}
+.menu-mobile > ul{ background:#fff;width:90%;}
+.menu-mobile > ul > li > a.on{ font-weight:bold;}
+.menu-mobile > ul > li > a.on span{ padding-right:20px;}
+.menu-mobile ul ul a{ padding-left:60px; }
+.menu-mobile > ul .submenu{ display:none;height:auto;background:none;position:static; left:0; top:0; width:100%; }
+.menu > ul > li.news .submenu li{ margin-left: 734px;}
+
+
+/*底部*/
+.footer{background:#356777;}
+.footer .link,.footer .hotline{ text-align:center;color:#618895; padding-top:45px;}
+.footer .link a,.footer .hotline a{color:#fff; font-size:1.4em; padding:0 20px;}
+.footer .link a:hover{color:#fbd150;}
+.footer .copyright{line-height:57px; color:#fff; background:#2a525f; opacity:0.7;font-size:12px;}
+.footer .copyright p,.footer .link,.footer .hotline{max-width:999px; margin:0 auto; overflow:hidden;}
+.footer .copyright p span{ display:block; float:right; padding:0 10px;}
+.footer .copyright p span.cr{ float:left;}
+.footer .hotline{ padding:3px 0; margin:40px auto;}
+.footer .hotline a.apple{ border:none;}
+
+
+.qrcodeCon{width:61px; height:222px; position:fixed; top:50%;right:0; margin-top:-111px; background:url(../images/icon_right.png) 0 0 no-repeat; z-index:9;}
+.qrcodeCon span{ width:100%; height:61px; display:block; margin-bottom:20px; cursor:pointer;}
+.qrcodePic{width:422px; height:248px; border-top:4px solid #2e1f1c; position:fixed; left:50%;top:50%; margin:-124px 0 0 -211px; background:#fff; z-index:9; text-align:center; display:none;}
+.qrcodePic p{font-size:18px; color:#000; line-height:60px;}
+.qrcodePic .close{ position:absolute;top:2px;right:2px; display:block;width:20px; height:20px;font-size:20px;}
+
+@media only screen and (max-width: 1024px)
+{
+	.menu > ul .submenu{top:120px;}
+	.menu > ul > li.news .submenu li{ margin-left: 0;}
+	
+	
+}
+
+@media only screen and (max-width: 1000px)
+{
+
+}
+
+@media only screen and (max-width: 860px)
+{
+
+
+}
+
+@media only screen and (max-width: 768px)
+{
+
+}
+
+@media only screen and (max-width: 600px)
+{
+	.footer .link a{font-size:1.2em;}
+	.footer .link{padding-top:20px;}
+	.footer .hotline{ margin:20px auto;}
+	.footer .copyright{ line-height:30px;}
+	.footer .copyright p span.icp{width:100%;}
+	.footer .hotline span{ display:block;width:100%; margin-top:10px;}
+	.qrcodeCon{ display:none;}
+	.header .hotline,.menu{ display:none;}
+	.header .logo{ margin-left:30%;}
+	.menu-mobile,.link-mobile{ display:block;}
+}

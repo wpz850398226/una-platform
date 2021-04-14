@@ -1,0 +1,100 @@
+#连接数据库参数
+server:
+  port: 80
+  tomcat:
+    max-threads: 1000
+    accept-count: 1000
+    connection-timeout: 2000
+
+spring:
+  datasource:
+    username: root
+    password: kunli@888
+    #测试环境
+    url: jdbc:mysql://127.0.0.1:3306/una_duohui?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    #druid 数据源专有配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+
+    #配置监控统计拦截的filter,stat:监控统计，log4j：日志记录，wall：防御sql注入
+    #
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  thymeleaf:
+    cache: false  #关闭thymeleaf缓存
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password: kunli@888
+    ssl: false
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+#自定义日期格式化
+#  mvc:
+#    date-format:
+mybatis:
+  basepackage: cn.kunli.una.mapper
+  type-aliases-package: cn.kunli.una.pojo
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true    #开启驼峰映射
+    call-setters-on-nulls: true
+  type-handlers-package: cn.kunli.una.handler
+
+logging:
+  level:
+    cn.kunli.una.mapper: debug
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+mapper:
+  not-empty: true #通用mapper设置selective中的！=''
+
+http:
+  maxTotal: 100  #最大连接数
+  defaultMaxPerRoute: 20  #并发数
+  connectTimeout: 2000  #创建连接的最长时间
+  connectionRequestTimeout: 5000  #从连接池中获取到连接的最长时间
+  socketTimeout: 10000  #数据传输的最长时间
+  staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
+
+
+
+upload:
+  file:
+    path: D:\\una\\fileUpload\\ #  上传基础路径
+
+token:
+  expire:
+    seconds: 14400
+  jwtSecret: Ponzio-Una
+
+
+

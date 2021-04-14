@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<title>多汇供应链管理有限公司</title>
+<meta name="keywords" content="多汇供应链管理有限公司">
+<meta name="description" content="多汇供应链管理有限公司">
+<link th:href="@{/duohui/gongqiu/css/base1.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/gongqiu/css/main_001.css}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" th:href="@{/duohui/gongqiu/css/iconfont.css}">
+<script th:src="@{/duohui/gongqiu/js/jquery-1.js}" type="text/javascript"></script>
+<script th:src="@{/duohui/gongqiu/js/public.js}" type="text/javascript"></script>
+<script type="text/javascript">        var _curWeb = "news";</script>
+<!--下面是大图，上面是导航-->
+</head>
+<body>
+<div class="header ">
+  <div class="header_top">
+    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
+      <div class=" right  top" >
+        <ul class="duohui_menu fr font-f">
+          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/gongqiu/images/shoucang.jpg}" /></a></span></li>
+          <li> <a class="bgt" href="gouwuche.html">购物车</a>
+            <ul>
+              <li><a  href="#">已加入购物车</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">我的业务体系</a>
+            <ul>
+              <li><a  href="#">信息平台</a></li>
+              <li><a href="#">产品平台</a></li>
+              <li><a  href="#">服务平台</a></li>
+              <li><a href="#">招投标平台</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="project.html">客服中心</a>
+            <ul>
+              <li><a  href="#">新手入门</a></li>
+              <li><a href="#">找回密码</a></li>
+              <li><a  href="#">注销店铺</a></li>
+              <li><a href="#">联系客服</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">会员中心</a>
+            <ul>
+              <li><a  href="#">会员中心</a></li>
+              <li><a href="#">我的资料</a></li>
+              <li><a href="#">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
+    <h1 class="logo fl"><a href="index.html" target="_blank"><img th:src="@{/duohui/gongqiu/images/logo.jpg}" title="多汇供应"  /></a> </h1>
+    <div class="fr fabu"><a class="" href="mffbxx.html">发布产品信息</a></div>
+    <div class="fl area ml10"> <img th:src="@{/duohui/gongqiu/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
+    <div class="sousuo fr mr30  ml10" >
+      <form>
+        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
+        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
+      </form>
+    </div>
+  </div>
+  <div class=" navbg clear clearfix">
+    <nav  id="menu" class="menu"> <em class="fl"><img th:src="@{/duohui/gongqiu/images/lanmu.jpg}" class="mr10">行业分类</em>
+      <ul>
+        <li><a  href="index.html"> 首页 </a></li>
+        <li><a href="engineering.html"> 最新供应</a> </li>
+        <li><a href="team.html"> 最新需求</a></li>
+        <li><a href="special.html"> 最新入驻企业</a></li>
+        <li><a href="service.html"> 帮助中心 </a></li>
+        <li><a href="equipment.html">联系我们</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<div class="clearBoth"></div>
+<script type="text/javascript"><!--分类-->
+        $(document).ready(function () {
+            $(".topbar .menu").hover(function () {
+                $(".topbar li").removeClass("hover");
+                $(this).addClass("hover");
+            },
+		function () {
+		    $(this).removeClass("hover");
+		}
+	);
+            $(".brand_cat #bc1,.brand_cat #bc2,.brand_cat #bc3,.brand_cat #bc4").mouseover(function () {
+                $(".brand_cat li").removeClass("on");
+                $(this).addClass("on");
+                $(".ulcut").hide();
+                $("#show" + $(this).attr('id')).show();
+            });
+            $(".cat_show dl").hover(function () {
+                $(this).addClass("show_on");
+                $(this).find(".show_more").show();
+            },
+	function () {
+	    $(this).removeClass("show_on");
+	    $(this).find(".show_more").hide();
+	});
+            $(function () {
+                var _wrap = $(".bom_top ul");
+                var _interval = 2000;
+                var _moving;
+                _wrap.hover(function () {
+                    clearInterval(_moving);
+                }, function () {
+                    _moving = setInterval(function () {
+                        var _field = _wrap.find('li:first');
+                        var _h = _field.height();
+                        _field.animate({ marginTop: -_h + 'px' }, 600, function () {
+                            _field.css('marginTop', 0).appendTo(_wrap);
+                        })
+                    }, _interval)
+                }).trigger('mouseleave');
+            });
+            $(function () {
+                var sWidth = $(".imgplayer").width();
+                var len = $(".imgplayer ul li").length;
+                var index = 0;
+                var picTimer;
+
+                var btn = "<div class='btnBg'></div><div class='btn'>";
+                for (var i = 0; i < len; i++) {
+                    btn += "<span>" + (i + 1) + "</span>";
+                }
+                btn += "</div>"
+                $(".imgplayer").append(btn);
+                $(".imgplayer .btnBg").css("opacity", 0.5);
+
+                $(".imgplayer .btn span").mouseenter(function () {
+                    index = $(".imgplayer .btn span").index(this);
+                    showPics(index);
+                }).eq(0).trigger("mouseenter");
+
+                $(".imgplayer ul").css("width", sWidth * (len + 1));
+
+                $(".imgplayer ul li div").hover(function () {
+                    $(this).siblings().css("opacity", 0.7);
+                }, function () {
+                    $(".imgplayer ul li div").css("opacity", 1);
+                });
+
+                $(".imgplayer").hover(function () {
+                    clearInterval(picTimer);
+                }, function () {
+                    picTimer = setInterval(function () {
+                        if (index == len) {
+                            showFirPic();
+                            index = 0;
+                        } else {
+                            showPics(index);
+                        }
+                        index++;
+                    }, 3000);
+                }).trigger("mouseleave");
+
+                function showPics(index) {
+                    var nowLeft = -index * sWidth;
+                    $(".imgplayer ul").stop(true, false).animate({ "left": nowLeft }, 500);
+                    $(".imgplayer .btn span").removeClass("on").eq(index).addClass("on");
+                }
+
+                function showFirPic() {
+                    $(".imgplayer ul").append($(".imgplayer ul li:first").clone());
+                    var nowLeft = -len * sWidth;
+                    $(".imgplayer ul").stop(true, false).animate({ "left": nowLeft }, 500, function () {
+
+                        $(".imgplayer ul").css("left", "0");
+                        $(".imgplayer ul li:last").remove();
+                    });
+                    $(".imgplayer .btn span").removeClass("on").eq(0).addClass("on");
+                }
+            });
+        });
+    </script>
+<div class="w1200">
+  <script type="text/javascript" src="script/global.js}"></script>
+  <script type="text/javascript" th:src="@{/duohui/gongqiu/js/jquery.min.js}"></script>
+  <div class="nav_bom fl" id="selectBrand">
+    <div class="cat_show lanmu-list" id="seleAttr" >
+      <dl>
+        <dd class="biao"><a href="">快消品</a></dd>
+        <div class="show_more" style="display: none;">
+          <div class="show_more_l">
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a></div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </dl>
+      <dl>
+        <dd class="biao"><a href="">轻工业</a></dd>
+        <div class="show_more" style="display: none;">
+          <div class="show_more_l">
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a></div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </dl>
+      <dl>
+        <dd class="biao"><a href="">重工业</a></dd>
+        <div class="show_more" style="display: none;">
+          <div class="show_more_l">
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a></div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </dl>
+      <dl>
+        <dd class="biao"><a href="">原料</a></dd>
+        <div class="show_more" style="display: none;">
+          <div class="show_more_l">
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a></div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </dl>
+      <dl>
+        <dd class="biao"><a href="">加工厂</a></dd>
+        <div class="show_more" style="display: none;">
+          <div class="show_more_l">
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a></div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </dl>
+      <dl>
+        <dd class="biao"><a href="">商贸类</a></dd>
+        <div class="show_more" style="display: none;">
+          <div class="show_more_l">
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
+            <div class="title"> <a href="">二级分类</a></div>
+            <div class="content"><a href="">三级分类</a></div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </dl>
+      <style>
+.listmore{display:block;text-align:center;height:40px;width:160px;border-top:0; margin-top:20px; font-weight:600;}
+</style>
+      <a class="listmore" style="display:none;" href="javascript:;">查看更多 ↓</a> </div>
+  </div>
+  <script type="text/javascript">
+    var LanMu = $(".lanmu-list");
+    var lanMuSun = LanMu.children('dl');
+    if((lanMuSun.size()) > 10){
+        LanMu.children("dl:gt(8)").hide();
+        $(".listmore").show();
+    }
+    $(".listmore").bind("click", function(){
+       if(!$(".listmore").hasClass('ListMoreOn')){
+           $(".listmore").addClass('ListMoreOn');
+           LanMu.children("dl:gt(8)").slideDown();
+            $(".listmore").html("折叠栏目 ↑")
+       }else{
+            $(".listmore").removeClass('ListMoreOn');
+            LanMu.children("dl:gt(8)").slideUp();
+            $(".listmore").html("查看更多 ↓");
+
+       }
+    })
+</script>
+  <div class="denglu w220 fr">
+    <div class="huiyuan">
+      <div id="mls-member" class="login-wrap">
+        <div class="user-login-detail">
+          <div class="user-info-bd js-login-unfinish">
+            <div class="uib-wrab"> <em class="uib-amount" id="purchaseRequire">7722</em> <span class="uib-tit">新增采购需求</span> </div>
+            <div class="uib-wrab"> <em class="uib-amount" id="supplerInfo">16035</em> <span class="uib-tit">新增供应信息</span> </div>
+          </div>
+          <div class="user-info-hd js-login-unfinish">
+            <div class="uih-wrap"> <a class="uih-btn uih-log js-login" target="_blank" rel="nofollow" href="">登录</a> <a class="uih-btn uih-reg js-register" target="_blank" rel="nofollow" href="">注册</a> </div>
+          </div>
+        </div>
+      </div>
+      <div id="title1" >
+        <ul>
+          <li id="m1" class="title1_cur">
+            <h2 ><a onmouseover="javascript:gopage1(1)">我是买家</a></h2>
+          </li>
+          <li class="" id="m2">
+            <h2><a onmouseover="javascript:gopage1(2)">我是卖家</a></h2>
+          </li>
+        </ul>
+      </div>
+      <div class="clear"></div>
+      <div id="c1">
+        <div class="user-info-svr">
+          <div class="js-user-in" > <a class="uis-icon" href="/static" target="_blank" rel="nofollow"> <i class="iconfont icon-fabuxuqiu"></i><em>发布需求</em> </a> <a class="uis-icon" href="o" target="_blank" rel="nofollow"> <i class="iconfont icon-wodexuqiu"></i><em>我的产品</em> </a> <a class="uis-icon" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-fuwu"></i><em>我的服务</em> </a> <a class="uis-icon js-mobile-qrcode" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-icon_tuiguang"></i><em>我要推广</em> </a> <a class="uis-icon" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-shenqing"></i><em>会员申请</em> </a> <a class="uis-icon js-jxcUrls" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-gerenzhongxin"></i><em>会员中心</em> </a> </div>
+        </div>
+      </div>
+      <div id="c2" style="display: none;">
+        <div class="user-info-svr">
+          <div class="js-user-in" > <a class="uis-icon" href="/static" target="_blank" rel="nofollow"> <i class="iconfont icon-chanpinfabu"></i><em>发布产品</em> </a> <a class="uis-icon" href="o" target="_blank" rel="nofollow"> <i class="iconfont icon-fuwu"></i><em>发布服务</em> </a> <a class="uis-icon" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-yonghuzhongxin-woyouxuqiu"></i><em>我的需求</em> </a> <a class="uis-icon js-mobile-qrcode" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-icon_tuiguang"></i><em>我要推广</em> </a> <a class="uis-icon" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-shenqing"></i><em>会员申请</em> </a> <a class="uis-icon js-jxcUrls" href="" target="_blank" rel="nofollow"> <i class="iconfont icon-gerenzhongxin"></i><em>会员中心</em> </a> </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+<!--
+//切换到相关页
+function gopage1(n)
+{
+  var tag1 = document.getElementById("title1").getElementsByTagName("li");
+  var taglength = tag1.length;
+
+  for (i=1;i<=taglength;i++)
+  {
+    document.getElementById("m"+i).className="";
+    document.getElementById("c"+i).style.display='none';
+  }
+    document.getElementById("m"+n).className="title1_cur";
+    document.getElementById("c"+n).style.display='';
+}
+//-->
+</script>
+      <div class="clear"></div>
+      <div class="clear clearfix wzgg"> <em>[网站公告]</em>
+        <ul>
+          <li> <a href="#">网站公告网站公告</a></li>
+          <li> <a href="#">网站公告</a></li>
+          <li> <a href="#">网站公告</a></li>
+          <li> <a href="#">网站公告</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slideshow -->
+
+<div id="pz_m_1" class=" section"  style="height:460px; overflow:hidden;">
+  <script type="text/javascript" th:src="@{/duohui/gongqiu/js/jquery-1.js}"></script>
+  <script type="text/javascript" th:src="@{/duohui/gongqiu/js/responsiveslides.js}"></script>
+  <script type="text/javascript">
+$(function () {
+	// Slideshow
+	$("#slider").responsiveSlides({
+		auto: true,
+		pager: false,
+		nav: true,
+		speed: 500,
+		timeout:4000,
+		pager: true,
+		pauseControls: true,
+		namespace: "callbacks"
+	});
+});
+</script>
+  <div class="callbacks_container">
+    <ul class="rslides callbacks callbacks1" id="slider">
+      <li><a ><img th:src="@{/duohui/gongqiu/images/banner.jpg}" alt=""></a></li>
+      <li><a ><img th:src="@{/duohui/gongqiu/images/banner.jpg}" alt=""></a></li>
+      <li><a ><img th:src="@{/duohui/gongqiu/images/banner.jpg}" alt=""></a></li>
+    </ul>
+  </div>
+</div>
+<div class="huibg">
+  <div class="clear w1200" style="color:#000; margin-top:15px;">
+    <ul class="scroll_ul">
+      <li> <a href="" target="_blank" >
+        <div class="txt">
+          <p class="t">广告标题</p>
+          <p class="m">广告描述</p>
+        </div>
+        <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
+      <li> <a href="" target="_blank" >
+        <div class="txt">
+          <p class="t">广告标题</p>
+          <p class="m">广告描述</p>
+        </div>
+        <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
+      <li> <a href="" target="_blank" >
+        <div class="txt">
+          <p class="t">广告标题</p>
+          <p class="m">广告描述</p>
+        </div>
+        <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
+      <li> <a href="" target="_blank" >
+        <div class="txt">
+          <p class="t">广告标题</p>
+          <p class="m">广告描述</p>
+        </div>
+        <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
+      <li> <a href="" target="_blank" >
+        <div class="txt">
+          <p class="t">广告标题</p>
+          <p class="m">广告描述</p>
+        </div>
+        <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
+      <li> <a href="" target="_blank" >
+        <div class="txt">
+          <p class="t">广告标题</p>
+          <p class="m">广告描述</p>
+        </div>
+        <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
+    </ul>
+  </div>
+  <div class="w1200 "> <a href=""><img src="images/1_39.jpg}" height="96" width="1200"></a> </div>
+  <div class=" w1200 clear clearfix">
+    <div class="tuijian fl">
+      <h2><em class="fr "><a href="#">查看全部></a></em><a href="#">精品推荐</a></h2>
+      <ul class="mt20">
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+      </ul>
+    </div>
+    <div class="tuijian fr">
+      <h2><em  class="fr "><a href="#">查看全部></a></em><a href="#">最新推荐</a></h2>
+      <ul class="mt20">
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+        <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="clear huibgg">
+  <div class="clear w1200 product mt20">
+    <h2><em class="mr10">1F</em><a href="#">物流业</a></h2>
+    <div class="clear product-nr clearfix">
+      <div class="fl  w340 ">
+        <div class=" product-l"> <a href="#">
+          <h3 >推荐商家</h3>
+          <img th:src="@{/duohui/gongqiu/images/tu3.png}"> </a>
+          <div class="profen clear clearfix"> <a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a> </div>
+        </div>
+      </div>
+      <div class="fr w840 product-r">
+        <div class=" baibg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+         <div class=" baibg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+         <div class=" baibg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+        <div class=" baibg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+             <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="w1200 clear clearfix guanggao " style=" background:url(../../../static/duohui/gongqiu/images/gg3.jpg);"></div>
+</div>
+<!--盖楼-->
+<div class="clear">
+  <div class="clear w1200 product mt20">
+    <h2><em class="mr10">2F</em><a href="#">设备业</a></h2>
+    <div class="clear product-nr clearfix">
+      <div class="fl  w340 ">
+        <div class=" product-l"> <a href="#">
+          <h3 >推荐商家</h3>
+          <img th:src="@{/duohui/gongqiu/images/tu3.png}"> </a>
+          <div class="profen clear clearfix"> <a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a><a href="#">小分类</a> </div>
+        </div>
+      </div>
+      <div class="fr w840 product-r">
+        <div class=" huibgg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+         <div class=" huibgg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+         <div class=" huibgg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+        <div class=" huibgg clear clearfix ">
+          <div class="tjhy-title1 clear clearfix">
+             <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+          </div>
+          <dl>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <div class="w1200 clear clearfix guanggao " style=" background:url(../../../static/duohui/gongqiu/images/gg3.jpg);"></div>
+
+</div>
+
+<!--盖楼-->
+
+<div class=" clear clearfix mt20"></div>
+<div class=" clear clearfix mt20" style="height:98px; background:#e0e0e0;">
+  <div class="w1200 clear clearfix"> <a href="#"><img th:src="@{/duohui/gongqiu/images/1_91.jpg}" width="393" height="98"></a><a href="#"><img th:src="@{/duohui/gongqiu/images/1_92.jpg}" width="393" height="98"></a><a href="#"><img th:src="@{/duohui/gongqiu/images/1_93.jpg}" width="393" height="98"></a> </div>
+</div>
+<div class=" clear clearfix mt20"></div>
+<div class="w1200" style=" padding-bottom:30px;">
+  <div class="tjhy-title">
+    <h2 class="fl" style="padding-bottom:12px;"><a class="mr30" href="#">合作单位</a></h2>
+  </div>
+  <div class="clear clearfix mt20"></div>
+  <div class="m_inttd w1200">
+    <div class="m_intl"><a ><img th:src="@{/duohui/gongqiu/images/intl.png}"></a></div>
+    <div class="m_intr"><a><img th:src="@{/duohui/gongqiu/images/intr.png}"></a></div>
+    <div class="m_intm" style="visibility: visible; overflow: hidden; position: relative; z-index: 2; left: 0px; width: 1104px;">
+      <ul id="count1">
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+        <li >
+          <div class="playerdetail">
+            <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/gongqiu/images/chanpin.jpg}"></a></div>
+            <div class="teanames">沐阳太阳能</div>
+            <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a> </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script th:src="@{/duohui/gongqiu/js/flickerplate.min.js}"></script>
+  <script type="text/javascript" th:src="@{/duohui/gongqiu/js/jcarousellite_1.0.1.js}"></script>
+  <script type="text/javascript" th:src="@{/duohui/gongqiu/js/js.js}"></script>
+</div>
+<div class=" clear clearfix mt20"></div>
+<div class="w1200" style=" padding-bottom:30px;">
+  <div class="tjhy-title">
+    <h2 class="fl" style="padding-bottom:12px;"><a class="mr30" href="#">友情链接</a></h2>
+  </div>
+  <div class="clear clearfix mt20"></div>
+  <div class="links clear clearfix">
+    <ul>
+      <li><a href="" title="国家企业信用信息公示" target="_blank">国家企业信用信息公示</a></li>
+      <li><a href="" title="亚马逊分类目录" target="_blank">亚马逊分类目录</a></li>
+      <li><a href="" title="站长分类目录" target="_blank">站长分类目录</a></li>
+      <li><a href="" title="奥菲特能源" target="_blank">奥菲特能源</a></li>
+    </ul>
+  </div>
+</div>
+<div class="footer clear clearfix">
+  <div class="w1200">
+    <div class=" W950 clear clearfix" style="margin:0 auto;">
+      <div class="fl list w210">
+        <dl>
+          <dt>新手上路</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">会员注册</a></dd>
+          <dd><a href="">会员登录</a></dd>
+          <dd><a href="">找回密码</a></dd>
+          <dd><a href="">发布信息</a></dd>
+          <dd><a href="">查找信息</a></dd>
+        </dl>
+      </div>
+      <div class="fl list w210 ml23">
+        <dl>
+          <dt>会员服务</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">工程年费会员</a></dd>
+          <dd><a href="">认证队伍</a></dd>
+          <dd><a href="">认证机械商</a></dd>
+          <dd><a href="">主材商家</a></dd>
+          <dd><a href="">广告服务</a></dd>
+        </dl>
+      </div>
+      <div class="fl list w210  ml23">
+        <dl>
+          <dt>认证服务</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">手机认证服务</a></dd>
+          <dd><a href="">实名认证服务</a></dd>
+          <dd><a href="">公司认证服务</a></dd>
+          <dd><a href="">现场认证服务</a></dd>
+        </dl>
+      </div>
+      <div class="fl list w210  ml23">
+        <dl>
+          <dt>支付方式</dt>
+          <div class="clear clearfix"></div>
+          <dd><a href="">积分</a></dd>
+          <dd><a href="">积分充值</a></dd>
+          <dd><a href="">银行汇款积分</a></dd>
+          <dd><a href="">提现须知</a></dd>
+        </dl>
+      </div>
+    </div>
+    <div class="w1200 clear clearfix" style="height:1px; background:#e2e2e2; margin:30px;"></div>
+    <div class="clear clearfix footerdibu" style="padding-bottom:30px;">
+      <div class="mt20 clear clearfix"><a href="about.html">关于我们</a>|<a href="contact.html">联系方式</a>|<a href="contact.html">免责条款</a>|<a href="contact.html">网站地图</a>|<a href="contact.html">网站留言</a>|<a href="contact.html">广告服务</a></div>
+      <p>备案号   全国服务热线:400-635-1907    商务邮箱:yewubu@dhgyl.com</p>
+      <p>&copy;2017-2019 SYSTEM All Rights Reserved 免责声明：本站信息均为网友自行发布，交易所带来的风险本站概不负责！</p>
+      <p class="mt30" ><img th:src="@{/duohui/gongqiu/images/1_121.jpg}"></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

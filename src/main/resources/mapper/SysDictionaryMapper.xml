@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysDictionaryMapper">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysDictionary">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysDictionary"
+                    select="cn.kunli.una.mapper.SysDictionaryMapper.selectByParentIdCollection" property="children" />
+    </resultMap>
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+        ,rootDictionary.name as rootName
+        ,parentDictionary.name as parentName
+        ,grandDictionary.name as grandName
+        from sys_dictionary as record
+        LEFT JOIN sys_dictionary as rootDictionary on record.root_id = rootDictionary.id
+        LEFT JOIN sys_dictionary as parentDictionary on record.parent_id = parentDictionary.id
+        LEFT JOIN sys_dictionary as grandDictionary on parentDictionary.parent_id = grandDictionary.id
+        <where>
+            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',rootDictionary.name,record.name,parentDictionary.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.type != null and record.type !=''">
+                and FIND_IN_SET(record.type,#{record.type})
+            </if>
+            <if test="record.rootName != null and record.rootName !=''">
+                and rootDictionary.name = #{record.rootName}
+            </if>
+            <if test="record.parentName != null and record.parentName !=''">
+                and parentDictionary.name = #{record.parentName}
+            </if>
+            <if test="record.grandName != null and record.grandName !=''">
+                and grandDictionary.name = #{record.grandName}
+            </if>
+            <if test="record.brotherName != null and record.brotherName !=''">
+                and parentDictionary.name = (SELECT parent.name
+                FROM sys_dictionary as sysDictionary
+                LEFT JOIN sys_dictionary as parent on parent.id = sysDictionary.parent_id
+                where sysDictionary.name = #{record.brotherName})
+            </if>
+            <if test="record.subName != null and record.subName !=''">
+                and parentDictionary.name = #{record.subName}
+            </if>
+            <if test="record.rootId != null and record.rootId != ''">
+                and record.root_id = #{record.rootId}
+            </if>
+            <if test="record.code != null and record.code !=''">
+                and record.code = #{record.code}
+            </if>
+            <if test="record.value != null and record.value !=''">
+                and record.value = #{record.value}
+            </if>
+            <if test="record.style != null and record.style !=''">
+                and record.style = #{record.style}
+            </if>
+            <if test="record.parentId != null">
+                and record.parent_id = #{record.parentId}
+            </if>
+            <if test="record.parentCode != null and record.parentCode != ''">
+                and FIND_IN_SET(parentDictionary.code,#{record.parentCode})
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+    </select>
+    <select id="selectByIdAssociation" resultType="cn.kunli.una.pojo.system.SysDictionary">
+ 	select record.*
+ 	,rootDictionary.name as rootName
+ 	,parentDictionary.name as parentName
+ 	,grandDictionary.name as grandName
+ 	from sys_dictionary as record
+ 	LEFT JOIN sys_dictionary as rootDictionary on record.root_id = rootDictionary.id
+ 	LEFT JOIN sys_dictionary as parentDictionary on record.parent_id = parentDictionary.id
+ 	LEFT JOIN sys_dictionary as grandDictionary on parentDictionary.parent_id = grandDictionary.id
+   	where record.id = #{id}
+  </select>
+    <select id="selectByIdsCollection" resultMap="BaseResultMap">
+    select record.*
+    ,rootDictionary.name as rootName
+
+ 	,parentDictionary.name as parentName
+ 	,grandDictionary.name as grandName
+ 	from sys_dictionary as record
+ 	LEFT JOIN sys_dictionary as rootDictionary on record.root_id = rootDictionary.id
+ 	LEFT JOIN sys_dictionary as parentDictionary on record.parent_id = parentDictionary.id
+ 	LEFT JOIN sys_dictionary as grandDictionary on parentDictionary.parent_id = grandDictionary.id
+
+    where record.is_delete = 0 and FIND_IN_SET(record.id,#{ids})
+  </select>
+    <select id="selectByParentIdCollection" resultMap="BaseResultMap">
+ 	select *
+ 	from sys_dictionary
+   	where is_delete = 0 and parent_id = #{parentId}
+   	order by sequence
+  </select>
+    <select id="selectValueByIdsAssociation" resultType="String">
+ 	    select group_concat(value SEPARATOR '|')
+ 	    from sys_dictionary
+ 	    where is_delete = 0 and FIND_IN_SET(id,#{ids})
+  </select>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysRolePermissionMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysRolePermission" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--条件查询-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+
+        from sys_role_permission as record
+
+        left join sys_permission sysPermission on record.permission_id = sysPermission.id
+        left join sys_dictionary sd on sysPermission.type_dcode = sd.id
+        <where>
+            <if test="record != null">
+                <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+                <if test="record.keyword != null and record.keyword !=''">
+                    and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+                </if>
+                <if test="record.roleId != null and record.roleId != ''">
+                    and record.role_id = #{record.roleId}
+                </if>
+                <if test="record.entityId != null and record.entityId != ''">
+                    and sysPermission.entity_id = #{record.entityId}
+                </if>
+                <if test="record.permissionTypeDcode != null and record.permissionTypeDcode != ''">
+                    and sd.code = #{record.permissionTypeDcode}
+                </if>
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+    </select>
+</mapper>

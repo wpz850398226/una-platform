@@ -1,0 +1,503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<title>多汇供应链管理有限公司</title>
+<meta name="keywords" content="多汇供应链管理有限公司" />
+<meta name="description" content="多汇供应链管理有限公司" />
+<link th:href="@{/duohui/guanwang/css/base1.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/guanwang/css/main_001.css}" rel="stylesheet" type="text/css">
+<script type="text/javascript" th:src="@{/duohui/guanwang/js/jquery-1.11.3.min.js}"></script>
+<script type="text/javascript">
+
+$(function(){
+var myNav = document.getElementById("menu").getElementsByTagName("a");
+for(var i=0;i<myNav.length;i++){
+var links = myNav[i].getAttribute("href");
+var myURL = document.location.href;
+if(myURL.indexOf(links) != -1){
+
+myNav[i].className="on";
+myNav[i].parentNode.parentNode.previousElementSibling.className="on";
+
+}
+}
+			});
+</script>
+</head>
+<body>
+<div id="wrapper"  >
+  <div class="header_top">
+    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
+      <div class=" right  top" >
+        <ul class="duohui_menu fr font-f">
+          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/guanwang/images/shoucang.jpg}" /></a></span></li>
+          <li> <a class="bgt" href="gouwuche.html">购物车</a>
+            <ul>
+              <li><a  href="#">已加入购物车</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">我的业务体系</a>
+            <ul>
+              <li><a  href="#">信息平台</a></li>
+              <li><a href="#">产品平台</a></li>
+              <li><a  href="#">服务平台</a></li>
+              <li><a href="#">招投标平台</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="project.html">客服中心</a>
+            <ul>
+              <li><a  href="#">新手入门</a></li>
+              <li><a href="#">找回密码</a></li>
+              <li><a  href="#">注销店铺</a></li>
+              <li><a href="#">联系客服</a></li>
+            </ul>
+          </li>
+          <li> <a class="bgt" href="#">会员中心</a>
+            <ul>
+              <li><a  href="#">会员中心</a></li>
+              <li><a href="#">我的资料</a></li>
+              <li><a href="#">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="header">
+    <div class="w1200 clearBoth clearfix"> <a class="logo left" href="index.html"><img th:src="@{/duohui/guanwang/images/logo.jpg}" border="0"></a>
+      <!--menu start-->
+      <ul class="menu right" id="menu"> <li class="on"> <a class="on"  href="index.html">首页</a> </li>
+        <li class="on"> <a class=" " href="javascript:void(0)">关于我们</a>
+          <ul class="submenu">
+            <li><a href="about.html">公司简介</a></li>
+            <li><a href="about.html">企业文化</a></li>
+            <li><a href="about.html">发展战略</a></li>
+            <li><a href="about.html">组织架构</a></li>
+          </ul>
+        <li class="on"> <a class="" href="javascript:void(0)">业务体系</a>
+          <ul class="submenu">
+            <li><a href="show.html">信息平台</a></li>
+            <li><a href="show.html">产品平台</a></li>
+            <li><a href="show.html">服务平台</a></li>
+            <li><a href="show.html">招投标平台</a></li>
+          </ul>
+        </li>
+        <li class="on"> <a class=""  href="javascript:void(0)">资讯中心</a>
+          <ul class="submenu">
+            <li><a href="news.html">政策法规</a></li>
+            <li><a href="news.html">行业动态</a></li>
+            <li><a href="news.html">公司公告</a></li>
+          </ul>
+        </li>
+        <li class="on"> <a class=""  href="contact.html">联系我们</a> </li>
+        <li class="on"> <a class=""  href=".html">办公入口</a> </li>
+      </ul>
+    </div>
+  </div>
+  <div class="banner" th:style="'background:url(/duohui/guanwang/images/banner-ny.jpg)'"></div>
+  <div class="breadcrumbs">
+    <p class="w1200"><em class=" left"></em><span class="ml10">您当前的位置  : <a href="index.html">首页</a>><a href="newslist.html">品质保障</a></span></p>
+  </div>
+
+
+  <div   class="box"  style="margin:30px auto; width:880px; height:auto; border:1px solid #e5e5e5;">
+  <form id="fMain" method="post" onSubmit="return false;">
+    <style>
+  .box .gtform {
+    font-size: 14px;
+    width: 720px;
+}
+  .box .gtform label {
+    padding-top: 1px;
+    text-align: right;
+    font-weight: normal;
+    width: 230px;
+    display: inline-block;
+}
+</style>
+
+<h2 style="font-size:30px; line-height:100px; text-align:center; border-bottom:2px solid #1844a7; width:80%; margin:0 auto 30px;">采购企业信息登记表</h2>
+    <div class="gtform ">
+
+      <li  class="clear clearfix">
+        <label class="fl" >一、企业名称 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="营业执照全称"  />
+        </em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >二、成立时间<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="注册时间或实际经营时限"  />
+        </em> </li>
+      <li  class="clear clearfix">
+        <label class="fl" >三、企业类型 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        生产加工型
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        贸易型</em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >四、年销售额<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="累计一年营业额"  />
+        </em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >五、毛利润率<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（  ） %  （   ）万"  />
+        </em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >六、采购货物<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="如实填写"  />
+        </em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >七、销售产品 *<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="如实填写"  />
+        </em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >八、库存产品名称 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="如实填写"  />
+        </em> </li>
+        <li  class="clear clearfix">
+        <label class="fl" >九、企业负债<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）万 公司名下负债"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >十、个人负债<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）万 法人、实际控制个人负责"  />
+        </em> </li>
+
+        <li  class="clear clearfix">
+        <label class="fl" >十一、企业资产（土地） <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+       <li  class="clear clearfix">
+        <label class="fl" >十二、个人资产 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        房产
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       其他
+         <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+       <li  class="clear clearfix">
+        <label class="fl" >十三、被执行人记录<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+         <li  class="clear clearfix">
+        <label class="fl" >十四、法人更换记录<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+         <li  class="clear clearfix">
+        <label class="fl" >十五、银行贷款 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+
+
+
+
+
+
+         <li  class="clear clearfix">
+        <label class="fl" >十六、银行贷款金额<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）万 无银行贷款可不填"  />
+        </em> </li>
+
+
+
+
+         <li  class="clear clearfix">
+        <label class="fl" >十七、小额贷款（等额本息） <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+
+
+         <li  class="clear clearfix">
+        <label class="fl" >十八、小额等额本息贷款金额<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）无小额等额本息贷款可不填"  />
+        </em> </li>
+
+         <li  class="clear clearfix">
+        <label class="fl" >十八、信用卡 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+         <li  class="clear clearfix">
+        <label class="fl" >十九、信用卡总授信额度<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）万 无信用卡欠款可不填"  />
+        </em> </li>
+
+          <li  class="clear clearfix">
+        <label class="fl" style="width:300px;" >二十、消费金融贷款（含银行信用卡分期）<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+           <li  class="clear clearfix">
+        <label class="fl" >二十一、消费金融贷款<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）笔 （   ）完 无消费金融贷款可不填"  />
+        </em> </li>
+
+
+
+
+
+        <li  class="clear clearfix">
+        <label class="fl"  style="width:300px;" >二十二、采购授信最高300万，是否满足需求<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有 初次50-100万
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li><li  class="clear clearfix">
+        <label class="fl" >二十三、征信逾期记录<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li><li  class="clear clearfix">
+        <label class="fl" >二十四、借贷纠纷<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li><li  class="clear clearfix">
+        <label class="fl" >二十五、合同纠纷<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li><li  class="clear clearfix">
+        <label class="fl" >二十六、是否接受商业承兑汇票<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+
+
+
+            <li  class="clear clearfix">
+        <label class="fl" style="width:250px;"  >二十七、对公流水（所有对公账户）<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）万"  />
+        </em> </li>
+
+
+         <li  class="clear clearfix">
+        <label class="fl" >二十八、法人对私流水（含配偶）<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="（   ）万"  />
+        </em> </li>
+
+
+        <li  class="clear clearfix">
+        <label class="fl"  style="width:350px;" >二十九、采购是否开票（采购货物是否有增值税发票）<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+        有
+        <input type="radio" name="uname" maxlength="64" style=" width:20px;" value="" />
+       无</em> </li>
+
+
+         <li  class="clear clearfix">
+        <label class="fl" >三十、货款结算周期<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="checkbox" name="uname" maxlength="64" style=" width:20px;" value="" />
+
+1-3月
+         <input type="checkbox" name="uname" maxlength="64" style=" width:20px;" value="" />
+
+3-6月
+
+         <input type="checkbox" name="uname" maxlength="64" style=" width:20px;" value="" />
+
+现结</em> </li>
+
+
+
+
+
+
+
+
+          <li  class="clear clearfix">
+        <label class="fl" style="font-weight:bold; font-size:16px; color:#1844a7; text-align:left;">三十一、上 游 采 购 商 列 表<i class=" line36  ml5 mr10 red"></i></label>
+       </li>
+
+           <li  class="clear clearfix">
+        <label class="fl" >采购商1 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+
+        <li  class="clear clearfix">
+        <label class="fl" >采购商2 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >采购商3 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >采购商4 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >采购商5 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+           <li  class="clear clearfix">
+        <label class="fl" style="font-weight:bold; font-size:16px; color:#1844a7;text-align:left;">三十二、下 游 销 售 商 列 表<i class=" line36  ml5 mr10 red"></i></label>
+       </li>
+
+           <li  class="clear clearfix">
+        <label class="fl" >销售商1 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+
+        <li  class="clear clearfix">
+        <label class="fl" >销售商2 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >销售商3 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >销售商4 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >销售商5 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="企业全称，交易金额"  />
+        </em> </li>
+      <li  class="clear clearfix">
+        <label class="fl" >姓名 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="请填写联系人姓名"  />
+        </em> </li>
+         <li  class="clear clearfix">
+        <label class="fl" >电话 <i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+        <input type="text" name="uname" maxlength="64" class="it" value="" placeholder="请填写联系人电话"  />
+        </em> </li>
+      <li>
+        <label class="fl"></label>
+        <em>
+        <input type="submit" value="提交" class="btn" />
+        </em> </li>
+
+    </div>
+  </form>
+</div>
+
+
+
+
+
+  <div class="footer clearBoth">
+    <div class="w1200">
+      <div class="foot-nav"> <a href="#">关于我们</a><a>|</a> <a href="#">供求信息</a> <a>|</a> <a href="#">产品商城</a> <a>|</a> <a href="#">招投标</a> <a>|</a> <a href="#">产品及服务</a> <a>|</a> <a href="#">公司动态</a> <a>|</a> <a href="#">联系我们</a> </div>
+      <div class="banquan "> 咨询热线：400-635-1907        企业邮箱：yewubu@dhgyl.com<br />
+        河北省石家庄市裕华区槐安东路鑫科国际广场C座1806室<br />
+        版权所有：多汇供应链管理有限公司<br />
+        备案号： 冀ICP备19032765号 </div>
+    </div>
+  </div>
+    <!--在线QQ的js -->
+  <div class="xuanfu">
+      <div class="xf_top">
+        <div class="xf_top_k rel" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin=1102425626&site=qq&menu=yes','_blank')"> <img th:src="@{/duohui/guanwang/images/xftb3.png}" height="54" width="54" class="xftb db auto abs trans_fast">
+          <div class="xf_top_k_nr abs">
+            <div class="xf_top_k1 ">
+              <div class="xf_topknrr abs xf_nr3">经理 <br />
+                40063501907<br />
+                <a href="http://wpa.qq.com/msgrd?v=3&uin=280767764&site=qq&menu=yes">在线咨询</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="xf_top_k rel" > <img th:src="@{/duohui/guanwang/images/xftb2.png}" height="54" width="54" class="xftb db auto abs trans_fast">
+          <div class="xf_top_k_nr abs">
+            <div class="xf_top_k1">
+              <div class="xf_topknrr abs xf_nr3"> <img th:src="@{/duohui/guanwang/images/weixin1.jpg}" /> <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="xf_top_k rel" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin=1102425626&site=qq&menu=yes','_blank')" > <img th:src="@{/duohui/guanwang/images/xftb5.png}" height="54" width="54" class="xftb db auto abs trans_fast">
+
+        </div>
+        <div class="xf_top_k rel"> <a href="#page1" class="fhtop"> <img th:src="@{/duohui/guanwang/images/xftb4.png}" height="54" width="54" class="xftb db auto abs trans_fast">
+          <!--<div class="xf_top_k_nr abs">
+        <div class="xf_top_k1">
+          <div class="xf_topknrr abs xf_nr1"> <span>返回顶部</span> </div>
+        </div>
+      </div>-->
+          </a> </div>
+      </div>
+      <div class="xf_bot abs">
+        <div>
+          <div class="abs trans_fast"></div>
+        </div>
+      </div>
+    </div>
+
+  <link rel="stylesheet" th:href="@{/duohui/guanwang/css/index.css}" type="text/css">
+  <script th:src="@{/duohui/guanwang/js/js2.js}"></script>
+    <!--在线QQ的js -->
+
+  <link rel="stylesheet"  th:href="@{/duohui/guanwang/css/animate.min.css}">
+  <script th:src="@{/duohui/guanwang/js/wow.min.js}"></script>
+  <script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+	new WOW().init();
+};
+</script>
+</div>
+</body>
+</html>
