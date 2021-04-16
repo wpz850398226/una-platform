@@ -3,7 +3,8 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysAccountMapper;
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class SysAccountService extends BaseService<SysAccountMapper, SysAccount> {
+public class SysAccountService extends BasicService<SysAccountMapper, SysAccount> {
 
     //校验格式
     public SysResult validation(SysAccount obj) {
@@ -34,7 +35,7 @@ public class SysAccountService extends BaseService<SysAccountMapper, SysAccount>
         }
 
         if (StringUtils.isNotBlank(obj.getUsername())) {
-            List<SysAccount> objList = this.select((SysAccount) new SysAccount().setUsername(obj.getUsername().trim()).setIsDelete(0));
+            List<SysAccount> objList = this.selectList(MapUtil.getMap("username",obj.getUsername().trim()));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());

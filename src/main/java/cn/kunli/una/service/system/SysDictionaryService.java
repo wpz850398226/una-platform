@@ -2,23 +2,18 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysDictionaryMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
-import cn.kunli.una.pojo.vo.SysParamMap;
-import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.BaseService;
-import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.redis.RedisUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
-public class SysDictionaryService extends BaseService<SysDictionaryMapper, SysDictionary> {
+public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysDictionary> {
 
     @Autowired
     RedisUtil redisUtil;
@@ -30,14 +25,9 @@ public class SysDictionaryService extends BaseService<SysDictionaryMapper, SysDi
      * @return
      */
     public List<SysDictionary> selectByLikeCode(String code) {
-        Example example = new Example(SysDictionary.class);
-        Example.Criteria criteria = example.createCriteria()
-                .andLike("code", code + "%")
-                .andEqualTo("isDelete", 0);
-        example.orderBy("sequence");
-        List<SysDictionary> sysDictionaries = this.mapper.selectByExample(example);
-
-        return sysDictionaries;
+        QueryWrapper<SysDictionary> wrapper = wrapperUtil.likeWrapper("code", code).orderByAsc("sequence");
+        List<SysDictionary> list = this.list(wrapper);
+        return list;
     }
 
 
@@ -52,7 +42,7 @@ public class SysDictionaryService extends BaseService<SysDictionaryMapper, SysDi
             Object o = redisUtil.get("SysDictionary:" + id);
             if (o != null) return o.toString();
         } else {
-            SysDictionary sysDictionary = this.mapper.selectByPrimaryKey(id);
+            SysDictionary sysDictionary = this.mapper.selectById(id);
             if (sysDictionary != null) return sysDictionary.getName();
         }
 
@@ -99,7 +89,7 @@ public class SysDictionaryService extends BaseService<SysDictionaryMapper, SysDi
     @Override
     public SysDictionary saveFormat(SysDictionary obj) {
         //如果父字典不是根目录，则新增字典根id与父字典保持一致
-        SysDictionary parentDictionary = this.selectByPrimaryKey(obj.getParentId());
+        SysDictionary parentDictionary = this.selectById(obj.getParentId());
         if (obj.getParentId().equals(0)) {
             obj.setRootId(0);
         } else {

@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.system.SysUser;
 
 /**
@@ -10,6 +10,6 @@ import cn.kunli.una.pojo.system.SysUser;
  * @since 2021-03-14 21:01:35
  */
 
-public interface SysUserMapper extends BaseMapper<SysUser> {
+public interface SysUserMapper extends BasicMapper<SysUser> {
 
 }

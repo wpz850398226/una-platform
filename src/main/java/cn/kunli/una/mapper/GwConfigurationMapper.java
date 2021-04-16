@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
 
 /**
@@ -9,5 +9,5 @@ import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
  * @author Ponzio
  * @since 2021-03-26 11:26:05
  */
-public interface GwConfigurationMapper extends BaseMapper<GwConfiguration> {
+public interface GwConfigurationMapper extends BasicMapper<GwConfiguration> {
 }

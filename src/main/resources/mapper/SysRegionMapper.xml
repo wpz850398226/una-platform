@@ -15,7 +15,7 @@
         LEFT JOIN sys_region as rootRecord on record.root_id = rootRecord.id
         LEFT JOIN sys_region as parentRecord on record.parent_id = parentRecord.id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',rootRecord.name,record.name,parentRecord.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
@@ -35,7 +35,7 @@
                 and record.level = #{record.level}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </sql>
 
     <!--实体类数据库字段-->

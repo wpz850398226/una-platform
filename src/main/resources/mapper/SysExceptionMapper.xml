@@ -13,12 +13,12 @@
         from sys_exception as record
 
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </sql>
 
     <!--实体类数据库字段-->

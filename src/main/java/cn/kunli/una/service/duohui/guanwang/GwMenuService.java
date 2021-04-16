@@ -2,7 +2,7 @@ package cn.kunli.una.service.duohui.guanwang;
 
 import cn.kunli.una.mapper.GwMenuMapper;
 import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,5 +12,5 @@ import org.springframework.stereotype.Service;
  * @since 2021-03-26 11:09:52
  */
 @Service
-public class GwMenuService extends BaseService<GwMenuMapper, GwMenu> {
+public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
 }

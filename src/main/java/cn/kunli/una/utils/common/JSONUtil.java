@@ -23,12 +23,12 @@ public class JSONUtil {
      * @return
      */
     public static <T> String beanToString(T value) {
-        Class<?> clazz = value.getClass();
-        if (clazz == int.class || clazz == Integer.class) {
+        Class<?> entityClass = value.getClass();
+        if (entityClass == int.class || entityClass == Integer.class) {
             return value + "";
-        } else if (clazz == String.class) {
+        } else if (entityClass == String.class) {
             return (String) value;
-        } else if (clazz == long.class || clazz == Long.class) {
+        } else if (entityClass == long.class || entityClass == Long.class) {
             return value + "";
         } else {
             return JSON.toJSONString(value);
@@ -43,18 +43,18 @@ public class JSONUtil {
      * @param <T>
      * @return
      */
-    public static <T> T stringToBean(String str, Class<T> clazz) {
-        if (str == null || str.length() <= 0 || clazz == null) {
+    public static <T> T stringToBean(String str, Class<T> entityClass) {
+        if (str == null || str.length() <= 0 || entityClass == null) {
             return null;
         }
-        if (clazz == int.class || clazz == Integer.class) {
+        if (entityClass == int.class || entityClass == Integer.class) {
             return (T) Integer.valueOf(str);
-        } else if (clazz == String.class) {
+        } else if (entityClass == String.class) {
             return (T) str;
-        } else if (clazz == long.class || clazz == Long.class) {
+        } else if (entityClass == long.class || entityClass == Long.class) {
             return (T) Long.valueOf(str);
         } else {
-            return JSON.toJavaObject(JSON.parseObject(str), clazz);
+            return JSON.toJavaObject(JSON.parseObject(str), entityClass);
         }
     }
 
@@ -104,11 +104,11 @@ public class JSONUtil {
     public static Map toMapWithParent(Object entity) throws IllegalAccessException{
 
         Map map = new HashMap();
-        Class<?> clazz = entity.getClass();
+        Class<?> entityClass = entity.getClass();
         List<Field> fieldList = new ArrayList<>();
-        while (clazz != null){
-            fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
-            clazz = clazz.getSuperclass();//找到所有父类的属性
+        while (entityClass != null){
+            fieldList.addAll(Arrays.asList(entityClass.getDeclaredFields()));
+            entityClass = entityClass.getSuperclass();//找到所有父类的属性
         }
         for (Field field : fieldList) {
             field.setAccessible(true);

@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
 
 /**
@@ -9,5 +9,5 @@ import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
  * @author Ponzio
  * @since 2021-03-26 11:09:52
  */
-public interface GwMenuMapper extends BaseMapper<GwMenu> {
+public interface GwMenuMapper extends BasicMapper<GwMenu> {
 }

@@ -2,7 +2,8 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysMenuMapper;
 import cn.kunli.una.pojo.system.SysMenu;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SysMenuService extends BaseService<SysMenuMapper, SysMenu> {
+public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
 
     //通过用户id查询所有菜单，并按层级排序
     public List<SysMenu> selectTreeBySelective(SysMenu obj) {
         List<SysMenu> menuList = new ArrayList<>();
         if (obj.getId() == 100000) {
-            menuList = mapper.selectAll();
+            menuList = this.list();
         } else {
             menuList = mapper.selectTreeBySelective(obj);
         }
@@ -73,8 +74,8 @@ public class SysMenuService extends BaseService<SysMenuMapper, SysMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSequence() == null)
-                    obj.setSequence(this.selectCount((SysMenu) new SysMenu().setParentId(obj.getParentId()).setIsDelete(0)) + 1);
-                obj.setLevel(this.selectByPrimaryKey(obj.getParentId()).getLevel() + 1);
+                    obj.setSequence(this.selectCount(MapUtil.getMap("parentId",obj.getParentId())) + 1);
+                obj.setLevel(this.selectById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");

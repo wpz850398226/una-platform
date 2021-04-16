@@ -4,8 +4,7 @@ import cn.kunli.una.mapper.SysPermissionMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysPermission;
-import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class SysPermissionService extends BaseService<SysPermissionMapper, SysPermission> {
+public class SysPermissionService extends BasicService<SysPermissionMapper, SysPermission> {
     @Autowired
     private SysRolePermissionService sysRolePermissionService;
     @Autowired
@@ -30,25 +29,17 @@ public class SysPermissionService extends BaseService<SysPermissionMapper, SysPe
     /**
      * 插入数据,只操作record中的非空属性
      *
-     * @param record
+     * @param entity
      * @return
      */
     @Override
-    public SysResult insertSelective(SysPermission record) {
-        SysResult validationResult = this.validation(record);
-        if (validationResult.getCode() != 200) return validationResult;
-        int insertNum = this.mapper.insertSelective(this.saveFormat(record));
-        if (insertNum > 0) {
-            //删除所属实体缓存
-            if(record.getEntityId()!=null){
-                sysEntityService.deleteFromCacheByCode(record.getEntityId());
-            }
+    public boolean save(SysPermission entity) {
+        boolean saveResult = super.save(entity);
+        if(saveResult){
             //通过权限id匹配所有角色，新增roleFunction
-            sysRolePermissionService.insertByPermissionId(record.getId());
-            return SysResult.success();
-        } else {
-            return SysResult.fail();
+            sysRolePermissionService.insertByPermissionId(entity.getId());
         }
+        return saveResult;
     }
 
     /**
@@ -70,7 +61,7 @@ public class SysPermissionService extends BaseService<SysPermissionMapper, SysPe
     public SysPermission saveFormat(SysPermission obj) {
         //如果权限名称为空，自动拼接名称
         if (StringUtils.isBlank(obj.getName())) {
-            SysEntity sysEntity = sysEntityService.selectByPrimaryKey(obj.getEntityId());
+            SysEntity sysEntity = sysEntityService.selectById(obj.getEntityId());
             if (sysEntity != null) {
                 SysDictionary typeDictionary = sysDictionaryService.queryFromRedis(obj.getTypeDcode());
                 SysDictionary platformDictionary = sysDictionaryService.queryFromRedis(sysEntity.getPlatformDcode());

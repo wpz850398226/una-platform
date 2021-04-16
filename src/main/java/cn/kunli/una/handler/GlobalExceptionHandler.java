@@ -24,7 +24,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -266,7 +265,7 @@ public class GlobalExceptionHandler {
             String requestParams = getRequestParams(request);
             ex.setInParam(requestParams);
 
-            sysExceptionService.insertSelective(ex);
+            sysExceptionService.save(ex);
             //写入到文件
 //        writeToFile(ex);
         }
@@ -332,7 +331,7 @@ public class GlobalExceptionHandler {
         ex.setErrorInfo(file.getPath());
 
         //持久化错误信息到数据库
-        sysExceptionService.insertSelective(ex);
+        sysExceptionService.save(ex);
     }
 
 }

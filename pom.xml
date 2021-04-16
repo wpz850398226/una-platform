@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.6.RELEASE</version>
+        <version>2.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.kunli</groupId>
@@ -41,6 +41,21 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
         <!--thymeleaf 3.*版本-->
         <dependency>
             <groupId>org.thymeleaf</groupId>
@@ -64,10 +79,20 @@
         </dependency>
 
         <!-- Druid -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.1.21</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.6</version>
         </dependency>
         <!-- fastjson -->
         <dependency>
@@ -90,11 +115,11 @@
 
 
         <!--mybatis-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.2</version>
-        </dependency>
+        </dependency>-->
 
         <!--redis-->
         <dependency>
@@ -128,10 +153,10 @@
         </dependency>
 
         <!--JDBC-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
+        </dependency>-->
         <!--MYSQL-->
         <dependency>
             <groupId>mysql</groupId>
@@ -157,7 +182,7 @@
             </exclusions>
         </dependency>
         <!--分页插件 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>5.0.0</version>
@@ -171,13 +196,13 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.3</version>
-        </dependency>
+        </dependency>-->
         <!--tkmybatis -->
-        <dependency>
+        <!--<dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.1.5</version>
-        </dependency>
+        </dependency>-->
         <!--apache-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -198,25 +223,6 @@
             <version>3.17</version>
         </dependency>
 
-
-        <!--以下是传参数时候从新引入的jar包 -->
-        <!--<dependency>
-            <groupId>org.apache.xmlbeans</groupId>
-            <artifactId>xmlbeans</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
-        </dependency>-->
-
-
         <!--activiti-->
         <dependency>
             <groupId>org.activiti</groupId>
@@ -231,7 +237,7 @@
         </dependency>
 
         <!--jackson依赖-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.9.5</version>
@@ -250,7 +256,7 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
             <version>2.9.5</version>
-        </dependency>
+        </dependency>-->
         <!--发送邮件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

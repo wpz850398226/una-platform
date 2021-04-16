@@ -56,7 +56,7 @@
         left join sys_field as sysField on sysField.id = record.field_id
         left join sys_entity as sysEntity on sysEntity.id = record.entity_id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.entityId!= null and record.entityId!= ''">
                 and record.entity_id = #{record.entityId}
             </if>
@@ -67,7 +67,7 @@
                 and (CONCAT_WS('|',sysEntity.name,sysField.dql_name)) like '%${record.keyword}%'
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
 
     <select id="selectByEntityIdCollection" resultMap="BaseResultMap">

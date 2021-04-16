@@ -7,7 +7,6 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysDataService;
 import cn.kunli.una.utils.common.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,7 +50,7 @@ public class SysDataController extends BaseController<SysDataService, SysData> {
     @ResponseBody
     public Map querySingle(Integer id) {
         if (id==null) return null;
-        SysData sysData = baseService.selectByPrimaryKey(id);
+        SysData sysData = service.selectById(id);
         if(sysData==null)return null;
         JSONObject value = sysData.getValue();
         Map map = JSONUtil.toMap(sysData);

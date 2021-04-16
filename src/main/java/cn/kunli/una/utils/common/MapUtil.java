@@ -63,4 +63,17 @@ public class MapUtil {
         return map;
     }
 
+    /**
+     * 所有键 大写转小写+下划线
+     * @param map   需要转换键名的集合
+     * @return
+     */
+    public static Map<String, Object> keysUpperCharToUnderLine(Map<String, Object> map) {
+        Map<String, Object> result = new HashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            result.put(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return result;
+    }
+
 }

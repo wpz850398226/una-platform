@@ -2,7 +2,7 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysCompanyMapper;
 import cn.kunli.una.pojo.system.SysCompany;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-06-03 15:58:32
  */
 @Service
-public class SysCompanyService extends BaseService<SysCompanyMapper, SysCompany> {
+public class SysCompanyService extends BasicService<SysCompanyMapper, SysCompany> {
 
 }

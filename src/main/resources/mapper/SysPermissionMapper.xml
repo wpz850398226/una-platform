@@ -12,7 +12,7 @@
         FROM sys_permission as record
         LEFT JOIN sys_entity as sysEntity on sysEntity.id = record.entity_id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.typeDcode != null and record.typeDcode != ''">
                 and record.type_dcode = #{record.typeDcode}
             </if>
@@ -23,7 +23,7 @@
                 and record.entity_id = #{record.entityId}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
     <select id="selectCodeByUserIdCollection" resultType="java.lang.String">
         SELECT distinct CONCAT(sysEntity.code,':',sysDictionary.`value`) FROM sys_permission as record

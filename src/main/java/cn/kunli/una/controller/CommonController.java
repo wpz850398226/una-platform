@@ -3,14 +3,10 @@ package cn.kunli.una.controller;
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.Constant;
 import cn.kunli.una.pojo.vo.SysParamMap;
-import cn.kunli.una.pojo.vo.SysParameter;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.ExcelUtils;
-import cn.kunli.una.utils.common.ExcelUtil;
-import cn.kunli.una.utils.common.HttpUtil;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.UserUtil;
+import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
@@ -63,14 +59,14 @@ public class CommonController {
     public String manage(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> params) {
         //判断权限
         //if(!SecurityUtils.getSubject().isPermitted(className+":retrieve"))return "error/401";
-        SysEntity entityClass = sysEntityService.selectOne(new SysEntity().setCode(className));
+        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
         SysResponseParameter sysResponseParameter = new SysResponseParameter().setSysEntity(entityClass);
 
         //如果查询的虚拟实体，则通过参数获取实体类名
         if(className.equals("SysData")&&params!=null){
             Object classNameObject = params.get("className");
             if(classNameObject!=null){
-                SysEntity virtualEntity = sysEntityService.selectOne(new SysEntity().setCode(classNameObject.toString()));
+                SysEntity virtualEntity = sysEntityService.selectOne(MapUtil.getMap("code",classNameObject.toString()));
                 if(virtualEntity!=null){
                     params.put("entityId",virtualEntity.getId());
                     sysResponseParameter.setEntityId(virtualEntity.getId()).setEntityClass(virtualEntity.getCode()).setParams(params);
@@ -115,7 +111,7 @@ public class CommonController {
         }
 
         //if(!SecurityUtils.getSubject().isPermitted(permissionCode))return "error/401";
-        SysEntity entityClass = sysEntityService.selectOne(new SysEntity().setCode(className));
+        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
         //创建查询实例
         SysParamMap sysParamMap = SysParamMap.MapBuilder.aMap().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
         //如果是批量修改，则查询可批量修改的 字段
@@ -127,7 +123,7 @@ public class CommonController {
             case "SysDictionary":
                 if (obj.get("parentId") != null) {
                     Integer parentId = Integer.valueOf(obj.get("parentId").toString());
-                    SysDictionary parentDictionary = sysDictionaryService.selectByPrimaryKey(parentId);
+                    SysDictionary parentDictionary = sysDictionaryService.selectById(parentId);
                     obj.put("code", parentDictionary.getCode() + "_");
                 }
                 obj.put("type", "选项");
@@ -136,16 +132,16 @@ public class CommonController {
             case "SysMenu":
                 if (obj.get("parentId") != null) {
                     Integer parentId = Integer.valueOf(obj.get("parentId").toString());
-                    SysMenu sysMenu = sysMenuService.selectByPrimaryKey(parentId);
+                    SysMenu sysMenu = sysMenuService.selectById(parentId);
                     obj.put("level", sysMenu.getLevel() + 1);
                 }
             case "SysConfiguration":
                 if (obj.get("moduleDcode") != null) {
-                    obj.put("code", sysDictionaryService.selectOne(new SysDictionary().setCode(obj.get("moduleDcode").toString())).getValue() + "_");
+                    obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
                 }
             case "SysImgConfig":
                 if (obj.get("moduleDcode") != null) {
-                    obj.put("code", sysDictionaryService.selectOne(new SysDictionary().setCode(obj.get("moduleDcode").toString())).getValue() + "_");
+                    obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
                 }
                 break;
         }
@@ -170,8 +166,7 @@ public class CommonController {
     public void importTemplate(HttpServletResponse response, @PathVariable("className") String className) {
 
         //获取数据
-        SysEntity sysEntity = sysEntityService.selectOne((SysEntity) new SysEntity().
-                setCode(className).setIsDelete(0));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
         //excel标题
         //查询可以导出的实体字段
         List<SysField> fieldList = sysFieldService.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());
@@ -244,8 +239,7 @@ public class CommonController {
     @ResponseBody
     public void importTemplateNew(HttpServletResponse response, @PathVariable("className") String className) throws IOException, MalformedObjectNameException {
         //获取数据
-        SysEntity sysEntity = sysEntityService.selectOne((SysEntity) new SysEntity().
-                setCode(className).setIsDelete(0));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
         //excel标题
         //查询可以导出的实体字段
         List<SysField> fieldList = sysFieldService.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());

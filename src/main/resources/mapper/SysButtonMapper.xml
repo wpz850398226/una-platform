@@ -65,7 +65,7 @@
         left join sys_dictionary positionDic on record.position_dcode = positionDic.code
         left join sys_dictionary iconDic on record.icon_dcode = iconDic.code
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
@@ -73,7 +73,7 @@
                 and record.entity_id = #{record.entityId}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
 
     <select id="selectByEntityIdCollection" resultMap="BaseResultMap">

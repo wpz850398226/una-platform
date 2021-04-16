@@ -5,7 +5,7 @@ import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysFile;
 import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.SavePicUtils;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.ThumbnailatorUtil;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class SysFileService extends BaseService<SysFileMapper, SysFile> {
+public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     @Autowired
     private SavePicUtils savePicUtils;
@@ -48,8 +48,8 @@ public class SysFileService extends BaseService<SysFileMapper, SysFile> {
             for (MultipartFile multipartFile : record.getFileArray()) {
                 record.setId(null);
                 record.setFile(multipartFile);
-                int insertNum = this.mapper.insertSelective(this.saveFormat(record));
-                if (insertNum <= 0) return SysResult.fail(ListUtil.listToStr(urlList));
+                boolean saveResult = this.save(this.saveFormat(record));
+                if (!saveResult) return SysResult.fail(ListUtil.listToStr(urlList));
                 urlList.add(record.getFileUrl());
 
                 //------------------    图片生成缩略图 start   --------------------------
@@ -74,8 +74,8 @@ public class SysFileService extends BaseService<SysFileMapper, SysFile> {
             }
             return new SysResult().success("保存成功", ListUtil.listToStr(urlList));
         } else if (record.getFile() != null) {
-            int insertNum = this.mapper.insertSelective(this.saveFormat(record));
-            if (insertNum > 0) {
+            boolean saveResult = this.save(this.saveFormat(record));
+            if (saveResult) {
                 //------------------    图片生成缩略图 start   --------------------------
                 String filePath = record.getFileUrl();
                 int i = filePath.indexOf(".");

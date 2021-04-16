@@ -1,48 +1,48 @@
 package cn.kunli.una.service;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.mapper.SysEntityMapper;
-import cn.kunli.una.mapper.SysFieldMapper;
 import cn.kunli.una.mapper.SysSortMapper;
-import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.BasePojo;
+import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.system.SysField;
+import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFieldService;
-import cn.kunli.una.task.RedisTask;
 import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.NaturalId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 @Transactional
-public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
+public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> extends ServiceImpl<M,T> {
 
-    private Logger log = LoggerFactory.getLogger(BaseService.class);
+    private Logger log = LoggerFactory.getLogger(BasicService.class);
 
     //全局参数
     protected M mapper;
@@ -57,6 +57,8 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
     @Autowired
     protected RedisUtil<T> redisUtil;
     @Autowired
+    protected WrapperUtil<T> wrapperUtil;       //条件构造器 工具类
+    @Autowired
     protected SysEntityService sysEntityService;
     @Autowired
     protected SysFieldService sysFieldService;
@@ -64,18 +66,16 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
     protected SysSortMapper sysSortMapper;
     @Autowired
     protected CommonMapper commonMapper;
-    @Autowired
-    protected SysEntityMapper sysEntityMapper;
 
     // 当前Service上泛型的字节码对象
-    protected Class<T> clazz;
+    /*protected Class<T> entityClass;
     protected Class<? extends Mapper> mapperClazz;
 
     {
         // 读取当前类上的泛型
         ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-        clazz = (Class<T>) type.getActualTypeArguments()[1];
-    }
+        entityClass = (Class<T>) type.getActualTypeArguments()[1];
+    }*/
 
     /**
      * 根据主键进行查询
@@ -84,49 +84,49 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @return
      */
     @Cacheable(value = "entityRecord", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public T selectByPrimaryKey(Object id) {
-        return this.mapper.selectByPrimaryKey(id);
+    public T selectById(Serializable id) {
+        return super.getById(id);
     }
 
     /**
-     * 根据条件查询1条数据。
+     * 根据 entity 条件，查询一条记录
      *
      * @param record
      * @return
      */
-    public T selectOne(T record) {
-        return this.mapper.selectOne(record);
+    public T selectOne(Map<String,Object> paramMap) {
+        return this.getOne(wrapperUtil.allEqWrapper(paramMap));
     }
 
     /**
-     * 根据条件查询多条数据
+     * 根据 entity 条件，精确查询全部记录
      *
-     * @param record
+     * @param paramMap
      * @return
      */
     //@Cacheable(value = "entityRecordList", unless = "#result == null || #result.size() == 0")
-    public List<T> select(T record) {
-        return this.mapper.select(record);
+    public List<T> selectList(Map<String,Object> paramMap) {
+        return this.list(wrapperUtil.allEqWrapper(paramMap));
     }
 
     /**
-     * 综合查询
+     * 查询（根据 columnMap 条件）
      *
      * @param record
      * @return
      */
-    public List<T> selectByExample(T record) {
-        return this.mapper.selectByExample(record);
-    }
+    /*public List<T> selectByMap(Map<String,Object> paramMap) {
+        return this.mapper.selectByMap(paramMap);
+    }*/
 
     /**
-     * 综合查询数量
+     * 根据 Wrapper 条件，查询总记录数
      *
-     * @param record
+     * @param paramMap
      * @return
      */
-    public Integer selectCount(T record) {
-        return this.mapper.selectCount(record);
+    public Integer selectCount(Map<String,Object> paramMap) {
+        return this.count(wrapperUtil.allEqWrapper(paramMap));
     }
 
     /**
@@ -135,16 +135,26 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param record
      * @return
      */
-    public SysResult insertSelective(T record) {
-
+    @Override
+    public boolean save(T entity) {
+        return super.save(this.saveFormat(entity));
+    }
+    /*public SysResult insert(T record) {
         SysResult validationResult = this.validation(record);
         if (validationResult.getCode() != 200) return validationResult;
-        int insertNum = this.mapper.insertSelective(this.saveFormat(record));
-        if (insertNum > 0) {
+        //int insertNum = this.mapper.insert(this.saveFormat(record));
+        boolean saveResult = this.save(this.saveFormat(record));
+        if (saveResult) {
             return SysResult.success();
         } else {
             return SysResult.fail();
         }
+    }*/
+
+
+    @Override
+    public boolean saveOrUpdate(T entity) {
+        return super.saveOrUpdate(this.saveFormat(entity));
     }
 
 
@@ -154,16 +164,16 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param record
      * @return
      */
-    public SysResult updateByPrimaryKey(T record) {
+    /*public SysResult updateById(T record) {
         SysResult validationResult = this.validation(record);
         if (validationResult.getCode() != 200) return validationResult;
-        int updateNum = this.mapper.updateByPrimaryKey(this.saveFormat(record));
+        int updateNum = this.mapper.updateById(this.saveFormat(record));
         if (updateNum > 0) {
             return SysResult.success();
         } else {
             return SysResult.fail();
         }
-    }
+    }*/
 
     /**
      * 更新数据,只操作record中的非空属性
@@ -173,13 +183,18 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      */
     @SneakyThrows
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
-    public SysResult updateByPrimaryKeySelective(T record) {
+    @Override
+    public boolean updateById(T entity) {
+        this.deleteFromCacheByCode(entity.getId());
+        return super.updateById(this.saveFormat(entity));
+    }
+    /*public SysResult updateByPrimaryKeySelective(T record) {
         this.deleteFromCacheByCode(record.getId());
         SysResult validationResult = this.validation(record);
         if (validationResult.getCode() != 200) return validationResult;
         int updateNum = this.mapper.updateByPrimaryKeySelective(this.saveFormat(record));
         return (updateNum > 0 ? SysResult.success():SysResult.fail());
-    }
+    }*/
 
     /**
      * 根据主键进行删除
@@ -189,13 +204,29 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      */
     @SneakyThrows
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
-    public Integer deleteByPrimaryKey(Object id) {
-        String className = clazz.getSimpleName();
+    @Override
+    public boolean removeById(Serializable id) {
+        String className = entityClass.getSimpleName();
         SysEntity sysEntity = sysEntityService.queryFromRedis(className);
         //获取当前类对应实体类对象
         if(sysEntity!=null) {
             //获取父字段字段类对象
-            SysField sysField = sysFieldService.selectByPrimaryKey(sysEntity.getParentFieldId());
+            SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+            String tableName = StringUtil.upperCharToUnderLine(className);
+            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
+            commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
+        }
+
+        this.deleteFromCacheByCode(id);
+        return super.removeById(id);
+    }
+    /*public Integer deleteByPrimaryKey(Object id) {
+        String className = entityClass.getSimpleName();
+        SysEntity sysEntity = sysEntityService.queryFromRedis(className);
+        //获取当前类对应实体类对象
+        if(sysEntity!=null) {
+            //获取父字段字段类对象
+            SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
             String tableName = StringUtil.upperCharToUnderLine(className);
             String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
             commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
@@ -203,28 +234,30 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
 
         this.deleteFromCacheByCode(id);
         return mapper.deleteByPrimaryKey(id);
-    }
+    }*/
 
     /**
      * 批量删除
-     *
      * @param ids
      * @return
      */
-    public Integer deleteByIds(String property, List<Object> ids) {
-        Example example = new Example(clazz);
-        example.createCriteria().andIn(property, ids);
-        return this.mapper.deleteByExample(example);
-    }
+    @Override
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        String className = entityClass.getSimpleName();
+        SysEntity sysEntity = sysEntityService.queryFromRedis(className);
+        //获取当前类对应实体类对象
+        if(sysEntity!=null) {
+            //获取父字段字段类对象
+            SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+            String tableName = StringUtil.upperCharToUnderLine(className);
+            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
+            for (Serializable serializable : idList) {
+                commonMapper.increaseOrderBehindById(tableName, fieldCode, serializable);
+                this.deleteFromCacheByCode(serializable);
+            }
+        }
 
-    /**
-     * 根据条件删除
-     *
-     * @param record
-     * @return
-     */
-    public Integer delete(T record) {
-        return this.mapper.delete(record);
+        return super.removeByIds(idList);
     }
 
     /**
@@ -233,11 +266,15 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param record
      * @return
      */
-    public PageInfo<T> queryPageListByWhere(T record, Integer page, Integer rows) {
+    public Page<T> selectPage(SysParamMap sysParamMap) {
+        Page<T> objectPage = new Page<T>().setCurrent(sysParamMap.getPageNum()).setSize(sysParamMap.getPageSize());
+        return super.page(objectPage,wrapperUtil.allEqWrapper(sysParamMap));
+    }
+    /*public PageInfo<T> queryPageListByWhere(T record, Integer page, Integer rows) {
         PageHelper.startPage(page, rows);
         List<T> list = this.mapper.select(record);
         return new PageInfo<>(list);
-    }
+    }*/
 
     /**
      * 条件查询，返回resultMap,统计查询
@@ -245,7 +282,6 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param record
      * @return
      */
-
     public List<T> selectBySelective(SysParamMap sysParamMap) {
         sysParamMap = this.queryFormat(sysParamMap);
         List<T> ts = this.mapper.selectBySelective(sysParamMap);
@@ -253,8 +289,8 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
     }
 
     //通用查询
-    public SysResult selectByQuery(SysParamMap sysParamMap) {
-        Example example = new Example(clazz);
+    /*public SysResult selectByQuery(SysParamMap sysParamMap) {
+        Example example = new Example(entityClass);
         if (sysParamMap.entrySet().size() > 0) {
             Example.Criteria criteria = example.createCriteria();
             Iterator var5 = sysParamMap.entrySet().iterator();
@@ -272,47 +308,22 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
         Page<Object> page = PageHelper.startPage(sysParamMap.getPageNum(), sysParamMap.getPageSize());
         List<T> list = this.mapper.selectByExample(example);
         return new SysResult().success(this.resultFormat(list),page.getTotal());
-    }
-
-
-    /**
-     * 条件分页查询
-     *
-     * @param record
-     * @return
-     */
-    /*public PageInfo<T> selectPageBySelective(T record) {
-        record = this.queryFormat(record);
-        try {
-            mapperClazz = this.mapper.getClass();
-            Method selectBySelective = mapperClazz.getDeclaredMethod("selectBySelective", clazz);
-            if (record.getPageNum() != null && record.getPageSize() != null)
-                PageHelper.startPage(record.getPageNum(), record.getPageSize());
-            Object listObj = selectBySelective.invoke(this.mapper, record);
-            if (listObj != null) {
-                return new PageInfo<>(this.resultFormat((List<T>) listObj));
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
     }*/
+
 
     /**
      * 升序
-     *
      * @param id
      * @return
      */
 
     public Integer increaseOrder(Object id) {
         //获取当前类对应实体类对象
-        SysEntity sysEntity = sysEntityService.queryFromRedis(clazz.getSimpleName());
+        SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
         //获取父字段字段类对象
-        SysField sysField = sysFieldService.selectByPrimaryKey(sysEntity.getParentFieldId());
+        SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
 
-        String tableName = StringUtil.upperCharToUnderLine(clazz.getSimpleName());
+        String tableName = StringUtil.upperCharToUnderLine(entityClass.getSimpleName());
         String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
         return commonMapper.increaseOrder(tableName, fieldCode, id);
     }
@@ -334,12 +345,12 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param id
      * @return
      */
-    @SneakyThrows
+    /*@SneakyThrows
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
     public int deleteLogicallyByPrimaryKey(Integer id) {
         this.deleteFromCacheByCode(id);
         return this.mapper.updateByPrimaryKeySelective((T) new BasePojo().setIsDelete(1).setId(id));
-    }
+    }*/
 
     //从redis或数据库获取数据
 
@@ -354,8 +365,8 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
 
     //手动删除 通过code缓存的记录
     @SneakyThrows
-    public void deleteFromCacheByCode(Object id){
-        T t = this.selectByPrimaryKey(id);
+    public void deleteFromCacheByCode(Serializable id){
+        T t = this.selectById(id);
         if(t!=null){
             if(t!=null){
                 Map map = JSONUtil.toMap(t);
@@ -387,71 +398,54 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param obj
      * @return
      */
+    @SneakyThrows
     public SysResult validation(T obj){
         //反射获取需要验证的字段值
         Map<String, Object> map = new HashMap<String, Object>();
-        try {
-            //反射实例化对象
-            T sample = clazz.newInstance();
-            sample.setIsDelete(0);
-            //获取当前类对应实体类对象
-            SysEntity sysEntity = sysEntityService.queryFromRedis(clazz.getSimpleName());
-            if(sysEntity!=null){
-                //如果名称不为空，验证名称唯一性
-                if(StringUtils.isNotBlank(obj.getName())){
-                    //获取当前类对应实体类对象
-                    if(sysEntity.getParentFieldId()!=null){
-                        //如果当前类对应实体类有设置父字段，则验证名称局部唯一性
-                        //获取父字段字段类对象
-                        SysField sysField = sysFieldService.selectByPrimaryKey(sysEntity.getParentFieldId());
-                        //获取父字段
-                        Field parentField = clazz.getDeclaredField(sysField.getAssignmentCode());
-                        parentField.setAccessible(true);
-                        //获取父字段值
-                        Object parentValueObj = parentField.get(obj);
-                        //获取父字段set方法
-                        Method setParent = clazz.getMethod("set"+ StringUtil.capitalizeInitial(sysField.getAssignmentCode()), String.class);
-                        //实例化的对象赋值父字段
-                        setParent.invoke(sample, parentValueObj);
-                    }
-                    //实例化对象赋值名称，查询，校验
-                    sample.setName(obj.getName());
-                    List<T> objList = this.mapper.select(sample);
-                    if(objList.size()>0&&!objList.get(0).getId().equals(obj.getId())) {
-                        //通过新文件的名称查询到数据
-                        return SysResult.fail("名称重复，保存失败");
-                    }
+        //获取当前类对应实体类对象
+        SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
+        if(sysEntity!=null){
+            //如果名称不为空，验证名称唯一性
+            if(StringUtils.isNotBlank(obj.getName())){
+                Map<String, Object> nameParamMap = MapUtil.getMap("name", obj.getName());
+                //获取当前类对应实体类对象
+                if(sysEntity.getParentFieldId()!=null){
+                    //如果当前类对应实体类有设置父字段，则验证名称局部唯一性
+                    //获取父字段字段类对象
+                    SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+                    //获取父字段
+                    Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
+                    parentField.setAccessible(true);
+                    //获取父字段值
+                    Object parentValueObj = parentField.get(obj);
+                    nameParamMap.put(sysField.getAssignmentCode(),parentValueObj);
+                    //获取父字段set方法
+                    //Method setParent = entityClass.getMethod("set"+ StringUtil.capitalizeInitial(sysField.getAssignmentCode()), String.class);
+                    //实例化的对象赋值父字段
+                    //setParent.invoke(sample, parentValueObj);
                 }
+                List<T> nameResultList = this.selectList(nameParamMap);
+                if(!CollectionUtils.isEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
+                    //通过新文件的名称查询到数据
+                    return SysResult.fail("名称重复，保存失败");
+                }
+            }
 
-                Field codeField = clazz.getDeclaredField("code");
+            Field codeField = entityClass.getDeclaredField("code");
+            if(codeField!=null){
+                //如果有code字段
                 codeField.setAccessible(true);
-                map.put("code", codeField.get(obj));// 设置键值
-
-                //验证编码全局唯一性
-                if(map.get("code")!=null&&map.get("code")!=""){
-                    Method setCode = clazz.getMethod("setCode", String.class);
-                    //实例化对象重新初始化
-                    sample = clazz.newInstance();
-                    sample.setIsDelete(0);
-                    setCode.invoke(sample,map.get("code"));
-
-                    List<T> objList = this.mapper.select(sample);
-                    if(objList.size()>0&&!objList.get(0).getId().equals(obj.getId())) {
+                Object codeObject = codeField.get(obj);
+                //如果传入了code值，验证code全局唯一性
+                if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
+                    List<T> codeResultList = this.selectList(MapUtil.getMap("code",codeObject));
+                    if(!CollectionUtils.isEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                         //通过新文件的编码查询到数据
                         return SysResult.fail("编码重复，保存失败");
                     }
                 }
-            }else{
-                //return SysResult.fail("未添加实体记录",clazz.getSimpleName());
             }
-
-        } catch (SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-            return SysResult.fail();
-        } catch (NoSuchMethodException | NoSuchFieldException e) {
-            //e.printStackTrace();
         }
-
         //如果通过全部格式验证，则设置code=200，表示通过验证；
         return SysResult.success();
     }
@@ -461,6 +455,7 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
      * @param obj
      * @return
      */
+    @SneakyThrows
     public T saveFormat(T obj) {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getId()==null){
@@ -473,42 +468,36 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
             obj.setModifierHost(RequestUtil.getIpAddress(request));
         }
 
+        //反射实例化对象
+        T sample = entityClass.newInstance();
+        sample.setIsDelete(0);
         //通过反射赋值"顺序"字段
-        try {
-            //反射实例化对象
-            T sample = clazz.newInstance();
-            sample.setIsDelete(0);
-            Method setSequence = clazz.getMethod("setSequence", Integer.class);
-            Method getSequence = clazz.getMethod("getSequence", null);
-            if(setSequence!=null&&getSequence.invoke(obj,null)==null){
-                //获取当前类对应实体类对象
-                SysEntity sysEntity = sysEntityService.queryFromRedis(clazz.getSimpleName());
-                if(sysEntity!=null){
-                    //获取父字段字段类对象
-                    SysField sysField = sysFieldService.selectByPrimaryKey(sysEntity.getParentFieldId());
-                    if(sysField!=null){
-                        //获取父字段
-                        Field parentField = clazz.getDeclaredField(sysField.getAssignmentCode());
-                        parentField.setAccessible(true);
-                        //获取父字段值
-                        Object parentValueObj = parentField.get(obj);
-                        //获取父字段set方法
-                        Method setParent = clazz.getMethod("set"+ StringUtil.capitalizeInitial(sysField.getAssignmentCode()), String.class);
-                        //实例化的对象赋值父字段
-                        setParent.invoke(sample, parentValueObj);
-                    }
-
+        Method setSequence = entityClass.getMethod("setSequence", Integer.class);
+        Method getSequence = entityClass.getMethod("getSequence", null);
+        if(setSequence!=null&&getSequence.invoke(obj,null)==null){
+            //获取当前类对应实体类对象
+            SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
+            if(sysEntity!=null){
+                //获取父字段字段类对象
+                SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+                int num = 0;
+                if(sysField!=null){
+                    //获取父字段
+                    Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
+                    parentField.setAccessible(true);
+                    //获取父字段值
+                    Object parentValueObj = parentField.get(obj);
                     //查询该父字段下的数据数量
-                    int num = this.mapper.selectCount(sample);
-                    //给保存对象顺序字段赋值
-                    setSequence.invoke(obj,num+1);
+                    num = this.selectCount(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj));
+                }else{
+                    //没有设置父字段，查询所有数量
+                    num = this.count();
                 }
+
+                //给保存对象顺序字段赋值
+                setSequence.invoke(obj,num+1);
             }
-
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException | InstantiationException e) {
-            //e.printStackTrace();
         }
-
         return obj;
     }
 
@@ -522,10 +511,10 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
         if(sysParamMap==null)return sysParamMap;
         SysEntity sysEntity = null;
         //查询obj对应实体类
-        if(redisUtil.getIsConnect()&&redisUtil.hasKey("SysEntity:"+clazz.getSimpleName())){
-            sysEntity = (SysEntity) redisUtil.get("SysEntity:"+clazz.getSimpleName());
+        if(redisUtil.getIsConnect()&&redisUtil.hasKey("SysEntity:"+entityClass.getSimpleName())){
+            sysEntity = (SysEntity) redisUtil.get("SysEntity:"+entityClass.getSimpleName());
         }else{
-            List<SysEntity> select = sysEntityMapper.select((SysEntity) new SysEntity().setCode(clazz.getSimpleName()).setIsDelete(0));
+            List<SysEntity> select = sysEntityService.selectList(MapUtil.getMap("code",entityClass.getSimpleName()));
             if(!CollectionUtils.isEmpty(select))sysEntity = select.get(0);
         }
 
@@ -611,9 +600,9 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
     @SneakyThrows
     public List<T> resultFormat(List<T> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        SysEntity sysEntity = sysEntityService.selectOne(new SysEntity().setCode(clazz.getSimpleName()));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
         if(sysEntity!=null){
-            List<SysField> fieldList = sysFieldService.select(new SysField().setEntityId(sysEntity.getId()));
+            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
             if(!CollectionUtils.isEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {
@@ -621,7 +610,7 @@ public abstract class BaseService<M extends BaseMapper<T>,T extends BasePojo> {
                             &&StringUtils.isNotBlank(sysField.getDisplayCode())
                             &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
                         //如果赋值与取值的字段值不同，则反射获取赋值字段值，查询取值字段值
-                        Field assignmentCodeField = clazz.getDeclaredField(sysField.getAssignmentCode());
+                        Field assignmentCodeField = entityClass.getDeclaredField(sysField.getAssignmentCode());
                         assignmentCodeField.setAccessible(true);
                         for (T entity : list) {
                             //获取记录中赋字段的值

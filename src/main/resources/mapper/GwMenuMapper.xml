@@ -13,7 +13,7 @@
         select record.*
         from gw_menu as record
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition"/>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition"/>
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysUser.name)) like '%${record.keyword}%'
             </if>
@@ -27,7 +27,7 @@
                 and record.name = #{record.name}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder"/>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder"/>
     </select>
 
     <select id="selectByParentIdCollection" resultMap="BaseResultMap">

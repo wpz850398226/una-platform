@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.system.SysButton;
 
 /**
@@ -10,6 +10,6 @@ import cn.kunli.una.pojo.system.SysButton;
  * @since 2020-05-07 08:09:02
  */
 
-public interface SysButtonMapper extends BaseMapper<SysButton> {
+public interface SysButtonMapper extends BasicMapper<SysButton> {
 
 }

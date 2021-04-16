@@ -17,7 +17,7 @@
         left join sys_department as sysDepartment on record.department_id = sysDepartment.id
         left join sys_company as sysCompany on record.company_id = sysCompany.id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition"/>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition"/>
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name)) like '%${record.keyword}%'
             </if>
@@ -40,7 +40,7 @@
                 and record.department_id = #{record.departmentId}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder"/>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder"/>
     </select>
 
     <select id="selectByIdsCollection" resultType="cn.kunli.una.pojo.system.SysAccount">

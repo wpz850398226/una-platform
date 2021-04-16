@@ -26,7 +26,7 @@
         left join sys_field as sysField on sysField.id = record.parent_field_id
         <where>
             <if test="record != null">
-                <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+                <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
                 <if test="record.keyword != null and record.keyword !=''">
                     and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
                 </if>
@@ -38,7 +38,7 @@
                 </if>
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
 
     <!--<insert id="batchInsert" parameterType="java.util.List">

@@ -54,9 +54,9 @@ public class SysRoleController extends BaseController<SysRoleService, SysRole> {
     public SysResult saveAuthorization(Model model, SysRole obj) {
         if (obj.getMap() != null) {
             for (Map.Entry<Integer, Integer> entry : obj.getPermMap().entrySet()) {
-                SysResult sysResult = sysRolePermissionService.updateByPrimaryKeySelective(
+                boolean updateResult = sysRolePermissionService.updateById(
                         (SysRolePermission) new SysRolePermission().setScope(entry.getValue()).setId(entry.getKey()));
-                if (sysResult.getCode() != 200) return sysResult;
+                if (!updateResult) return SysResult.fail();
             }
             return SysResult.success();
         }

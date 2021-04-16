@@ -2,11 +2,13 @@ package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -21,6 +23,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Accessors(chain = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@TableName(autoResultMap = true)
 public class SysData extends BasePojo implements Serializable {
 
     private static final long serialVersionUID = 159534622053945179L;
@@ -28,6 +31,6 @@ public class SysData extends BasePojo implements Serializable {
     @NotNull(message = "实体id不能为空！")
     private Integer entityId;
     //值，扩展字段
-    @ColumnType(typeHandler = cn.kunli.una.handler.JsonHandler.class)
+    @TableField(typeHandler = FastjsonTypeHandler.class)
     private JSONObject value;
 }

@@ -58,7 +58,7 @@ public class SysMenuController extends BaseController<SysMenuService, SysMenu> {
 	public SysResult getByToken() {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 		BasePojo sample = new SysMenu().setId(loginUser.getId());
-		List<SysMenu> list = baseService.selectTreeBySelective((SysMenu) sample);
+		List<SysMenu> list = service.selectTreeBySelective((SysMenu) sample);
 		return new SysResult().setData(list);
 	}
 

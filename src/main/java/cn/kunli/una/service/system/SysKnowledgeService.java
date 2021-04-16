@@ -2,7 +2,7 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysKnowledgeMapper;
 import cn.kunli.una.pojo.system.SysKnowledge;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-10-16 17:48:03
  */
 @Service
-public class SysKnowledgeService extends BaseService<SysKnowledgeMapper, SysKnowledge> {
+public class SysKnowledgeService extends BasicService<SysKnowledgeMapper, SysKnowledge> {
 
 }

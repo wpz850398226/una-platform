@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.system.SysVersion;
 
 /**
@@ -10,6 +10,6 @@ import cn.kunli.una.pojo.system.SysVersion;
  * @since 2020-07-08 11:41:49
  */
 
-public interface SysVersionMapper extends BaseMapper<SysVersion> {
+public interface SysVersionMapper extends BasicMapper<SysVersion> {
 
 }

@@ -8,6 +8,7 @@ import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFieldService;
 import cn.kunli.una.utils.common.JSONUtil;
+import cn.kunli.una.utils.common.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +44,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
     @RequestMapping("form")
     public String form(Model model, @RequestParam Map<String, Object> params) throws IllegalAccessException {
         if (params.get("id") != null) {
-            SysField sysField = objService.selectByPrimaryKey(params.get("id"));
+            SysField sysField = objService.selectById(params.get("id").toString());
             if (sysField != null) params = JSONUtil.toMapWithParent(sysField);
         } else {
             //新增时设置默认值
@@ -52,7 +53,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
             params.put("assignmentModeDcode", "field_manual_assign_text");
         }
         model.addAttribute("record", params);
-        SysEntity entityClass = sysEntityService.selectOne(new SysEntity().setCode("SysField"));
+        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code","SysField"));
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
 
         return "system/field/form";
@@ -69,7 +70,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
 			Map<String,String> codeValueMap = JSONUtil.stringToBean(value, Map.class);
 			Map<String, Object> codeValueResult = new HashMap<>();
 			for (Map.Entry<String, String> entry : codeValueMap.entrySet()) {
-				SysResult displayValue = baseService.getDisplayValue(entry.getKey(), String.valueOf(entry.getValue()),null);
+				SysResult displayValue = service.getDisplayValue(entry.getKey(), String.valueOf(entry.getValue()),null);
 				if(displayValue.getCode()==200){
 					codeValueResult.put(entry.getKey(),displayValue.getData());
 					resultMap.put(integerMapEntry.getKey(),codeValueResult);

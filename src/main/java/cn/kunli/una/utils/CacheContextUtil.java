@@ -31,10 +31,10 @@ public class CacheContextUtil implements ApplicationContextAware {
 	/**
      * 根据提供的bean名称得到对应于指定类型的服务类
      * @param beanId bean的id
-     * @param clazz bean的类类型
+     * @param entityClass bean的类类型
      * @return 返回的bean类型,若类型不匹配,将抛出异常
      */
-	 public static <T> T getBean(String beanId, Class<T> clazz) {
-		 return commonApplicationContext.getBean(beanId, clazz);
+	 public static <T> T getBean(String beanId, Class<T> entityClass) {
+		 return commonApplicationContext.getBean(beanId, entityClass);
 	}
 }

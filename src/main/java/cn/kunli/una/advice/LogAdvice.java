@@ -45,7 +45,7 @@ public class LogAdvice {
         try {
             Object proceed = point.proceed();
             sysLog.setIsSuccess(1);
-            sysLogService.insertSelective(sysLog);
+            sysLogService.save(sysLog);
             return proceed;
 
         } catch (Exception e) {

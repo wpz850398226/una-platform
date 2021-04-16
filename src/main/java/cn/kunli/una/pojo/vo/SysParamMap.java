@@ -13,8 +13,8 @@ import java.util.Map;
 public class SysParamMap extends LinkedHashMap<String, Object> {
 
     private static final long serialVersionUID = 1L;
-    private Integer pageNum;
-    private Integer pageSize;
+    private Long pageNum;
+    private Long pageSize;
     private String orderBy;
     private String sortord;						//排序方式
     private String sortkey;						//排序关键字
@@ -24,11 +24,11 @@ public class SysParamMap extends LinkedHashMap<String, Object> {
     public SysParamMap(Map<String, Object> params) {
         this.putAll(params);
         if (params.get("pageNum") != null) {
-            this.pageNum = Integer.parseInt(params.get("pageNum").toString());
+            this.pageNum = Long.valueOf(params.get("pageNum").toString());
         }
 
         if (params.get("pageSize") != null) {
-            this.pageSize = Integer.parseInt(params.get("pageSize").toString());
+            this.pageSize = Long.valueOf(params.get("pageSize").toString());
         }
 
         if (params.get("orderBy") != null) {
@@ -39,11 +39,6 @@ public class SysParamMap extends LinkedHashMap<String, Object> {
         this.remove("pageSize");
         this.remove("orderBy");
     }
-
-//    public SysParamMap put(String key,Object value) {
-//        this.put(key,value);
-//        return this;
-//    }
 
     public static final class MapBuilder {
         Map<String, Object> map = new HashMap<>();

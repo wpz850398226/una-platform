@@ -2,38 +2,25 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysFieldMapper;
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.system.SysButton;
-import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SysFieldService extends BaseService<SysFieldMapper, SysField> {
+public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
     @Autowired
     private SysDictionaryService sysDictionaryService;
     @Autowired
     private SysAccountService sysAccountService;
 
-    @Override
-    public SysResult insertSelective(SysField record) {
-        SysResult sysResult = super.insertSelective(record);
-        if(sysResult.getCode()!=200)return sysResult;
-        if(record.getEntityId()!=null){
-            sysEntityService.deleteFromCacheByCode(record.getEntityId());
-        }
-        return sysResult;
-    }
-
-    public SysResult getDisplayValue(String assignmentCode, String value, BaseService bs) {
+    public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
         //字段赋值编码
         String substring = assignmentCode.substring(assignmentCode.length() - 5);
@@ -43,16 +30,16 @@ public class SysFieldService extends BaseService<SysFieldMapper, SysField> {
                 target = sysDictionaryService.queryFromRedis(value);
                 break;
             case "ityId"://实体 entityId
-                target = sysEntityService.selectByPrimaryKey(Integer.valueOf(value));
+                target = sysEntityService.selectById(Integer.valueOf(value));
                 break;
             case "untId"://账号 accountId
-                target = sysAccountService.selectByPrimaryKey(Integer.valueOf(value));
+                target = sysAccountService.selectById(Integer.valueOf(value));
                 break;
             case "eldId"://字段 fieldId
-                target = sysFieldService.selectByPrimaryKey(Integer.valueOf(value));
+                target = sysFieldService.selectById(Integer.valueOf(value));
                 break;
             case "entId"://父id parentId
-                target = bs.selectByPrimaryKey(Integer.valueOf(value));
+                target = bs.selectById(Integer.valueOf(value));
                 break;
             default:
                 return SysResult.fail("查询失败：赋值编码 未识别");

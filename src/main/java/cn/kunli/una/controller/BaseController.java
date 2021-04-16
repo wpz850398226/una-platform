@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.vo.*;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFieldService;
 import cn.kunli.una.service.system.SysRolePermissionService;
@@ -14,8 +14,8 @@ import cn.kunli.una.service.system.SysRoleService;
 import cn.kunli.una.utils.BaseUtil;
 import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -44,14 +44,14 @@ import java.util.*;
 * @version 创建时间：2019年6月10日 上午10:41:12
 * 类说明 :controller父类
 */
-public abstract class BaseController<Service extends BaseService,T extends BasePojo>{
+public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
 	@Autowired
 	protected HttpServletRequest request;
 	@Autowired
-	protected Service baseService;
+	protected S service;
 	@Autowired
 	protected SysFieldService sysFieldService;
 	@Autowired
@@ -62,14 +62,14 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	protected SysRolePermissionService sysRolePermissionService;
 
 	// 当前Service上泛型的字节码对象
-	protected Class<T> clazz;
-	protected String className;
+	protected Class<T> entityClass;
+	protected String entityClassName;
 
 	{
 		// 读取当前类上的泛型
 		ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-		clazz = (Class<T>) type.getActualTypeArguments()[1];
-		className = clazz.getSimpleName();
+		entityClass = (Class<T>) type.getActualTypeArguments()[1];
+		entityClassName = entityClass.getSimpleName();
 	}
 
 	@RequestMapping(
@@ -78,8 +78,11 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	)
 	@ResponseBody
 	public SysResult add(T entity) {
-		SysResult sysResult = baseService.insertSelective(entity);
-		return sysResult;
+		boolean saveResult = service.save(entity);
+		if(saveResult){
+			return SysResult.success();
+		}
+		return SysResult.fail();
 	}
 
 	@RequestMapping(
@@ -88,7 +91,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	)
 	@ResponseBody
 	public SysResult get(@PathVariable Serializable id) {
-		BasePojo basePojo = baseService.selectByPrimaryKey(id);
+		BasePojo basePojo = service.selectById(id);
 		return new SysResult().success(basePojo);
 	}
 
@@ -98,8 +101,11 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	)
 	@ResponseBody
 	public SysResult update(T entity) {
-		baseService.updateByPrimaryKeySelective(entity);
-		return SysResult.success();
+		boolean updateResult = service.updateById(entity);
+		if(updateResult){
+			return SysResult.success();
+		}
+		return SysResult.fail();
 	}
 
 	@RequestMapping(
@@ -109,9 +115,9 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@ResponseBody
 	public SysResult remove(@PathVariable Integer... ids) {
 		for (Integer id : ids) {
-			Integer integer = baseService.deleteByPrimaryKey(id);
+			boolean removeResult = service.removeById(id);
+			if(!removeResult)return SysResult.fail();
 		}
-
 		return SysResult.success();
 	}
 
@@ -121,7 +127,8 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	)
 	@ResponseBody
 	public SysResult all() {
-		return new SysResult().success(baseService.select(null),0L);
+		List list = service.list();
+		return new SysResult().success(list,Long.valueOf(list.size()));
 	}
 
 	@RequestMapping(
@@ -130,10 +137,9 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	)
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> params) {
-		if(params.get("pageNum")==null)params.put("pageNum",1);
-		if(params.get("pageSize")==null)params.put("pageSize",10);
-		SysParamMap query = new SysParamMap(params);
-		return baseService.selectByQuery(query);
+		SysParamMap sysParamMap = new SysParamMap(params);
+		Page page = service.selectPage(sysParamMap);
+		return new SysResult().success(page.getRecords(),page.getTotal());
 	}
 
 	/**
@@ -141,7 +147,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	 * @return
 	 */
 	//@PreAuthorize("hasAuthority('qweqweqwe')")
-	@RequestMapping("/table")
+	/*@RequestMapping("/table")
 	@ResponseBody
 	public SysResult table(@RequestParam Map<String, Object> params) {
 		//判断权限
@@ -149,11 +155,11 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 		SysParamMap sysParamMap = new SysParamMap(params);
 		if (sysParamMap.getPageNum() != null && sysParamMap.getPageSize() != null)
 		PageHelper.startPage(sysParamMap.getPageNum(), sysParamMap.getPageSize());
-		List<T> list = baseService.selectBySelective(sysParamMap);
+		List<T> list = service.selectBySelective(sysParamMap);
 		if(CollectionUtils.isEmpty(list))return new SysResult().setCode(0);
 		PageInfo<T> pageInfo = new PageInfo<>(list);
 		return new SysResult(0,"查询成功",list,pageInfo.getTotal());
-	}
+	}*/
 
 	/**
 	 * 保存/添加或修改
@@ -163,37 +169,38 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@LogAnnotation
 	@RequestMapping("/save")
 	@ResponseBody
-	public SysResult save(@Valid T obj) {
+	public SysResult save(@Valid T entity) {
 		//验证权限
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 		if(loginUser.getRoleIds().indexOf("100000")==-1){
-			if(!UserUtil.isPermitted(className+":create",className+":update"))return SysResult.fail("无权操作");
+			if(!UserUtil.isPermitted(entityClassName+":create",entityClassName+":update"))return SysResult.fail("无权操作");
 		}
 
-		try {
-			if(obj.getId()!=null) {
-				//如果id不为空，说明是修改数据
-				//修改数据
-				return baseService.updateByPrimaryKeySelective(obj);
-			}else if(StringUtils.isNotBlank(obj.getIds())){
-				//如果ids不为空，说明是批量修改数据
-				String[] idsArray = obj.getIds().split(",");
-				for (String id : idsArray) {
-					obj.setId(Integer.valueOf(id));
-					baseService.updateByPrimaryKeySelective(obj);
-				}
+		if(entity.getId()!=null) {
+			//如果id不为空，说明是修改数据
+			//修改数据
+			boolean updateResult = service.updateById(entity);
+			if(updateResult){
 				return SysResult.success();
-
-			}else {//如果id为空，说明是新增数据
-				//插入数据
-				return baseService.insertSelective(obj);
 			}
-		} catch (IllegalArgumentException e) {
-			//e.printStackTrace();
-		}
+			return SysResult.fail();
+		}else if(StringUtils.isNotBlank(entity.getIds())){
+			//如果ids不为空，说明是批量修改数据
+			String[] idsArray = entity.getIds().split(",");
+			for (String id : idsArray) {
+				entity.setId(Integer.valueOf(id));
+				service.updateById(entity);
+			}
+			return SysResult.success();
 
-		//生成日志
-		return SysResult.fail();
+		}else {//如果id为空，说明是新增数据
+			//插入数据
+			boolean saveResult = service.save(entity);
+			if(saveResult){
+				return SysResult.success();
+			}
+			return SysResult.fail();
+		}
 	}
 
 	/**
@@ -201,9 +208,9 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping("/delete")
+	/*@RequestMapping("/delete")
 	@ResponseBody
-	public SysResult delete(Integer[] ids) {
+	public SysResult delete(List<Integer> ids) {
 		//验证权限
 		//if(!UserUtil.isPermitted(className+":delete"))return SysResult.fail("无权操作");
 		SysResult result=new SysResult();
@@ -211,7 +218,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 
 		if(ids!=null&&ids.length!=0) {
 			for(Object id:ids) {
-				num += baseService.deleteByPrimaryKey(id);
+				num += service.deleteByPrimaryKey(id);
 			}
 		}
 
@@ -226,24 +233,24 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 
 		}
 		return result;
-	}
+	}*/
 
 	/**
 	 * 逻辑删除
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping("/deleteLogically")
+	/*@RequestMapping("/deleteLogically")
 	@ResponseBody
 	public SysResult deleteLogically(Integer[] ids) {
 		//验证权限
-		if(!UserUtil.isPermitted(className+":delete"))return SysResult.fail("无权操作");
+		if(!UserUtil.isPermitted(entityClassName+":delete"))return SysResult.fail("无权操作");
 		SysResult result=new SysResult();
 		Integer num = 0;
 
 		if(ids!=null&&ids.length!=0) {
 			for(Integer id:ids) {
-				num += baseService.deleteLogicallyByPrimaryKey(id);
+				num += service.deleteLogicallyByPrimaryKey(id);
 			}
 		}
 
@@ -258,7 +265,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 
 		}
 		return result;
-	}
+	}*/
 
 	/**
 	 * ajax查询所有
@@ -267,7 +274,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@GetMapping("/list")
 	@ResponseBody
 	public SysResult list(@RequestParam Map<String, Object> params) {
-		List list = baseService.selectBySelective(new SysParamMap(params));
+		List list = service.selectBySelective(new SysParamMap(params));
 		return new SysResult().setData(list).setCount(Long.valueOf(list.size()));
 	}
 
@@ -278,7 +285,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@RequestMapping("/queryPlural")
 	@ResponseBody
 	public List<T> queryPlural(@RequestParam Map<String, Object> params) {
-		return baseService.selectBySelective(new SysParamMap(params));
+		return service.selectBySelective(new SysParamMap(params));
 	}
 
 	/**
@@ -288,7 +295,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@RequestMapping("/querySingle")
 	@ResponseBody
 	public T querySingle(@RequestParam Map<String, Object> params) {
-		List<T> list = baseService.selectBySelective(new SysParamMap(params));
+		List<T> list = service.selectBySelective(new SysParamMap(params));
 		return list.get(0);
 	}
 
@@ -297,7 +304,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	public SysResult importObj(MultipartFile file) {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 		//验证权限
-		if(!UserUtil.isPermitted(className+":import"))return SysResult.fail("无权操作");
+		if(!UserUtil.isPermitted(entityClassName+":import"))return SysResult.fail("无权操作");
 		List<Map<String, Object>> insertMapList = new ArrayList<>();
 		List<Map<String, Object>> repeatMapList = new ArrayList<>();
 
@@ -319,7 +326,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 			int colNum = headRow.getLastCellNum();
 
 			//查询对应实体类
-			SysEntity sysEntity = sysEntityService.selectOne((SysEntity) new SysEntity().setCode(clazz.getSimpleName()).setIsDelete(0));
+			SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
 			//查询需要导入的实体字段
 			List<SysField> fieldList = sysFieldService.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isImport",1).build());
 			if(ListUtil.isNotNull(fieldList)) {
@@ -352,44 +359,36 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 					cell.setCellType(CellType.STRING);
 				}
 				for(int j=0;j<colNum;j++) {//遍历行内列
+					SysField sysField = fieldList.get(j);
+					Cell cell = row.getCell(j);
+					String cellValue = cell.getStringCellValue().trim();
 					/**
 					 * 判断是否是必填项且是否为空
 					 */
-					if(fieldList.get(j).getFormatDetectionTypeDvalues()!=null&&fieldList.get(j).getFormatDetectionTypeDvalues().indexOf("required")!=-1&&row.getCell(j).getStringCellValue().trim().equals("")) {
+					if(StringUtils.isNotBlank(sysField.getFormatDetectionTypeDvalues())
+							&&sysField.getFormatDetectionTypeDvalues().indexOf("required")!=-1
+							&&StringUtils.isBlank(cellValue)) {
 						//如果必填项为空
 						return SysResult.fail("导入失败，第"+(i+1)+"行第"+(j+1)+"列内容为空");
 					}
 
 					//将表格数据保存到行map中
-					String cellData = row.getCell(j)==null?"":row.getCell(j).getStringCellValue().trim();
-					if (null != cellData && cellData.indexOf("&@") != -1){
-						String data = cellData.split("&@")[1];
-						dataMap.put(fieldList.get(j).getAssignmentCode(),data);
+					if (StringUtils.isNotBlank(cellValue) && cellValue.indexOf("&@") != -1){
+						String data = cellValue.split("&@")[1];
+						dataMap.put(sysField.getAssignmentCode(),data);
 					}else{
-						dataMap.put(fieldList.get(j).getAssignmentCode(),cellData);
+						dataMap.put(sysField.getAssignmentCode(),cellValue);
 					}
 
-					/**
-					 * 判断重复项字段值是否重复
-					 */
+					//判断重复项字段值是否重复
 					if(!isRepeat){//如果本行已经检测出有重复项，则不进一步检测
 						//反射获取查询样本类
-						T sample = clazz.newInstance();
-						if(fieldList.get(j).getDataDetectionTypeDvalues()!=null&&fieldList.get(j).getDataDetectionTypeDvalues().indexOf("global_unique")!=-1&&!row.getCell(j).getStringCellValue().trim().equals("")) {
-							//如果是非重复项，且不为空
-							//whetherUniqueCheck = true;
-							try {
-								//样本类非重复项赋值
-								String methodName = "set"+ StringUtil.capitalizeInitial(fieldList.get(j).getAssignmentCode());
-								Method setField = clazz.getMethod(methodName, String.class);
-								setField.invoke(sample, row.getCell(j).getStringCellValue().trim());
-							} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-
+						T sample = entityClass.newInstance();
+						if(StringUtils.isNotBlank(sysField.getDataDetectionTypeDvalues())
+								&&sysField.getDataDetectionTypeDvalues().indexOf("global_unique")!=-1
+								&&StringUtils.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
-							List<T> objList = baseService.select(sample);
+							List<T> objList = service.selectList(MapUtil.getMap(sysField.getAssignmentCode(),cellValue));
 							if(ListUtil.isNotNull(objList)) {
 								//有重复数据，设置本行有重复项为true，并加入到重复项数据集合
 								isRepeat = true;
@@ -412,9 +411,9 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 			if(insertMapList.size()>0) {
 				Integer num = 0;
 				for (Map<String, Object> map : insertMapList) {
-					T entity = JSON.parseObject(JSON.toJSONString(map), clazz);
-					SysResult sysResult = baseService.insertSelective(entity);
-					if(sysResult.getCode()==200)num++;
+					T entity = JSON.parseObject(JSON.toJSONString(map), entityClass);
+					boolean saveResult = service.save(entity);
+					if(saveResult)num++;
 				}
 				if(insertMapList.size() == num) {
 					//批量插入成功
@@ -434,7 +433,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@ResponseBody
 	public SysResult exportPermission() {
 		//验证权限
-		if(UserUtil.isPermitted(className+":export")){
+		if(UserUtil.isPermitted(entityClassName+":export")){
 			return SysResult.success("有权限");
 		}
 		return SysResult.fail("无权操作");
@@ -445,11 +444,11 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@RequestMapping("/export")
 	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> params) {
 		//获取数据
-		List<T> objList = baseService.selectBySelective(new SysParamMap(params));
+		List<T> objList = service.selectBySelective(new SysParamMap(params));
 		//查询对应实体类
-		SysEntity sysEntity = sysEntityService.selectOne((SysEntity) new SysEntity().setCode(clazz.getSimpleName()).setIsDelete(0));
+		SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
 		//查询可以导出的实体字段
-		List<SysField> fieldList = sysFieldService.select((SysField) new SysField().setEntityId(sysEntity.getId()).setIsExport(1));
+		List<SysField> fieldList = sysFieldService.selectList(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isExport",1).build());
 		//excel标题行
 		String[] title = new String[fieldList.size()+1];
 		title[0] = "序号";
@@ -470,7 +469,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 				chars[0]-=32;
 				String methodName = "get"+String.valueOf(chars);
 				try {
-					Method m = clazz.getMethod(methodName);
+					Method m = entityClass.getMethod(methodName);
 					Object o = m.invoke(theData);
 					if(o!=null) {//如果数据不为空
 
@@ -524,7 +523,7 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@RequestMapping("increaseOrder")
 	@ResponseBody
 	public SysResult increaseOrder(String id) {
-		Integer num = baseService.increaseOrder(id);
+		Integer num = service.increaseOrder(id);
 		if(num==2){
 			return SysResult.success();
 		}else{
@@ -539,6 +538,6 @@ public abstract class BaseController<Service extends BaseService,T extends BaseP
 	@RequestMapping("refreshRedis")
 	@ResponseBody
 	public SysResult refreshRedis(String code) {
-		return baseService.refreshRedis(code);
+		return service.refreshRedis(code);
 	}
 }

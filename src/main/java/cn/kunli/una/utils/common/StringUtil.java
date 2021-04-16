@@ -16,11 +16,10 @@ public class StringUtil {
 
 	//大写转小写+下划线
 	public static String upperCharToUnderLine(String param) {
-
-		Pattern  p=Pattern.compile("[A-Z]");
 		if(param==null ||param.equals("")){
 			return "";
 		}
+        Pattern p=Pattern.compile("[A-Z]");
 		StringBuilder builder=new StringBuilder(param);
 		Matcher mc=p.matcher(param);
 		int i=0;
@@ -92,18 +91,6 @@ public class StringUtil {
         int shortMessageCaptcha = (int)(Math.random()*10000);
         String captcha = String.format("%04d", shortMessageCaptcha);  //每次调用生成一次四位数的随机数
         return captcha;
-    }
-
-    /**
-     * 判空
-     * @param str
-     * @return
-     */
-    public static Boolean isBlank(String str){
-        if (str == null || "".equals(str) || "null".equals(str)){
-            return true;
-        }
-        return false;
     }
 
     /**

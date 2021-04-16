@@ -62,7 +62,7 @@
         left join sys_dictionary as sdic on sdic.code = record.module_dcode
         left join sys_company as sysCompany on sysCompany.id = record.company_id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
@@ -79,7 +79,7 @@
                 and sysDictionary.code = #{record.moduleDcode}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
 
 </mapper>

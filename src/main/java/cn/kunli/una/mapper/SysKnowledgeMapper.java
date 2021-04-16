@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.system.SysKnowledge;
 
 /**
@@ -10,7 +10,7 @@ import cn.kunli.una.pojo.system.SysKnowledge;
  * @since 2020-10-16 17:48:03
  */
 
-public interface SysKnowledgeMapper extends BaseMapper<SysKnowledge> {
+public interface SysKnowledgeMapper extends BasicMapper<SysKnowledge> {
 
 
 }

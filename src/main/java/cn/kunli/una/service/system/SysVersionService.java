@@ -3,7 +3,8 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysVersionMapper;
 import cn.kunli.una.pojo.system.SysVersion;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,18 +16,18 @@ import java.util.List;
  * @since 2020-07-08 11:41:50
  */
 @Service
-public class SysVersionService extends BaseService<SysVersionMapper, SysVersion> {
+public class SysVersionService extends BasicService<SysVersionMapper, SysVersion> {
 
     //校验格式
     public SysResult validation(SysVersion obj) {
 
-        List<SysVersion> externalVersionObjList = this.select((SysVersion) new SysVersion().setExternalVersion(obj.getExternalVersion()).setIsDelete(0));
+        List<SysVersion> externalVersionObjList = this.selectList(MapUtil.getMap("externalVersion",obj.getExternalVersion()));
         if (externalVersionObjList.size() > 0 && !externalVersionObjList.get(0).getId().equals(obj.getId())) {
             //通过新文件的名称查询到数据
             return SysResult.fail("外部版本号重复，保存失败:" + obj.getExternalVersion());
         }
 
-        List<SysVersion> internalVersionObjList = this.select((SysVersion) new SysVersion().setInternalVersion(obj.getInternalVersion()).setIsDelete(0));
+        List<SysVersion> internalVersionObjList = this.selectList(MapUtil.getMap("internalVersion",obj.getInternalVersion()));
         if (internalVersionObjList.size() > 0 && !internalVersionObjList.get(0).getId().equals(obj.getId())) {
             //通过新文件的名称查询到数据
             return SysResult.fail("内部版本号重复，保存失败:" + obj.getInternalVersion());

@@ -28,7 +28,7 @@ public class SysPermissionController extends BaseController<SysPermissionService
     @ResponseBody
     public SysResult getByToken() {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        List<String> list = baseService.selectCodeByUserIdCollection(loginUser.getId());
+        List<String> list = service.selectCodeByUserIdCollection(loginUser.getId());
         return new SysResult().setData(list);
     }
 

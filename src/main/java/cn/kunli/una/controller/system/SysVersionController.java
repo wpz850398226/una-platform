@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.vo.Constant;
 import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.service.system.SysVersionService;
 import cn.kunli.una.utils.common.FileUtils;
-import cn.kunli.una.utils.common.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +41,7 @@ public class SysVersionController extends BaseController<SysVersionService, SysV
             List<SysVersion> sysVersions = objService.selectBySelective(new SysParamMap(params));
             if (sysVersions != null && sysVersions.size() > 0) {
                 SysVersion sysVersion = sysVersions.get(0);
-                if (!StringUtil.isBlank(sysVersion.getFileUrl()) && !StringUtil.isBlank(sysVersion.getInternalVersion())) {
+                if (StringUtils.isNotBlank(sysVersion.getFileUrl()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {
                     String fileName = sysVersion.getInternalVersion();
                     String filePath = Constant.UPLOAD_FILE_PATH + sysVersion.getFileUrl().substring(6);
                     FileUtils.downloadFile(response, fileName, filePath);

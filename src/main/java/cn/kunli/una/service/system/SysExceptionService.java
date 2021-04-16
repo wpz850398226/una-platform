@@ -2,7 +2,7 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysExceptionMapper;
 import cn.kunli.una.pojo.system.SysException;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-07-21 11:04:55
  */
 @Service
-public class SysExceptionService extends BaseService<SysExceptionMapper, SysException> {
+public class SysExceptionService extends BasicService<SysExceptionMapper, SysException> {
 
 }

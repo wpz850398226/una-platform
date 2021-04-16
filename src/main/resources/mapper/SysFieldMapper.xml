@@ -27,7 +27,7 @@
         LEFT JOIN sys_dictionary as amtPrtDictionary on amtPrtDictionary.id = amtSdic.parent_id
         LEFT JOIN sys_dictionary as dptSdic on dptSdic.code = record.display_mode_dcode
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysEntity.name,amtSdic.name)) like '%${record.keyword}%'
             </if>
@@ -59,7 +59,7 @@
                 and amtSdic.name = #{record.assignmentModeDname}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
     <select id="selectByEntityIdCollection" resultMap="BaseResultMap">
         select record.*

@@ -26,11 +26,11 @@ public class TreeUtil {
         Map<String, Object> map = new HashMap<String, Object>();
         List<SysTree> treeList = new ArrayList<>();
         //反射获取类
-        Class<?> clazz = objList.get(0).getClass();
+        Class<?> entityClass = objList.get(0).getClass();
         if(fieldName!=null&&!fieldName.equals("")){
             //如果传递了父id字段，则认定是子类集合
             try {
-                Field parentIdField = clazz.getDeclaredField(fieldName);
+                Field parentIdField = entityClass.getDeclaredField(fieldName);
 
                 if(parentIdField!=null){
                     //如果有父id字段，则认定是子类

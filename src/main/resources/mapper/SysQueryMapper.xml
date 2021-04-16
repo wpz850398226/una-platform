@@ -75,7 +75,7 @@
         left join sys_entity as optionEntity on optionEntity.id = record.option_entity_id
         left join sys_dictionary as sysDictionary on sysDictionary.code = record.assignment_mode_dcode
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
@@ -83,7 +83,7 @@
                 and record.entity_id = #{record.entityId}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
 
     <select id="selectByEntityIdCollection" resultMap="BaseResultMap">

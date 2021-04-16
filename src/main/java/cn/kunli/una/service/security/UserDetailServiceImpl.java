@@ -2,8 +2,9 @@ package cn.kunli.una.service.security;
 
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.service.system.SysPermissionService;
 import cn.kunli.una.service.system.SysAccountService;
+import cn.kunli.una.service.system.SysPermissionService;
+import cn.kunli.una.utils.common.MapUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -33,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("执行用户认证");
         //1、根据用户名去数据库查询，如果不存在则抛出UsernameNotFoundException异常
-        SysAccount sysAccount = sysAccountService.selectOne(new SysAccount().setUsername(username));
+        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username",username));
         if(sysAccount ==null){
             throw new AuthenticationCredentialsNotFoundException("用户名不存在");
         }else if(sysAccount.getStatusDcode().equals("locked")){

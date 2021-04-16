@@ -75,12 +75,12 @@
         from sys_announcement as record
         left join sys_user_announcement as suac on suac.announcement_id = record.id and suac.user_id = #{record.operatorId}
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
 
 </mapper>

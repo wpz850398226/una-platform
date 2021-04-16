@@ -117,7 +117,7 @@
         left join sys_dictionary as typeDic on typeDic.code = record.type_dcode
         left join sys_role as sysRole on sysRole.id = record.principal_role_id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
             </if>
@@ -142,7 +142,7 @@
         </where>
         group by record.id
         <!--order by typeDic.sequence,record.sequence-->
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </sql>
 
     <select id="selectByParentIdCollection" resultMap="BaseResultMap">

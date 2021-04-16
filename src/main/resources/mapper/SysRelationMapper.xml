@@ -68,7 +68,7 @@
         left join sys_field as parentDataField on parentDataField.id = record.parent_data_field_id
         left join sys_user as sysAccount on record.creator_id = sysAccount.id
         <where>
-            <include refid="cn.kunli.una.handler.BaseMapper.baseCondition" />
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
                 and (CONCAT_WS('|',record.name)) like '%${record.keyword}%'
             </if>
@@ -82,7 +82,7 @@
                 and relatedField.name = #{record.relatedFieldName}
             </if>
         </where>
-        <include refid="cn.kunli.una.handler.BaseMapper.baseOrder" />
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
     <select id="selectBySubEntityIdCollection" resultType="cn.kunli.una.pojo.system.SysRelation">
         select record.*

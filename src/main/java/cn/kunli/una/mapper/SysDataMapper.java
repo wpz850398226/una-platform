@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.system.SysData;
 
 /**
@@ -9,5 +9,5 @@ import cn.kunli.una.pojo.system.SysData;
  * @author Ponzio
  * @since 2021-04-02 16:14:23
  */
-public interface SysDataMapper extends BaseMapper<SysData> {
+public interface SysDataMapper extends BasicMapper<SysData> {
 }

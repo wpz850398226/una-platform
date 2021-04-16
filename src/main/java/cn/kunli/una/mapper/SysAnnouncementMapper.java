@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.handler.BaseMapper;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.pojo.system.SysAnnouncement;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @since 2020-05-06 14:14:15
  */
 
-public interface SysAnnouncementMapper extends BaseMapper<SysAnnouncement> {
+public interface SysAnnouncementMapper extends BasicMapper<SysAnnouncement> {
 
     /**
      * 删除已读记录

@@ -2,7 +2,7 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysLogMapper;
 import cn.kunli.una.pojo.system.SysLog;
-import cn.kunli.una.service.BaseService;
+import cn.kunli.una.service.BasicService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @since 2021-01-15 16:44:55
  */
 @Service
-public class SysLogService extends BaseService<SysLogMapper, SysLog> {
+public class SysLogService extends BasicService<SysLogMapper, SysLog> {
 
 }
