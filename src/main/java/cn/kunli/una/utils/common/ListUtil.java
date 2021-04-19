@@ -1,7 +1,6 @@
 package cn.kunli.una.utils.common;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -171,5 +170,18 @@ public class ListUtil {
             }
         }
         return pdMap;
+    }
+
+    /**
+     * 所有元素 大写转小写+下划线
+     * @param list   需要转换键名的集合
+     * @return
+     */
+    public static List<String> upperCharToUnderLine(List<String> list) {
+        List<String> result = new ArrayList<>();
+        for (String s : list) {
+            result.add(StringUtil.upperCharToUnderLine(s));
+        }
+        return result;
     }
 }

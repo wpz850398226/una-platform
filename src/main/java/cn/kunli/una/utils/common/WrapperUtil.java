@@ -1,9 +1,12 @@
 package cn.kunli.una.utils.common;
 
 
+import cn.kunli.una.pojo.vo.SysParam;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,8 +23,38 @@ public class WrapperUtil<T> {
      * @param map 数据源
      * @return
      */
-    public QueryWrapper<T> allEqWrapper(Map<String, Object> map) {
+    public QueryWrapper<T> sysParamToWrapper(SysParam sysParam) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
+        if(sysParam.getAllEqMap()!=null)queryWrapper = this.allEqWrapper(queryWrapper, sysParam.getAllEqMap());
+        if(sysParam.getNeMap()!=null)queryWrapper = this.neWrapper(queryWrapper,sysParam.getNeMap());
+        if(sysParam.getGtMap()!=null)queryWrapper = this.gtWrapper(queryWrapper,sysParam.getGtMap());
+        if(sysParam.getGeMap()!=null)queryWrapper = this.geWrapper(queryWrapper,sysParam.getGeMap());
+        if(sysParam.getLtMap()!=null)queryWrapper = this.ltWrapper(queryWrapper,sysParam.getLtMap());
+        if(sysParam.getLeMap()!=null)queryWrapper = this.leWrapper(queryWrapper,sysParam.getLeMap());
+        if(sysParam.getLikeMap()!=null)queryWrapper = this.likeWrapper(queryWrapper,sysParam.getLikeMap());
+        if(sysParam.getNotLikeMap()!=null)queryWrapper = this.notLikeWrapper(queryWrapper,sysParam.getNotLikeMap());
+        if(sysParam.getLikeLeftMap()!=null)queryWrapper = this.likeLeftWrapper(queryWrapper,sysParam.getLikeLeftMap());
+        if(sysParam.getLikeRightMap()!=null)queryWrapper = this.likeRightWrapper(queryWrapper,sysParam.getLikeRightMap());
+        if(CollectionUtils.isNotEmpty(sysParam.getIsNullList()))queryWrapper = this.isNullWrapper(queryWrapper,sysParam.getIsNullList());
+        if(CollectionUtils.isNotEmpty(sysParam.getIsNotNullList()))queryWrapper = this.isNotNullWrapper(queryWrapper,sysParam.getIsNotNullList());
+        if(sysParam.getInListMap()!=null)queryWrapper = this.inListWrapper(queryWrapper,sysParam.getInListMap());
+        if(sysParam.getNotInListMap()!=null)queryWrapper = this.notInListWrapper(queryWrapper,sysParam.getNotInListMap());
+        if(sysParam.getInSqlMap()!=null)queryWrapper = this.inSqlWrapper(queryWrapper,sysParam.getInSqlMap());
+        if(sysParam.getNotInSqlMap()!=null)queryWrapper = this.notInSqlWrapper(queryWrapper,sysParam.getNotInSqlMap());
+        if(sysParam.getGroupByList()!=null)queryWrapper = this.groupByWrapper(queryWrapper,sysParam.getGroupByList());
+        if(sysParam.getOrderByAscList()!=null)queryWrapper = this.orderByAscWrapper(queryWrapper,sysParam.getOrderByAscList());
+        if(sysParam.getOrderByDescList()!=null)queryWrapper = this.orderByDescWrapper(queryWrapper,sysParam.getOrderByDescList());
+        return queryWrapper;
+    }
+
+    /**
+     * 获取全等条件的 构造器
+     * @param map 条件源
+     * @return QueryWrapper<T> 处理过的条件构造器
+     */
+    public QueryWrapper<T> allEqWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
         //集合 键名 转为数据库字段
         Map<String, Object> processedMap = MapUtil.keysUpperCharToUnderLine(map);
         queryWrapper.allEq(processedMap);
@@ -29,16 +62,282 @@ public class WrapperUtil<T> {
     }
 
     /**
+     * 获取不等于 <>条件的 构造器
+     * @param map 条件源
+     * @return QueryWrapper<T> 处理过的条件构造器
+     */
+    public QueryWrapper<T> neWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.ne(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取大于条件的 构造器
+     * @param map 条件源
+     * @return QueryWrapper<T> 处理过的条件构造器
+     */
+    public QueryWrapper<T> gtWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.gt(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取大于等于条件的 构造器
+     * @param map 条件源
+     * @return QueryWrapper<T> 处理过的条件构造器
+     */
+    public QueryWrapper<T> geWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.ge(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取小于条件的 构造器
+     * @param map 条件源
+     * @return QueryWrapper<T> 处理过的条件构造器
+     */
+    public QueryWrapper<T> ltWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.lt(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取小于等于条件的 构造器
+     * @param map 条件源
+     * @return QueryWrapper<T> 处理过的条件构造器
+     */
+    public QueryWrapper<T> leWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.le(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
      * 获取相似条件的 构造器
-     *
      * @param key 字段名
      * @param value 字段值
      * @return
      */
-    public QueryWrapper<T> likeWrapper(String key, Object value) {
-        QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
-        queryWrapper.like(StringUtil.upperCharToUnderLine(key),value);
+    public QueryWrapper<T> likeWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.like(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
         return queryWrapper;
     }
 
+    /**
+     * 获取不相似条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> notLikeWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.notLike(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取左相似条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> likeLeftWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.likeLeft(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取右相似条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> likeRightWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            queryWrapper.likeRight(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取为空条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> isNullWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (String s : list) {
+            queryWrapper.isNull(StringUtil.upperCharToUnderLine(s));
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取非空条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> isNotNullWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (String s : list) {
+            queryWrapper.isNotNull(StringUtil.upperCharToUnderLine(s));
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取字段 IN条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> inListWrapper(QueryWrapper<T> queryWrapper,Map<String, List<Object>> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, List<Object>> entry : map.entrySet()) {
+            queryWrapper.in(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取字段 NOT IN条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> notInListWrapper(QueryWrapper<T> queryWrapper,Map<String, List<Object>> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, List<Object>> entry : map.entrySet()) {
+            queryWrapper.notIn(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取字段 IN ( sql语句 )条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> inSqlWrapper(QueryWrapper<T> queryWrapper, Map<String, String> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            queryWrapper.inSql(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取字段 NOT IN ( sql语句 )条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> notInSqlWrapper(QueryWrapper<T> queryWrapper, Map<String, String> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            queryWrapper.notInSql(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取非空条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> groupByWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        //集合 键名 转为数据库字段
+        list = ListUtil.upperCharToUnderLine(list);
+        queryWrapper.groupBy(list.toArray(new String[list.size()]));
+        return queryWrapper;
+    }
+
+    /**
+     * 获取非空条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> orderByAscWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        //集合 键名 转为数据库字段
+        list = ListUtil.upperCharToUnderLine(list);
+        queryWrapper.orderByAsc(list.toArray(new String[list.size()]));
+        return queryWrapper;
+    }
+
+    /**
+     * 获取非空条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> orderByDescWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        //集合 键名 转为数据库字段
+        list = ListUtil.upperCharToUnderLine(list);
+        queryWrapper.orderByDesc(list.toArray(new String[list.size()]));
+        return queryWrapper;
+    }
 }

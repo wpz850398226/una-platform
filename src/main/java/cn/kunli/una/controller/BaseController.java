@@ -136,9 +136,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			method = {RequestMethod.GET}
 	)
 	@ResponseBody
-	public SysResult page(@RequestParam Map<String, Object> params) {
-		SysParamMap sysParamMap = new SysParamMap(params);
-		Page page = service.selectPage(sysParamMap);
+	public SysResult page(@RequestParam SysParam sysParam) {
+//		SysParamMap sysParamMap = new SysParamMap(params);
+//		Page page = service.selectPage(sysParamMap);
+		Page page = service.selectPage(sysParam);
 		return new SysResult().success(page.getRecords(),page.getTotal());
 	}
 

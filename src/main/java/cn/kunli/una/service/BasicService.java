@@ -9,6 +9,7 @@ import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.pojo.vo.SysParam;
 import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysEntityService;
@@ -67,16 +68,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Autowired
     protected CommonMapper commonMapper;
 
-    // 当前Service上泛型的字节码对象
-    /*protected Class<T> entityClass;
-    protected Class<? extends Mapper> mapperClazz;
-
-    {
-        // 读取当前类上的泛型
-        ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-        entityClass = (Class<T>) type.getActualTypeArguments()[1];
-    }*/
-
     /**
      * 根据主键进行查询
      *
@@ -95,7 +86,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     public T selectOne(Map<String,Object> paramMap) {
-        return this.getOne(wrapperUtil.allEqWrapper(paramMap));
+        return this.getOne(wrapperUtil.allEqWrapper(null,paramMap));
     }
 
     /**
@@ -106,7 +97,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     //@Cacheable(value = "entityRecordList", unless = "#result == null || #result.size() == 0")
     public List<T> selectList(Map<String,Object> paramMap) {
-        return this.list(wrapperUtil.allEqWrapper(paramMap));
+        return this.list(wrapperUtil.allEqWrapper(null,paramMap));
     }
 
     /**
@@ -126,7 +117,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     public Integer selectCount(Map<String,Object> paramMap) {
-        return this.count(wrapperUtil.allEqWrapper(paramMap));
+        return this.count(wrapperUtil.allEqWrapper(null,paramMap));
     }
 
     /**
@@ -266,10 +257,14 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param record
      * @return
      */
-    public Page<T> selectPage(SysParamMap sysParamMap) {
+    public Page<T> selectPage(SysParam sysParam) {
+        Page<T> objectPage = new Page<T>().setCurrent(sysParam.getPageNum()).setSize(sysParam.getPageSize());
+        return super.page(objectPage,wrapperUtil.sysParamToWrapper(sysParam));
+    }
+    /*public Page<T> selectPage(SysParamMap sysParamMap) {
         Page<T> objectPage = new Page<T>().setCurrent(sysParamMap.getPageNum()).setSize(sysParamMap.getPageSize());
         return super.page(objectPage,wrapperUtil.allEqWrapper(sysParamMap));
-    }
+    }*/
     /*public PageInfo<T> queryPageListByWhere(T record, Integer page, Integer rows) {
         PageHelper.startPage(page, rows);
         List<T> list = this.mapper.select(record);

@@ -3,6 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysDictionaryMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
      * @return
      */
     public List<SysDictionary> selectByLikeCode(String code) {
-        QueryWrapper<SysDictionary> wrapper = wrapperUtil.likeWrapper("code", code).orderByAsc("sequence");
+        QueryWrapper<SysDictionary> wrapper = wrapperUtil.likeWrapper(null, MapUtil.getMap("code", code)).orderByAsc("sequence");
         List<SysDictionary> list = this.list(wrapper);
         return list;
     }
