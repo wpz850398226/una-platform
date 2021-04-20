@@ -56,7 +56,7 @@ public class SysParam extends LinkedHashMap<String, Object> {
 	//排序：ORDER BY 字段, ... DESC
 	private List<String> orderByDescList;
 	//排序：ORDER BY 字段, ...
-	private Map<String,Object> orderByMap;
+	private Map<String,Boolean> orderByMap;
 	//无视优化规则直接拼接到 sql 的最后
 	private String lastStr;
 	//拼接 EXISTS ( sql语句 )

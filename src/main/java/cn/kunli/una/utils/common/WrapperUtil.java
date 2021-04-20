@@ -4,6 +4,7 @@ package cn.kunli.una.utils.common;
 import cn.kunli.una.pojo.vo.SysParam;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -41,9 +42,13 @@ public class WrapperUtil<T> {
         if(sysParam.getNotInListMap()!=null)queryWrapper = this.notInListWrapper(queryWrapper,sysParam.getNotInListMap());
         if(sysParam.getInSqlMap()!=null)queryWrapper = this.inSqlWrapper(queryWrapper,sysParam.getInSqlMap());
         if(sysParam.getNotInSqlMap()!=null)queryWrapper = this.notInSqlWrapper(queryWrapper,sysParam.getNotInSqlMap());
-        if(sysParam.getGroupByList()!=null)queryWrapper = this.groupByWrapper(queryWrapper,sysParam.getGroupByList());
-        if(sysParam.getOrderByAscList()!=null)queryWrapper = this.orderByAscWrapper(queryWrapper,sysParam.getOrderByAscList());
-        if(sysParam.getOrderByDescList()!=null)queryWrapper = this.orderByDescWrapper(queryWrapper,sysParam.getOrderByDescList());
+        if(CollectionUtils.isNotEmpty(sysParam.getGroupByList()))queryWrapper = this.groupByWrapper(queryWrapper,sysParam.getGroupByList());
+        if(CollectionUtils.isNotEmpty(sysParam.getOrderByAscList()))queryWrapper = this.orderByAscWrapper(queryWrapper,sysParam.getOrderByAscList());
+        if(CollectionUtils.isNotEmpty(sysParam.getOrderByDescList()))queryWrapper = this.orderByDescWrapper(queryWrapper,sysParam.getOrderByDescList());
+        if(sysParam.getOrderByMap()!=null)queryWrapper = this.orderByWrapper(queryWrapper,sysParam.getOrderByMap());
+        if(StringUtils.isNotBlank(sysParam.getLastStr()))queryWrapper = this.lastWrapper(queryWrapper,sysParam.getLastStr());
+        if(StringUtils.isNotBlank(sysParam.getExistsStr()))queryWrapper = this.existsWrapper(queryWrapper,sysParam.getExistsStr());
+        if(StringUtils.isNotBlank(sysParam.getNotExistsStr()))queryWrapper = this.notExistsWrapper(queryWrapper,sysParam.getNotExistsStr());
         return queryWrapper;
     }
 
@@ -312,7 +317,7 @@ public class WrapperUtil<T> {
     }
 
     /**
-     * 获取非空条件的 构造器
+     * 获取正序排序条件的 构造器
      * @param key 字段名
      * @param value 字段值
      * @return
@@ -327,7 +332,7 @@ public class WrapperUtil<T> {
     }
 
     /**
-     * 获取非空条件的 构造器
+     * 获取倒叙排序条件的 构造器
      * @param key 字段名
      * @param value 字段值
      * @return
@@ -338,6 +343,64 @@ public class WrapperUtil<T> {
         //集合 键名 转为数据库字段
         list = ListUtil.upperCharToUnderLine(list);
         queryWrapper.orderByDesc(list.toArray(new String[list.size()]));
+        return queryWrapper;
+    }
+
+    /**
+     * 获取综合排序条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> orderByWrapper(QueryWrapper<T> queryWrapper, Map<String,Boolean> map) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(map==null)return queryWrapper;
+        //集合 键名 转为数据库字段
+        for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+            queryWrapper.orderBy(true,entry.getValue(),StringUtil.upperCharToUnderLine(entry.getKey()));
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 获取 无视优化规则直接拼接到 sql 的最后 条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> lastWrapper(QueryWrapper<T> queryWrapper, String str) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(StringUtils.isBlank(str))return queryWrapper;
+        //集合 键名 转为数据库字段
+        queryWrapper.last(str);
+        return queryWrapper;
+    }
+
+    /**
+     * 获取 拼接 EXISTS ( sql语句 ) 条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> existsWrapper(QueryWrapper<T> queryWrapper, String str) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(StringUtils.isBlank(str))return queryWrapper;
+        //集合 键名 转为数据库字段
+        queryWrapper.exists(str);
+        return queryWrapper;
+    }
+
+    /**
+     * 获取 拼接 NOT EXISTS ( sql语句 ) 的最后 条件的 构造器
+     * @param key 字段名
+     * @param value 字段值
+     * @return
+     */
+    public QueryWrapper<T> notExistsWrapper(QueryWrapper<T> queryWrapper, String str) {
+        if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
+        if(StringUtils.isBlank(str))return queryWrapper;
+        //集合 键名 转为数据库字段
+        queryWrapper.notExists(str);
         return queryWrapper;
     }
 }
