@@ -8,14 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +50,7 @@ public class BasePojo implements Serializable{
 
     private String modifierHost;				//修订者id
 
-	private String modifierName;						//修订者姓名
+	private String modifierName;				//修订者姓名
 
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -66,11 +64,11 @@ public class BasePojo implements Serializable{
 
 
 	@Transient
-	private String[] idArray;										//批量操作时，接收批量id数组
+	private String[] idArray;			//批量操作时，接收批量id数组
 	@Transient
-	private String ids;												//批量操作时，接收批量ids
+	private String ids;					//批量操作时，接收批量ids
 	@Transient
-	private String rootTreeIds;										//加载带结构树的表格时，如果树结构与表格实体一致，接收树结构更目录ids
+	private String rootTreeIds;			//加载带结构树的表格时，如果树结构与表格实体一致，接收树结构更目录ids
 	@Transient
 	private String tempData;			//临时数据，接收临时数据
 	@Transient
@@ -78,11 +76,11 @@ public class BasePojo implements Serializable{
 	@Transient
 	private Integer pageNum;			// 当前页数,从客户端传递到服务端
 	@Transient
-	private Integer pageSize;  		//每页显示的条数,固定的
+	private Integer pageSize;  			//每页显示的条数,固定的
 	@Transient
-	private Integer isAll;			//是否全部：0否，1是
+	private Integer isAll;				//是否全部：0否，1是
 	@Transient
-	private Integer isResult;		//mybatis查询结果是否是result，1是，0否
+	private Integer isResult;			//mybatis查询结果是否是result，1是，0否
 	@Transient
 	private Integer count;				//数量，查询统计表用
 	@Transient
