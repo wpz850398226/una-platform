@@ -1,11 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import javax.persistence.Transient;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,28 +49,27 @@ public class SysMenu extends BasePojo implements Serializable {
     private Integer isEffect;
 
 
-
-    @Transient
+    @TableField(exist = false)
     List<SysMenu> children = new ArrayList<>();
-    @Transient
+    @TableField(exist = false)
     private SysMenu parentMenu;
-    @Transient
+    @TableField(exist = false)
     private String parentName;
-    @Transient
+    @TableField(exist = false)
     private String permissionName;
-    @Transient
+    @TableField(exist = false)
     private String permissionCode;
-    @Transient
+    @TableField(exist = false)
     private String iconDname;
-    @Transient
+    @TableField(exist = false)
     private String iconFurl;
-    @Transient
+    @TableField(exist = false)
     private String packageName;
-    @Transient
+    @TableField(exist = false)
     private String activitName;
-    @Transient
+    @TableField(exist = false)
     private String versionName;
-    @Transient
+    @TableField(exist = false)
     private String appCode;
 
 }

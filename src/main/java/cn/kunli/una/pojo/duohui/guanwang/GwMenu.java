@@ -2,6 +2,7 @@ package cn.kunli.una.pojo.duohui.guanwang;
 
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysMenu;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,7 +52,7 @@ public class GwMenu extends BasePojo implements Serializable {
     private String animatedStyle;
 
 
-    @Transient
+    @TableField(exist = false)
     List<GwMenu> children = new ArrayList<>();
 
 }

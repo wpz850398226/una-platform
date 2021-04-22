@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -35,16 +35,16 @@ public class SysRole extends BasePojo implements Serializable {
     private Integer weight;
 
 
-    @Transient
+    @TableField(exist = false)
     private String companyName;
-    @Transient
+    @TableField(exist = false)
     private String companyTypeDname;
-    @Transient
+    @TableField(exist = false)
     private List<String> permissionIdList;
-    @Transient
+    @TableField(exist = false)
     private List<SysRolePermission> rolePermissionList;
-    @Transient
+    @TableField(exist = false)
     private List<SysIndex> indexList;
-    @Transient
-    private Map<Integer,Integer> permMap;
+    @TableField(exist = false)
+    private Map<Integer, Integer> permMap;
 }

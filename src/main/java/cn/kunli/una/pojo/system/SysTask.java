@@ -1,15 +1,16 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -27,7 +28,7 @@ public class SysTask extends BasePojo implements Serializable {
 
     private String fileId;
 
-    private Integer executorNum;			//执行人数量
+    private Integer executorNum;            //执行人数量
 
     private Date closeTime;
 
@@ -38,24 +39,21 @@ public class SysTask extends BasePojo implements Serializable {
     private String priorityDicId;
 
 
-
-    @Transient
+    @TableField(exist = false)
     private String typeName;
-    @Transient
+    @TableField(exist = false)
     private SysDictionary status;
-    @Transient
+    @TableField(exist = false)
     private SysDictionary priority;
-    @Transient
+    @TableField(exist = false)
     private String entityName;
-    @Transient
-    private String receiverId;		//接收人id
-    @Transient
+    @TableField(exist = false)
+    private String receiverId;        //接收人id
+    @TableField(exist = false)
     private List<String> receiverIdList;
 
 
-
     private static final long serialVersionUID = 1L;
-
 
 
 }

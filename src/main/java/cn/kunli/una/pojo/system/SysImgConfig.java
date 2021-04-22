@@ -1,14 +1,13 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * (SysImgConfig)实体类
@@ -38,7 +37,7 @@ public class SysImgConfig extends BasePojo implements Serializable {
 
 
     //模块编码
-    @Transient
+    @TableField(exist = false)
     private String moduleDname;
 
 }

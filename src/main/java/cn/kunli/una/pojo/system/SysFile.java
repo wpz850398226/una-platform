@@ -1,15 +1,13 @@
 package cn.kunli.una.pojo.system;
 
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
-import cn.kunli.una.pojo.BasePojo;
-
-
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Data
@@ -35,11 +33,11 @@ public class SysFile extends BasePojo implements Serializable {
     private Integer entityId;
 
 
-    @Transient
+    @TableField(exist = false)
     private MultipartFile[] fileArray;
-    @Transient
+    @TableField(exist = false)
     private MultipartFile file;
-    @Transient
+    @TableField(exist = false)
     private String typeDname;
 
     private static final long serialVersionUID = 1L;

@@ -1,14 +1,14 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-import java.util.List;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
-import javax.persistence.Transient;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * (SysRegion)实体类
@@ -43,15 +43,13 @@ public class SysRegion extends BasePojo implements Serializable {
     //权重，排序用
 
 
-
-
-    @Transient
+    @TableField(exist = false)
     private String parentName;
-    @Transient
-    private String rootName;		//根目录名称
-    @Transient
+    @TableField(exist = false)
+    private String rootName;        //根目录名称
+    @TableField(exist = false)
     private String typeDname;     //类型名称
-    @Transient
+    @TableField(exist = false)
     private List<SysRegion> children;
 
 }

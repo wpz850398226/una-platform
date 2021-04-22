@@ -1,13 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Data
@@ -36,10 +35,9 @@ public class SysIndex extends BasePojo implements Serializable {
     private Integer roleId;
 
 
-
-    @Transient
+    @TableField(exist = false)
     private String icon;
-    @Transient
+    @TableField(exist = false)
     private String roleName;
 
 

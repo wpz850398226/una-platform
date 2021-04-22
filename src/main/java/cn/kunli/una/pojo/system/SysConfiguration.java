@@ -1,14 +1,13 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * (SysConfiguration)实体类
@@ -38,12 +37,11 @@ public class SysConfiguration extends BasePojo implements Serializable {
     private String moduleDcode;
 
 
-
     //模块名称
-    @Transient
+    @TableField(exist = false)
     private String moduleDname;
     //公司名称
-    @Transient
+    @TableField(exist = false)
     private String companyName;
 
 

@@ -1,13 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Data
@@ -23,14 +22,12 @@ public class SysFilter extends BasePojo implements Serializable {
     private String filterValue;
 
 
-
-    @Transient
+    @TableField(exist = false)
     private String entityName;
-    @Transient
+    @TableField(exist = false)
     private String fieldCode;
-    @Transient
+    @TableField(exist = false)
     private String fieldName;
-
 
 
     private static final long serialVersionUID = 1L;

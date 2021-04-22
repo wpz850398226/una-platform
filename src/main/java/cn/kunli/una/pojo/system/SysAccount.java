@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class SysAccount extends BasePojo implements Serializable {
     private static final long serialVersionUID = -32742696237078749L;
     //昵称
     @NotBlank(message = "名称不能为空！")
-    @Size(min = 2,max = 12,message = "名称长度必须为2-12")
+    @Size(min = 2, max = 12, message = "名称长度必须为2-12")
     private String name;
     //来源 字典编码
     private String originDcode;
@@ -55,10 +55,10 @@ public class SysAccount extends BasePojo implements Serializable {
     //在线验证sessionid（登录刷新）
     private String onlineSession;
 
-    @Transient
+    @TableField(exist = false)
     private String[] roleIdArray;
-    @Transient
+    @TableField(exist = false)
     private List<SysRole> roleList;
-    @Transient
+    @TableField(exist = false)
     private SysUser sysUser;
 }

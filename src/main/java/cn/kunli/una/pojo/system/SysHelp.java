@@ -2,13 +2,12 @@ package cn.kunli.una.pojo.system;
 
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Data
@@ -31,10 +30,7 @@ public class SysHelp extends BasePojo implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-
-
-
-    @Transient
+    @TableField(exist = false)
     private String entityName;
 
 

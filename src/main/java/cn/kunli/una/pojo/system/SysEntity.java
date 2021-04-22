@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;
 
@@ -56,18 +56,18 @@ public class SysEntity extends BasePojo implements Serializable {
     private String definitionDcodes;
 
 
-    @Transient
+    @TableField(exist = false)
     private List<SysRelation> relationList;
-    @Transient
+    @TableField(exist = false)
     private List<SysFilter> filterList;
-    @Transient
+    @TableField(exist = false)
     private List<SysQuery> queryList;
-    @Transient
+    @TableField(exist = false)
     private List<SysSort> sortList;
-    @Transient
+    @TableField(exist = false)
     private String parentFieldName;
-    @Transient
+    @TableField(exist = false)
     private List<SysButton> buttonList;
-    @Transient
+    @TableField(exist = false)
     private List<SysPermission> permissionList;
 }

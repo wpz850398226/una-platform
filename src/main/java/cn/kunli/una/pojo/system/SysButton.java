@@ -1,14 +1,13 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * (SysButton)实体类
@@ -39,15 +38,13 @@ public class SysButton extends BasePojo implements Serializable {
     //顺序
 
 
-
-
-    @Transient
+    @TableField(exist = false)
     private String entityName;
-    @Transient
+    @TableField(exist = false)
     private String positionDname;
-    @Transient
+    @TableField(exist = false)
     private String positionDvalue;
-    @Transient
+    @TableField(exist = false)
     private String iconDvalue;
 
 

@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -27,9 +27,9 @@ public class SysPermission extends BasePojo implements Serializable {
     private Integer entityId;
 
 
-    @Transient
+    @TableField(exist = false)
     private String menuNames;
-    @Transient
+    @TableField(exist = false)
     private String code;
 
 }

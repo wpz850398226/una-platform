@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Data
@@ -26,20 +26,20 @@ public class SysRelation extends BasePojo implements Serializable {
     private String parentDataValue;
 
 
-    @Transient
+    @TableField(exist = false)
     private String relatedFieldCode;
-    @Transient
+    @TableField(exist = false)
     private String relatedFieldName;
-    @Transient
+    @TableField(exist = false)
     private String parentDataFieldCode;
-    @Transient
+    @TableField(exist = false)
     private String parentDataFieldName;
-    @Transient
-    private String parentEntityName;				//父实体名称
-    @Transient
-    private String subEntityName;					//子实体名称
-    @Transient
-    private String parentEntityPath;			//父实体url前缀
+    @TableField(exist = false)
+    private String parentEntityName;                //父实体名称
+    @TableField(exist = false)
+    private String subEntityName;                    //子实体名称
+    @TableField(exist = false)
+    private String parentEntityPath;            //父实体url前缀
 
     private static final long serialVersionUID = 1L;
 

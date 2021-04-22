@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -74,79 +74,79 @@ public class SysCompany extends BasePojo implements Serializable {
     private String subId;
 
 
-    @Transient
+    @TableField(exist = false)
     private String[] industryIdArray;            //行业id数组
-    @Transient
+    @TableField(exist = false)
     private String[] fileIdArray;            //附件id数组
-    @Transient
+    @TableField(exist = false)
     private String legalPersonName;        //法人姓名
-    @Transient
+    @TableField(exist = false)
     private List<SysDepartment> departmentList;        //公司部门
-    @Transient
+    @TableField(exist = false)
     private List<SysAccount> userList;        //公司员工
-    @Transient
+    @TableField(exist = false)
     private List<SysFile> fileList;
-    @Transient
+    @TableField(exist = false)
     private String typeName;
-    @Transient
+    @TableField(exist = false)
     private String industryNames;
-    @Transient
+    @TableField(exist = false)
     private String regionName;
-    @Transient
+    @TableField(exist = false)
     private List<SysCompany> children;
-    @Transient
+    @TableField(exist = false)
     private String employeeId;
-    @Transient
+    @TableField(exist = false)
     private String rootCompanyId;
     //根公司id，组织上级，查询用
-    @Transient
+    @TableField(exist = false)
     private String grandCompanyId;
-    @Transient
+    @TableField(exist = false)
     private String companyId;
-    @Transient
+    @TableField(exist = false)
     private Integer userNumber;
-    @Transient
+    @TableField(exist = false)
     private String provinceName;    //省
-    @Transient
+    @TableField(exist = false)
     private String provinceId;    //省
-    @Transient
+    @TableField(exist = false)
     private String districtName;    //区
-    @Transient
+    @TableField(exist = false)
     private String districtId;    //区
-    @Transient
+    @TableField(exist = false)
     private String countyName;      //县
-    @Transient
+    @TableField(exist = false)
     private String levelName;   //公司等级
-    @Transient
+    @TableField(exist = false)
     private String parentCompanyName;
-    @Transient
+    @TableField(exist = false)
     private String principalRoleTitle;  //负责人角色名称
-    @Transient
+    @TableField(exist = false)
     private Integer personNum; //公司人数
-    @Transient
+    @TableField(exist = false)
     private Integer equipmentNum;   //器材库存
-    @Transient
+    @TableField(exist = false)
     private Integer equipageVehicleNum;   //器材库存
-    @Transient
+    @TableField(exist = false)
     private Integer vehicleNum; //备勤车辆总数
-    @Transient
+    @TableField(exist = false)
     private String subCompanyNum;
-    @Transient
+    @TableField(exist = false)
     private List<SysCompany> subCompany;
-    @Transient
+    @TableField(exist = false)
     private List<SysAccount> legalPersons;
-    @Transient
+    @TableField(exist = false)
     private String manageCompanyTitle;
-    @Transient
+    @TableField(exist = false)
     private String characterDname;
-    @Transient
+    @TableField(exist = false)
     private String isShow;
     /**
      * 公司ID in查询条件
      */
-    @Transient
+    @TableField(exist = false)
     private List<String> companyIds;
 
-    @Transient
+    @TableField(exist = false)
     private String pId;
 }

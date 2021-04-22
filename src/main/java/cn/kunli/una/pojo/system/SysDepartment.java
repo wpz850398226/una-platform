@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.system;
 
-import java.math.BigDecimal;
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * (SysDepartment)实体类
@@ -49,11 +48,11 @@ public class SysDepartment extends BasePojo implements Serializable {
     private String phone;
 
 
-    @Transient
+    @TableField(exist = false)
     private String departmentManagerName;
-    @Transient
+    @TableField(exist = false)
     private String officePosition;
-    @Transient
+    @TableField(exist = false)
     private String companyName;
 
 }

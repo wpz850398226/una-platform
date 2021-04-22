@@ -1,17 +1,16 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-import java.util.Date;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * (SysAnnouncement)实体类
@@ -38,19 +37,19 @@ public class SysAnnouncement extends BasePojo implements Serializable {
     //公告内容
     private String content;
     //生效时间
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     //失效时间
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private String issuer;  //发布人
 
 
-    @Transient
+    @TableField(exist = false)
     private Integer isOverdue;  //过期的
-    @Transient
+    @TableField(exist = false)
     private Integer isReaded;  //已读的
 }

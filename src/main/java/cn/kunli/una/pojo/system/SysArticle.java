@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * (SysArticle)实体类

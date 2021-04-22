@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -84,29 +84,29 @@ public class SysField extends BasePojo implements Serializable {
 
 
     //非持久化字段
-    @Transient
-    private String entityName;				//所属实体名称
-    @Transient
+    @TableField(exist = false)
+    private String entityName;                //所属实体名称
+    @TableField(exist = false)
     private String optionEntityPath;   //选项关联实体地址前缀
-    @Transient
-    private String assignmentTypeDname;		//赋值类型名称：手动赋值，自动赋值
-    @Transient
-    private String assignmentModeDname;		//赋值方式名称：具体方式
-    @Transient
+    @TableField(exist = false)
+    private String assignmentTypeDname;        //赋值类型名称：手动赋值，自动赋值
+    @TableField(exist = false)
+    private String assignmentModeDname;        //赋值方式名称：具体方式
+    @TableField(exist = false)
     private String formatDetectionTypeDvalues;  //格式检测类型值，用,分隔
-    @Transient
+    @TableField(exist = false)
     private String formatDetectionTypeDname;  //格式检测类型名称，用,分隔
-    @Transient
+    @TableField(exist = false)
     private String dataDetectionTypeDvalues;  //格式检测类型名称，用,分隔
-    @Transient
+    @TableField(exist = false)
     private String selectSubIds;                //联动子id，用,分隔
-    @Transient
+    @TableField(exist = false)
     private String displayModeDname;           //展示方式名称
-    @Transient
+    @TableField(exist = false)
     private String[] radioOptionArray;          //单选备选值数组
-//    @Transient
+//    @TableField(exist = false)
 //    private String optionNameFieldCode;        //选项展示名称字段取值编码
-//    @Transient
+//    @TableField(exist = false)
 //    private String optionValueFieldCode;        //选项取值字段取值编码
 
 }

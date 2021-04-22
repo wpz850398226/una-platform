@@ -1,14 +1,13 @@
 package cn.kunli.una.pojo.system;
 
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * (SysRolePermission)实体类
@@ -30,15 +29,15 @@ public class SysRolePermission extends BasePojo implements Serializable {
     private Integer scope;
 
 
-    @Transient
+    @TableField(exist = false)
     private String roleName;
-    @Transient
+    @TableField(exist = false)
     private String permissionName;
-    @Transient
+    @TableField(exist = false)
     private String keyword;
-    @Transient
-    private Integer entityId;			//相关权限所属实体
-    @Transient
+    @TableField(exist = false)
+    private Integer entityId;            //相关权限所属实体
+    @TableField(exist = false)
     private String permissionTypeDcode; //权限类型编码
 
 

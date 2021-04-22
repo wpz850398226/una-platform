@@ -1,12 +1,12 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -37,8 +37,8 @@ public class SysLog extends BasePojo implements Serializable {
     private String description;
 
 
-    @Transient
-    private String dateTime;			//日期，查询统计表用
-    @Transient
-    private String entityName;			//实体名称
+    @TableField(exist = false)
+    private String dateTime;            //日期，查询统计表用
+    @TableField(exist = false)
+    private String entityName;            //实体名称
 }

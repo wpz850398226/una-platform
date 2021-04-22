@@ -2,6 +2,7 @@ package cn.kunli.una.pojo;
 
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysUtilQuery;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -63,63 +64,57 @@ public class BasePojo implements Serializable{
 
 
 
-	@Transient
-	private String[] idArray;			//批量操作时，接收批量id数组
-	@Transient
+	@TableField(exist = false)
 	private String ids;					//批量操作时，接收批量ids
-	@Transient
+	@TableField(exist = false)
 	private String rootTreeIds;			//加载带结构树的表格时，如果树结构与表格实体一致，接收树结构更目录ids
-	@Transient
+	@TableField(exist = false)
 	private String tempData;			//临时数据，接收临时数据
-	@Transient
+	@TableField(exist = false)
 	private String paramName;			//redis或session中存储查询结果的参数名称
-	@Transient
+	@TableField(exist = false)
 	private Integer pageNum;			// 当前页数,从客户端传递到服务端
-	@Transient
+	@TableField(exist = false)
 	private Integer pageSize;  			//每页显示的条数,固定的
-	@Transient
+	@TableField(exist = false)
 	private Integer isAll;				//是否全部：0否，1是
-	@Transient
+	@TableField(exist = false)
 	private Integer isResult;			//mybatis查询结果是否是result，1是，0否
-	@Transient
+	@TableField(exist = false)
 	private Integer count;				//数量，查询统计表用
-	@Transient
+	@TableField(exist = false)
 	private String key;
-	@Transient
+	@TableField(exist = false)
 	private String keyword;						//查询关键字
-	@Transient
+	@TableField(exist = false)
 	private String sortsql;						//排序查询语句
-	@Transient
+	@TableField(exist = false)
 	private String sortord;						//排序方式
-	@Transient
+	@TableField(exist = false)
 	private String sortkey;						//排序关键字
-	@Transient
+	@TableField(exist = false)
 	private String standbyCondition;			//备用查询条件
-	@Transient
+	@TableField(exist = false)
 	private String advancedQuery;				//高级筛选语句
-	@Transient
+	@TableField(exist = false)
 	private Integer dataCompanyId;						//所属公司id，通过权限范围查询用
-	@Transient
+	@TableField(exist = false)
 	private Integer dataDepartmentId;					//所属部门id，通过权限范围查询用
-	@Transient
+	@TableField(exist = false)
 	private Integer dataCreatorId;						//所属用户id，通过权限范围查询用
-	@Transient
+	@TableField(exist = false)
 	private String statPattern;					//统计维度
-	@Transient
-	private List<SysUtilQuery> utilQueryList;						//精确查询字段集合
-	@Transient
-	private List<SysSort> sortList;				//实体排序规则集合
-	@Transient
+	@TableField(exist = false)
 	private Map<String,Object> map;
-	@Transient
+	@TableField(exist = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startTime;
-	@Transient
+	@TableField(exist = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endTime;
-	@Transient
+	@TableField(exist = false)
 	private String title;
 
 	public String getTitle() {

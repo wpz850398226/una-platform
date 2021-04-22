@@ -1,16 +1,15 @@
 package cn.kunli.una.pojo.system;
 
-import java.util.Date;
-import java.io.Serializable;
-import java.util.List;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * (SysMessage)实体类
@@ -56,16 +55,16 @@ public class SysMessage extends BasePojo implements Serializable {
     private Date sendTime;
 
 
-    @Transient
+    @TableField(exist = false)
     private String creatorPhotoUrl;
-    @Transient
+    @TableField(exist = false)
     private String receiverName;
-    @Transient
+    @TableField(exist = false)
     private String entityName;
-    @Transient
-    private Integer amount;			//统计用：消息数量
-    @Transient
-    private List<String> receiverIdList;			//接收前台传回守信者id，群发功能
+    @TableField(exist = false)
+    private Integer amount;            //统计用：消息数量
+    @TableField(exist = false)
+    private List<String> receiverIdList;            //接收前台传回守信者id，群发功能
 
 
 }
