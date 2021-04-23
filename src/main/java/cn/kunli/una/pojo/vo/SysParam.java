@@ -12,7 +12,7 @@ import java.util.Map;
  * 公共父类，封装通用请求参数
  */
 @Data
-public class SysParam extends LinkedHashMap<String, Object> {
+public class SysParam {
 	//页码
 	private Long pageNum;
 	//每页数量
@@ -64,4 +64,18 @@ public class SysParam extends LinkedHashMap<String, Object> {
 	//拼接 NOT EXISTS ( sql语句 )
 	private String notExistsStr;
 
+	public SysParam(Map<String, Object> map) {
+		if(map.get("pageNum")!=null){
+			this.pageNum = Long.valueOf(map.get("pageNum").toString());
+		}
+		if(map.get("pageSize")!=null){
+			this.pageNum = Long.valueOf(map.get("pageSize").toString());
+		}
+		if(map.get("allEq")!=null){
+			this.allEqMap = (Map<String,Object>) map.get("allEq");
+		}
+		if(map.get("like")!=null){
+			this.likeMap = (Map<String,Object>) map.get("like");
+		}
+	}
 }
