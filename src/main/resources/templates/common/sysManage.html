@@ -296,7 +296,7 @@
         table.render({
             elem: '#unaDataTable'
             //,height: 'full-150'
-            ,url:entityPath+'/table'
+            ,url:entityPath+'/page'
             ,where: layui.form.val('unaTableForm')
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,request: {
@@ -391,7 +391,7 @@
                                 url: deleteUrl,
                                 success:function(result){
                                     layer.msg(result.message,function(){
-                                        if(result.code==200)table.reload("unaDataTable");
+                                        if(result.isSuccess)table.reload("unaDataTable");
                                     })
                                 },
                                 dataType: 'json',
@@ -455,7 +455,7 @@
                             success:function(result){
                                 layer.closeAll('loading');
                                 layer.msg(result.message,function(){
-                                    if(result.code==200)table.reload("unaDataTable");
+                                    if(result.isSuccess)table.reload("unaDataTable");
                                 })
                             },
                             dataType: 'json',
@@ -519,7 +519,7 @@
                     $.post(url,null,function(result){
                         console.log(result)
                         layer.msg(result.message,function () {
-                            if(result.code==200){
+                            if(result.isSuccess){
                                 $("#unaTableForm").submit();
                             }
                         })
@@ -543,7 +543,7 @@
                             url: deleteUrl,
                             success:function(result){
                                 layer.msg(result.message,function(){
-                                    if(result.code==200)table.reload("unaDataTable");
+                                    if(result.isSuccess)table.reload("unaDataTable");
                                 })
                             },
                             dataType: 'json',
@@ -574,7 +574,7 @@
                 case 'ascend':
                     $.post(entityPath+"/increaseOrder",{"id":data.id},function(result){
                         layer.msg(result.message,function(){
-                            if(result.code==200)table.reload("unaDataTable");
+                            if(result.isSuccess)table.reload("unaDataTable");
                         })
                     },'json');
                     break;

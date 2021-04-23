@@ -431,7 +431,7 @@
                     dataType: 'json',
                     data: data.field,
                     success: function (result) {
-                        if(result.code==200){
+                        if(result.isSuccess){
                             //操作成功时，弹层提示添加成功，并且刷新父页面
                             layer.msg(result.message,function () {
                                 parent.refreshTable("unaDataTable");

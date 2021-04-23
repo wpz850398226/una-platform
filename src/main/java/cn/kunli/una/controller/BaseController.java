@@ -51,6 +51,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@Autowired
 	protected HttpServletRequest request;
 	@Autowired
+	protected WrapperUtil wrapperUtil;
+	@Autowired
 	protected S service;
 	@Autowired
 	protected SysFieldService sysFieldService;
@@ -137,10 +139,12 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	)
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> paramMap) {
-//		SysParamMap sysParamMap = new SysParamMap(params);
-//		Page page = service.selectPage(sysParamMap);
+		if(paramMap.get("pageNum")==null)paramMap.put("pageNum",1L);
+		if(paramMap.get("pageSize")==null)paramMap.put("pageSize",10L);
 		SysParam sysParam = new SysParam(paramMap);
-		Page page = service.selectPage(sysParam);
+		Page<T> objectPage = new Page<T>().setCurrent(sysParam.getPageNum()).setSize(sysParam.getPageSize());
+		IPage page = service.page(objectPage, wrapperUtil.sysParamToWrapper(sysParam));
+		page.setRecords(service.resultFormat(page.getRecords()));
 		return new SysResult().success(page.getRecords(),page.getTotal());
 	}
 

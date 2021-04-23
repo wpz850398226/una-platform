@@ -379,7 +379,7 @@
                                 url: deleteUrl,
                                 success:function(result){
                                     layer.msg(result.message,function(){
-                                        if(result.code==200)table.reload("unaDataTable");
+                                        if(result.isSuccess)table.reload("unaDataTable");
                                     })
                                 },
                                 dataType: 'json',
@@ -443,7 +443,7 @@
                             success:function(result){
                                 layer.closeAll('loading');
                                 layer.msg(result.message,function(){
-                                    if(result.code==200)table.reload("unaDataTable");
+                                    if(result.isSuccess)table.reload("unaDataTable");
                                 })
                             },
                             dataType: 'json',
@@ -507,7 +507,7 @@
                     $.post(url,null,function(result){
                         console.log(result)
                         layer.msg(result.message,function () {
-                            if(result.code==200){
+                            if(result.isSuccess){
                                 $("#unaTableForm").submit();
                             }
                         })
@@ -531,7 +531,7 @@
                             url: deleteUrl,
                             success:function(result){
                                 layer.msg(result.message,function(){
-                                    if(result.code==200)table.reload("unaDataTable");
+                                    if(result.isSuccess)table.reload("unaDataTable");
                                 })
                             },
                             dataType: 'json',
@@ -557,7 +557,7 @@
                 case 'ascend':
                     $.post(entityPath+"/increaseOrder",{"id":data.id},function(result){
                         layer.msg(result.message,function(){
-                            if(result.code==200)table.reload("unaDataTable");
+                            if(result.isSuccess)table.reload("unaDataTable");
                         })
                     },'json');
                     break;

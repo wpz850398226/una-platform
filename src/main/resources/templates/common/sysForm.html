@@ -486,7 +486,7 @@
                     dataType: 'json',
                     data: data.field,
                     success: function (result) {
-                        if(result.code==200){
+                        if(result.isSuccess){
                             layer.closeAll('loading');
                             //操作成功时，弹层提示添加成功，并且刷新父页面
                             layer.msg(result.message,function () {
@@ -574,7 +574,7 @@
 
                 }
                 ,done: function(result, index, upload){
-                    if(result.code==200){ //上传成功
+                    if(result.isSuccess){ //上传成功
 
                         var tr = demoListView.find('tr#upload-'+ index)
                             ,tds = tr.children();

@@ -254,7 +254,7 @@
                                 url: entityPath+"/deleteLogically",
                                 success:function(result){
                                     layer.msg(result.message,function(){
-                                        if(result.code==200)table.reload("unaDataTable");
+                                        if(result.isSuccess)table.reload("unaDataTable");
                                     })
                                 },
                                 dataType: 'json',
@@ -312,7 +312,7 @@
                             url: entityPath+"/deleteLogically",
                             success:function(result){
                                 layer.msg(result.message,function(){
-                                    if(result.code==200)table.reload("unaDataTable");
+                                    if(result.isSuccess)table.reload("unaDataTable");
                                 })
                             },
                             dataType: 'json',

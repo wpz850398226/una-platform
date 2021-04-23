@@ -214,7 +214,7 @@
                             url: "/sys/login/logout",
                             dataType: 'json',
                             success:function(result){
-                                if(result.code==200){
+                                if(result.isSuccess){
                                     localStorage.removeItem("token");
                                     window.location.href="/sys/login/toLogin";
                                 } else {
@@ -235,7 +235,7 @@
                                     url: "/sys/user/save",
                                     success:function(result){
                                         layer.msg(result.message,function(){
-                                            if(result.code==200)window.location.href="/sys/login/logout";
+                                            if(result.isSuccess)window.location.href="/sys/login/logout";
                                         })
                                     },
                                     dataType: 'json',

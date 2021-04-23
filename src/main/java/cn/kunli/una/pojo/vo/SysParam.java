@@ -2,7 +2,6 @@ package cn.kunli.una.pojo.vo;
 
 import lombok.Data;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,8 @@ public class SysParam {
 	private Long pageNum;
 	//每页数量
 	private Long pageSize;
+	//批量id
+	private String ids;
 	//全部eq(或个别isNull)
 	private Map<String,Object> allEqMap;
 	//不等于 <>
@@ -69,7 +70,10 @@ public class SysParam {
 			this.pageNum = Long.valueOf(map.get("pageNum").toString());
 		}
 		if(map.get("pageSize")!=null){
-			this.pageNum = Long.valueOf(map.get("pageSize").toString());
+			this.pageSize = Long.valueOf(map.get("pageSize").toString());
+		}
+		if(map.get("ids")!=null){
+			this.ids = map.get("ids").toString();
 		}
 		if(map.get("allEq")!=null){
 			this.allEqMap = (Map<String,Object>) map.get("allEq");

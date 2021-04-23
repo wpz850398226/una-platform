@@ -105,7 +105,7 @@ public class GlobalExceptionHandler {
         sysException.setName("空指针异常处理");
         saveExceptionRecord(sysException, ex, request);
 
-        return new SysResult(HttpStatus.INTERNAL_SERVER_ERROR.value(),"空指针异常处理！", sysException,null);
+        return new SysResult(false,HttpStatus.INTERNAL_SERVER_ERROR.value(),"空指针异常处理！", sysException,null);
     }
 
     /**

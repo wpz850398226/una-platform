@@ -7,7 +7,7 @@ public class SysHttpCode {
     public static final int SWITCHING_POTOTCOLS = 101;
     //服务器将遵从客户的请求转换到另外一种协议（HTTP1.1）。
 
-    public static final int OK = 200;
+    public static final int OK = 0;
     //一切正常
 
     public static final int CREATED = 201;

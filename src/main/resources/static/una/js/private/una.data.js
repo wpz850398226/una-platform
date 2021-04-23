@@ -287,9 +287,9 @@ function addObjWithParam(path,title){
 							window.parent.showResponseReloadTable(result)
 							break;
 					}
-					if(result.code==200&&href!=null&&href!="")setTimeout('window.open("'+href+'","'+target+'")', 1000);
+					if(result.isSuccess&&href!=null&&href!="")setTimeout('window.open("'+href+'","'+target+'")', 1000);
 
-					/*if(result.code==200&&activateFlag==1){
+					/*if(result.isSuccess&&activateFlag==1){
 						//如果是保存并提交，保存成功后打开处理代办页
 						var taskId = result.data.taskId;
 						var taskName = result.data.taskName;
@@ -363,9 +363,9 @@ function submitObj(selector){
 							window.parent.showResponseReloadTable(result)
 							break;
 					}
-					if(result.code==200&&href!=null&&href!="")setTimeout('window.open("'+href+'","'+target+'")', 1000);
+					if(result.isSuccess&&href!=null&&href!="")setTimeout('window.open("'+href+'","'+target+'")', 1000);
 
-					/*if(result.code==200&&activateFlag==1){
+					/*if(result.isSuccess&&activateFlag==1){
                         //如果是保存并提交，保存成功后打开处理代办页
                         var taskId = result.data.taskId;
                         var taskName = result.data.taskName;
