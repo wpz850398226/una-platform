@@ -39,9 +39,9 @@ public class SysParam {
 	//LIKE '值%'
 	private Map<String,Object> likeRightMap;
 	//字段 IS NULL
-	private List<String> isNullList;
+	private String[] isNullArray;
 	//字段 IS NOT NULL
-	private List<String> isNotNullList;
+	private String[] isNotNullArray;
 	//字段 IN (value.get(0), value.get(1), ...)
 	private Map<String,List<Object>> inListMap;
 	//字段 NOT IN (value.get(0), value.get(1), ...)
@@ -51,11 +51,11 @@ public class SysParam {
 	//字段 NOT IN ( sql语句 )
 	private Map<String,String> notInSqlMap;
 	//GROUP BY 字段, ...
-	private List<String> groupByList;
+	private String[] groupByArray;
 	//排序：ORDER BY 字段, ... ASC
-	private List<String> orderByAscList;
+	private String[] orderByAscArray;
 	//排序：ORDER BY 字段, ... DESC
-	private List<String> orderByDescList;
+	private String[] orderByDescArray;
 	//排序：ORDER BY 字段, ...
 	private Map<String,Boolean> orderByMap;
 	//无视优化规则直接拼接到 sql 的最后
@@ -66,6 +66,7 @@ public class SysParam {
 	private String notExistsStr;
 
 	public SysParam(Map<String, Object> map) {
+		//常用条件
 		if(map.get("pageNum")!=null){
 			this.pageNum = Long.valueOf(map.get("pageNum").toString());
 		}
@@ -77,8 +78,33 @@ public class SysParam {
 		}
 		if(map.get("allEq")!=null){
 			this.allEqMap = (Map<String,Object>) map.get("allEq");
+			map.remove("allEq");
 		}
-		if(map.get("like")!=null){
+		if(map.get("neMap")!=null){
+			this.neMap = (Map<String,Object>) map.get("neMap");
+			map.remove("neMap");
+		}
+		if(map.get("isNull")!=null){
+			this.isNullArray = map.get("isNull").toString().split(",");
+			map.remove("isNull");
+		}
+		if(map.get("isNotNull")!=null){
+			this.isNotNullArray = map.get("isNotNull").toString().split(",");
+			map.remove("isNotNull");
+		}
+		if(map.get("orderByAsc")!=null){
+			this.orderByAscArray = map.get("orderByAsc").toString().split(",");
+			map.remove("orderByAsc");
+		}
+		if(map.get("orderByDesc")!=null){
+			this.orderByDescArray = map.get("orderByDesc").toString().split(",");
+			map.remove("orderByDesc");
+		}
+
+		//不常用条件
+
+		//剩下的都放在模糊查询里面
+		if(map.size()>0){
 			this.likeMap = (Map<String,Object>) map.get("like");
 		}
 	}

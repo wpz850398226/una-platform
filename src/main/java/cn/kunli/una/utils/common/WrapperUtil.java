@@ -4,9 +4,11 @@ package cn.kunli.una.utils.common;
 import cn.kunli.una.pojo.vo.SysParam;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,15 +38,15 @@ public class WrapperUtil<T> {
         if(sysParam.getNotLikeMap()!=null)queryWrapper = this.notLikeWrapper(queryWrapper,sysParam.getNotLikeMap());
         if(sysParam.getLikeLeftMap()!=null)queryWrapper = this.likeLeftWrapper(queryWrapper,sysParam.getLikeLeftMap());
         if(sysParam.getLikeRightMap()!=null)queryWrapper = this.likeRightWrapper(queryWrapper,sysParam.getLikeRightMap());
-        if(CollectionUtils.isNotEmpty(sysParam.getIsNullList()))queryWrapper = this.isNullWrapper(queryWrapper,sysParam.getIsNullList());
-        if(CollectionUtils.isNotEmpty(sysParam.getIsNotNullList()))queryWrapper = this.isNotNullWrapper(queryWrapper,sysParam.getIsNotNullList());
+        if(ArrayUtils.isNotEmpty(sysParam.getIsNullArray()))queryWrapper = this.isNullWrapper(queryWrapper,sysParam.getIsNullArray());
+        if(ArrayUtils.isNotEmpty(sysParam.getIsNotNullArray()))queryWrapper = this.isNotNullWrapper(queryWrapper,sysParam.getIsNotNullArray());
         if(sysParam.getInListMap()!=null)queryWrapper = this.inListWrapper(queryWrapper,sysParam.getInListMap());
         if(sysParam.getNotInListMap()!=null)queryWrapper = this.notInListWrapper(queryWrapper,sysParam.getNotInListMap());
         if(sysParam.getInSqlMap()!=null)queryWrapper = this.inSqlWrapper(queryWrapper,sysParam.getInSqlMap());
         if(sysParam.getNotInSqlMap()!=null)queryWrapper = this.notInSqlWrapper(queryWrapper,sysParam.getNotInSqlMap());
-        if(CollectionUtils.isNotEmpty(sysParam.getGroupByList()))queryWrapper = this.groupByWrapper(queryWrapper,sysParam.getGroupByList());
-        if(CollectionUtils.isNotEmpty(sysParam.getOrderByAscList()))queryWrapper = this.orderByAscWrapper(queryWrapper,sysParam.getOrderByAscList());
-        if(CollectionUtils.isNotEmpty(sysParam.getOrderByDescList()))queryWrapper = this.orderByDescWrapper(queryWrapper,sysParam.getOrderByDescList());
+        if(ArrayUtils.isNotEmpty(sysParam.getGroupByArray()))queryWrapper = this.groupByWrapper(queryWrapper,sysParam.getGroupByArray());
+        if(ArrayUtils.isNotEmpty(sysParam.getOrderByAscArray()))queryWrapper = this.orderByAscWrapper(queryWrapper,sysParam.getOrderByAscArray());
+        if(ArrayUtils.isNotEmpty(sysParam.getOrderByDescArray()))queryWrapper = this.orderByDescWrapper(queryWrapper,sysParam.getOrderByDescArray());
         if(sysParam.getOrderByMap()!=null)queryWrapper = this.orderByWrapper(queryWrapper,sysParam.getOrderByMap());
         if(StringUtils.isNotBlank(sysParam.getLastStr()))queryWrapper = this.lastWrapper(queryWrapper,sysParam.getLastStr());
         if(StringUtils.isNotBlank(sysParam.getExistsStr()))queryWrapper = this.existsWrapper(queryWrapper,sysParam.getExistsStr());
@@ -211,11 +213,11 @@ public class WrapperUtil<T> {
      * @param value 字段值
      * @return
      */
-    public QueryWrapper<T> isNullWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+    public QueryWrapper<T> isNullWrapper(QueryWrapper<T> queryWrapper, String[] array) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        if(ArrayUtils.isEmpty(array))return queryWrapper;
         //集合 键名 转为数据库字段
-        for (String s : list) {
+        for (String s : array) {
             queryWrapper.isNull(StringUtil.upperCharToUnderLine(s));
         }
         return queryWrapper;
@@ -227,11 +229,11 @@ public class WrapperUtil<T> {
      * @param value 字段值
      * @return
      */
-    public QueryWrapper<T> isNotNullWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+    public QueryWrapper<T> isNotNullWrapper(QueryWrapper<T> queryWrapper, String[] array) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        if(ArrayUtils.isEmpty(array))return queryWrapper;
         //集合 键名 转为数据库字段
-        for (String s : list) {
+        for (String s : array) {
             queryWrapper.isNotNull(StringUtil.upperCharToUnderLine(s));
         }
         return queryWrapper;
@@ -307,12 +309,12 @@ public class WrapperUtil<T> {
      * @param value 字段值
      * @return
      */
-    public QueryWrapper<T> groupByWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+    public QueryWrapper<T> groupByWrapper(QueryWrapper<T> queryWrapper, String[] array) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        if(ArrayUtils.isEmpty(array))return queryWrapper;
         //集合 键名 转为数据库字段
-        list = ListUtil.upperCharToUnderLine(list);
-        queryWrapper.groupBy(list.toArray(new String[list.size()]));
+        String[] strings = ArrayUtil.upperCharToUnderLine(array);
+        queryWrapper.groupBy(strings);
         return queryWrapper;
     }
 
@@ -322,12 +324,12 @@ public class WrapperUtil<T> {
      * @param value 字段值
      * @return
      */
-    public QueryWrapper<T> orderByAscWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+    public QueryWrapper<T> orderByAscWrapper(QueryWrapper<T> queryWrapper, String[] array) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        if(ArrayUtils.isEmpty(array))return queryWrapper;
         //集合 键名 转为数据库字段
-        list = ListUtil.upperCharToUnderLine(list);
-        queryWrapper.orderByAsc(list.toArray(new String[list.size()]));
+        String[] strings = ArrayUtil.upperCharToUnderLine(array);
+        queryWrapper.orderByAsc(strings);
         return queryWrapper;
     }
 
@@ -337,12 +339,12 @@ public class WrapperUtil<T> {
      * @param value 字段值
      * @return
      */
-    public QueryWrapper<T> orderByDescWrapper(QueryWrapper<T> queryWrapper, List<String> list) {
+    public QueryWrapper<T> orderByDescWrapper(QueryWrapper<T> queryWrapper, String[] array) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(CollectionUtils.isEmpty(list))return queryWrapper;
+        if(ArrayUtils.isEmpty(array))return queryWrapper;
         //集合 键名 转为数据库字段
-        list = ListUtil.upperCharToUnderLine(list);
-        queryWrapper.orderByDesc(list.toArray(new String[list.size()]));
+        String[] strings = ArrayUtil.upperCharToUnderLine(array);
+        queryWrapper.orderByDesc(strings);
         return queryWrapper;
     }
 
