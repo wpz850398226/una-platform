@@ -3,12 +3,11 @@ package cn.kunli.una.utils.common;
 
 import cn.kunli.una.pojo.vo.SysParam;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,26 +27,26 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> sysParamToWrapper(SysParam sysParam) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
-        if(sysParam.getAllEqMap()!=null)queryWrapper = this.allEqWrapper(queryWrapper, sysParam.getAllEqMap());
-        if(sysParam.getNeMap()!=null)queryWrapper = this.neWrapper(queryWrapper,sysParam.getNeMap());
-        if(sysParam.getGtMap()!=null)queryWrapper = this.gtWrapper(queryWrapper,sysParam.getGtMap());
-        if(sysParam.getGeMap()!=null)queryWrapper = this.geWrapper(queryWrapper,sysParam.getGeMap());
-        if(sysParam.getLtMap()!=null)queryWrapper = this.ltWrapper(queryWrapper,sysParam.getLtMap());
-        if(sysParam.getLeMap()!=null)queryWrapper = this.leWrapper(queryWrapper,sysParam.getLeMap());
-        if(sysParam.getLikeMap()!=null)queryWrapper = this.likeWrapper(queryWrapper,sysParam.getLikeMap());
-        if(sysParam.getNotLikeMap()!=null)queryWrapper = this.notLikeWrapper(queryWrapper,sysParam.getNotLikeMap());
-        if(sysParam.getLikeLeftMap()!=null)queryWrapper = this.likeLeftWrapper(queryWrapper,sysParam.getLikeLeftMap());
-        if(sysParam.getLikeRightMap()!=null)queryWrapper = this.likeRightWrapper(queryWrapper,sysParam.getLikeRightMap());
+        if(MapUtils.isNotEmpty(sysParam.getAllEqMap()))queryWrapper = this.allEqWrapper(queryWrapper, sysParam.getAllEqMap());
+        if(MapUtils.isNotEmpty(sysParam.getNeMap()))queryWrapper = this.neWrapper(queryWrapper,sysParam.getNeMap());
+        if(MapUtils.isNotEmpty(sysParam.getGtMap()))queryWrapper = this.gtWrapper(queryWrapper,sysParam.getGtMap());
+        if(MapUtils.isNotEmpty(sysParam.getGeMap()))queryWrapper = this.geWrapper(queryWrapper,sysParam.getGeMap());
+        if(MapUtils.isNotEmpty(sysParam.getLtMap()))queryWrapper = this.ltWrapper(queryWrapper,sysParam.getLtMap());
+        if(MapUtils.isNotEmpty(sysParam.getLeMap()))queryWrapper = this.leWrapper(queryWrapper,sysParam.getLeMap());
+        if(MapUtils.isNotEmpty(sysParam.getLikeMap()))queryWrapper = this.likeWrapper(queryWrapper,sysParam.getLikeMap());
+        if(MapUtils.isNotEmpty(sysParam.getNotLikeMap()))queryWrapper = this.notLikeWrapper(queryWrapper,sysParam.getNotLikeMap());
+        if(MapUtils.isNotEmpty(sysParam.getLikeLeftMap()))queryWrapper = this.likeLeftWrapper(queryWrapper,sysParam.getLikeLeftMap());
+        if(MapUtils.isNotEmpty(sysParam.getLikeRightMap()))queryWrapper = this.likeRightWrapper(queryWrapper,sysParam.getLikeRightMap());
         if(ArrayUtils.isNotEmpty(sysParam.getIsNullArray()))queryWrapper = this.isNullWrapper(queryWrapper,sysParam.getIsNullArray());
         if(ArrayUtils.isNotEmpty(sysParam.getIsNotNullArray()))queryWrapper = this.isNotNullWrapper(queryWrapper,sysParam.getIsNotNullArray());
-        if(sysParam.getInListMap()!=null)queryWrapper = this.inListWrapper(queryWrapper,sysParam.getInListMap());
-        if(sysParam.getNotInListMap()!=null)queryWrapper = this.notInListWrapper(queryWrapper,sysParam.getNotInListMap());
-        if(sysParam.getInSqlMap()!=null)queryWrapper = this.inSqlWrapper(queryWrapper,sysParam.getInSqlMap());
-        if(sysParam.getNotInSqlMap()!=null)queryWrapper = this.notInSqlWrapper(queryWrapper,sysParam.getNotInSqlMap());
+        if(MapUtils.isNotEmpty(sysParam.getInListMap()))queryWrapper = this.inListWrapper(queryWrapper,sysParam.getInListMap());
+        if(MapUtils.isNotEmpty(sysParam.getNotInListMap()))queryWrapper = this.notInListWrapper(queryWrapper,sysParam.getNotInListMap());
+        if(MapUtils.isNotEmpty(sysParam.getInSqlMap()))queryWrapper = this.inSqlWrapper(queryWrapper,sysParam.getInSqlMap());
+        if(MapUtils.isNotEmpty(sysParam.getNotInSqlMap()))queryWrapper = this.notInSqlWrapper(queryWrapper,sysParam.getNotInSqlMap());
         if(ArrayUtils.isNotEmpty(sysParam.getGroupByArray()))queryWrapper = this.groupByWrapper(queryWrapper,sysParam.getGroupByArray());
         if(ArrayUtils.isNotEmpty(sysParam.getOrderByAscArray()))queryWrapper = this.orderByAscWrapper(queryWrapper,sysParam.getOrderByAscArray());
         if(ArrayUtils.isNotEmpty(sysParam.getOrderByDescArray()))queryWrapper = this.orderByDescWrapper(queryWrapper,sysParam.getOrderByDescArray());
-        if(sysParam.getOrderByMap()!=null)queryWrapper = this.orderByWrapper(queryWrapper,sysParam.getOrderByMap());
+        if(MapUtils.isNotEmpty(sysParam.getOrderByMap()))queryWrapper = this.orderByWrapper(queryWrapper,sysParam.getOrderByMap());
         if(StringUtils.isNotBlank(sysParam.getLastStr()))queryWrapper = this.lastWrapper(queryWrapper,sysParam.getLastStr());
         if(StringUtils.isNotBlank(sysParam.getExistsStr()))queryWrapper = this.existsWrapper(queryWrapper,sysParam.getExistsStr());
         if(StringUtils.isNotBlank(sysParam.getNotExistsStr()))queryWrapper = this.notExistsWrapper(queryWrapper,sysParam.getNotExistsStr());
@@ -61,7 +60,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> allEqWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         Map<String, Object> processedMap = MapUtil.keysUpperCharToUnderLine(map);
         queryWrapper.allEq(processedMap);
@@ -75,7 +74,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> neWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.ne(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -90,7 +89,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> gtWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.gt(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -105,7 +104,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> geWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.ge(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -120,7 +119,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> ltWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.lt(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -135,7 +134,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> leWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.le(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -151,10 +150,10 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> likeWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            queryWrapper.like(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+            queryWrapper.like(StringUtils.isNotBlank(entry.getValue().toString()),StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
         }
         return queryWrapper;
     }
@@ -167,7 +166,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> notLikeWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.notLike(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -183,7 +182,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> likeLeftWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.likeLeft(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -199,7 +198,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> likeRightWrapper(QueryWrapper<T> queryWrapper,Map<String, Object> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             queryWrapper.likeRight(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -247,7 +246,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> inListWrapper(QueryWrapper<T> queryWrapper,Map<String, List<Object>> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, List<Object>> entry : map.entrySet()) {
             queryWrapper.in(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -263,7 +262,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> notInListWrapper(QueryWrapper<T> queryWrapper,Map<String, List<Object>> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, List<Object>> entry : map.entrySet()) {
             queryWrapper.notIn(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -279,7 +278,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> inSqlWrapper(QueryWrapper<T> queryWrapper, Map<String, String> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, String> entry : map.entrySet()) {
             queryWrapper.inSql(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -295,7 +294,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> notInSqlWrapper(QueryWrapper<T> queryWrapper, Map<String, String> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, String> entry : map.entrySet()) {
             queryWrapper.notInSql(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
@@ -356,7 +355,7 @@ public class WrapperUtil<T> {
      */
     public QueryWrapper<T> orderByWrapper(QueryWrapper<T> queryWrapper, Map<String,Boolean> map) {
         if(queryWrapper==null)queryWrapper = new QueryWrapper<T>();
-        if(map==null)return queryWrapper;
+        if(MapUtils.isEmpty(map))return queryWrapper;
         //集合 键名 转为数据库字段
         for (Map.Entry<String, Boolean> entry : map.entrySet()) {
             queryWrapper.orderBy(true,entry.getValue(),StringUtil.upperCharToUnderLine(entry.getKey()));

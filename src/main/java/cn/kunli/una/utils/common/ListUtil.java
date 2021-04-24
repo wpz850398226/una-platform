@@ -184,4 +184,10 @@ public class ListUtil {
         }
         return result;
     }
+
+    public static <T> List<T> getList(T record){
+        List<T> result = new ArrayList<T>();
+        result.add(record);
+        return result;
+    }
 }

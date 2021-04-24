@@ -79,8 +79,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			method = {RequestMethod.POST}
 	)
 	@ResponseBody
-	public SysResult add(T entity) {
-		boolean saveResult = service.save(entity);
+	public SysResult add(@Valid T entity) {
+		boolean saveResult = service.save(service.saveFormat(entity));
 		if(saveResult){
 			return SysResult.success();
 		}
@@ -93,8 +93,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	)
 	@ResponseBody
 	public SysResult get(@PathVariable Serializable id) {
-		BasePojo basePojo = service.selectById(id);
-		return new SysResult().success(basePojo);
+		T record = (T) service.selectById(id);
+		return new SysResult().success(service.resultFormat(ListUtil.getList(record)).get(0));
 	}
 
 	@RequestMapping(
@@ -103,7 +103,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	)
 	@ResponseBody
 	public SysResult update(T entity) {
-		boolean updateResult = service.updateById(entity);
+		boolean updateResult = service.updateById(service.saveFormat(entity));
 		if(updateResult){
 			return SysResult.success();
 		}
@@ -117,20 +117,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	public SysResult remove(@PathVariable Integer... ids) {
 		for (Integer id : ids) {
-			boolean removeResult = service.removeById(id);
-			if(!removeResult)return SysResult.fail();
+			boolean deleteResult = service.deleteById(id);
+			if(!deleteResult)return SysResult.fail();
 		}
 		return SysResult.success();
-	}
-
-	@RequestMapping(
-			value = {"/all"},
-			method = {RequestMethod.GET}
-	)
-	@ResponseBody
-	public SysResult all() {
-		List list = service.list();
-		return new SysResult().success(list,Long.valueOf(list.size()));
 	}
 
 	@RequestMapping(
@@ -139,33 +129,12 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	)
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> paramMap) {
-		if(paramMap.get("pageNum")==null)paramMap.put("pageNum",1L);
-		if(paramMap.get("pageSize")==null)paramMap.put("pageSize",10L);
 		SysParam sysParam = new SysParam(paramMap);
 		Page<T> objectPage = new Page<T>().setCurrent(sysParam.getPageNum()).setSize(sysParam.getPageSize());
 		IPage page = service.page(objectPage, wrapperUtil.sysParamToWrapper(sysParam));
 		page.setRecords(service.resultFormat(page.getRecords()));
 		return new SysResult().success(page.getRecords(),page.getTotal());
 	}
-
-	/**
-	 * ajax分页查询列表页
-	 * @return
-	 */
-	//@PreAuthorize("hasAuthority('qweqweqwe')")
-	/*@RequestMapping("/table")
-	@ResponseBody
-	public SysResult table(@RequestParam Map<String, Object> params) {
-		//判断权限
-		//if(!UserUtil.isPermitted(className+":retrieve"))return SysResult.fail("无权操作");
-		SysParamMap sysParamMap = new SysParamMap(params);
-		if (sysParamMap.getPageNum() != null && sysParamMap.getPageSize() != null)
-		PageHelper.startPage(sysParamMap.getPageNum(), sysParamMap.getPageSize());
-		List<T> list = service.selectBySelective(sysParamMap);
-		if(CollectionUtils.isEmpty(list))return new SysResult().setCode(0);
-		PageInfo<T> pageInfo = new PageInfo<>(list);
-		return new SysResult(0,"查询成功",list,pageInfo.getTotal());
-	}*/
 
 	/**
 	 * 保存/添加或修改
@@ -208,70 +177,6 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			return SysResult.fail();
 		}
 	}
-
-	/**
-	 * 删除
-	 * @param ids
-	 * @return
-	 */
-	/*@RequestMapping("/delete")
-	@ResponseBody
-	public SysResult delete(List<Integer> ids) {
-		//验证权限
-		//if(!UserUtil.isPermitted(className+":delete"))return SysResult.fail("无权操作");
-		SysResult result=new SysResult();
-		Integer num = 0;
-
-		if(ids!=null&&ids.length!=0) {
-			for(Object id:ids) {
-				num += service.deleteByPrimaryKey(id);
-			}
-		}
-
-		if(num == ids.length){
-
-			try {
-				result = SysResult.success();
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = new SysResult();
-			}
-
-		}
-		return result;
-	}*/
-
-	/**
-	 * 逻辑删除
-	 * @param ids
-	 * @return
-	 */
-	/*@RequestMapping("/deleteLogically")
-	@ResponseBody
-	public SysResult deleteLogically(Integer[] ids) {
-		//验证权限
-		if(!UserUtil.isPermitted(entityClassName+":delete"))return SysResult.fail("无权操作");
-		SysResult result=new SysResult();
-		Integer num = 0;
-
-		if(ids!=null&&ids.length!=0) {
-			for(Integer id:ids) {
-				num += service.deleteLogicallyByPrimaryKey(id);
-			}
-		}
-
-		if(num == ids.length){
-
-			try {
-				result = SysResult.success();
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = new SysResult();
-			}
-
-		}
-		return result;
-	}*/
 
 	/**
 	 * ajax查询所有

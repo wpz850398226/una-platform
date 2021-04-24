@@ -120,51 +120,10 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         return this.count(wrapperUtil.allEqWrapper(null,paramMap));
     }
 
-    /**
-     * 插入数据,只操作record中的非空属性
-     *
-     * @param record
-     * @return
-     */
-    @Override
-    public boolean save(T entity) {
-        return super.save(this.saveFormat(entity));
-    }
-    /*public SysResult insert(T record) {
-        SysResult validationResult = this.validation(record);
-        if (validationResult.getCode() != 200) return validationResult;
-        //int insertNum = this.mapper.insert(this.saveFormat(record));
-        boolean saveResult = this.save(this.saveFormat(record));
-        if (saveResult) {
-            return SysResult.success();
-        } else {
-            return SysResult.fail();
-        }
-    }*/
-
-
     @Override
     public boolean saveOrUpdate(T entity) {
         return super.saveOrUpdate(this.saveFormat(entity));
     }
-
-
-    /**
-     * 更新数据
-     *
-     * @param record
-     * @return
-     */
-    /*public SysResult updateById(T record) {
-        SysResult validationResult = this.validation(record);
-        if (validationResult.getCode() != 200) return validationResult;
-        int updateNum = this.mapper.updateById(this.saveFormat(record));
-        if (updateNum > 0) {
-            return SysResult.success();
-        } else {
-            return SysResult.fail();
-        }
-    }*/
 
     /**
      * 更新数据,只操作record中的非空属性
@@ -177,15 +136,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Override
     public boolean updateById(T entity) {
         this.deleteFromCacheByCode(entity.getId());
-        return super.updateById(this.saveFormat(entity));
+        return super.updateById(entity);
     }
-    /*public SysResult updateByPrimaryKeySelective(T record) {
-        this.deleteFromCacheByCode(record.getId());
-        SysResult validationResult = this.validation(record);
-        if (validationResult.getCode() != 200) return validationResult;
-        int updateNum = this.mapper.updateByPrimaryKeySelective(this.saveFormat(record));
-        return (updateNum > 0 ? SysResult.success():SysResult.fail());
-    }*/
 
     /**
      * 根据主键进行删除
@@ -195,8 +147,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     @SneakyThrows
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
-    @Override
-    public boolean removeById(Serializable id) {
+    public boolean deleteById(Serializable id) {
         String className = entityClass.getSimpleName();
         SysEntity sysEntity = sysEntityService.queryFromRedis(className);
         //获取当前类对应实体类对象
@@ -211,65 +162,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         this.deleteFromCacheByCode(id);
         return super.removeById(id);
     }
-    /*public Integer deleteByPrimaryKey(Object id) {
-        String className = entityClass.getSimpleName();
-        SysEntity sysEntity = sysEntityService.queryFromRedis(className);
-        //获取当前类对应实体类对象
-        if(sysEntity!=null) {
-            //获取父字段字段类对象
-            SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
-            String tableName = StringUtil.upperCharToUnderLine(className);
-            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
-            commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
-        }
-
-        this.deleteFromCacheByCode(id);
-        return mapper.deleteByPrimaryKey(id);
-    }*/
-
-    /**
-     * 批量删除
-     * @param ids
-     * @return
-     */
-    @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
-        String className = entityClass.getSimpleName();
-        SysEntity sysEntity = sysEntityService.queryFromRedis(className);
-        //获取当前类对应实体类对象
-        if(sysEntity!=null) {
-            //获取父字段字段类对象
-            SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
-            String tableName = StringUtil.upperCharToUnderLine(className);
-            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
-            for (Serializable serializable : idList) {
-                commonMapper.increaseOrderBehindById(tableName, fieldCode, serializable);
-                this.deleteFromCacheByCode(serializable);
-            }
-        }
-
-        return super.removeByIds(idList);
-    }
-
-    /**
-     * 根据条件分页查询
-     *
-     * @param record
-     * @return
-     */
-    public Page<T> selectPage(SysParam sysParam) {
-        Page<T> objectPage = new Page<T>().setCurrent(sysParam.getPageNum()).setSize(sysParam.getPageSize());
-        return super.page(objectPage,wrapperUtil.sysParamToWrapper(sysParam));
-    }
-    /*public Page<T> selectPage(SysParamMap sysParamMap) {
-        Page<T> objectPage = new Page<T>().setCurrent(sysParamMap.getPageNum()).setSize(sysParamMap.getPageSize());
-        return super.page(objectPage,wrapperUtil.allEqWrapper(sysParamMap));
-    }*/
-    /*public PageInfo<T> queryPageListByWhere(T record, Integer page, Integer rows) {
-        PageHelper.startPage(page, rows);
-        List<T> list = this.mapper.select(record);
-        return new PageInfo<>(list);
-    }*/
 
     /**
      * 条件查询，返回resultMap,统计查询
