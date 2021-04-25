@@ -1,7 +1,6 @@
 package cn.kunli.una.utils.tencent;
 
 import cn.kunli.una.pojo.system.SysConfiguration;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.utils.common.HttpUtil;
 import cn.kunli.una.utils.common.ListUtil;

@@ -2,16 +2,9 @@ package cn.kunli.una.controller.duohui.guanwang;
 
 import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
 import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
-import cn.kunli.una.pojo.system.SysConfiguration;
-import cn.kunli.una.pojo.system.SysMenu;
-import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.service.duohui.guanwang.GwConfigurationService;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
-import cn.kunli.una.service.system.SysConfigurationService;
-import cn.kunli.una.service.system.SysMenuService;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

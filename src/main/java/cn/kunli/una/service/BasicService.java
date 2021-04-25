@@ -2,21 +2,23 @@ package cn.kunli.una.service;
 
 import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
-import cn.kunli.una.mapper.SysSortMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
+import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFieldService;
+import cn.kunli.una.service.system.SysSortService;
 import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -56,7 +57,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Autowired
     protected SysFieldService sysFieldService;
     @Autowired
-    protected SysSortMapper sysSortMapper;
+    protected SysSortService sysSortService;
+    @Autowired
+    protected SysDictionaryService sysDictionaryService;
     @Autowired
     protected CommonMapper commonMapper;
 
@@ -71,8 +74,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param id
      * @return
      */
+    @Override
     @Cacheable(value = "entityRecord", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public T selectById(Serializable id) {
+    public T getById(Serializable id) {
         return super.getById(id);
     }
 
@@ -119,7 +123,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //获取当前类对应实体类对象
         if(sysEntity!=null) {
             //获取父字段字段类对象
-            SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+            SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
             String tableName = StringUtil.upperCharToUnderLine(className);
             String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
             commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
@@ -135,9 +139,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param record
      * @return
      */
-    /*public List<T> selectBySelective(SysParamMap sysParamMap) {
-        sysParamMap = this.queryFormat(sysParamMap);
-        List<T> ts = this.mapper.selectBySelective(sysParamMap);
+    /*public List<T> selectBySelective(map map) {
+        map = this.queryFormat(map);
+        List<T> ts = this.mapper.selectBySelective(map);
         return this.resultFormat(ts);
     }*/
 
@@ -154,7 +158,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //获取当前类对应实体类对象
         SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
         //获取父字段字段类对象
-        SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+        SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
 
         String tableName = StringUtil.upperCharToUnderLine(entityClass.getSimpleName());
         String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
@@ -192,14 +196,14 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     public T queryFromRedis(String key) {
         if(StringUtils.isBlank(key))return null;
         T record = super.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("code", key)));
-//        List<T> ts = this.selectBySelective(SysParamMap.MapBuilder.aMap().put("code",key).build());
+//        List<T> ts = this.selectBySelective(map.MapBuilder.aMap().put("code",key).build());
         return record;
     }
 
     //手动删除 通过code缓存的记录
     @SneakyThrows
     public void deleteFromCacheByCode(Serializable id){
-        T t = this.selectById(id);
+        T t = this.getById(id);
         if(t!=null){
             if(t!=null){
                 Map map = JSONUtil.toMap(t);
@@ -245,7 +249,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 if(sysEntity.getParentFieldId()!=null){
                     //如果当前类对应实体类有设置父字段，则验证名称局部唯一性
                     //获取父字段字段类对象
-                    SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+                    SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
                     //获取父字段
                     Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
                     parentField.setAccessible(true);
@@ -312,7 +316,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
             if(sysEntity!=null){
                 //获取父字段字段类对象
-                SysField sysField = sysFieldService.selectById(sysEntity.getParentFieldId());
+                SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
                 int num = 0;
                 if(sysField!=null){
                     //获取父字段
@@ -336,43 +340,50 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     /**
      * 查询实例格式化
-     * @param sysParamMap
+     * @param map
      * @return
      */
-    public SysParamMap queryFormat(SysParamMap sysParamMap) {
+    public Map<String,Object> queryFormat(Map<String,Object> map) {
 
-        if(sysParamMap==null)return sysParamMap;
-        SysEntity sysEntity = null;
-        //查询obj对应实体类
-        if(redisUtil.getIsConnect()&&redisUtil.hasKey("SysEntity:"+entityClass.getSimpleName())){
-            sysEntity = (SysEntity) redisUtil.get("SysEntity:"+entityClass.getSimpleName());
-        }else{
-            List<SysEntity> select = sysEntityService.list(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
-            if(!CollectionUtils.isEmpty(select))sysEntity = select.get(0);
-        }
+        if(MapUtils.isEmpty(map))return map;
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
 
-
-        //排序处理
-        if(StringUtils.isNotBlank(sysParamMap.getSortkey())&&StringUtils.isNotBlank(sysParamMap.getSortord())) {
-            //如果采用了单列排序功能
-            sysParamMap.put("sortSql", QueryUtil.sortFieldToSortSql(sysParamMap.getSortkey(),sysParamMap.getSortord()));
-        }else {
-            //如果单列排序功能没有调用，判断排序查询语句是否为空，如果为空，按照默认综合排序条件排序
-            if(StringUtils.isBlank(sysParamMap.getSortSql())&&sysEntity!=null) {
+        //如果没有指定排序条件，则启用系统设置的排序方式
+        if((map.get("orderByAsc")==null||StringUtils.isBlank(map.get("orderByAsc").toString()))
+                &&(map.get("orderByDesc")==null||StringUtils.isBlank(map.get("orderByDesc").toString()))) {
+            if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = redisUtil.getIsConnect()&&redisUtil.hasKey("SysEntity:"+sysEntity.getCode())?((SysEntity) redisUtil.get("SysEntity:"+sysEntity.getCode())).getSortList():
-                        sysSortMapper.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("sortSql","record.sequence").build());
+                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
-                sysParamMap.setSortSql(QueryUtil.sortListToSortSql(sortList));
+                if(CollectionUtils.isNotEmpty(sortList)){
+                    StringBuffer ascFieldBuffer = new StringBuffer();
+                    StringBuffer descFieldBuffer = new StringBuffer();
+                    for (SysSort sysSort : sortList) {
+                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
+                        if(sysSort.getSortord()){
+                            ascFieldBuffer.append(",").append(assignmentCode);
+                        }else{
+                            descFieldBuffer.append(",").append(assignmentCode);
+                        }
+                    }
+
+                    if(ascFieldBuffer.length()>0){
+                        map.put("orderByAsc",ascFieldBuffer.delete(0, 1).toString());
+                    }
+
+                    if(descFieldBuffer.length()>0){
+                        map.put("orderByDesc",descFieldBuffer.delete(0, 1).toString());
+                    }
+                }
             }
         }
 
         //查询条件处理
         //如果高级查询语句不为空，则判断高级查询条件是否为空
-        if(sysParamMap.get("advancedQuery")==null&&ListUtil.isNotNull(sysParamMap.getUtilQueryList())) {
+        /*if(map.get("advancedQuery")==null&&ListUtil.isNotNull(map.getUtilQueryList())) {
             //格式化高级查询条件，转为查询语句，并将语句赋值给查询对象
-            sysParamMap.put("advancedQuery",QueryUtil.queryListToQueryStr(sysParamMap.getUtilQueryList()));
-        }
+            map.put("advancedQuery",QueryUtil.queryListToQueryStr(map.getUtilQueryList()));
+        }*/
 
 		/*try {
 			Subject subject = SecurityUtils.getSubject();
@@ -422,7 +433,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 			e.printStackTrace();
 		}*/
 
-        return sysParamMap;
+        return map;
     }
 
     /**
@@ -453,7 +464,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                             if(null != value){
                                 //实体中该字段值为空的
                                 SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),this);
-                                if(displayResult.getCode()==200)displayValue = displayResult.getData().toString();
+                                if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
                             }
                             Map<String, Object> map = entity.getMap();
                             if(map==null)map = new HashMap<>();

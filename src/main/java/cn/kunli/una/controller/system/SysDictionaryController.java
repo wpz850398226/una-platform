@@ -3,9 +3,7 @@ package cn.kunli.una.controller.system;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.service.system.SysDictionaryService;
-import cn.kunli.una.utils.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,11 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/sys/dictionary")
 public class SysDictionaryController extends BaseController<SysDictionaryService, SysDictionary> {
 
-
-    @Autowired
-    private SysDictionaryService objService;
-    @Autowired
-    private RedisUtil redisUtil;
 
     /**
      * ajax查询所有

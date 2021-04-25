@@ -50,7 +50,7 @@ public class SysDataController extends BaseController<SysDataService, SysData> {
     @ResponseBody
     public Map querySingle(Integer id) {
         if (id==null) return null;
-        SysData sysData = service.selectById(id);
+        SysData sysData = service.getById(id);
         if(sysData==null)return null;
         JSONObject value = sysData.getValue();
         Map map = JSONUtil.toMap(sysData);

@@ -72,7 +72,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
             //获取字段名
             String fieldAssignmentCode = fieldMap.get(sysData.getFieldId());
             if (StringUtils.isBlank(fieldAssignmentCode)){
-                SysField sysField = sysFieldService.selectById(sysData.getFieldId());
+                SysField sysField = sysFieldService.getById(sysData.getFieldId());
                 fieldAssignmentCode = sysField.getAssignmentCode();
                 fieldMap.put(sysField.getId(), fieldAssignmentCode);
             }

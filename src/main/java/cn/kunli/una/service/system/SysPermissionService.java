@@ -23,8 +23,6 @@ import java.util.List;
 public class SysPermissionService extends BasicService<SysPermissionMapper, SysPermission> {
     @Autowired
     private SysRolePermissionService sysRolePermissionService;
-    @Autowired
-    private SysDictionaryService sysDictionaryService;
 
     /**
      * 插入数据,只操作record中的非空属性
@@ -61,7 +59,7 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
     public SysPermission saveFormat(SysPermission obj) {
         //如果权限名称为空，自动拼接名称
         if (StringUtils.isBlank(obj.getName())) {
-            SysEntity sysEntity = sysEntityService.selectById(obj.getEntityId());
+            SysEntity sysEntity = sysEntityService.getById(obj.getEntityId());
             if (sysEntity != null) {
                 SysDictionary typeDictionary = sysDictionaryService.queryFromRedis(obj.getTypeDcode());
                 SysDictionary platformDictionary = sysDictionaryService.queryFromRedis(sysEntity.getPlatformDcode());

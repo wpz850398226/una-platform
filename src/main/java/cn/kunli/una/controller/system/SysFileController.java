@@ -4,16 +4,12 @@ import cn.kunli.una.annotation.DisableAuth;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysFile;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysParameter;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFileService;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,14 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/sys/file")
 public class SysFileController extends BaseController<SysFileService, SysFile> {
-    @Autowired
-    private SysFileService objService;
-    @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
-    private SysEntityService sysEntityService;
-
-
     @Value("${upload.file.path}")
     public String uploadFilePath;
 
@@ -56,8 +44,7 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
     public String form(Model model, SysParameter sysParameter, String textInputId, Integer num) {
 
         //如果redis已连接，则从redis中获取实体类，否则从数据库查询
-        SysEntity entityClass = redisUtil.getIsConnect() && redisUtil.hasKey("entity_SysFile") ? (SysEntity) redisUtil.get("entity_SysFile") :
-                sysEntityService.list(sysEntityService.getWrapper(MapUtil.getMap("className", "SysFile"))).get(0);
+        SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("className", "SysFile")));
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("textInputId", textInputId);
         model.addAttribute("num", num);
@@ -69,6 +56,6 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
     @DisableAuth
     @ResponseBody
     public SysResult uploadFile(SysFile file, HttpServletRequest request, Integer fileType) {
-        return objService.insertSelective(file);
+        return service.insertSelective(file);
     }
 }

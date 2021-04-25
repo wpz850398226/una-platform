@@ -7,10 +7,7 @@ import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.vo.*;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.system.SysEntityService;
-import cn.kunli.una.service.system.SysFieldService;
-import cn.kunli.una.service.system.SysRolePermissionService;
-import cn.kunli.una.service.system.SysRoleService;
+import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.BaseUtil;
 import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSON;
@@ -61,6 +58,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@Autowired
 	protected SysRoleService sysRoleService;
 	@Autowired
+	protected SysDictionaryService sysDictionaryService;
+	@Autowired
 	protected SysRolePermissionService sysRolePermissionService;
 
 	// 当前Service上泛型的字节码对象
@@ -93,7 +92,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	)
 	@ResponseBody
 	public SysResult get(@PathVariable Serializable id) {
-		T record = (T) service.selectById(id);
+		T record = (T) service.getById(id);
 		return new SysResult().success(service.resultFormat(ListUtil.getList(record)).get(0));
 	}
 
@@ -140,7 +139,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			map.remove("pageSize");
 		}
 		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
-		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(map));
+		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(service.queryFormat(map)));
 		page.setRecords(service.resultFormat(page.getRecords()));
 		return new SysResult().success(page.getRecords(),page.getTotal());
 	}

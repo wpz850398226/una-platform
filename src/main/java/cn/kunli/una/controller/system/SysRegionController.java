@@ -2,18 +2,9 @@ package cn.kunli.una.controller.system;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysRegion;
-import cn.kunli.una.pojo.vo.SysParamMap;
-import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysRegionService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.redis.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * (SysRegion)表控制层
@@ -24,12 +15,6 @@ import java.util.Set;
 @Controller
 @RequestMapping("/sys/region")
 public class SysRegionController extends BaseController<SysRegionService, SysRegion> {
-    @Autowired
-    private SysRegionService objService;
-    @Autowired
-    private RedisUtil redisUtil;
-
-
     /**
      * 刷新redis河北地区字典缓存
      *

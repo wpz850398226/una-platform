@@ -3,15 +3,9 @@ package cn.kunli.una.controller.system;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysRole;
 import cn.kunli.una.pojo.system.SysRolePermission;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.system.SysDictionaryService;
-import cn.kunli.una.service.system.SysEntityService;
-import cn.kunli.una.service.system.SysRolePermissionService;
 import cn.kunli.una.service.system.SysRoleService;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.redis.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +22,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/sys/role")
 public class SysRoleController extends BaseController<SysRoleService, SysRole> {
-    @Autowired
-    private SysDictionaryService sysDictionaryService;
-    @Autowired
-    private RedisUtil redisUtil;
-
-
     //打开授权表单
     @RequestMapping("/authorization")
     public String authorization(Model model, SysRole obj) {

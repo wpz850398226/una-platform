@@ -4,8 +4,6 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
-import cn.kunli.una.service.system.SysDictionaryService;
-import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFieldService;
 import cn.kunli.una.utils.common.JSONUtil;
 import cn.kunli.una.utils.common.MapUtil;
@@ -28,10 +26,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
 
     @Autowired
     private SysFieldService objService;
-    @Autowired
-    private SysEntityService sysEntityService;
-    @Autowired
-    private SysDictionaryService sysDictionaryService;
+
 
     /**
      * 跳转表单页
@@ -44,7 +39,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
     @RequestMapping("form")
     public String form(Model model, @RequestParam Map<String, Object> params) throws IllegalAccessException {
         if (params.get("id") != null) {
-            SysField sysField = objService.selectById(params.get("id").toString());
+            SysField sysField = objService.getById(params.get("id").toString());
             if (sysField != null) params = JSONUtil.toMapWithParent(sysField);
         } else {
             //新增时设置默认值

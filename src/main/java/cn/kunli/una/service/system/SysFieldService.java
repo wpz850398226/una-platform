@@ -16,8 +16,6 @@ import java.util.List;
 public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
     @Autowired
-    private SysDictionaryService sysDictionaryService;
-    @Autowired
     private SysAccountService sysAccountService;
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
@@ -30,16 +28,16 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 target = sysDictionaryService.queryFromRedis(value);
                 break;
             case "ityId"://实体 entityId
-                target = sysEntityService.selectById(Integer.valueOf(value));
+                target = sysEntityService.getById(Integer.valueOf(value));
                 break;
             case "untId"://账号 accountId
-                target = sysAccountService.selectById(Integer.valueOf(value));
+                target = sysAccountService.getById(Integer.valueOf(value));
                 break;
             case "eldId"://字段 fieldId
-                target = sysFieldService.selectById(Integer.valueOf(value));
+                target = sysFieldService.getById(Integer.valueOf(value));
                 break;
             case "entId"://父id parentId
-                target = bs.selectById(Integer.valueOf(value));
+                target = bs.getById(Integer.valueOf(value));
                 break;
             default:
                 return SysResult.fail("查询失败：赋值编码 未识别");

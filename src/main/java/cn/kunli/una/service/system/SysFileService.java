@@ -3,7 +3,6 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysFileMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysFile;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.SavePicUtils;
@@ -31,8 +30,6 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     @Autowired
     private SavePicUtils savePicUtils;
-    @Autowired
-    private SysDictionaryService sysDictionaryService;
 
     /**
      * 插入数据,只操作record中的非空属性

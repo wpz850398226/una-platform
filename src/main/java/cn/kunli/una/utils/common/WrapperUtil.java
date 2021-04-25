@@ -109,7 +109,7 @@ public class WrapperUtil<T> {
                             break;
                         default:
                             //其他条件默认为精确匹配
-                            queryWrapper.eq(key,value);
+                            queryWrapper.eq(StringUtil.upperCharToUnderLine(key),value);
                             break;
                     }
                 }

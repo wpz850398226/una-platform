@@ -1,7 +1,5 @@
 package cn.kunli.una.pojo;
 
-import cn.kunli.una.pojo.system.SysSort;
-import cn.kunli.una.pojo.vo.SysUtilQuery;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -12,10 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,12 +82,12 @@ public class BasePojo implements Serializable{
 	private String key;
 	@TableField(exist = false)
 	private String keyword;						//查询关键字
-	@TableField(exist = false)
-	private String sortsql;						//排序查询语句
-	@TableField(exist = false)
-	private String sortord;						//排序方式
-	@TableField(exist = false)
-	private String sortkey;						//排序关键字
+//	@TableField(exist = false)
+//	private String sortsql;						//排序查询语句
+//	@TableField(exist = false)
+//	private String sortord;						//排序方式
+//	@TableField(exist = false)
+//	private String sortkey;						//排序关键字
 	@TableField(exist = false)
 	private String standbyCondition;			//备用查询条件
 	@TableField(exist = false)

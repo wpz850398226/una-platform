@@ -2,7 +2,6 @@ package cn.kunli.una.controller;
 
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.Constant;
-import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.ExcelUtils;
@@ -41,8 +40,6 @@ public class CommonController {
     private SysFieldService sysFieldService;
     @Autowired
     private SysDictionaryService sysDictionaryService;
-    @Autowired
-    private RedisUtil redisUtil;
     @Autowired
     private SysMenuService sysMenuService;
     @Autowired
@@ -123,7 +120,7 @@ public class CommonController {
             case "SysDictionary":
                 if (obj.get("parentId") != null) {
                     Integer parentId = Integer.valueOf(obj.get("parentId").toString());
-                    SysDictionary parentDictionary = sysDictionaryService.selectById(parentId);
+                    SysDictionary parentDictionary = sysDictionaryService.getById(parentId);
                     obj.put("code", parentDictionary.getCode() + "_");
                 }
                 obj.put("type", "选项");
@@ -132,7 +129,7 @@ public class CommonController {
             case "SysMenu":
                 if (obj.get("parentId") != null) {
                     Integer parentId = Integer.valueOf(obj.get("parentId").toString());
-                    SysMenu sysMenu = sysMenuService.selectById(parentId);
+                    SysMenu sysMenu = sysMenuService.getById(parentId);
                     obj.put("level", sysMenu.getLevel() + 1);
                 }
             case "SysConfiguration":

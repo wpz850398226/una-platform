@@ -39,14 +39,8 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
      * @return
      */
     public String selectTitleByPrimaryKey(String id) {
-        if (redisUtil.hasKey("SysDictionary:" + id)) {
-            Object o = redisUtil.get("SysDictionary:" + id);
-            if (o != null) return o.toString();
-        } else {
-            SysDictionary sysDictionary = this.mapper.selectById(id);
-            if (sysDictionary != null) return sysDictionary.getName();
-        }
-
+        SysDictionary sysDictionary = this.getById(id);
+        if (sysDictionary != null) return sysDictionary.getName();
         return null;
     }
 
@@ -90,7 +84,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     @Override
     public SysDictionary saveFormat(SysDictionary obj) {
         //如果父字典不是根目录，则新增字典根id与父字典保持一致
-        SysDictionary parentDictionary = this.selectById(obj.getParentId());
+        SysDictionary parentDictionary = this.getById(obj.getParentId());
         if (obj.getParentId().equals(0)) {
             obj.setRootId(0);
         } else {

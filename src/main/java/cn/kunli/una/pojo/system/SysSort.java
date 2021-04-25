@@ -20,7 +20,7 @@ public class SysSort extends BasePojo implements Serializable {
 
     private String fieldId;
 
-    private String sortord;
+    private Boolean sortord;
 
 
     @TableField(exist = false)
