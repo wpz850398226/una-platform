@@ -1,7 +1,6 @@
 package cn.kunli.una.utils.redis;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -16,12 +15,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil<T> {
 
-    private static Logger logger = Logger.getLogger(RedisUtil.class);
-
     @Autowired
     private RedisTemplate redisTemplate;
-    //@Autowired
-    //private StringRedisTemplate stringRedisTemplate;
 
     private boolean isConnect = true;
 
@@ -678,7 +673,7 @@ public class RedisUtil<T> {
                 } catch (Exception e) {
                     //如果redis不可用，标记
                     if(e.getMessage().indexOf("Cannot get Jedis connection")!=-1)setIsConnect(false);
-                    logger.error("批量删除key失败");
+                    log.error("批量删除key失败");
                     //如果redis不可用，标记
             if(e.getMessage().indexOf("Cannot get Jedis connection")!=-1)setIsConnect(false);
             e.printStackTrace();
@@ -701,7 +696,7 @@ public class RedisUtil<T> {
                 } catch (Exception e) {
                     //如果redis不可用，标记
                     if(e.getMessage().indexOf("Cannot get Jedis connection")!=-1)setIsConnect(false);
-                    logger.error("设置redis失败");
+                    log.error("设置redis失败");
                     //如果redis不可用，标记
             if(e.getMessage().indexOf("Cannot get Jedis connection")!=-1)setIsConnect(false);
             e.printStackTrace();

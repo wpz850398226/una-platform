@@ -7,8 +7,6 @@ import cn.kunli.una.pojo.vo.SysHttpCode;
 import cn.kunli.una.utils.common.HttpUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,14 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Component
 public class AuthInterceptor extends BaseInterceptor {
-    private Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
-
     @Autowired
     private RedisUtil redisUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
-//        logger.info("================进入拦截器======================");
+//        log.info("================进入拦截器======================");
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }

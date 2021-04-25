@@ -148,7 +148,7 @@
             dataType: 'json',
             traditional:true,
             async:false,
-            data:{entityId:'[[${sysResponseParameter.sysEntity.id}]]',isEffect:1},
+            data:{entityId:'[[${sysResponseParameter.sysEntity.id}]]'},
             success:function(result){
                 $.each(result,function (index,record) {
                     var dataMap = new Map();

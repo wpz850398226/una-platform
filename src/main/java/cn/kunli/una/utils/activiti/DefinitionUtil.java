@@ -1,6 +1,7 @@
 package cn.kunli.una.utils.activiti;
 
 import cn.kunli.una.pojo.vo.ActDefinition;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -9,8 +10,6 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +23,7 @@ import java.util.*;
  * @version 2020年2月26日09:06:45
  * 流程引擎工具类
  */
+@Slf4j
 @Component
 public class DefinitionUtil {
 
@@ -33,13 +33,6 @@ public class DefinitionUtil {
     //private ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
     @Autowired
     private RepositoryService repositoryService;
-
-
-
-    /**
-     * 日志
-     */
-    protected Logger logger = LoggerFactory.getLogger(DefinitionUtil.class);
 
 
 //  List<task> list = processEngine.getTaskService()//与正在执行的任务管理相关的Service
@@ -108,7 +101,7 @@ public class DefinitionUtil {
      *  
      */
     public Deployment deployFromDisk(String name, String fileUrl) {
-        logger.info("【部署流程】文件地址={}", fileUrl);
+        log.info("【部署流程】文件地址={}", fileUrl);
         String basicPath = "";
         /*String dictionaryName = "windows文件根目录";
         if(SystemUtil.isOSLinux())dictionaryName = "linux文件根目录";
@@ -141,7 +134,7 @@ public class DefinitionUtil {
      *  
      */
     public Deployment deployFromClassPath(String fileName) {
-        logger.info("【部署流程】fileName={}", fileName);
+        log.info("【部署流程】fileName={}", fileName);
         Deployment deployment = repositoryService.createDeployment().name(fileName).addClasspathResource("process/" + fileName).deploy();
         return deployment;
     }

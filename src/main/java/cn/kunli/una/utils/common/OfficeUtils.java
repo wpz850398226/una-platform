@@ -1,27 +1,22 @@
 package cn.kunli.una.utils.common;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@Slf4j
 public class OfficeUtils {
-
-    protected static final Logger logger = LoggerFactory.getLogger(OfficeUtils.class);
 
     public static  JSONObject readExcelContentz(MultipartFile file,List<String[]> fieldNameList) throws Exception {
         JSONObject result = new JSONObject();
@@ -95,9 +90,9 @@ public class OfficeUtils {
                 wb = null;
             }
         } catch (FileNotFoundException e) {
-            logger.error("FileNotFoundException", e);
+            log.error("FileNotFoundException", e);
         } catch (IOException e) {
-            logger.error("IOException", e);
+            log.error("IOException", e);
         }
         return wb;
     }

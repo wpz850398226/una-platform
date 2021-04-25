@@ -12,11 +12,11 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 自定义缓存生成器
+ * 自定义缓存驱逐器
  */
 @Slf4j
 @Component
-public class MyCacheKeyGenerator implements KeyGenerator {
+public class MyCacheKeyEvictor implements KeyGenerator {
 
     @Override
     public Object generate(Object target, Method method, Object... params) {

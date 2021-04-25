@@ -29,7 +29,7 @@ public class GwIndexController {
     @RequestMapping("/index")
     public String index(Model model) {
         List<GwMenu> gwMenuList = gwMenuService.list(gwMenuService.getWrapper(MapUtil.getMap("parentId", 100000)));
-        GwConfiguration systemTitle = gwConfigurationService.queryFromRedis("systemTitle");
+        GwConfiguration systemTitle = gwConfigurationService.getOne(gwConfigurationService.getWrapper(MapUtil.getMap("code","systemTitle")));
         model.addAttribute("gwMenuList", gwMenuList);
         model.addAttribute("systemName", systemTitle.getValue());
         return "duohui/guanwang/index";

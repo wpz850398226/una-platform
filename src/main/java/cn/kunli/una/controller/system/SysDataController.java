@@ -1,6 +1,5 @@
 package cn.kunli.una.controller.system;
 
-import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.pojo.vo.SysResult;
@@ -31,7 +30,6 @@ public class SysDataController extends BaseController<SysDataService, SysData> {
      * @param params
      * @return
      */
-    @LogAnnotation
     @RequestMapping("/savePrivate")
     @ResponseBody
     public SysResult save(@Valid SysData record, @RequestParam Map<String, Object> params) {

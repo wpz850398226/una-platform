@@ -1,5 +1,6 @@
 package cn.kunli.una.utils.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -13,7 +14,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -36,9 +36,8 @@ import java.util.*;
  * @version 创建时间：2020年3月2日11:19:41
  * 类说明 :请求网络接口工具类
  */
+@Slf4j
 public class HttpUtil {
-
-    private static Logger logger = Logger.getLogger(HttpUtil.class);
 
     private static void trustAllHosts() {
         // Create a trust manager that does not validate certificate chains
@@ -197,7 +196,7 @@ public class HttpUtil {
                     httpResponse.close();
                 }
             } catch (IOException e) {
-                logger.info("## release resouce error ##" + e);
+                log.info("## release resouce error ##" + e);
             }
         }
         return result;
@@ -229,7 +228,7 @@ public class HttpUtil {
                     httpResponse.close();
                 }
             } catch (IOException e) {
-                logger.info("## release resouce error ##" + e);
+                log.info("## release resouce error ##" + e);
             }
         }
         return result;

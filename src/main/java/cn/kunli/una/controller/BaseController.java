@@ -3,7 +3,6 @@ package cn.kunli.una.controller;
 
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
-import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.vo.*;
 import cn.kunli.una.service.BasicService;
@@ -13,6 +12,7 @@ import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -41,9 +41,8 @@ import java.util.*;
 * @version 创建时间：2019年6月10日 上午10:41:12
 * 类说明 :controller父类
 */
+@Slf4j
 public abstract class BaseController<S extends BasicService,T extends BasePojo>{
-
-	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
 	@Autowired
 	protected HttpServletRequest request;
@@ -73,10 +72,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		entityClassName = entityClass.getSimpleName();
 	}
 
-	@RequestMapping(
-			value = {""},
-			method = {RequestMethod.POST}
-	)
+	@PostMapping("")
 	@ResponseBody
 	public SysResult add(@Valid T entity) {
 		boolean saveResult = service.save(service.saveFormat(entity));
@@ -86,20 +82,14 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return SysResult.fail();
 	}
 
-	@RequestMapping(
-			value = {"/{id}"},
-			method = {RequestMethod.GET}
-	)
+	@GetMapping("/{id}")
 	@ResponseBody
 	public SysResult get(@PathVariable Serializable id) {
 		T record = (T) service.getById(id);
 		return new SysResult().success(service.resultFormat(ListUtil.getList(record)).get(0));
 	}
 
-	@RequestMapping(
-			value = {""},
-			method = {RequestMethod.PUT}
-	)
+	@PutMapping("")
 	@ResponseBody
 	public SysResult update(T entity) {
 		boolean updateResult = service.updateById(service.saveFormat(entity));
@@ -109,10 +99,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return SysResult.fail();
 	}
 
-	@RequestMapping(
-			value = {"/{ids}"},
-			method = {RequestMethod.DELETE}
-	)
+	@DeleteMapping("/{ids}")
 	@ResponseBody
 	public SysResult remove(@PathVariable Integer... ids) {
 		for (Integer id : ids) {
@@ -122,10 +109,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return SysResult.success();
 	}
 
-	@RequestMapping(
-			value = {"/page"},
-			method = {RequestMethod.GET}
-	)
+	@GetMapping("/page")
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> map) {
 		Long pageNum = 1L;
@@ -149,7 +133,6 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 * @param obj
 	 * @return
 	 */
-	@LogAnnotation
 	@RequestMapping("/save")
 	@ResponseBody
 	public SysResult save(@Valid T entity) {
@@ -248,8 +231,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			//查询对应实体类
 			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
 			//查询需要导入的实体字段
-			Map<String, Object> map = MapUtil.getMap("allEq:entityId", sysEntity.getId());
-			map.put("allEq:isImport",1);
+			Map<String, Object> map = new MapUtil<>().put("entityId", sysEntity.getId()).put("isImport",1).build();
 			List<SysField> fieldList = sysFieldService.list(wrapperUtil.mapToWrapper(map));
 			if(ListUtil.isNotNull(fieldList)) {
 				//如果需要导入的字段不为空且与excel列数相等
@@ -457,9 +439,9 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 * 刷新redis配置类缓存
 	 * @return
 	 */
-	@RequestMapping("refreshRedis")
+	/*@RequestMapping("refreshRedis")
 	@ResponseBody
 	public SysResult refreshRedis(String code) {
 		return service.refreshRedis(code);
-	}
+	}*/
 }

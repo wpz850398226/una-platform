@@ -1,6 +1,6 @@
 package cn.kunli.una.utils.redis;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,9 +11,8 @@ import java.util.List;
  * Permission:
  * Date: 2020年1月27日19:33:53
  */
+@Slf4j
 public class SerializeUtil {
-
-    private static Logger logger = Logger.getLogger(SerializeUtil.class);
 
     public static byte[] serialize(Object object) {
         ObjectOutputStream oos = null;
@@ -73,7 +72,7 @@ public class SerializeUtil {
             try {
                 closeable.close();
             } catch (Exception e) {
-                logger.info("Unable to close %s");
+                log.info("Unable to close %s");
             }
         }
     }
@@ -134,9 +133,9 @@ public class SerializeUtil {
                 bis.close();
             }
         } catch (IOException e) {
-            logger.warn("Caught IOException decoding %d bytes of data");
+            log.warn("Caught IOException decoding %d bytes of data");
         } catch (ClassNotFoundException e) {
-            logger.warn("Caught CNFE decoding %d bytes of data");
+            log.warn("Caught CNFE decoding %d bytes of data");
         } finally {
             close(is);
             close(bis);

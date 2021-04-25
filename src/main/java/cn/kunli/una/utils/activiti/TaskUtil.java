@@ -1,9 +1,11 @@
 package cn.kunli.una.utils.activiti;
 
-import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.pojo.vo.ActTask;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.utils.common.ListUtil;
-import org.activiti.engine.*;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.history.HistoricVariableInstance;
@@ -19,8 +21,6 @@ import org.activiti.engine.task.DelegationState;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,12 +43,6 @@ public class TaskUtil {
     private HistoryService historyService;
     @Autowired
     private RepositoryService repositoryService;
-
-    /**
-     * 日志
-     */
-    protected Logger logger = LoggerFactory.getLogger(TaskUtil.class);
-
 
 //  List<task> list = taskService//与正在执行的任务管理相关的Service
     //    .createTaskQuery()//创建任务查询对象

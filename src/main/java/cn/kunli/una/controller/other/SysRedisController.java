@@ -7,7 +7,7 @@ import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.utils.redis.RedisUtil;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -29,11 +28,11 @@ import java.util.List;
  * @author Ponzio
  * @version 2020年6月10日14:10:05
  */
+@Slf4j
 @Controller
 @RequestMapping("/sys/redis")
 @Order(value = 1)
 public class SysRedisController implements ApplicationRunner {
-    private static Logger logger = Logger.getLogger(RedisUtil.class);
     @Autowired
     private SysDictionaryService sysDictionaryService;
     @Autowired
@@ -109,7 +108,7 @@ public class SysRedisController implements ApplicationRunner {
             redisUtil.del(keys);
             return SysResult.success();
         } catch (Exception e) {
-            logger.error("清理redis失败");
+            log.error("清理redis失败");
             e.printStackTrace();
             return SysResult.fail();
         }

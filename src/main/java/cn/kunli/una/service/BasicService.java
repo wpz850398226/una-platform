@@ -1,5 +1,6 @@
 package cn.kunli.una.service;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
@@ -14,8 +15,10 @@ import cn.kunli.una.service.system.SysFieldService;
 import cn.kunli.una.service.system.SysSortService;
 import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -70,7 +73,17 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     /**
      * 根据主键进行查询
-     *
+     * @param id
+     * @return
+     */
+    @Override
+    @MyCacheEvict(value = "entityList")
+    public boolean save(T entity) {
+        return SqlHelper.retBool(this.getBaseMapper().insert(entity));
+    }
+
+    /**
+     * 根据主键进行查询
      * @param id
      * @return
      */
@@ -78,6 +91,28 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Cacheable(value = "entityRecord", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T getById(Serializable id) {
         return super.getById(id);
+    }
+
+    /**
+     * 根据条件构造查询单条
+     * @param queryWrapper
+     * @return
+     */
+    @Override
+    @Cacheable(value = "entityRecord", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    public T getOne(Wrapper<T> queryWrapper) {
+        return super.getOne(queryWrapper);
+    }
+
+    /**
+     * 根据条件构造查询多条
+     * @param queryWrapper
+     * @return
+     */
+    @Override
+    @Cacheable(value = "entityList", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    public List<T> list(Wrapper<T> queryWrapper) {
+        return super.list(queryWrapper);
     }
 
     /**
@@ -119,7 +154,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         String className = entityClass.getSimpleName();
-        SysEntity sysEntity = sysEntityService.queryFromRedis(className);
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         //获取当前类对应实体类对象
         if(sysEntity!=null) {
             //获取父字段字段类对象
@@ -156,10 +191,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     public Integer increaseOrder(Object id) {
         //获取当前类对应实体类对象
-        SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
         //获取父字段字段类对象
         SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-
         String tableName = StringUtil.upperCharToUnderLine(entityClass.getSimpleName());
         String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
         return commonMapper.increaseOrder(tableName, fieldCode, id);
@@ -191,14 +225,14 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     //从redis或数据库获取数据
 
-    @SneakyThrows
+    /*@SneakyThrows
     //@Cacheable(value = "entityRecordDetail", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T queryFromRedis(String key) {
         if(StringUtils.isBlank(key))return null;
         T record = super.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("code", key)));
 //        List<T> ts = this.selectBySelective(map.MapBuilder.aMap().put("code",key).build());
         return record;
-    }
+    }*/
 
     //手动删除 通过code缓存的记录
     @SneakyThrows
@@ -216,7 +250,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         }
     }
 
-    public SysResult refreshRedis(String code) {
+    /*public SysResult refreshRedis(String code) {
         if (redisUtil.getIsConnect()) {
             if(StringUtils.isNotBlank(code)){
                 redisUtil.del("entityRecordDetail::"+this.getClass().getSimpleName()+"-"+code);
@@ -228,7 +262,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         } else {
             return SysResult.fail("redis连接失败");
         }
-    }
+    }*/
 
     /**
      * 校验数据格式
@@ -240,7 +274,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //反射获取需要验证的字段值
         Map<String, Object> map = new HashMap<String, Object>();
         //获取当前类对应实体类对象
-        SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
         if(sysEntity!=null){
             //如果名称不为空，验证名称唯一性
             if(StringUtils.isNotBlank(obj.getName())){
@@ -313,7 +347,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         Method getSequence = entityClass.getMethod("getSequence", null);
         if(setSequence!=null&&getSequence.invoke(obj,null)==null){
             //获取当前类对应实体类对象
-            SysEntity sysEntity = sysEntityService.queryFromRedis(entityClass.getSimpleName());
+            SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
             if(sysEntity!=null){
                 //获取父字段字段类对象
                 SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());

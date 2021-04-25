@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         BasePojo target = null;
         switch (substring) {
             case "Dcode"://字典
-                target = sysDictionaryService.queryFromRedis(value);
+                target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
                 break;
             case "ityId"://实体 entityId
                 target = sysEntityService.getById(Integer.valueOf(value));

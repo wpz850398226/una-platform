@@ -1,14 +1,13 @@
 package cn.kunli.una.utils.activiti;
 
-import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.pojo.vo.ActInstance;
+import cn.kunli.una.pojo.vo.SysResult;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.*;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +19,7 @@ import java.util.Map;
  * @version 2020年2月26日09:06:45
  * 流程引擎工具类
  */
+@Slf4j
 @Component
 public class InstanceUtil {
 
@@ -31,13 +31,6 @@ public class InstanceUtil {
     private HistoryService historyService;
     @Autowired
     private RuntimeService runtimeService;
-
-
-
-    /**
-     * 日志
-     */
-    protected Logger logger = LoggerFactory.getLogger(InstanceUtil.class);
 
 
     /**
@@ -73,7 +66,7 @@ public class InstanceUtil {
      * @Author : Ponzio. create at 2020年3月4日07:49:39
      */
     public String startInstanceById(String processDefinitionId, Map<String, Object> map) {
-        logger.info("【启动工作流】processDefinitionId={},users={}", processDefinitionId, map);
+        log.info("【启动工作流】processDefinitionId={},users={}", processDefinitionId, map);
         // 5.获取流程实例
         ProcessInstance pi = runtimeService.startProcessInstanceById(processDefinitionId, map);
         return pi.getId();
@@ -88,7 +81,7 @@ public class InstanceUtil {
      *  
      */
     public SysResult startInstanceByKey(String processDefinitionKey, Map<String, Object> map) {
-        logger.info("【启动工作流】processDefinitionKey={},users={}", processDefinitionKey, map);
+        log.info("【启动工作流】processDefinitionKey={},users={}", processDefinitionKey, map);
         // 5.获取流程实例
         try {
             ProcessInstance pi = runtimeService.startProcessInstanceByKey(processDefinitionKey, map);

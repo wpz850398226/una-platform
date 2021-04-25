@@ -3,18 +3,12 @@ package cn.kunli.una.config;
 import org.activiti.engine.*;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.activiti.spring.SpringProcessEngineConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.util.HashMap;
 
 @Configuration
 public class ActivitiConfig{
@@ -26,8 +20,6 @@ public class ActivitiConfig{
      * 3. 使用ProcessEngineFactoryBean创建ProcessEngine对象
      * 4. 使用ProcessEngine对象创建需要的服务对象
      * */
-    private Logger logger = LoggerFactory.getLogger(ActivitiConfig.class);
-
     private final DataSource dataSource;
 
     private final PlatformTransactionManager platformTransactionManager;
