@@ -164,7 +164,7 @@
         //查询表格字段数据
         $.ajax({
             type: 'POST',
-            url: "/sys/field/queryPlural",
+            url: "/sys/field/list",
             dataType: 'json',
             traditional:true,
             async:false,
@@ -224,7 +224,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: treePath+'/queryPlural?'+parentDataFieldCode+"="+parentDataValue,
+                    url: treePath+'/list?'+parentDataFieldCode+"="+parentDataValue,
                     success:function(result){
                         $("#unaDataTree").closest(".layui-card-body").find("legend:first").text(parentEntityName+"结构");
                         //递归拼接树结构的id给treeValueHidden元素

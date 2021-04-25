@@ -24,10 +24,10 @@ public class SysRolePermissionController extends BaseController<SysRolePermissio
      * @return
      */
     /*@Override
-	@RequestMapping("/queryPlural")
+	@RequestMapping("/list")
 	@ResponseBody
-	public List<SysRolePermission> queryPlural(SysRolePermission obj) {
-    	return super.queryPlural(obj);
+	public List<SysRolePermission> list(SysRolePermission obj) {
+    	return super.list(obj);
 	}*/
 
 

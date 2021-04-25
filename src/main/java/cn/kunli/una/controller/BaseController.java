@@ -181,26 +181,15 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	}*/
 
 	/**
-	 * ajax查询所有
+	 * ajax查询多条
 	 * @return
 	 */
-	@RequestMapping("/queryPlural")
+	@RequestMapping("/list")
 	@ResponseBody
-	public List<T> queryPlural(@RequestParam Map<String, Object> map) {
-		List list = service.list(wrapperUtil.mapToWrapper(map));
+	public List<T> list(@RequestParam Map<String, Object> map) {
+		List list = service.list(wrapperUtil.mapToWrapper(service.queryFormat(map)));
 		return service.resultFormat(list);
 	}
-
-	/**
-	 * ajax查询菜单
-	 * @return
-	 */
-	/*@RequestMapping("/querySingle")
-	@ResponseBody
-	public T querySingle(@RequestParam Map<String, Object> map) {
-		List<T> list = service.selectBySelective(new SysParamMap(params));
-		return list.get(0);
-	}*/
 
 	@RequestMapping("/import")
 	@ResponseBody

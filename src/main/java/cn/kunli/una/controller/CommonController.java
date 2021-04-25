@@ -256,7 +256,7 @@ public class CommonController {
                 if ("单选下拉框".equals(fieldList.get(i).getAssignmentModeDname()) ||
                         "多选下拉框".equals(fieldList.get(i).getAssignmentModeDname())) {
                     downRows.add(String.valueOf(i));
-                    String url = "http://localhost:" + Constant.SERVICE_PORT + "/" + fieldList.get(i).getOptionEntityPath() + "/queryPlural";
+                    String url = "http://localhost:" + Constant.SERVICE_PORT + "/" + fieldList.get(i).getOptionEntityPath() + "/list";
                     String param = fieldList.get(i).getOptionParamValue();
                     String rul = "";
                     if (StringUtils.isBlank(param) || "all".equals(param)) {

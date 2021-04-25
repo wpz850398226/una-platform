@@ -86,8 +86,6 @@
                                    th:data-parent-entity-title="${sysResponseParameter.sysEntity.relationList[0].parentEntityName }"
                                    th:data-url="${sysResponseParameter.sysEntity.relationList[0].parentEntityPath }"
                                    th:data-parent-field="${sysResponseParameter.sysEntity.relationList[0].parentDataFieldCode }">
-                            <input type="hidden" id="treeObjName" th:if="${sysResponseParameter.sysEntity.relationList!=null&&sysResponseParameter.sysEntity.relationList.size()>0}"
-                                   th:name="${sysResponseParameter.sysEntity.relationList[0].relatedFieldCode +'Name'}">
                             <input type="hidden" id="unaFilterParamHidden">
                             <input type="hidden" name="rootTreeIds" id="rootTreeIdsHidden">
                             <input type="hidden" name="ids" id="unaCheckIdsHidden">
@@ -167,7 +165,7 @@
         //查询表格字段数据
         $.ajax({
             type: 'POST',
-            url: "/sys/field/queryPlural",
+            url: "/sys/field/list",
             dataType: 'json',
             traditional:true,
             async:false,
@@ -234,7 +232,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: treePath+'/queryPlural?'+parentDataFieldCode+"="+parentDataValue,
+                    url: treePath+'/list?'+parentDataFieldCode+"="+parentDataValue,
                     success:function(result){
                         $("#unaDataTree").closest(".layui-card-body").find("legend:first").text(parentEntityName+"结构");
                         //递归拼接树结构的id给treeValueHidden元素
@@ -280,9 +278,7 @@
                         obj.elem.closest(".layui-tree").find(".layui-tree-main").css("background-color","").find(".layui-tree-txt,.layui-icon").css("color","black");
                         obj.elem.find(".layui-tree-main:first").css("background-color","#1e9fff").find(".layui-tree-txt,.layui-icon").css("color","white");
                         //赋值被点击的树结构id到查询表单里
-                        console.log(obj.data.id)
                         $("#treeObjId").val(obj.data.id);
-                        $("#treeObjName").val(obj.data.title);
                         $("#rootTreeIdsHidden").val("");
                         //重载表格（带查询条件）
                         refreshTable();
@@ -342,9 +338,7 @@
                         if($("#treeObjId").length>0&&$("#treeObjId").val()!=''){
                             var treeIdName = $("#treeObjId").prop("name");
                             var treeIdValue = $("#treeObjId").val();
-                            var treeTitleName = $("#treeObjName").prop("name");
-                            var treeTitleValue = $("#treeObjName").val();
-                            contentUrl = contentUrl + "?"+treeIdName+"="+treeIdValue+"&"+treeTitleName+"="+treeTitleValue;
+                            contentUrl = contentUrl + "?"+treeIdName+"="+treeIdValue;
                         }
                         var index = layer.open({
                             type: 2,

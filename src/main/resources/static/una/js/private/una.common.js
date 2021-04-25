@@ -151,7 +151,7 @@ function autoLoadOption(e){
 		,param=""
 		,paramJson = {};
 
-	if(url!=null&&url.indexOf("queryPlural")==-1)url = url +"/queryPlural";
+	if(url!=null&&url.indexOf("list")==-1)url = url +"/list";
 	if(optionNameFieldCode==null)optionNameFieldCode="title";
 	if(optionValueFieldCode==null||optionValueFieldCode=="")optionValueFieldCode="id";
 	e.find("option.una-dynamic").remove();

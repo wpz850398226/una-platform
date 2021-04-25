@@ -19,8 +19,8 @@ import java.util.Map;
 public class SysEntityController extends BaseController<SysEntityService, SysEntity> {
 
     @Override
-    public List<SysEntity> queryPlural(Map<String, Object> params) {
-        List<SysEntity> entityList = super.queryPlural(params);
+    public List<SysEntity> list(Map<String, Object> params) {
+        List<SysEntity> entityList = super.list(params);
         if(entityList!=null){
             for (SysEntity sysEntity : entityList) {
                 sysEntity.setName(sysEntity.getName()+"-"+sysEntity.getMap().get("platformDname"));

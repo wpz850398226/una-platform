@@ -120,9 +120,9 @@ public class SysRedisController implements ApplicationRunner {
         return new SysResult().success(redisUtil.get(key));
     }
 
-    @RequestMapping("/queryPlural")
+    @RequestMapping("/list")
     @ResponseBody
-    public SysResult queryPlural(Model model, HttpSession session, String... keys) {
+    public SysResult list(Model model, HttpSession session, String... keys) {
         List<Object> objList = new ArrayList<>();
         for (String key : keys) {
             objList.add(redisUtil.get(key));
