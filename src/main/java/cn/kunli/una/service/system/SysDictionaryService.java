@@ -26,7 +26,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
      * @return
      */
     public List<SysDictionary> selectByLikeCode(String code) {
-        QueryWrapper<SysDictionary> wrapper = wrapperUtil.likeWrapper(null, MapUtil.getMap("code", code)).orderByAsc("sequence");
+        QueryWrapper<SysDictionary> wrapper = wrapperUtil.mapToWrapper(MapUtil.getMap(":code", code)).orderByAsc("sequence");
         List<SysDictionary> list = this.list(wrapper);
         return list;
     }

@@ -2,26 +2,19 @@ package cn.kunli.una.service;
 
 import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
-import cn.kunli.una.mapper.SysEntityMapper;
 import cn.kunli.una.mapper.SysSortMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.pojo.vo.SysParam;
 import cn.kunli.una.pojo.vo.SysParamMap;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFieldService;
 import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
-import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +29,6 @@ import org.springframework.util.CollectionUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -68,6 +60,11 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Autowired
     protected CommonMapper commonMapper;
 
+
+    public QueryWrapper<T> getWrapper(Map<String,Object> map){
+        return wrapperUtil.mapToWrapper(map);
+    }
+
     /**
      * 根据主键进行查询
      *
@@ -80,45 +77,14 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     }
 
     /**
-     * 根据 entity 条件，查询一条记录
-     *
-     * @param record
-     * @return
-     */
-    public T selectOne(Map<String,Object> paramMap) {
-        return this.getOne(wrapperUtil.allEqWrapper(null,paramMap));
-    }
-
-    /**
-     * 根据 entity 条件，精确查询全部记录
-     *
-     * @param paramMap
-     * @return
-     */
-    //@Cacheable(value = "entityRecordList", unless = "#result == null || #result.size() == 0")
-    public List<T> selectList(Map<String,Object> paramMap) {
-        return this.list(wrapperUtil.allEqWrapper(null,paramMap));
-    }
-
-    /**
      * 查询（根据 columnMap 条件）
      *
      * @param record
      * @return
      */
-    /*public List<T> selectByMap(Map<String,Object> paramMap) {
-        return this.mapper.selectByMap(paramMap);
+    /*public List<T> selectByMap(Map<String,Object> map) {
+        return this.mapper.selectByMap(map);
     }*/
-
-    /**
-     * 根据 Wrapper 条件，查询总记录数
-     *
-     * @param paramMap
-     * @return
-     */
-    public Integer selectCount(Map<String,Object> paramMap) {
-        return this.count(wrapperUtil.allEqWrapper(null,paramMap));
-    }
 
     @Override
     public boolean saveOrUpdate(T entity) {
@@ -169,33 +135,13 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param record
      * @return
      */
-    public List<T> selectBySelective(SysParamMap sysParamMap) {
+    /*public List<T> selectBySelective(SysParamMap sysParamMap) {
         sysParamMap = this.queryFormat(sysParamMap);
         List<T> ts = this.mapper.selectBySelective(sysParamMap);
         return this.resultFormat(ts);
-    }
-
-    //通用查询
-    /*public SysResult selectByQuery(SysParamMap sysParamMap) {
-        Example example = new Example(entityClass);
-        if (sysParamMap.entrySet().size() > 0) {
-            Example.Criteria criteria = example.createCriteria();
-            Iterator var5 = sysParamMap.entrySet().iterator();
-
-            while (var5.hasNext()) {
-                Map.Entry<String, Object> entry = (Map.Entry) var5.next();
-                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
-            }
-        }
-
-        if (sysParamMap.getOrderBy() != null && !sysParamMap.getOrderBy().trim().isEmpty()) {
-            example.setOrderByClause(sysParamMap.getOrderBy());
-        }
-
-        Page<Object> page = PageHelper.startPage(sysParamMap.getPageNum(), sysParamMap.getPageSize());
-        List<T> list = this.mapper.selectByExample(example);
-        return new SysResult().success(this.resultFormat(list),page.getTotal());
     }*/
+
+
 
 
     /**
@@ -245,9 +191,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     //@Cacheable(value = "entityRecordDetail", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T queryFromRedis(String key) {
         if(StringUtils.isBlank(key))return null;
-        List<T> ts = this.selectBySelective(SysParamMap.MapBuilder.aMap().put("code",key).build());
-        if (CollectionUtils.isEmpty(ts)) return null;
-        return ts.get(0);
+        T record = super.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("code", key)));
+//        List<T> ts = this.selectBySelective(SysParamMap.MapBuilder.aMap().put("code",key).build());
+        return record;
     }
 
     //手动删除 通过code缓存的记录
@@ -311,7 +257,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     //实例化的对象赋值父字段
                     //setParent.invoke(sample, parentValueObj);
                 }
-                List<T> nameResultList = this.selectList(nameParamMap);
+                List<T> nameResultList = this.list(wrapperUtil.mapToWrapper(nameParamMap));
                 if(!CollectionUtils.isEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
                     return SysResult.fail("名称重复，保存失败");
@@ -325,7 +271,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 Object codeObject = codeField.get(obj);
                 //如果传入了code值，验证code全局唯一性
                 if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
-                    List<T> codeResultList = this.selectList(MapUtil.getMap("code",codeObject));
+                    List<T> codeResultList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
                     if(!CollectionUtils.isEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                         //通过新文件的编码查询到数据
                         return SysResult.fail("编码重复，保存失败");
@@ -375,7 +321,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     //获取父字段值
                     Object parentValueObj = parentField.get(obj);
                     //查询该父字段下的数据数量
-                    num = this.selectCount(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj));
+                    num = this.count(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
                 }else{
                     //没有设置父字段，查询所有数量
                     num = this.count();
@@ -401,7 +347,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         if(redisUtil.getIsConnect()&&redisUtil.hasKey("SysEntity:"+entityClass.getSimpleName())){
             sysEntity = (SysEntity) redisUtil.get("SysEntity:"+entityClass.getSimpleName());
         }else{
-            List<SysEntity> select = sysEntityService.selectList(MapUtil.getMap("code",entityClass.getSimpleName()));
+            List<SysEntity> select = sysEntityService.list(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
             if(!CollectionUtils.isEmpty(select))sysEntity = select.get(0);
         }
 
@@ -487,9 +433,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @SneakyThrows
     public List<T> resultFormat(List<T> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
         if(sysEntity!=null){
-            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
+            List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
             if(!CollectionUtils.isEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {

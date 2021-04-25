@@ -276,7 +276,7 @@ public class HttpUtil {
      * @Param:
      * @Return:
      */
-    public static String doPost(String url, Map<String, Object> paramMap,String token) {
+    public static String doPost(String url, Map<String, Object> map,String token) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpResponse = null;
         String result = "";
@@ -297,10 +297,10 @@ public class HttpUtil {
             httpPost.addHeader("token",token);
 
         // 封装post请求参数
-        if (null != paramMap && paramMap.size() > 0) {
+        if (null != map && map.size() > 0) {
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             // 通过map集成entrySet方法获取entity
-            Set<Map.Entry<String, Object>> entrySet = paramMap.entrySet();
+            Set<Map.Entry<String, Object>> entrySet = map.entrySet();
             // 循环遍历，获取迭代器
             Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
             while (iterator.hasNext()) {

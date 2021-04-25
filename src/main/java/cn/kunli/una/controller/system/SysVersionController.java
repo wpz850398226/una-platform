@@ -9,6 +9,7 @@ import cn.kunli.una.utils.common.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,8 +27,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/sys/version")
 public class SysVersionController extends BaseController<SysVersionService, SysVersion> {
-    @Autowired
-    private SysVersionService objService;
 
     /**
      * 安卓端下载最新版本
@@ -38,9 +37,9 @@ public class SysVersionController extends BaseController<SysVersionService, SysV
     @ResponseBody
     public String downloadNewVersion(HttpServletResponse response, @RequestParam Map<String, Object> params) {
         try {
-            List<SysVersion> sysVersions = objService.selectBySelective(new SysParamMap(params));
-            if (sysVersions != null && sysVersions.size() > 0) {
-                SysVersion sysVersion = sysVersions.get(0);
+            List<SysVersion> list = service.list(wrapperUtil.mapToWrapper(params));
+            if (!CollectionUtils.isEmpty(list)) {
+                SysVersion sysVersion = list.get(0);
                 if (StringUtils.isNotBlank(sysVersion.getFileUrl()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {
                     String fileName = sysVersion.getInternalVersion();
                     String filePath = Constant.UPLOAD_FILE_PATH + sysVersion.getFileUrl().substring(6);

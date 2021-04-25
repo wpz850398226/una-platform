@@ -59,14 +59,14 @@ public class CommonController {
     public String manage(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> params) {
         //判断权限
         //if(!SecurityUtils.getSubject().isPermitted(className+":retrieve"))return "error/401";
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         SysResponseParameter sysResponseParameter = new SysResponseParameter().setSysEntity(entityClass);
 
         //如果查询的虚拟实体，则通过参数获取实体类名
         if(className.equals("SysData")&&params!=null){
             Object classNameObject = params.get("className");
             if(classNameObject!=null){
-                SysEntity virtualEntity = sysEntityService.selectOne(MapUtil.getMap("code",classNameObject.toString()));
+                SysEntity virtualEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",classNameObject.toString())));
                 if(virtualEntity!=null){
                     params.put("entityId",virtualEntity.getId());
                     sysResponseParameter.setEntityId(virtualEntity.getId()).setEntityClass(virtualEntity.getCode()).setParams(params);
@@ -111,14 +111,14 @@ public class CommonController {
         }
 
         //if(!SecurityUtils.getSubject().isPermitted(permissionCode))return "error/401";
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         //创建查询实例
-        SysParamMap sysParamMap = SysParamMap.MapBuilder.aMap().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
+        Map<String, Object> map = new MapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
         //如果是批量修改，则查询可批量修改的 字段
-        if (obj.get("batch") != null) sysParamMap.put("isBatchUpdate",1);
+        if (obj.get("batch") != null) map.put("isBatchUpdate",1);
 
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.selectBySelective(sysFieldService.queryFormat(sysParamMap));
+        List<SysField> sysFieldList = sysFieldService.list(sysFieldService.getWrapper(map));
         switch (className) {
             case "SysDictionary":
                 if (obj.get("parentId") != null) {
@@ -137,11 +137,11 @@ public class CommonController {
                 }
             case "SysConfiguration":
                 if (obj.get("moduleDcode") != null) {
-                    obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
+                    obj.put("code", sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",obj.get("moduleDcode").toString()))).getValue() + "_");
                 }
             case "SysImgConfig":
                 if (obj.get("moduleDcode") != null) {
-                    obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
+                    obj.put("code", sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",obj.get("moduleDcode").toString()))).getValue() + "_");
                 }
                 break;
         }
@@ -166,10 +166,14 @@ public class CommonController {
     public void importTemplate(HttpServletResponse response, @PathVariable("className") String className) {
 
         //获取数据
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         //excel标题
         //查询可以导出的实体字段
-        List<SysField> fieldList = sysFieldService.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());
+        List<SysField> fieldList = sysFieldService.list(
+                sysFieldService.getWrapper(new MapUtil<>()
+                        .put("entityId",sysEntity.getId())
+                        .put("isImport",1)
+                        .put("isDelete",0).build()));
         String[] title = new String[fieldList.size()];
         for (int j = 0; j < fieldList.size(); j++) {
             title[j] = fieldList.get(j).getName();
@@ -239,10 +243,11 @@ public class CommonController {
     @ResponseBody
     public void importTemplateNew(HttpServletResponse response, @PathVariable("className") String className) throws IOException, MalformedObjectNameException {
         //获取数据
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         //excel标题
         //查询可以导出的实体字段
-        List<SysField> fieldList = sysFieldService.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());
+        List<SysField> fieldList = sysFieldService.list(
+                sysFieldService.getWrapper(new MapUtil<>().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build()));
         String[] title = new String[fieldList.size()];
 
         if (fieldList != null && fieldList.size() > 0) {

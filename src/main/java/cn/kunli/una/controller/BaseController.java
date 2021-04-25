@@ -128,10 +128,19 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			method = {RequestMethod.GET}
 	)
 	@ResponseBody
-	public SysResult page(@RequestParam Map<String, Object> paramMap) {
-		SysParam sysParam = new SysParam(paramMap);
-		Page<T> objectPage = new Page<T>().setCurrent(sysParam.getPageNum()).setSize(sysParam.getPageSize());
-		IPage page = service.page(objectPage, wrapperUtil.sysParamToWrapper(sysParam));
+	public SysResult page(@RequestParam Map<String, Object> map) {
+		Long pageNum = 1L;
+		Long pageSize = 10L;
+		if(map.get("pageNum")!=null){
+			pageNum = Long.valueOf(map.get("pageNum").toString());
+			map.remove("pageNum");
+		}
+		if(map.get("pageSize")!=null){
+			pageSize = Long.valueOf(map.get("pageSize").toString());
+			map.remove("pageSize");
+		}
+		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
+		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(map));
 		page.setRecords(service.resultFormat(page.getRecords()));
 		return new SysResult().success(page.getRecords(),page.getTotal());
 	}
@@ -182,12 +191,12 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 * ajax查询所有
 	 * @return
 	 */
-	@GetMapping("/list")
+	/*@GetMapping("/list")
 	@ResponseBody
-	public SysResult list(@RequestParam Map<String, Object> params) {
+	public SysResult list(@RequestParam Map<String, Object> map) {
 		List list = service.selectBySelective(new SysParamMap(params));
 		return new SysResult().setData(list).setCount(Long.valueOf(list.size()));
-	}
+	}*/
 
 	/**
 	 * ajax查询所有
@@ -195,20 +204,21 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 */
 	@RequestMapping("/queryPlural")
 	@ResponseBody
-	public List<T> queryPlural(@RequestParam Map<String, Object> params) {
-		return service.selectBySelective(new SysParamMap(params));
+	public List<T> queryPlural(@RequestParam Map<String, Object> map) {
+		List list = service.list(wrapperUtil.mapToWrapper(map));
+		return service.resultFormat(list);
 	}
 
 	/**
 	 * ajax查询菜单
 	 * @return
 	 */
-	@RequestMapping("/querySingle")
+	/*@RequestMapping("/querySingle")
 	@ResponseBody
-	public T querySingle(@RequestParam Map<String, Object> params) {
+	public T querySingle(@RequestParam Map<String, Object> map) {
 		List<T> list = service.selectBySelective(new SysParamMap(params));
 		return list.get(0);
-	}
+	}*/
 
 	@RequestMapping("/import")
 	@ResponseBody
@@ -237,9 +247,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			int colNum = headRow.getLastCellNum();
 
 			//查询对应实体类
-			SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
+			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
 			//查询需要导入的实体字段
-			List<SysField> fieldList = sysFieldService.selectBySelective(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isImport",1).build());
+			Map<String, Object> map = MapUtil.getMap("allEq:entityId", sysEntity.getId());
+			map.put("allEq:isImport",1);
+			List<SysField> fieldList = sysFieldService.list(wrapperUtil.mapToWrapper(map));
 			if(ListUtil.isNotNull(fieldList)) {
 				//如果需要导入的字段不为空且与excel列数相等
 				if(fieldList.size()==colNum) {
@@ -299,7 +311,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 								&&sysField.getDataDetectionTypeDvalues().indexOf("global_unique")!=-1
 								&&StringUtils.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
-							List<T> objList = service.selectList(MapUtil.getMap(sysField.getAssignmentCode(),cellValue));
+							List<T> objList = service.list(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),cellValue)));
 							if(ListUtil.isNotNull(objList)) {
 								//有重复数据，设置本行有重复项为true，并加入到重复项数据集合
 								isRepeat = true;
@@ -321,8 +333,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			//批量插入不重复的数据
 			if(insertMapList.size()>0) {
 				Integer num = 0;
-				for (Map<String, Object> map : insertMapList) {
-					T entity = JSON.parseObject(JSON.toJSONString(map), entityClass);
+				for (Map<String, Object> paramMap : insertMapList) {
+					T entity = JSON.parseObject(JSON.toJSONString(paramMap), entityClass);
 					boolean saveResult = service.save(entity);
 					if(saveResult)num++;
 				}
@@ -353,13 +365,13 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 
 	@RequestMapping("/export")
-	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> params) {
+	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> map) {
 		//获取数据
-		List<T> objList = service.selectBySelective(new SysParamMap(params));
+		List<T> objList = service.list(wrapperUtil.mapToWrapper(map));
 		//查询对应实体类
-		SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
+		SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
 		//查询可以导出的实体字段
-		List<SysField> fieldList = sysFieldService.selectList(SysParamMap.MapBuilder.aMap().put("entityId",sysEntity.getId()).put("isExport",1).build());
+		List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(new MapUtil<>().put("entityId",sysEntity.getId()).put("isExport",1).build()));
 		//excel标题行
 		String[] title = new String[fieldList.size()+1];
 		title[0] = "序号";

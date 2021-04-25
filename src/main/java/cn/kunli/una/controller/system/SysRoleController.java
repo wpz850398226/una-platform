@@ -9,6 +9,7 @@ import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysRolePermissionService;
 import cn.kunli.una.service.system.SysRoleService;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,13 +29,7 @@ import java.util.Map;
 @RequestMapping("/sys/role")
 public class SysRoleController extends BaseController<SysRoleService, SysRole> {
     @Autowired
-    private SysRoleService objService;
-    @Autowired
-    private SysRolePermissionService sysRolePermissionService;
-    @Autowired
     private SysDictionaryService sysDictionaryService;
-    @Autowired
-    private SysEntityService sysEntityService;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -42,8 +37,9 @@ public class SysRoleController extends BaseController<SysRoleService, SysRole> {
     //打开授权表单
     @RequestMapping("/authorization")
     public String authorization(Model model, SysRole obj) {
-        model.addAttribute("scopeList", sysDictionaryService.selectBySelective(SysParamMap.MapBuilder.aMap().put("parentCode", "permission_scope").build()));
-        model.addAttribute("entityList", sysEntityService.selectBySelective(new SysParamMap()));
+        model.addAttribute("scopeList", sysDictionaryService.list(
+                sysDictionaryService.getWrapper(MapUtil.getMap("parentCode", "permission_scope"))));
+        model.addAttribute("entityList", sysEntityService.list());
         model.addAttribute("sample", obj);
         return "system/role/authorization";
     }

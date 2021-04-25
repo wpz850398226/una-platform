@@ -10,6 +10,7 @@ import cn.kunli.una.service.duohui.guanwang.GwConfigurationService;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysMenuService;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class GwIndexController {
      */
     @RequestMapping("/index")
     public String index(Model model) {
-        List<GwMenu> gwMenuList = gwMenuService.selectBySelective(SysParamMap.MapBuilder.aMap().put("parentId", 100000).build());
+        List<GwMenu> gwMenuList = gwMenuService.list(gwMenuService.getWrapper(MapUtil.getMap("parentId", 100000)));
         GwConfiguration systemTitle = gwConfigurationService.queryFromRedis("systemTitle");
         model.addAttribute("gwMenuList", gwMenuList);
         model.addAttribute("systemName", systemTitle.getValue());

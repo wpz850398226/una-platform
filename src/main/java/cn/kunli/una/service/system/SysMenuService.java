@@ -74,7 +74,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSequence() == null)
-                    obj.setSequence(this.selectCount(MapUtil.getMap("parentId",obj.getParentId())) + 1);
+                    obj.setSequence(this.count(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
                 obj.setLevel(this.selectById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");

@@ -10,6 +10,7 @@ import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysEntityService;
 import cn.kunli.una.service.system.SysFileService;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
 
         //如果redis已连接，则从redis中获取实体类，否则从数据库查询
         SysEntity entityClass = redisUtil.getIsConnect() && redisUtil.hasKey("entity_SysFile") ? (SysEntity) redisUtil.get("entity_SysFile") :
-                sysEntityService.selectBySelective(SysParamMap.MapBuilder.aMap().put("className", "SysFile").build()).get(0);
+                sysEntityService.list(sysEntityService.getWrapper(MapUtil.getMap("className", "SysFile"))).get(0);
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("textInputId", textInputId);
         model.addAttribute("num", num);

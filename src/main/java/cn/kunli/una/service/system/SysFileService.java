@@ -8,6 +8,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.SavePicUtils;
 import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.ThumbnailatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,7 +154,8 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
             obj.setFileUrl(url);
             obj.setName(url.substring(url.lastIndexOf("/") + 1));
 
-            List<SysDictionary> fileTypeList = sysDictionaryService.selectBySelective(SysParamMap.MapBuilder.aMap().put("parentName", "扩展名").put("code", obj.getExtension()).build());
+            List<SysDictionary> fileTypeList = sysDictionaryService.list(
+                    sysDictionaryService.getWrapper(new MapUtil<>().put("parentName", "扩展名").put("code", obj.getExtension()).build()));
             if (fileTypeList != null && fileTypeList.size() > 0) {
                 obj.setTypeDcode(fileTypeList.get(0).getCode());
             }
