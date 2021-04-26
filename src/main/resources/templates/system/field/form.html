@@ -101,7 +101,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">展示长度</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="displayLength" autocomplete="off" placeholder="请输入展示长度" class="layui-input" th:value="${record['displayLength']==null?120:record['displayLength']}">
+                            <input type="text" name="displayLength" autocomplete="off" placeholder="请输入展示长度" class="layui-input" th:value="${record['displayLength']}">
                         </div>
                     </div>
 
@@ -413,6 +413,10 @@
                 ,laydate = layui.laydate;
             form.render();
             loadCheckBoxNotNull();  //设置checkbox非空提交
+
+            //设置所选实体的名称
+            const treeObjName = window.parent.$("#treeObjName").val();
+            $("#entityIdName").val(treeObjName)
 
             //监听提交
             form.on('submit(unaDataForm)', function(data){
