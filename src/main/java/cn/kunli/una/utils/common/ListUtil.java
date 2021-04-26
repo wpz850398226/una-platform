@@ -186,6 +186,7 @@ public class ListUtil {
     }
 
     public static <T> List<T> getList(T record){
+        if(record==null)return null;
         List<T> result = new ArrayList<T>();
         result.add(record);
         return result;

@@ -8,6 +8,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,12 +32,14 @@ public class MyCacheEvictAspect {
 
     @AfterReturning("@annotation(cn.kunli.una.annotation.MyCacheEvict)")
     public void remove(JoinPoint point) {
-        Class<? extends Signature> aClass = point.getSignature().getClass();
-        Method method = ((MethodSignature) point.getSignature()).getMethod();
+        String className = point.getThis().toString();
+        String serviceName = className.substring(className.lastIndexOf(".")+1,className.lastIndexOf("@"));
+        Signature signature = point.getSignature();
+        Method method = ((MethodSignature) signature).getMethod();
         MyCacheEvict myCacheEvict = method.getAnnotation(MyCacheEvict.class);
         String[] keys = myCacheEvict.value();
         for (String key : keys) {
-            key = key+"::"+aClass.getName()+":"+method.getName()+":*";
+            key = key+"::"+serviceName+":list:*";
             Set set = redisUtil.hasKeys(key);
             redisUtil.delKeys(set);
             log.info("cache key: " + key + " deleted");

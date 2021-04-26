@@ -9,6 +9,7 @@ import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
@@ -57,31 +58,36 @@ public class CommonController {
         //判断权限
         //if(!SecurityUtils.getSubject().isPermitted(className+":retrieve"))return "error/401";
         SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
-        SysResponseParameter sysResponseParameter = new SysResponseParameter().setSysEntity(entityClass);
+        SysResponseParameter sysResponseParameter = new SysResponseParameter();
+        if(entityClass!=null){
+            entityClass = sysEntityService.resultFormat(ListUtil.getList(entityClass)).get(0);
 
-        //如果查询的虚拟实体，则通过参数获取实体类名
-        if(className.equals("SysData")&&params!=null){
-            Object classNameObject = params.get("className");
-            if(classNameObject!=null){
-                SysEntity virtualEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",classNameObject.toString())));
-                if(virtualEntity!=null){
-                    params.put("entityId",virtualEntity.getId());
-                    sysResponseParameter.setEntityId(virtualEntity.getId()).setEntityClass(virtualEntity.getCode()).setParams(params);
+            //如果查询的虚拟实体，则通过参数获取实体类名
+            if(className.equals("SysData")&&params!=null){
+                Object classNameObject = params.get("className");
+                if(classNameObject!=null){
+                    SysEntity virtualEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",classNameObject.toString())));
+                    if(virtualEntity!=null){
+                        params.put("entityId",virtualEntity.getId());
+                        params.remove("className");
+                        sysResponseParameter.setEntityId(virtualEntity.getId()).setEntityClass(virtualEntity.getCode()).setParams(params);
+                    }
+                }
+            }else{
+                if(entityClass.getCode().equals("SysRelation")||entityClass.getCode().equals("SysField")
+                        && CollectionUtils.isEmpty(entityClass.getRelationList())){
+                    SysRelation sysRelation = new SysRelation()
+                            .setEntityId(entityClass.getId())
+                            .setParentEntityPath("/sys/entity")
+                            .setParentEntityName("实体类")
+                            .setParentDataFieldCode("entityId")
+                            .setRelatedFieldCode("entityId")
+                            .setParentDataValue(null);
+                    entityClass.setRelationList(ListUtil.getList(sysRelation));
                 }
             }
-        }
 
-        if(entityClass.getCode().equals("SysRelation")||entityClass.getCode().equals("SysField")&&!ListUtil.isNotNull(entityClass.getRelationList())){
-            SysRelation sysRelation = new SysRelation()
-                    .setSubEntityId(entityClass.getId())
-                    .setParentEntityPath("/sys/entity")
-                    .setParentEntityName("实体类")
-                    .setParentDataFieldCode("subEntityId")
-                    .setRelatedFieldCode("entityId")
-                    .setParentDataValue(null);
-            List<SysRelation> relationList = new ArrayList<>();
-            relationList.add(sysRelation);
-            entityClass.setRelationList(relationList);
+            sysResponseParameter.setSysEntity(entityClass);
         }
 
         model.addAttribute("sysResponseParameter", sysResponseParameter);

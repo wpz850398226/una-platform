@@ -15,9 +15,9 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysRelation extends BasePojo implements Serializable {
 
-    private Integer parentEntityId;
+    private Integer parentEntityId;   //树结构实体id
 
-    private Integer subEntityId;
+    private Integer entityId;   //数据所属实体id
 
     private Integer relatedFieldId;
 

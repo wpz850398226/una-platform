@@ -37,6 +37,9 @@ public class WrapperUtil<T> {
                         case "like":
                             queryWrapper.like(column,value);
                             break;
+                        case "in":
+                            queryWrapper.in(column,value.toString().split(","));
+                            break;
                         case "ne":
                             queryWrapper.ne(column,value);
                             break;

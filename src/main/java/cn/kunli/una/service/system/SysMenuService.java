@@ -4,6 +4,7 @@ import cn.kunli.una.mapper.SysMenuMapper;
 import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,20 @@ import java.util.List;
 
 @Service
 public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
+
+    @Override
+    public List<SysMenu> resultFormat(List<SysMenu> list) {
+        if(CollectionUtils.isEmpty(list))return list;
+        list = super.resultFormat(list);
+        for (SysMenu record : list) {
+            List<SysMenu> subList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+            if(CollectionUtils.isNotEmpty(subList)){
+                this.resultFormat(subList);
+            }
+            record.setChildren(subList);
+        }
+        return list;
+    }
 
     //通过用户id查询所有菜单，并按层级排序
     public List<SysMenu> selectTreeBySelective(SysMenu obj) {

@@ -87,7 +87,8 @@
                                    th:data-url="${sysResponseParameter.sysEntity.relationList[0].parentEntityPath }"
                                    th:data-parent-field="${sysResponseParameter.sysEntity.relationList[0].parentDataFieldCode }">
                             <input type="hidden" id="unaFilterParamHidden">
-                            <input type="hidden" name="rootTreeIds" id="rootTreeIdsHidden">
+                            <input type="hidden" th:if="${sysResponseParameter.sysEntity.relationList!=null&&sysResponseParameter.sysEntity.relationList.size()>0}"
+                                   name="rootTreeIds" id="rootTreeIdsHidden">
                             <input type="hidden" name="ids" id="unaCheckIdsHidden">
                             <input type="hidden" id="virtualEntityId" th:value="${sysResponseParameter.entityId!=null?sysResponseParameter.entityId:sysResponseParameter.sysEntity.id }"><!--虚拟实体id-->
                             <input type="hidden" id="virtualEntityClass" th:value="${sysResponseParameter.entityClass!=null?sysResponseParameter.entityClass:sysResponseParameter.sysEntity.code }"><!--虚拟实体类名-->
@@ -263,7 +264,7 @@
                     dataType: 'json',
                     traditional:true,
                     async:false,
-                    data:{isResult:1},
+                    // data:{isResult:1},
                     error: function(XMLHttpRequest) {
                         console.log("访问出错了，错误代号："+XMLHttpRequest.status);
                     }

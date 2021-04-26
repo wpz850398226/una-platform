@@ -7,7 +7,7 @@ import cn.kunli.una.service.system.SysVersionService;
 import cn.kunli.una.utils.common.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +36,7 @@ public class SysVersionController extends BaseController<SysVersionService, SysV
     public String downloadNewVersion(HttpServletResponse response, @RequestParam Map<String, Object> params) {
         try {
             List<SysVersion> list = service.list(wrapperUtil.mapToWrapper(params));
-            if (!CollectionUtils.isEmpty(list)) {
+            if (CollectionUtils.isNotEmpty(list)) {
                 SysVersion sysVersion = list.get(0);
                 if (StringUtils.isNotBlank(sysVersion.getFileUrl()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {
                     String fileName = sysVersion.getInternalVersion();

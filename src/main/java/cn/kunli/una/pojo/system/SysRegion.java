@@ -23,9 +23,7 @@ import java.util.List;
 public class SysRegion extends BasePojo implements Serializable {
     private static final long serialVersionUID = -94885096018253815L;
     //类型字典id
-    private String typeDicId;
-    //名称
-    private String title;
+    private String typeDid;
     //等级
     private Integer level;
     //地区编号

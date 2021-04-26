@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
@@ -23,8 +22,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class BasePojo implements Serializable{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@TableId(value = "id", type = IdType.AUTO)
 	private Integer id;
 
 	private String name;					//名称（中文名）

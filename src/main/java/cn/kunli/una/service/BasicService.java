@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,10 +37,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
+@Slf4j
 @Transactional
 public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> extends ServiceImpl<M,T> {
-
-    private Logger log = LoggerFactory.getLogger(BasicService.class);
 
     //全局参数
     protected M mapper;
@@ -73,13 +73,13 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     /**
      * 根据主键进行查询
-     * @param id
+     * @param entity
      * @return
      */
     @Override
     @MyCacheEvict(value = "entityList")
     public boolean save(T entity) {
-        return SqlHelper.retBool(this.getBaseMapper().insert(entity));
+        return super.save(entity);
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @Override
-    @Cacheable(value = "entityList", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "entityList", keyGenerator = "myCacheKeyGenerator", unless = "#result == null && #result.size()==0")
     public List<T> list(Wrapper<T> queryWrapper) {
         return super.list(queryWrapper);
     }
@@ -137,6 +137,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
+    @MyCacheEvict(value = "entityList")
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
     @Override
     public boolean updateById(T entity) {
@@ -151,6 +152,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
+    @MyCacheEvict(value = "entityList")
     @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         String className = entityClass.getSimpleName();
@@ -296,7 +298,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     //setParent.invoke(sample, parentValueObj);
                 }
                 List<T> nameResultList = this.list(wrapperUtil.mapToWrapper(nameParamMap));
-                if(!CollectionUtils.isEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
+                if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
                     return SysResult.fail("名称重复，保存失败");
                 }
@@ -310,7 +312,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 //如果传入了code值，验证code全局唯一性
                 if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
                     List<T> codeResultList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
-                    if(!CollectionUtils.isEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
+                    if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                         //通过新文件的编码查询到数据
                         return SysResult.fail("编码重复，保存失败");
                     }
@@ -412,6 +414,11 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             }
         }
 
+        if(map.containsKey("rootTreeIds")){
+            map.put("in:id",map.get("rootTreeIds"));
+            map.remove("rootTreeIds");
+        }
+
         //查询条件处理
         //如果高级查询语句不为空，则判断高级查询条件是否为空
         /*if(map.get("advancedQuery")==null&&ListUtil.isNotNull(map.getUtilQueryList())) {
@@ -481,7 +488,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
         if(sysEntity!=null){
             List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
-            if(!CollectionUtils.isEmpty(fieldList)){
+            if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {
                     if(StringUtils.isNotBlank(sysField.getAssignmentCode())

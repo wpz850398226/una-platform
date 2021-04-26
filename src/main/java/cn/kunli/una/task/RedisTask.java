@@ -2,8 +2,7 @@ package cn.kunli.una.task;
 
 import cn.kunli.una.mapper.SysAccountMapper;
 import cn.kunli.una.utils.redis.RedisUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,11 +16,11 @@ import java.util.Set;
  * @Description redis相关定时任务
  * @Date 2020/10/15 13:50
  **/
+@Slf4j
 @Configuration      //1.主要用于标记配置类，兼备Component的效果。
 @EnableScheduling   // 2.开启定时任务
 @RequestMapping("/redisTask")
 public class RedisTask {
-    private Logger log = LoggerFactory.getLogger(RedisTask.class);
     @Autowired
     private SysAccountMapper sysAccountMapper;
     @Autowired
