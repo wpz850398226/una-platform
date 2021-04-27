@@ -15,6 +15,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
@@ -120,7 +121,7 @@ public class SysRedisController implements ApplicationRunner {
         return new SysResult().success(redisUtil.get(key));
     }
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ResponseBody
     public SysResult list(Model model, HttpSession session, String... keys) {
         List<Object> objList = new ArrayList<>();

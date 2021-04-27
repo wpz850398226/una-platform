@@ -302,7 +302,7 @@ function submitImport(selector){
 				console.log(XMLHttpRequest.status);
                 console.log(XMLHttpRequest.readyState);
                 console.log(textStatus);
-	        }
+	 }
         });
 	}
 }

@@ -202,7 +202,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 * ajax查询多条
 	 * @return
 	 */
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	@ResponseBody
 	public List<T> list(@RequestParam Map<String, Object> map) {
 		List list = service.list(wrapperUtil.mapToWrapper(service.queryFormat(map)));

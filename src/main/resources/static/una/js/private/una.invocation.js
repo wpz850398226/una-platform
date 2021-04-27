@@ -16,7 +16,7 @@
     				console.log(XMLHttpRequest.status);
                     console.log(XMLHttpRequest.readyState);
                     console.log(textStatus);
-    	        }
+    	 }
           	})
     		 
     }
@@ -44,7 +44,7 @@
 				console.log(XMLHttpRequest.status);
                 console.log(XMLHttpRequest.readyState);
                 console.log(textStatus);
-	        }
+	 }
       	})
     	
     }

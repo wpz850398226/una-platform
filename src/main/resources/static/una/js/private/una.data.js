@@ -80,7 +80,7 @@ function addObjWithParam(path,title){
 								console.log(XMLHttpRequest.status);
 								console.log(XMLHttpRequest.readyState);
 								console.log(textStatus);
-					        }
+					 }
 					   })
 					})
 		        }
@@ -109,7 +109,7 @@ function addObjWithParam(path,title){
     									console.log(XMLHttpRequest.status);
     					                console.log(XMLHttpRequest.readyState);
     					                console.log(textStatus);
-    						        }
+    						 }
     	 	                  })
 						})
     				 }
@@ -209,20 +209,20 @@ function addObjWithParam(path,title){
     			 */
     			function queryObj(queryUrl,parameterForm,tableContainer) {
     	        	$.ajax({url: queryUrl, // 提交地址，该方法能够跳转到一个页面
-    					        global: false,
-    					        type: "POST",
+    					 global: false,
+    					 type: "POST",
     					 		data: parameterForm.serialize(),
-    					        dataType: "html",
-    					        async: true,
-    					        success: function(msg) {
+    					 dataType: "html",
+    					 async: true,
+    					 success: function(msg) {
     								layer.close(layer.index);//关闭加载层
-    					            tableContainer.html(msg);
-    					        },
-    					        error: function(XMLHttpRequest, textStatus, errorThrown) {
+    					  tableContainer.html(msg);
+    					 },
+    					 error: function(XMLHttpRequest, textStatus, errorThrown) {
     								console.log(XMLHttpRequest.status);
     				                console.log(XMLHttpRequest.readyState);
     				                console.log(textStatus);
-    					        }
+    					 }
     					});
     			}
 
@@ -300,7 +300,7 @@ function addObjWithParam(path,title){
 					console.log(XMLHttpRequest.status);
 	                console.log(XMLHttpRequest.readyState);
 	                console.log(textStatus);
-		        }
+		 }
 	        });
     	}
  }

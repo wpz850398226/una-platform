@@ -7,6 +7,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +30,7 @@ public class SysDictionaryController extends BaseController<SysDictionaryService
      * @return
      */
     @Override
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ResponseBody
     public List<SysDictionary> list(@RequestParam Map<String, Object> map) {
         if(MapUtils.isNotEmpty(map)){

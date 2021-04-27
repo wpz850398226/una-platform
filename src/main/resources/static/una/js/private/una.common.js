@@ -1,5 +1,5 @@
 $.ajaxSetup({
-	cache: false,
+	cache: true,
 	headers: {
 		"token": localStorage.getItem("token")
 	},
@@ -190,7 +190,7 @@ function autoLoadOption(e){
 
 	if(paramValue!=null&&paramValue!=""){
 		$.ajax({
-			type: 'POST',
+			type: 'GET',
 			url: url,
 			data: paramJson,
 			success: function(result) {
