@@ -145,7 +145,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
 			//修改数据
-			boolean updateResult = service.updateById(entity);
+			boolean updateResult = service.updateById(service.saveFormat(entity));
 			if(updateResult){
 				return SysResult.success();
 			}
@@ -155,30 +155,19 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			String[] idsArray = entity.getIds().split(",");
 			for (String id : idsArray) {
 				entity.setId(Integer.valueOf(id));
-				service.updateById(entity);
+				service.updateById(service.saveFormat(entity));
 			}
 			return SysResult.success();
 
 		}else {//如果id为空，说明是新增数据
 			//插入数据
-			boolean saveResult = service.save(entity);
+			boolean saveResult = service.save(service.saveFormat(entity));
 			if(saveResult){
 				return SysResult.success();
 			}
 			return SysResult.fail();
 		}
 	}
-
-	/**
-	 * ajax查询所有
-	 * @return
-	 */
-	/*@GetMapping("/list")
-	@ResponseBody
-	public SysResult list(@RequestParam Map<String, Object> map) {
-		List list = service.selectBySelective(new SysParamMap(params));
-		return new SysResult().setData(list).setCount(Long.valueOf(list.size()));
-	}*/
 
 	/**
 	 * ajax查询多条

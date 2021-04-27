@@ -1,3 +1,4 @@
+/*
 package cn.kunli.una.controller.activiti;
 
 import cn.kunli.una.pojo.vo.SysResult;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
+*/
 /**
  * activiti流程任务管理
  *
  * @author Ponzio
  * 时间：2020年3月4日07:24:07
- */
+ *//*
+
 @Controller
 @RequestMapping("/act/task")
 public class ActTaskController {
@@ -31,12 +34,14 @@ public class ActTaskController {
     private SysAccountService sysAccountService;
 
 
-    /**
+    */
+/**
      * 拾取任务（组任务领取用）
      *
      * @param obj 流程变量工具类，存放流程变量，任务id
      * @return
-     */
+     *//*
+
     @RequestMapping("claim")
     @ResponseBody
     public SysResult claim(ActTask obj) {
@@ -44,23 +49,27 @@ public class ActTaskController {
     }
 
 
-    /**
+    */
+/**
      * 办理任务
      *
      * @param map 流程变量工具类，存放流程变量，任务id
      * @return
-     */
+     *//*
+
     @RequestMapping("handle")
     @ResponseBody
     public SysResult handle(@RequestParam Map<String, Object> map) {
         return objService.handle(map);
     }
 
-    /**
+    */
+/**
      * 分页条件查询待办
      *
      * @return
-     */
+     *//*
+
     @RequestMapping("/getTaskBySelective")
     @ResponseBody
     public SysResult getTaskBySelective(ActTask obj) {
@@ -69,22 +78,26 @@ public class ActTaskController {
         return taskResult;
     }
 
-    /**
+    */
+/**
      * 条件查询待办数量
      *
      * @return
-     */
+     *//*
+
     @RequestMapping("/getTaskCountBySelective")
     @ResponseBody
     public SysResult getTaskCountBySelective(ActTask obj) {
         return objService.getTaskCountBySelective(obj);
     }
 
-    /**
+    */
+/**
      * id查询待办
      *
      * @return
-     */
+     *//*
+
     @RequestMapping("/getTaskById")
     @ResponseBody
     public SysResult getTaskById(String id) {
@@ -92,11 +105,13 @@ public class ActTaskController {
     }
 
 
-    /**
+    */
+/**
      * 分页条件查询已办
      *
      * @return
-     */
+     *//*
+
     @RequestMapping("/getHiTaskBySelective")
     @ResponseBody
     public SysResult getHiTaskBySelective(ActTask obj) {
@@ -106,11 +121,13 @@ public class ActTaskController {
     }
 
 
-    /**
+    */
+/**
      * 条件查询已办数量
      *
      * @return
-     */
+     *//*
+
     @RequestMapping("/getHiTaskCountBySelective")
     @ResponseBody
     public SysResult getHiTaskCountBySelective(ActTask obj) {
@@ -118,27 +135,32 @@ public class ActTaskController {
     }
 
 
-    /**
+    */
+/**
      * id查询已办
      *
      * @return
-     */
+     *//*
+
     @RequestMapping("/getHiTaskById")
     @ResponseBody
     public SysResult getHiTaskById(String id) {
         return objService.getHiTaskById(id);
     }
 
-    /**
+    */
+/**
      * @return
      * @Author y_xiaopeng
      * @Description 流程转向
      * @Date 16:58 2020/4/29
      * @Param
-     **/
+     **//*
+
     @PostMapping("/turnTransition")
     @ResponseBody
     public SysResult turnTransition(ActTask actTask) {
         return objService.turnTransition(actTask);
     }
 }
+*/

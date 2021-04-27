@@ -1,3 +1,4 @@
+/*
 package cn.kunli.una.config;
 
 import org.activiti.engine.*;
@@ -13,13 +14,15 @@ import javax.sql.DataSource;
 @Configuration
 public class ActivitiConfig{
 
-    /*
+    */
+/*
      * 配置分为以下几步骤
      * 1. 创建ActivitiConfig
      * 2. 使用ActivitiConfig创建ProcessEngineFactoryBean
      * 3. 使用ProcessEngineFactoryBean创建ProcessEngine对象
      * 4. 使用ProcessEngine对象创建需要的服务对象
-     * */
+     * *//*
+
     private final DataSource dataSource;
 
     private final PlatformTransactionManager platformTransactionManager;
@@ -28,25 +31,29 @@ public class ActivitiConfig{
         this.dataSource = dataSource;
         this.platformTransactionManager = platformTransactionManager;
     }
-    /*
+    */
+/*
      * 1. 创建配置文件，也就是提供一些配置信息，这样就可以自定义自己的创建信息了
      * 需要一些参数，1. 数据源。2. 事务管理器。
      * 这里还加入了自动扫描process包下的bpmn(流程定义文件)的设置，这样就可以省去了部署
-     * */
+     * *//*
+
     @Bean
     public SpringProcessEngineConfiguration springProcessEngineConfiguration() {
         SpringProcessEngineConfiguration spec = new SpringProcessEngineConfiguration();
         spec.setDataSource(dataSource);
         spec.setTransactionManager(platformTransactionManager);
         spec.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
-        /*Resource[] resources = null;
+        */
+/*Resource[] resources = null;
         // 启动自动部署流程
         try {
             resources = new PathMatchingResourcePatternResolver().getResources("classpath*:process/*.bpmn");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        spec.setDeploymentResources(resources);*/
+        spec.setDeploymentResources(resources);*//*
+
         return spec;
     }
 
@@ -78,3 +85,4 @@ public class ActivitiConfig{
     }
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package cn.kunli.una.utils.activiti;
 
 import cn.kunli.una.pojo.vo.ActTask;
@@ -29,11 +30,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * @author Ponzio
  * @version 2020年2月26日09:06:45
  * 流程引擎 任务工具类
- */
+ *//*
+
 @Component
 public class TaskUtil {
 
@@ -46,25 +49,33 @@ public class TaskUtil {
 
 //  List<task> list = taskService//与正在执行的任务管理相关的Service
     //    .createTaskQuery()//创建任务查询对象
-    /**查询条件（where部分）*/
+    */
+/**查询条件（where部分）*//*
+
     //    .taskAssignee(assignee)//指定个人任务查询，指定办理人
     //  .taskCandidateUser(candidateUser)//User组任务的办理人查询
     //  .taskCandidateGroup(candidateGroup)//Group组任务的办理人查询
     //  .processDefinitionId(processDefinitionId)//使用流程定义ID查询
     //  .processInstanceId(processInstanceId)//使用流程实例ID查询
     //  .executionId(executionId)//使用执行对象ID查询
-    /**排序*/
+    */
+/**排序*//*
+
     //    .orderByTaskCreateTime().asc()//使用创建时间的升序排列
-    /**返回结果集*/
+    */
+/**返回结果集*//*
+
     //  .singleResult()//返回惟一结果集
     //  .count()//返回结果集的数量
     //  .listPage(firstResult, maxResults);//分页查询
     //    .list();//返回列表
 
-    /**
+    */
+/**
      * 通过办理人id查询当前任务数量
      * assignee 办理人id
-     */
+     *//*
+
     public Long getTaskCountBySelective(ActTask obj) {
         TaskQuery query = taskService.createTaskQuery();
 
@@ -92,9 +103,11 @@ public class TaskUtil {
         return query.count();
     }
 
-    /**
+    */
+/**
      * 条件查询待办
-     */
+     *//*
+
     public List<Task> selectTaskBySelective(ActTask obj) {
         TaskQuery query = taskService.createTaskQuery();
         List<Task> taskList = new ArrayList<>();
@@ -131,10 +144,12 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 条件查询已办理任务
      * assignee 办理人id
-     */
+     *//*
+
     public List<HistoricTaskInstance> selectHiTaskBySelective(ActTask obj) {
         HistoricTaskInstanceQuery query = historyService
                 .createHistoricTaskInstanceQuery();
@@ -172,10 +187,12 @@ public class TaskUtil {
         return historicTaskInstanceList;
     }
 
-    /**
+    */
+/**
      * 条件查询已办数量
      * assignee 办理人id
-     */
+     *//*
+
     public Long getHiTaskCountBySelective(ActTask obj) {
         HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery();
 
@@ -204,20 +221,24 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 通过任务id查询当前任务
      * id 任务id
-     */
+     *//*
+
     public Task getTaskById(String id) {
         //根据assignee(代理人)查询任务
         Task task = taskService.createTaskQuery().taskId(id).singleResult();
         return task;
     }
 
-    /**
+    */
+/**
      * 通过任务id查询历史任务
      * id 任务id
-     */
+     *//*
+
     public HistoricTaskInstance getHiTaskById(String id) {
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
@@ -225,9 +246,11 @@ public class TaskUtil {
         return historicTaskInstance;
     }
 
-    /**
+    */
+/**
      * 设置局部流程变量
-     */
+     *//*
+
     public SysResult setVariableLocal(String taskId, Map<String, Object> map) {
         try {
             taskService.setVariablesLocal(taskId, map);
@@ -240,9 +263,11 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 将指定任务进行委托处理
-     */
+     *//*
+
     public SysResult delegateTask(String taskId, String assignee) {
         try {
             taskService.delegateTask(taskId, assignee);
@@ -253,9 +278,11 @@ public class TaskUtil {
         }
 
     }
-    /**
+    */
+/**
      * 认领将指定任务
-     */
+     *//*
+
     public SysResult setAssignee(String taskId, String assignee) {
         try {
             taskService.setAssignee(taskId,assignee);
@@ -265,9 +292,11 @@ public class TaskUtil {
             return SysResult.fail(e.getMessage());
         }
     }
-    /**
+    */
+/**
      * 根据taskId解决被委托的任务,动态传值设置变量
-     */
+     *//*
+
     public SysResult setglobalVariable(String taskId, Map<String, Object> globalVariableMap){
         try {
 
@@ -291,9 +320,11 @@ public class TaskUtil {
         }
     }
 
-    /**
+    */
+/**
      * 办理任务
-     */
+     *//*
+
     public SysResult handleTask(String taskId, Map<String, Object> map) {
         try {
             //根据上一步生成的taskId执行任务
@@ -314,10 +345,13 @@ public class TaskUtil {
 
     }
 
-    /**
+    */
+/**
      * 撤回任务
-     */
-    /*public SysResult recallTask(String taskId) {
+     *//*
+
+    */
+/*public SysResult recallTask(String taskId) {
 
 
         RuntimeService runtimeService = processEngine.getRuntimeService();
@@ -457,15 +491,18 @@ public class TaskUtil {
 
         }
 
-    }*/
+    }*//*
 
 
-    /**
+
+    */
+/**
      * 通过任务id获取流程变量
      *
      * @param id   任务id
      * @param name 流程变量名
-     */
+     *//*
+
     public Object getVariableByTaskIdAndName(String id, String name) {
         try {
             //根据上一步生成的taskId执行任务
@@ -477,11 +514,13 @@ public class TaskUtil {
         }
     }
 
-    /**
+    */
+/**
      * 通过任务id获取所有流程变量
      *
      * @param id 任务id
-     */
+     *//*
+
     public Map<String, Object> getVariableByTaskId(String id) {
         try {
             //根据上一步生成的taskId执行任务
@@ -493,12 +532,14 @@ public class TaskUtil {
         }
     }
 
-    /**
+    */
+/**
      * 通过流程实例id获取当前流程任务
      *
      * @param instanceId 流程实例id
      * @return
-     */
+     *//*
+
     public List<Task> getTaskByInstanceId(String instanceId) {
         try {
             List<Task> taskList = taskService
@@ -510,13 +551,15 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 通过任务id与变量名获取单个流程局部变量
      *
      * @param taskId    任务id
      * @param paramName 变量名
      * @return
-     */
+     *//*
+
     public SysResult getVariableLocalByTaskIdAndParamName(String taskId, String paramName) {
         try {
             Object object = taskService.getVariableLocal(taskId, paramName);
@@ -526,12 +569,14 @@ public class TaskUtil {
         }
     }
 
-    /**
+    */
+/**
      * 通过任务id获取所有流程局部变量
      *
      * @param taskId 任务id
      * @return
-     */
+     *//*
+
     public Map<String, Object> getVariablesLocalByTaskId(String taskId) {
         try {
             Map<String, Object> map = taskService.getVariablesLocal(taskId);
@@ -542,12 +587,14 @@ public class TaskUtil {
         }
     }
 
-    /**
+    */
+/**
      * 通过任务id获取所有流程局部变量
      *
      * @param taskId 任务id
      * @return
-     */
+     *//*
+
     public List<HistoricVariableInstance> getVariablesLocalByHiTaskId(String taskId) {
         try {
             List<HistoricVariableInstance> list = historyService.createHistoricVariableInstanceQuery().taskId(taskId).list();
@@ -559,12 +606,14 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 通过任务id获取所有流程局部变量
      *
      * @param id
      * @return
-     */
+     *//*
+
     public List<Comment> getCommentByTaskId(String id) {
         try {
 
@@ -577,10 +626,12 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 通过办理人id查询当前任务数量
      * assignee 办理人id
-     */
+     *//*
+
     public SysResult claim(ActTask obj) {
         try {
             taskService.claim(obj.getId(),obj.getUserId());
@@ -593,11 +644,13 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 流程转向操作
      *
      * @throws Exception
-     */
+     *//*
+
     public SysResult turnTransition(ActTask obj){
 
         try {
@@ -640,7 +693,8 @@ public class TaskUtil {
     }
 
 
-    /**
+    */
+/**
      * 根据任务ID和节点ID获取活动节点 <br>
      *
      * @param taskId
@@ -652,7 +706,8 @@ public class TaskUtil {
      *
      * @return
      * @throws Exception
-     */
+     *//*
+
     private ActivityImpl findActivitiImpl(String taskId, String activityId)
             throws Exception {
         // 取得流程定义
@@ -681,13 +736,15 @@ public class TaskUtil {
         return activityImpl;
     }
 
-    /**
+    */
+/**
      * 清空指定活动节点流向
      *
      * @param activityImpl
      *            活动节点
      * @return 节点流向集合
-     */
+     *//*
+
     private List<PvmTransition> clearTransition(ActivityImpl activityImpl) {
         // 存储当前节点所有流向临时变量
         List<PvmTransition> oriPvmTransitionList = new ArrayList<PvmTransition>();
@@ -702,14 +759,16 @@ public class TaskUtil {
         return oriPvmTransitionList;
     }
 
-    /**
+    */
+/**
      * 还原指定活动节点流向
      *
      * @param activityImpl
      *            活动节点
      * @param oriPvmTransitionList
      *            原有节点流向集合
-     */
+     *//*
+
     private void restoreTransition(ActivityImpl activityImpl,
                                    List<PvmTransition> oriPvmTransitionList) {
         // 清空现有流向
@@ -722,14 +781,16 @@ public class TaskUtil {
         }
     }
 
-    /**
+    */
+/**
      * 根据任务ID获取流程定义
      *
      * @param taskId
      *            任务ID
      * @return
      * @throws Exception
-     */
+     *//*
+
     private ProcessDefinitionEntity findProcessDefinitionEntityByTaskId(
             String taskId) throws Exception {
         // 取得流程定义
@@ -744,14 +805,16 @@ public class TaskUtil {
         return processDefinition;
     }
 
-    /**
+    */
+/**
      * 根据任务ID获得任务实例
      *
      * @param taskId
      *            任务ID
      * @return
      * @throws Exception
-     */
+     *//*
+
     private TaskEntity findTaskById(String taskId) throws Exception {
         TaskEntity task = (TaskEntity) taskService.createTaskQuery().taskId(
                 taskId).singleResult();
@@ -763,3 +826,4 @@ public class TaskUtil {
 
 
 }
+*/

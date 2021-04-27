@@ -1,3 +1,4 @@
+/*
 package cn.kunli.una.service.activiti;
 
 import cn.kunli.una.mapper.ActTaskMapper;
@@ -21,9 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * activiti流程实例管理
- */
+ *//*
+
 @Service
 public class ActInstanceService {
     @Autowired
@@ -37,12 +40,14 @@ public class ActInstanceService {
     private TaskUtil taskUtil;
 
 
-    /**
+    */
+/**
      * 启动工作流程
      *
      * @param map 流程变量
      * @return
-     */
+     *//*
+
     public SysResult save(String definitionKey, Map<String, Object> map) {
         if (definitionKey != null) {
             //流程变量中保存流程定义key
@@ -53,23 +58,27 @@ public class ActInstanceService {
         }
     }
 
-    /**
+    */
+/**
      * 终止流程
      *
      * @param key
      * @return
-     */
+     *//*
+
     public SysResult stop(String key) {
         if (StringUtils.isBlank(key)) return SysResult.fail();
         return instanceUtil.deleteInstanceById(key);
     }
 
 
-    /**
+    */
+/**
      * 分页条件查询流程实例
      *
      * @return
-     */
+     *//*
+
     public SysResult table(ActInstance obj) {
         List<HistoricProcessInstance> list = instanceUtil.findHistoricProcessInstanceInPageBySelective(obj);
         List<Map<String, Object>> maps = ListUtil.entityListToMapList(list);
@@ -80,32 +89,38 @@ public class ActInstanceService {
     }
 
 
-    /**
+    */
+/**
      * 查询流程变量
      *
      * @return
-     */
+     *//*
+
     public SysResult getVariablesByInstanceId(String id) {
         Map<String, Object> variables = instanceUtil.getVariablesByInstanceId(id);
         return new SysResult().success(variables);
     }
 
-    /**
+    */
+/**
      * 查询历史流程变量
      *
      * @return
-     */
+     *//*
+
     public SysResult getHiVariablesByInstanceId(String id) {
         List<HistoricVariableInstance> hiVariableByInstanceId = instanceUtil.getHiVariablesByInstanceId(new ActInstance().setId(id));
         return new SysResult().success(ListUtil.entityListToMapList(hiVariableByInstanceId));
     }
 
 
-    /**
+    */
+/**
      * 查询历史活动节点
      *
      * @return
-     */
+     *//*
+
     public SysResult getHistoricActivityByInstanceId(String id) {
         List<HistoricActivityInstance> list = instanceUtil.getHistoricActivityByInstanceId(id);
 
@@ -134,11 +149,13 @@ public class ActInstanceService {
         }
     }
 
-    /**
+    */
+/**
      * 查询单个流程实例
      *
      * @return
-     */
+     *//*
+
     public SysResult getInstanceByInstanceId(String id) {
         ProcessInstance instance = instanceUtil.getInstanceByInstanceId(id);
         if (instance != null) {
@@ -151,11 +168,13 @@ public class ActInstanceService {
         }
     }
 
-    /**
+    */
+/**
      * 查询单个历史流程实例
      *
      * @return
-     */
+     *//*
+
     public SysResult<HistoricProcessInstance> getHiInstanceByInstanceId(String id) {
         HistoricProcessInstance hiInstance = instanceUtil.getHiInstanceByInstanceId(id);
         if (hiInstance != null) {
@@ -166,11 +185,13 @@ public class ActInstanceService {
     }
 
 
-    /**
+    */
+/**
      * 通过流程实例id查询当前待办组任务用户
      *
      * @return
-     */
+     *//*
+
     public List<Map<String, Object>> getCandidateUserByInstanceId(String id) {
         List<Map<String, Object>> userMapList = new ArrayList<>();
         //查询当前待办
@@ -198,3 +219,4 @@ public class ActInstanceService {
     }
 
 }
+*/

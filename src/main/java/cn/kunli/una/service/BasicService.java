@@ -225,17 +225,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         return this.mapper.updateByPrimaryKeySelective((T) new BasePojo().setIsDelete(1).setId(id));
     }*/
 
-    //从redis或数据库获取数据
-
-    /*@SneakyThrows
-    //@Cacheable(value = "entityRecordDetail", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public T queryFromRedis(String key) {
-        if(StringUtils.isBlank(key))return null;
-        T record = super.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("code", key)));
-//        List<T> ts = this.selectBySelective(map.MapBuilder.aMap().put("code",key).build());
-        return record;
-    }*/
-
     //手动删除 通过code缓存的记录
     @SneakyThrows
     public void deleteFromCacheByCode(Serializable id){
@@ -251,20 +240,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             }
         }
     }
-
-    /*public SysResult refreshRedis(String code) {
-        if (redisUtil.getIsConnect()) {
-            if(StringUtils.isNotBlank(code)){
-                redisUtil.del("entityRecordDetail::"+this.getClass().getSimpleName()+"-"+code);
-            }else{
-                Set<String> keys = redisUtil.hasKeys("entityRecordDetail::"+this.getClass().getSimpleName()+"-*");
-                redisUtil.delKeys(keys);
-            }
-            return SysResult.success("刷新缓存成功");
-        } else {
-            return SysResult.fail("redis连接失败");
-        }
-    }*/
 
     /**
      * 校验数据格式

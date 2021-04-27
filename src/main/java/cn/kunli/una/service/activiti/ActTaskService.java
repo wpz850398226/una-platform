@@ -1,3 +1,4 @@
+/*
 package cn.kunli.una.service.activiti;
 
 import cn.kunli.una.pojo.vo.SysPageModel;
@@ -19,9 +20,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * activiti流程任务管理
- */
+ *//*
+
 @Service
 public class ActTaskService {
 
@@ -30,21 +33,25 @@ public class ActTaskService {
 	@Autowired
 	private InstanceUtil instanceUtil;
 
-	/**
+	*/
+/**
 	 * 办理任务
 	 * @param map 流程变量,内中保存任务id
 	 * @return
-	 */
+	 *//*
+
 	public SysResult handle(Map<String,Object> map) {
 		String id = (String) map.get("id");
 		map.remove("id");
 		return taskUtil.handleTask(id,map);
 	}
 
-	/**
+	*/
+/**
 	 * 分页条件查询待办
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getTaskBySelective(ActTask obj) {
 		Long total = taskUtil.getTaskCountBySelective(obj);
 		List<Task> list = taskUtil.selectTaskBySelective(obj);
@@ -64,19 +71,23 @@ public class ActTaskService {
 		}
 	}
 
-	/**
+	*/
+/**
 	 * 条件查询待办数量
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getTaskCountBySelective(ActTask obj) {
 		Long count = taskUtil.getTaskCountBySelective(obj);
 		return new SysResult().success(count);
 	}
 
-	/**
+	*/
+/**
 	 * id查询待办
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getTaskById(String id) {
 		Task task = taskUtil.getTaskById(id);
 		if(task==null)return SysResult.fail("待办不存在，可能已被其他用户处理");
@@ -86,10 +97,12 @@ public class ActTaskService {
 	}
 
 
-	/**
+	*/
+/**
 	 * 分页条件查询已办
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getHiTaskBySelective(ActTask obj) {
 		Long total = taskUtil.getHiTaskCountBySelective(obj);
 		List<HistoricTaskInstance> list = taskUtil.selectHiTaskBySelective(obj);
@@ -127,20 +140,24 @@ public class ActTaskService {
 	}
 
 
-	/**
+	*/
+/**
 	 * 条件查询已办数量
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getHiTaskCountBySelective(ActTask obj) {
 		Long count = taskUtil.getHiTaskCountBySelective(obj);
 		return new SysResult().success(count);
 	}
 
 
-	/**
+	*/
+/**
 	 * id查询已办
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getHiTaskById(String id) {
 		HistoricTaskInstance task = taskUtil.getHiTaskById(id);
 		if(task==null)return SysResult.fail("已办任务不存在");
@@ -169,32 +186,38 @@ public class ActTaskService {
 		return new SysResult().success(map);
 	}
 
-	/**
+	*/
+/**
 	 * 拾取组任务
 	 * @param obj 流程任务工具类
 	 * @return
-	 */
+	 *//*
+
 	public SysResult claim(ActTask obj) {
 		return taskUtil.claim(obj);
 	}
 
-	/**
+	*/
+/**
 	 * 查询流程变量
 	 * @return
-	 */
+	 *//*
+
 	public SysResult getVariablesByInstanceId(String id, String name) {
 		Object variableByTaskIdAndName = taskUtil.getVariableByTaskIdAndName(id, name);
 		return new SysResult().success(variableByTaskIdAndName);
 	}
 
 
-	/**
+	*/
+/**
 	 * 节点跳转
 	 * id  任务id
 	 * activityId  目标节点id
 	 * comments  批注（逗号分隔）
 	 * @return
-	 */
+	 *//*
+
 	public SysResult turnTransition(ActTask obj) {
 		if(obj.getId()==null)return SysResult.fail("任务id为空");
 		if(StringUtils.isBlank(obj.getUserId()))return SysResult.fail("办理人id为空");
@@ -221,3 +244,4 @@ public class ActTaskService {
 
 
 }
+*/
