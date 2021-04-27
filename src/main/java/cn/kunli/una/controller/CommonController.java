@@ -119,9 +119,9 @@ public class CommonController {
         Map<String, Object> map = new MapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
-
         //查询字段
         List<SysField> sysFieldList = sysFieldService.list(sysFieldService.getWrapper(map));
+
         switch (className) {
             case "SysDictionary":
                 if (obj.get("parentId") != null) {
@@ -150,7 +150,7 @@ public class CommonController {
         }
 
         model.addAttribute("sample", obj);
-        model.addAttribute("sysFieldList", sysFieldList);
+        model.addAttribute("sysFieldList", sysFieldService.resultFormat(sysFieldList));
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("activeUser", UserUtil.getLoginAccount());
 

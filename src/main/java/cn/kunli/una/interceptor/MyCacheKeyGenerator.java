@@ -39,11 +39,10 @@ public class MyCacheKeyGenerator implements KeyGenerator {
                 sqlSegment = sqlSegment.replace(oldChar, map.get(o).toString());
             }
             return key+sqlSegment;
-        }else if(param != null){
-            //参数为实体类，方法来源：save、updateById
-            Map map = JSONUtil.toMap(param);
-            if(MapUtils.isNotEmpty(map)&&map.containsKey("id")){
-                return key+"(id = "+map.get("id")+")";
+        }else if(param instanceof BasePojo){
+            BasePojo basePojo = (BasePojo)param;
+            if(basePojo.getId()!=null){
+                return key+"(id = "+basePojo.getId()+")";
             }
         }
         return new SimpleKey(params);

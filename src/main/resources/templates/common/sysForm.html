@@ -19,9 +19,9 @@
 
                 <input th:if="${sample['id']!=null}" type="hidden" th:value="${sample['id'] }" id="hiddenObjId" name="id">
                 <input th:if="${sample['batch']!=null}" type="hidden" th:value="${sample['ids'] }" id="hiddenObjIds" name="ids">
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/querySinglePrivate" id="queryUrlInForm">
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/savePrivate" id="saveUrlInForm">
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">
+<!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/querySinglePrivate" id="queryUrlInForm">-->
+<!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/savePrivate" id="saveUrlInForm">-->
+<!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">-->
 
                 <div class="layui-card table">
                     <!--<div class="layui-card-header">表格相关</div>-->
@@ -47,165 +47,165 @@
                                           th:placeholder="${'请输入'+record['name']}"></textarea>
                             </div>
 
-                            <!--富文本-->
                             <div th:case="field_assignment_editor"  class="layui-input-block">
-                                    <textarea class="layedit"
-                                              th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                              th:name="${record['assignmentCode']}"
-                                              th:id="${record['id']}"></textarea>
+                                <!--富文本-->
+                                <textarea class="layedit"
+                                          th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                          th:name="${record['assignmentCode']}"
+                                          th:id="${record['id']}"></textarea>
                             </div>
 
-                                <div th:case="field_assignment_switch"  class="layui-input-block">
-                                    <input class=""
-                                           th:id="${record['id']}"
-                                           type="checkbox"
+                            <div th:case="field_assignment_switch"  class="layui-input-block">
+                                <input class=""
+                                       th:id="${record['id']}"
+                                       type="checkbox"
+                                       th:name="${record['assignmentCode']}"
+                                       lay-skin="switch"
+                                       lay-text="是|否"
+                                       value="1">
+                            </div>
+
+                            <div th:case="field_assignment_radio"  class="layui-input-block">
+                                <input th:each="option:${record.radioOptionArray}"
+                                       type="radio"
+                                       th:name="${record['assignmentCode']}"
+                                       th:id="${record['id']}"
+                                       th:value="${option}" th:title="${option}">
+                            </div>
+
+                            <div th:case="field_assignment_singleselect"  class="layui-input-inline">
+                                <select th:class="'una-select una-select-linkage'+${record['switchHideOption']!=null?' una-switch-hide':''}" lay-search=""
+                                        th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                        th:id="${record['id']}"
+                                        th:name="${record['assignmentCode']}"
+                                        th:data-sub_id="${record.selectSubIds}"
+                                        th:data-param_name="${record['optionParamName']}"
+                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
+                                        record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
+                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
+                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                                        th:data-switch_hide_ids="${record['switchHideIds']}"
+                                        th:data-switch_hide_option="${record['switchHideOption']}"
+                                        th:data-url="${record['optionEntityPath']}">
+                                </select>
+                            </div>
+
+                            <div th:case="field_assignment_multiSelect"  class="layui-input-block">
+                                <div class="una-select-multiple una-select-linkage"
+                                     lay-search=""
+                                     th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                     th:id="${record['id']}"
+                                     th:name="${record['assignmentCode']}"
+                                     th:data-sub_id="${record.selectSubIds}"
+                                     th:data-param_name="${record['optionParamName']}"
+                                     th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
+                                        record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
+                                     th:data-option_name_field_title="${record['optionNameFieldCode']}"
+                                     th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                                     th:data-url="${record['optionEntityPath']}">
+                                </div>
+                            </div>
+
+                            <div th:case="地区三级联动"  class="layui-input-inline">
+                                <select class="una-select una-select-linkage" lay-search=""
+                                        th:id="${record['id']}_province"
+                                        th:name="${record['assignmentCode']}"
+                                        th:data-sub_id="${record.selectSubIds}"
+                                        th:data-param_name="${record['optionParamName']}"
+                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
+                                        record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
+                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
+                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                                        th:data-url="${record['optionEntityPath']}">
+                                </select>
+                                <select class="una-select una-select-linkage" lay-search=""
+                                        th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                        th:id="${record['id']}"
+                                        th:name="${record['assignmentCode']}"
+                                        th:data-sub_id="${record.selectSubIds}"
+                                        th:data-param_name="${record['optionParamName']}"
+                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
+                                        record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
+                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
+                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                                        th:data-url="${record['optionEntityPath']}">
+                                </select>
+                                <select class="una-select una-select-linkage" lay-search=""
+                                        th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                        th:id="${record['id']}"
+                                        th:name="${record['assignmentCode']}"
+                                        th:data-sub_id="${record.selectSubIds}"
+                                        th:data-param_name="${record['optionParamName']}"
+                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
+                                        record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
+                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
+                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                                        th:data-url="${record['optionEntityPath']}">
+                                </select>
+                            </div>
+
+                            <div th:case="field_assignment_date"  class="layui-input-block">
+                                <input class="layui-input una-laydate-date"
+                                       th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                       th:id="${record['id']}"
+                                       type="text"
+                                       th:name="${record['assignmentCode']}"
+                                       placeholder="yyyy-MM-dd"
+                                       autocomplete="off">
+                            </div>
+
+                            <div th:case="field_assignment_time"  class="layui-input-block">
+                                <input class="layui-input una-laydate-time"
+                                       th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                       th:id="${record['id']}"
+                                       type="text"
+                                       th:name="${record['assignmentCode']}"
+                                       placeholder="HH:mm:ss"
+                                       autocomplete="off">
+                            </div>
+
+                            <div th:case="field_assignment_datetime"  class="layui-input-block">
+                                <input class="layui-input una-laydate-datetime"
+                                       th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                       th:id="${record['id']}"
+                                       type="text"
+                                       th:name="${record['assignmentCode']}"
+                                       placeholder="yyyy-MM-dd HH:mm:ss"
+                                       autocomplete="off">
+                            </div>
+
+                            <div th:case="field_assignment_yearmonth"  class="layui-input-block">
+                                <input class="layui-input una-laydate-month"
+                                       th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                       th:id="${record['id']}"
+                                       type="text"
+                                       th:name="${record['assignmentCode']}"
+                                       placeholder="yyyy-MM"
+                                       autocomplete="off">
+                            </div>
+
+                            <div th:case="field_assignment_map"  class="layui-input-block">
+                                <div class="layui-input-inline">
+                                    <input type="text"
                                            th:name="${record['assignmentCode']}"
-                                           lay-skin="switch"
-                                           lay-text="是|否"
-                                           value="1">
-                                </div>
-
-                                <div th:case="field_assignment_radio"  class="layui-input-block">
-                                    <input th:each="option:${record.radioOptionArray}"
-                                           type="radio"
-                                           th:name="${record['assignmentCode']}"
+                                           disabled autocomplete="off"
+                                           placeholder="请打开地图操作"
                                            th:id="${record['id']}"
-                                           th:value="${option}" th:title="${option}">
+                                           class="layui-input">
                                 </div>
+                                <div class="layui-input-inline">
+                                    <button type="button"
+                                            una-event="map"
+                                            class="layui-btn layui-btn-normal">打开地图</button>
+                                </div>
+                            </div>
 
-                                <div th:case="field_assignment_singleselect"  class="layui-input-inline">
-                                    <select th:class="'una-select una-select-linkage'+${record['switchHideOption']!=null?' una-switch-hide':''}" lay-search=""
-                                            th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                            th:id="${record['id']}"
-                                            th:name="${record['assignmentCode']}"
-                                            th:data-sub_id="${record.selectSubIds}"
-                                            th:data-param_name="${record['optionParamName']}"
-                                            th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                            record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                            th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                            th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                            th:data-switch_hide_ids="${record['switchHideIds']}"
-                                            th:data-switch_hide_option="${record['switchHideOption']}"
-                                            th:data-url="${record['optionEntityPath']}">
-                                    </select>
-                                </div>
-
-                                <div th:case="field_assignment_multiSelect"  class="layui-input-block">
-                                    <div class="una-select-multiple una-select-linkage"
-                                         lay-search=""
-                                         th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                         th:id="${record['id']}"
-                                         th:name="${record['assignmentCode']}"
-                                         th:data-sub_id="${record.selectSubIds}"
-                                         th:data-param_name="${record['optionParamName']}"
-                                         th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                            record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                         th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                         th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                         th:data-url="${record['optionEntityPath']}">
-                                    </div>
-                                </div>
-
-                                <div th:case="地区三级联动"  class="layui-input-inline">
-                                    <select class="una-select una-select-linkage" lay-search=""
-                                            th:id="${record['id']}_province"
-                                            th:name="${record['assignmentCode']}"
-                                            th:data-sub_id="${record.selectSubIds}"
-                                            th:data-param_name="${record['optionParamName']}"
-                                            th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                            record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                            th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                            th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                            th:data-url="${record['optionEntityPath']}">
-                                    </select>
-                                    <select class="una-select una-select-linkage" lay-search=""
-                                            th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                            th:id="${record['id']}"
-                                            th:name="${record['assignmentCode']}"
-                                            th:data-sub_id="${record.selectSubIds}"
-                                            th:data-param_name="${record['optionParamName']}"
-                                            th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                            record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                            th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                            th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                            th:data-url="${record['optionEntityPath']}">
-                                    </select>
-                                    <select class="una-select una-select-linkage" lay-search=""
-                                            th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                            th:id="${record['id']}"
-                                            th:name="${record['assignmentCode']}"
-                                            th:data-sub_id="${record.selectSubIds}"
-                                            th:data-param_name="${record['optionParamName']}"
-                                            th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                            record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                            th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                            th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                            th:data-url="${record['optionEntityPath']}">
-                                    </select>
-                                </div>
-
-                                <div th:case="field_assignment_date"  class="layui-input-block">
-                                    <input class="layui-input una-laydate-date"
-                                           th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                           th:id="${record['id']}"
-                                           type="text"
-                                           th:name="${record['assignmentCode']}"
-                                           placeholder="yyyy-MM-dd"
-                                           autocomplete="off">
-                                </div>
-
-                                <div th:case="field_assignment_time"  class="layui-input-block">
-                                    <input class="layui-input una-laydate-time"
-                                           th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                           th:id="${record['id']}"
-                                           type="text"
-                                           th:name="${record['assignmentCode']}"
-                                           placeholder="HH:mm:ss"
-                                           autocomplete="off">
-                                </div>
-
-                                <div th:case="field_assignment_datetime"  class="layui-input-block">
-                                    <input class="layui-input una-laydate-datetime"
-                                           th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                           th:id="${record['id']}"
-                                           type="text"
-                                           th:name="${record['assignmentCode']}"
-                                           placeholder="yyyy-MM-dd HH:mm:ss"
-                                           autocomplete="off">
-                                </div>
-
-                                <div th:case="field_assignment_yearmonth"  class="layui-input-block">
-                                    <input class="layui-input una-laydate-month"
-                                           th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                           th:id="${record['id']}"
-                                           type="text"
-                                           th:name="${record['assignmentCode']}"
-                                           placeholder="yyyy-MM"
-                                           autocomplete="off">
-                                </div>
-
-                                <div th:case="field_assignment_map"  class="layui-input-block">
-                                    <div class="layui-input-inline">
-                                        <input type="text"
-                                               th:name="${record['assignmentCode']}"
-                                               disabled autocomplete="off"
-                                               placeholder="请打开地图操作"
-                                               th:id="${record['id']}"
-                                               class="layui-input">
-                                    </div>
-                                    <div class="layui-input-inline">
-                                        <button type="button"
-                                                una-event="map"
-                                                class="layui-btn layui-btn-normal">打开地图</button>
-                                    </div>
-                                </div>
-
-                                <div th:case="field_assignment_hidden">
-                                    <input type="hidden"
-                                           th:id="${record['id']}"
-                                           th:name="${record['assignmentCode']}"
-                                           th:value="${record['defaultValue']!=null&& #strings.contains(record['defaultValue'],'$u')?activeUser[#strings.substringAfter(record['defaultValue'],'.')]:record['defaultValue']}">
-                                </div>
+                            <div th:case="field_assignment_hidden">
+                                <input type="hidden"
+                                       th:id="${record['id']}"
+                                       th:name="${record['assignmentCode']}"
+                                       th:value="${record['defaultValue']!=null&& #strings.contains(record['defaultValue'],'$u')?activeUser[#strings.substringAfter(record['defaultValue'],'.')]:record['defaultValue']}">
+                            </div>
 
                             <div th:case="field_assignment_treeNode">
                                 <input type="hidden"
@@ -214,45 +214,45 @@
                                        th:value="${record['defaultValue']!=null&& #strings.contains(record['defaultValue'],'$u')?activeUser[#strings.substringAfter(record['defaultValue'],'.')]:record['defaultValue']}">
                             </div>
 
-                                <div th:case="field_assignment_respository"  class="layui-input-block una-respository">
-                                    <input type="text" onchange="showFile()"
-                                           th:name="${record['assignmentCode']}"
-                                           disabled autocomplete="off"
-                                           th:lay-verify="${record.formatDetectionTypeDvalues}"
-                                           placeholder="请打开文件资源库"
-                                           th:id="${record['id']}"
-                                           class="layui-input">
-                                    <div class="layui-input-inline">
-                                        <button type="button"
-                                                una-event="respository"
-                                                th:data-selected_limit_num="${record['selectableLimitNum']}"
-                                                class="layui-btn layui-btn-normal">打开文件库</button>
-                                    </div>
-                                    <div class="layui-input-block" style="float:right;">
-                                    </div>
+                            <div th:case="field_assignment_respository"  class="layui-input-block una-respository">
+                                <input type="text" onchange="showFile()"
+                                       th:name="${record['assignmentCode']}"
+                                       disabled autocomplete="off"
+                                       th:lay-verify="${record.formatDetectionTypeDvalues}"
+                                       placeholder="请打开文件资源库"
+                                       th:id="${record['id']}"
+                                       class="layui-input">
+                                <div class="layui-input-inline">
+                                    <button type="button"
+                                            una-event="respository"
+                                            th:data-selected_limit_num="${record['selectableLimitNum']}"
+                                            class="layui-btn layui-btn-normal">打开文件库</button>
                                 </div>
+                                <div class="layui-input-block" style="float:right;">
+                                </div>
+                            </div>
 
-                                <div th:case="field_assignment_singleUpload"  class="layui-input-block">
-                                    <input type="file" th:name="${record['assignmentCode']}">
-                                </div>
+                            <div th:case="field_assignment_singleUpload"  class="layui-input-block">
+                                <input type="file" th:name="${record['assignmentCode']}">
+                            </div>
 
-                                <div th:case="field_assignment_multiUpload"  class="layui-input-block">
-                                    <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
-                                    <span style="color: red">(单个文件不能超过2M)</span>
-                                    <div class="layui-upload-list">
-                                        <table class="layui-table">
-                                            <thead>
-                                            <tr><th>文件名</th>
-                                                <th>大小</th>
-                                                <th>状态</th>
-                                                <th>操作</th>
-                                            </tr></thead>
-                                            <tbody id="demoList"></tbody>
-                                        </table>
-                                    </div>
-                                    <button type="button" class="layui-btn" style="display: none"
-                                            id="testListAction">开始上传</button>
+                            <div th:case="field_assignment_multiUpload"  class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+                                <span style="color: red">(单个文件不能超过2M)</span>
+                                <div class="layui-upload-list">
+                                    <table class="layui-table">
+                                        <thead>
+                                        <tr><th>文件名</th>
+                                            <th>大小</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr></thead>
+                                        <tbody id="demoList"></tbody>
+                                    </table>
                                 </div>
+                                <button type="button" class="layui-btn" style="display: none"
+                                        id="testListAction">开始上传</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -24,6 +24,17 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     private SysFilterService sysFilterService;
 
     @Override
+    public SysEntity saveFormat(SysEntity obj) {
+        obj = super.saveFormat(obj);
+
+        if(obj.getIsVirtual()==1){
+            obj.setPath("/sys/data");
+        }
+
+        return obj;
+    }
+
+    @Override
     public List<SysEntity> resultFormat(List<SysEntity> list) {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.resultFormat(list);
