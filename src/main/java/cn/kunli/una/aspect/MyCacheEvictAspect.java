@@ -39,7 +39,7 @@ public class MyCacheEvictAspect {
         MyCacheEvict myCacheEvict = method.getAnnotation(MyCacheEvict.class);
         String[] keys = myCacheEvict.value();
         for (String key : keys) {
-            key = key+"::"+serviceName+":list:*";
+            key = key+"::"+serviceName+":*";
             Set set = redisUtil.hasKeys(key);
             redisUtil.delKeys(set);
             log.info("cache key: " + key + " deleted");

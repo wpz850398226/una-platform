@@ -47,7 +47,8 @@
                                           th:placeholder="${'请输入'+record['name']}"></textarea>
                             </div>
 
-                            <div th:case="field_assignment_richtext"  class="layui-input-block">
+                            <!--富文本-->
+                            <div th:case="field_assignment_editor"  class="layui-input-block">
                                     <textarea class="layedit"
                                               th:lay-verify="${record.formatDetectionTypeDvalues}"
                                               th:name="${record['assignmentCode']}"
@@ -289,7 +290,6 @@
     <script>
         var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
         var sample;
-        var layeditIndex = [];
 
         var ids = $("#unaCheckIdsHidden",parent.document).val();
         $("#hiddenObjIds").val(ids);
@@ -348,7 +348,6 @@
             //初始化富文本编辑器，并赋值
             $("textarea.layedit").each(function () {
                 var index = layedit.build($(this).prop("id"));
-                layeditIndex.push(index);
             })
 
             //遍历下拉选择框，为已选择的联动下拉框赋值并加载选项
@@ -471,9 +470,9 @@
                 var target = $("#showResponseTarget").val();
 
                 //将富文本编辑器的内容赋值给文本域
-                for(var i=0;i<layeditIndex.length;i++){
-                    data.field.content = layedit.getContent(layeditIndex[i]);
-                }
+                $("textarea.layedit").each(function (index) {
+                    data.field[$(this).prop("name")] = layedit.getContent(index+1);
+                })
 
                     //加载层
                     //var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2

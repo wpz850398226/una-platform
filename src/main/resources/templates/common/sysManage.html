@@ -153,7 +153,6 @@
     var isFullForm = '[[${sysResponseParameter.sysEntity.isFullForm }]]';
     var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
     var entityClass = '[[${sysResponseParameter.sysEntity.code }]]';
-    var isRealDelete = '[[${sysResponseParameter.sysEntity.isRealDelete }]]';
 
     layui.use(['form', 'table'], function(){
         var table = layui.table
@@ -370,7 +369,6 @@
                     break;
                 case 'batchDelete':
                     var data = checkStatus.data;
-                    var deleteUrl = entityPath+"/deleteLogically";
                     if(data.length>0){
                         var ids = [];
                         $.each(data,function (index,obj) {
@@ -383,18 +381,16 @@
                         layer.confirm('您确定要删除共'+data.length+'条数据吗？', {
                             btn: ['确认','取消'] //按钮
                         }, function(){
-                            if(isRealDelete==1)deleteUrl = entityPath+"/delete";
                             $.ajax({
-                                type: 'POST',
-                                url: deleteUrl,
+                                type: 'DELETE',
+                                dataType: 'json',
+                                traditional:true,
+                                url: entityPath+"/"+ids,
                                 success:function(result){
                                     layer.msg(result.message,function(){
                                         if(result.isSuccess)table.reload("unaDataTable");
                                     })
                                 },
-                                dataType: 'json',
-                                traditional:true,
-                                data:{"ids":ids},
                                 error: function(XMLHttpRequest) {
                                     console.log("访问出错了，错误代号："+XMLHttpRequest.status);
                                 }
@@ -440,32 +436,6 @@
                         layer.msg("未选中数据",function(){})
                     }
                     break;
-                case 'refreshRedis':
-                    layer.confirm('您确定要刷新'+entityName+'缓存吗？', {
-                        btn: ['确认','取消'] //按钮
-                    }, function(){
-                        var index = layer.load(1, {
-                            shade: [0.2,'#fff'] //0.1透明度的白色背景
-                        });
-                        $.ajax({
-                            type: 'POST',
-                            url: entityPath+"/refreshRedis",
-                            success:function(result){
-                                layer.closeAll('loading');
-                                layer.msg(result.message,function(){
-                                    if(result.isSuccess)table.reload("unaDataTable");
-                                })
-                            },
-                            dataType: 'json',
-                            traditional:true,
-                            data:{},
-                            error: function(XMLHttpRequest) {
-                                console.log("访问出错了，错误代号："+XMLHttpRequest.status);
-                            }
-                        })
-                    })
-                    break;
-
                 //自定义头工具栏右侧图标 - 通用查询
                 case 'COMMON_QUERY':
                     layer.msg('点击通用查询按钮');
@@ -529,23 +499,20 @@
         //监听行工具事件
         table.on('tool(commonTable)', function(obj){
             var data = obj.data;
-            var deleteUrl = entityPath+"/deleteLogically";
             switch(obj.event){
                 case 'del':
                     layer.confirm('您确定要删除吗？', {
                         btn: ['确认','取消'] //按钮
                     }, function(){
-                        if(isRealDelete==1)deleteUrl = entityPath+"/delete";
                         $.ajax({
-                            type: 'POST',
-                            url: deleteUrl,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            url: entityPath+"/"+data.id,
                             success:function(result){
                                 layer.msg(result.message,function(){
                                     if(result.isSuccess)table.reload("unaDataTable");
                                 })
                             },
-                            dataType: 'json',
-                            data:{"ids":data.id},
                             error: function(XMLHttpRequest) {
                                 console.log("访问出错了，错误代号："+XMLHttpRequest.status);
                             }
@@ -570,7 +537,7 @@
                     if(isFullForm==1)layer.full(index);
                     break;
                 case 'ascend':
-                    $.post(entityPath+"/increaseOrder",{"id":data.id},function(result){
+                    $.post(entityPath+"/ascend/"+data.id,function(result){
                         layer.msg(result.message,function(){
                             if(result.isSuccess)table.reload("unaDataTable");
                         })

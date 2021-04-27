@@ -385,6 +385,6 @@ function submitObj(selector){
 //$.post(url,$(selector).closest("form").serialize(),showResponseReloadTable,'json');
 
  //升序
- function increaseOrder(id){
-		ajaxInvocationById($("#entityPath").val()+'/increaseOrder',id);
+ function ascend(id){
+		ajaxInvocationById($("#entityPath").val()+'/ascend',id);
 	}

@@ -77,72 +77,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @Override
-    @MyCacheEvict(value = "entityList")
+    @MyCacheEvict(value = "list")
     public boolean save(T entity) {
         return super.save(entity);
-    }
-
-    /**
-     * 根据主键进行查询
-     * @param id
-     * @return
-     */
-    @Override
-    @Cacheable(value = "entityRecord", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public T getById(Serializable id) {
-        return super.getById(id);
-    }
-
-    /**
-     * 根据条件构造查询单条
-     * @param queryWrapper
-     * @return
-     */
-    @Override
-    @Cacheable(value = "entityRecord", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public T getOne(Wrapper<T> queryWrapper) {
-        return super.getOne(queryWrapper);
-    }
-
-    /**
-     * 根据条件构造查询多条
-     * @param queryWrapper
-     * @return
-     */
-    @Override
-    @Cacheable(value = "entityList", keyGenerator = "myCacheKeyGenerator", unless = "#result == null && #result.size()==0")
-    public List<T> list(Wrapper<T> queryWrapper) {
-        return super.list(queryWrapper);
-    }
-
-    /**
-     * 查询（根据 columnMap 条件）
-     *
-     * @param record
-     * @return
-     */
-    /*public List<T> selectByMap(Map<String,Object> map) {
-        return this.mapper.selectByMap(map);
-    }*/
-
-    @Override
-    public boolean saveOrUpdate(T entity) {
-        return super.saveOrUpdate(this.saveFormat(entity));
-    }
-
-    /**
-     * 更新数据,只操作record中的非空属性
-     *
-     * @param record
-     * @return
-     */
-    @SneakyThrows
-    @MyCacheEvict(value = "entityList")
-    @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
-    @Override
-    public boolean updateById(T entity) {
-        this.deleteFromCacheByCode(entity.getId());
-        return super.updateById(entity);
     }
 
     /**
@@ -152,8 +89,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
-    @MyCacheEvict(value = "entityList")
-    @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = "list")
+    @CacheEvict(value = "record", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         String className = entityClass.getSimpleName();
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
@@ -166,80 +103,73 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
         }
 
-        this.deleteFromCacheByCode(id);
+//        this.deleteFromCacheByCode(id);
         return super.removeById(id);
     }
 
     /**
-     * 条件查询，返回resultMap,统计查询
+     * 更新数据,只操作record中的非空属性
      *
      * @param record
      * @return
      */
-    /*public List<T> selectBySelective(map map) {
-        map = this.queryFormat(map);
-        List<T> ts = this.mapper.selectBySelective(map);
-        return this.resultFormat(ts);
-    }*/
-
-
-
-
-    /**
-     * 升序
-     * @param id
-     * @return
-     */
-
-    public Integer increaseOrder(Object id) {
-        //获取当前类对应实体类对象
-        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
-        //获取父字段字段类对象
-        SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-        String tableName = StringUtil.upperCharToUnderLine(entityClass.getSimpleName());
-        String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
-        return commonMapper.increaseOrder(tableName, fieldCode, id);
-    }
-
-    /**
-     * 批量修改数据
-     *
-     * @param list
-     * @return
-     */
-
-    public SysResult batchUpdateBySelective(List<Map<String, Object>> list) {
-        return null;
-    }
-
-    /**
-     * 逻辑删除数据
-     *
-     * @param id
-     * @return
-     */
-    /*@SneakyThrows
-    @CacheEvict(value = "entityRecord", keyGenerator = "myCacheKeyGenerator")
-    public int deleteLogicallyByPrimaryKey(Integer id) {
-        this.deleteFromCacheByCode(id);
-        return this.mapper.updateByPrimaryKeySelective((T) new BasePojo().setIsDelete(1).setId(id));
-    }*/
-
-    //手动删除 通过code缓存的记录
     @SneakyThrows
-    public void deleteFromCacheByCode(Serializable id){
-        T t = this.getById(id);
-        if(t!=null){
-            if(t!=null){
-                Map map = JSONUtil.toMap(t);
-                if(map!=null&&map.get("code")!=null){
-                    //移除详情缓存中的记录
-                    Object key = map.get("code");
-                    redisUtil.del("entityRecordDetail::"+this.getClass().getSimpleName()+"-"+key);
-                }
-            }
-        }
+    @MyCacheEvict(value = "list")
+    @CacheEvict(value = "record", keyGenerator = "myCacheKeyGenerator")
+    @Override
+    public boolean updateById(T entity) {
+//        this.deleteFromCacheByCode(entity.getId());
+        return super.updateById(entity);
     }
+
+    //自定义更新规则
+    /*@Override
+    public boolean update(Wrapper<T> updateWrapper) {
+        return super.update(updateWrapper);
+    }*/
+
+    /**
+     * 根据主键进行查询
+     * @param id
+     * @return
+     */
+    @Override
+    @Cacheable(value = "record", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    public T getById(Serializable id) {
+        return super.getById(id);
+    }
+
+    /**
+     * 根据条件构造查询单条
+     * @param queryWrapper
+     * @return
+     */
+    @Override
+    @Cacheable(value = "record", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    public T getOne(Wrapper<T> queryWrapper) {
+        return super.getOne(queryWrapper);
+    }
+
+    /**
+     * 根据条件构造查询多条
+     * @param queryWrapper
+     * @return
+     */
+    @Override
+    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null || #result.size()==0")
+    public List<T> list(Wrapper<T> queryWrapper) {
+        return super.list(queryWrapper);
+    }
+
+    /**
+     * 查询（根据 columnMap 条件）
+     * @param record
+     * @return
+     */
+    /*@Override
+    public List<T> listByMap(Map<String,Object> map) {
+        return super.listByMap(map);
+    }*/
 
     /**
      * 校验数据格式

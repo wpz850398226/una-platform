@@ -82,52 +82,6 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return SysResult.fail();
 	}
 
-	@GetMapping("/{id}")
-	@ResponseBody
-	public SysResult get(@PathVariable Serializable id) {
-		T record = (T) service.getById(id);
-		return new SysResult().success(service.resultFormat(ListUtil.getList(record)).get(0));
-	}
-
-	@PutMapping("")
-	@ResponseBody
-	public SysResult update(T entity) {
-		boolean updateResult = service.updateById(service.saveFormat(entity));
-		if(updateResult){
-			return SysResult.success();
-		}
-		return SysResult.fail();
-	}
-
-	@DeleteMapping("/{ids}")
-	@ResponseBody
-	public SysResult remove(@PathVariable Integer... ids) {
-		for (Integer id : ids) {
-			boolean deleteResult = service.deleteById(id);
-			if(!deleteResult)return SysResult.fail();
-		}
-		return SysResult.success();
-	}
-
-	@GetMapping("/page")
-	@ResponseBody
-	public SysResult page(@RequestParam Map<String, Object> map) {
-		Long pageNum = 1L;
-		Long pageSize = 10L;
-		if(map.get("pageNum")!=null){
-			pageNum = Long.valueOf(map.get("pageNum").toString());
-			map.remove("pageNum");
-		}
-		if(map.get("pageSize")!=null){
-			pageSize = Long.valueOf(map.get("pageSize").toString());
-			map.remove("pageSize");
-		}
-		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
-		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(service.queryFormat(map)));
-		page.setRecords(service.resultFormat(page.getRecords()));
-		return new SysResult().success(page.getRecords(),page.getTotal());
-	}
-
 	/**
 	 * 保存/添加或修改
 	 * @param obj
@@ -169,6 +123,81 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		}
 	}
 
+	@DeleteMapping("/{ids}")
+	@ResponseBody
+	public SysResult delete(@PathVariable Integer... ids) {
+		for (Integer id : ids) {
+			boolean deleteResult = service.deleteById(id);
+			if(!deleteResult)return SysResult.fail();
+		}
+		return SysResult.success();
+	}
+
+	@PutMapping("")
+	@ResponseBody
+	public SysResult update(T entity) {
+		boolean updateResult = service.updateById(service.saveFormat(entity));
+		if(updateResult){
+			return SysResult.success();
+		}
+		return SysResult.fail();
+	}
+
+	/**
+	 * 提高顺序
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("/ascend/{id}")
+	@ResponseBody
+	public SysResult ascend(@PathVariable Serializable id) {
+
+		//查询升序记录
+		BasePojo ascendRecord = service.getById(id);
+		if(ascendRecord!=null){
+			Integer sequence = ascendRecord.getSequence();
+			if(sequence!=null&&sequence>1){
+				//查询降序记录
+				BasePojo descendRecord = service.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("sequence", sequence - 1)));
+				if(descendRecord!=null){
+					//降序
+					service.updateById(new BasePojo().setId(descendRecord.getId()).setSequence(sequence+1));
+				}
+				//升序
+				boolean ascendResult = service.updateById(new BasePojo().setId(ascendRecord.getId()).setSequence(sequence - 1));
+				if(ascendResult)return SysResult.success();
+			}
+			return SysResult.fail("顺序为空或无法提升");
+		}
+		return SysResult.fail("记录不存在");
+	}
+
+	@GetMapping("/{id}")
+	@ResponseBody
+	public SysResult get(@PathVariable Serializable id) {
+		T record = (T) service.getById(id);
+		return new SysResult().success(service.resultFormat(ListUtil.getList(record)).get(0));
+	}
+
+	@GetMapping("/page")
+	@ResponseBody
+	public SysResult page(@RequestParam Map<String, Object> map) {
+		Long pageNum = 1L;
+		Long pageSize = 10L;
+		if(map.get("pageNum")!=null){
+			pageNum = Long.valueOf(map.get("pageNum").toString());
+			map.remove("pageNum");
+		}
+		if(map.get("pageSize")!=null){
+			pageSize = Long.valueOf(map.get("pageSize").toString());
+			map.remove("pageSize");
+		}
+		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
+		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(service.queryFormat(map)));
+		page.setRecords(service.resultFormat(page.getRecords()));
+		return new SysResult().success(page.getRecords(),page.getTotal());
+	}
+
 	/**
 	 * ajax查询多条
 	 * @return
@@ -180,7 +209,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return service.resultFormat(list);
 	}
 
-	@RequestMapping("/import")
+	@PostMapping("/import")
 	@ResponseBody
 	public SysResult importObj(MultipartFile file) {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
@@ -396,30 +425,4 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * 提高顺序
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping("increaseOrder")
-	@ResponseBody
-	public SysResult increaseOrder(String id) {
-		Integer num = service.increaseOrder(id);
-		if(num==2){
-			return SysResult.success();
-		}else{
-			return new SysResult();
-		}
-	}
-
-	/**
-	 * 刷新redis配置类缓存
-	 * @return
-	 */
-	/*@RequestMapping("refreshRedis")
-	@ResponseBody
-	public SysResult refreshRedis(String code) {
-		return service.refreshRedis(code);
-	}*/
 }
