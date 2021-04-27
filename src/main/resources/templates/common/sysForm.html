@@ -325,15 +325,16 @@
                     success:function(result){
                         //表单赋值
                         sample = result;
-                        form.val('unaBaseForm', result);
-
-                        //加载图片预览
-                        $(".una-respository").each(function () {
-                            var urlArray = $(this).find("[type='text']").val().split(",");
-                            for(var i=0;i<urlArray.length;i++){
-                                $(this).find("div.layui-input-block:first").append("<img src=\""+urlArray[i]+"\" style=\"width:100px;\"/>");
-                            }
-                        })
+                        if(result.isSuccess){
+                            form.val('unaBaseForm', result.data);
+                            //加载图片预览
+                            $(".una-respository").each(function () {
+                                var urlArray = $(this).find("[type='text']").val().split(",");
+                                for(var i=0;i<urlArray.length;i++){
+                                    $(this).find("div.layui-input-block:first").append("<img src=\""+urlArray[i]+"\" style=\"width:100px;\"/>");
+                                }
+                            })
+                        }
                     },
                     error: function(XMLHttpRequest) {
                         console.log("访问出错了，错误代号："+XMLHttpRequest.status);

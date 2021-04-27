@@ -213,7 +213,6 @@ function addObjWithParam(path,title){
     					 type: "POST",
     					 		data: parameterForm.serialize(),
     					 dataType: "html",
-    					 async: true,
     					 success: function(msg) {
     								layer.close(layer.index);//关闭加载层
     					  tableContainer.html(msg);
@@ -288,13 +287,6 @@ function addObjWithParam(path,title){
 							break;
 					}
 					if(result.isSuccess&&href!=null&&href!="")setTimeout('window.open("'+href+'","'+target+'")', 1000);
-
-					/*if(result.isSuccess&&activateFlag==1){
-						//如果是保存并提交，保存成功后打开处理代办页
-						var taskId = result.data.taskId;
-						var taskName = result.data.taskName;
-						setTimeout("toHandle("+taskId+",'"+taskName+"')", 2000)
-					}*/
 				},
 	            error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log(XMLHttpRequest.status);

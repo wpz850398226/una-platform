@@ -5,18 +5,22 @@ $.ajaxSetup({
 	},
 	error : function(xhr, textStatus, errorThrown) {
 		var result = xhr.responseJSON;
-		console.log(result)
-		var code = result['code'];
-		var msg = result.message;
+		if(result!=null){
+			console.log(result)
+			var code = result['code'];
+			var msg = result.message;
 
-		if(code == 401){
-			layer.msg(msg,function () {})
-			localStorage.removeItem("token");
-			setTimeout(function(){
-				location.href = '/login.html';
-			},1000);
+			if(code == 401){
+				layer.msg(msg,function () {})
+				localStorage.removeItem("token");
+				setTimeout(function(){
+					location.href = '/login.html';
+				},1000);
+			}else{
+				layer.msg(msg,function () {})
+			}
 		}else{
-			layer.msg(msg,function () {})
+			console.error(textStatus+":"+errorThrown)
 		}
 
 	}

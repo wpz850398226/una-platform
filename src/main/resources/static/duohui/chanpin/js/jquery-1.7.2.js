@@ -7285,7 +7285,6 @@ jQuery.extend({
 		type: "GET",
 		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		processData: true,
-		async: true,
 		/*
 		timeout: 0,
 		data: null,
