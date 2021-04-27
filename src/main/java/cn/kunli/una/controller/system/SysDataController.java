@@ -30,29 +30,14 @@ public class SysDataController extends BaseController<SysDataService, SysData> {
      * @param params
      * @return
      */
-    @RequestMapping("/savePrivate")
+    @RequestMapping("/saveData")
     @ResponseBody
     public SysResult save(@Valid SysData record, @RequestParam Map<String, Object> params) {
         JSONObject jsonObject = new JSONObject();
+        params.remove("id");
+        params.remove("entityId");
         jsonObject.putAll(params);
         return super.save(record.setValue(jsonObject));
     }
 
-    /**
-     * 跳转通用管理页
-     *
-     * @param
-     * @return
-     */
-    @RequestMapping("/querySinglePrivate")
-    @ResponseBody
-    public Map querySingle(Integer id) {
-        if (id==null) return null;
-        SysData sysData = service.getById(id);
-        if(sysData==null)return null;
-        JSONObject value = sysData.getValue();
-        Map map = JSONUtil.toMap(sysData);
-        map.putAll(value);
-        return map;
-    }
 }

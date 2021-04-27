@@ -20,8 +20,8 @@
                 <input th:if="${sample['id']!=null}" type="hidden" th:value="${sample['id'] }" id="hiddenObjId" name="id">
                 <input th:if="${sample['batch']!=null}" type="hidden" th:value="${sample['ids'] }" id="hiddenObjIds" name="ids">
 <!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/querySinglePrivate" id="queryUrlInForm">-->
-<!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/savePrivate" id="saveUrlInForm">-->
-<!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">-->
+                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/saveData" id="saveUrlInForm">
+                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">
 
                 <div class="layui-card table">
                     <!--<div class="layui-card-header">表格相关</div>-->
@@ -214,7 +214,7 @@
                                        th:value="${record['defaultValue']!=null&& #strings.contains(record['defaultValue'],'$u')?activeUser[#strings.substringAfter(record['defaultValue'],'.')]:record['defaultValue']}">
                             </div>
 
-                            <div th:case="field_assignment_respository"  class="layui-input-block una-respository">
+                            <div th:case="field_assignment_fileRepository"  class="layui-input-block una-respository">
                                 <input type="text" onchange="showFile()"
                                        th:name="${record['assignmentCode']}"
                                        disabled autocomplete="off"
@@ -289,6 +289,7 @@
 
     <script>
         var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
+        var isVirtual = '[[${sysResponseParameter.sysEntity.isVirtual}]]';
         var sample;
 
         var ids = $("#unaCheckIdsHidden",parent.document).val();
@@ -313,9 +314,9 @@
 
             //表单赋值
             if($("#hiddenObjId").length>0){
-                const id = $("#hiddenObjId").val();
+                var id = $("#hiddenObjId").val();
                 //修改数据时赋值表单
-                const queryUrl = $("#queryUrlInForm").length>0?$("#queryUrlInForm").val():entityPath+"/"+id;
+                var queryUrl = $("#queryUrlInForm").length>0?$("#queryUrlInForm").val():entityPath+"/"+id;
                 //查询样本信息
                 $.ajax({
                     type: 'GET',
@@ -327,6 +328,9 @@
                         sample = result;
                         if(result.isSuccess){
                             form.val('unaBaseForm', result.data);
+                            if(isVirtual == 1){
+                                form.val('unaBaseForm', result.data.value);
+                            }
                             //加载图片预览
                             $(".una-respository").each(function () {
                                 var urlArray = $(this).find("[type='text']").val().split(",");
@@ -489,8 +493,10 @@
                             layer.closeAll('loading');
                             //操作成功时，弹层提示添加成功，并且刷新父页面
                             layer.msg(result.message,function () {
-                                parent.refreshTable("unaDataTable");
-                                closeIframeLayerFromInner();
+                                if ( window.parent.$("#unaDataTable").length>0 ){   //判断
+                                    parent.refreshTable("unaDataTable");
+                                    closeIframeLayerFromInner();
+                                }
                             })
                         }else{
                             layer.closeAll('loading');

@@ -59,36 +59,4 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
         }
         return list;
     }*/
-
-    /*@Override
-    public List<SysData> resultFormat(List<SysData> list) {
-        if (CollectionUtils.isEmpty(list)) return list;
-        //声明存放组id，字段名与值 的map{id,{fieldName,fieldValue}}
-        Map<String, Map<String,Object>> fieldValueMap = new HashMap<>();
-        //声明存放字段赋值编码的map
-        Map<Integer, String> fieldMap = new HashMap<>();
-
-        for (SysData sysData : list) {
-            //获取字段名
-            String fieldAssignmentCode = fieldMap.get(sysData.getFieldId());
-            if (StringUtils.isBlank(fieldAssignmentCode)){
-                SysField sysField = sysFieldService.getById(sysData.getFieldId());
-                fieldAssignmentCode = sysField.getAssignmentCode();
-                fieldMap.put(sysField.getId(), fieldAssignmentCode);
-            }
-
-            Map<String, Object> map = fieldValueMap.get(sysData.getGroupId());
-            if(map==null)map = new HashMap<>();
-            map.put(fieldAssignmentCode,sysData.getValue());
-            fieldValueMap.put(sysData.getGroupId(),map);
-        }
-
-        List<SysData> resultList = new ArrayList<>();
-        for (Map.Entry<String, Map<String, Object>> entry : fieldValueMap.entrySet()) {
-            Map<String, Object> resultEntityMap = entry.getValue();
-            resultEntityMap.put("id",entry.getKey());
-            resultList.add((SysData) new SysData().setMap(resultEntityMap));
-        }
-        return resultList;
-    }*/
 }
