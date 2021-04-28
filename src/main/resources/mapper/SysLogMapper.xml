@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysLogMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysLog" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--条件查询公共语句-->
+    <sql id="baseQuery">
+        select record.*
+
+        from sys_log as record
+
+        <where>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition"/>
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder"/>
+    </sql>
+
+    <!--实体类数据库字段-->
+    <sql id="columnName">
+        id
+        ,name
+        ,entity_id
+        ,data_id
+        ,ip_address
+        ,type
+        ,original_type
+        ,is_success
+        ,description
+        ,remark
+        ,creator_id
+        ,modifier_id
+        ,is_delete
+        ,create_time
+        ,modify_time
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue">
+        #{record.id}
+        ,#{record.name}
+        ,#{record.entityId}
+        ,#{record.dataId}
+        ,#{record.ipAddress}
+        ,#{record.type}
+        ,#{record.originalType}
+        ,#{record.isSuccess}
+        ,#{record.description}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.modifierId}
+        ,#{record.isDelete}
+
+        ,#{record.createTime}
+        ,#{record.modifyTime}
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_log
+        (<include refid="columnName"/>)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue"/>)
+        </foreach>
+    </insert>
+
+
+    <!--条件查询（返回实体类）-->
+    <select id="selectBySelective" resultType="cn.kunli.una.pojo.system.SysLog">
+        <include refid="baseQuery"/>
+    </select>
+
+    <!--条件查询（返回封装类）-->
+    <select id="selectResultMapBySelective" resultMap="BaseResultMap">
+        <include refid="baseQuery"/>
+    </select>
+
+
+</mapper>

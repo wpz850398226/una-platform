@@ -25,5 +25,3 @@ target/
 *.iml
 *.ipr
 /out/
-
-*.xml

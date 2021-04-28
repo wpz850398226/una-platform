@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysEntityMapper">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysPermission"
+                    select="cn.kunli.una.mapper.SysPermissionMapper.selectByEntityIdCollection" property="permissionList" />
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysRelation"
+                    select="cn.kunli.una.mapper.SysRelationMapper.selectBySubEntityIdCollection" property="relationList" />
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysFilter"
+                    select="cn.kunli.una.mapper.SysFilterMapper.selectByEntityIdCollection" property="filterList" />
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysQuery"
+                    select="cn.kunli.una.mapper.SysQueryMapper.selectByEntityIdCollection" property="queryList" />
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysButton"
+                    select="cn.kunli.una.mapper.SysButtonMapper.selectByEntityIdCollection" property="buttonList" />
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysSort"
+                    select="cn.kunli.una.mapper.SysSortMapper.selectByEntityIdCollection" property="sortList" />
+        <!--<collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysField"
+                    select="cn.kunli.una.mapper.SysFieldMapper.selectByEntityIdCollection" property="fieldList" />-->
+    </resultMap>
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select
+        record.*
+        ,sysField.name as parentFieldName
+        from sys_entity as record
+        left join sys_field as sysField on sysField.id = record.parent_field_id
+        <where>
+            <if test="record != null">
+                <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
+                <if test="record.keyword != null and record.keyword !=''">
+                    and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+                </if>
+                <if test="record.path != null and record.path != ''">
+                    and record.path = #{record.path}
+                </if>
+                <if test="record.code != null and record.code != ''">
+                    and record.code = #{record.code}
+                </if>
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
+    </select>
+
+    <!--<insert id="batchInsert" parameterType="java.util.List">
+        insert into
+        <include refid="tableName" />
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>-->
+
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,name
+        ,class_name
+        ,parent_field_id
+        ,path
+        ,is_addible
+        ,is_updatable
+        ,is_deletable
+        ,is_quick_add
+        ,is_import
+        ,is_export
+        ,is_autoloading
+        ,is_full_form
+        ,is_treelayout
+        ,is_real_delete
+        ,definition_dcodes
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.name}
+        ,#{record.code}
+        ,#{record.parentFieldId}
+        ,#{record.path}
+        ,#{record.isAddible}
+        ,#{record.isUpdatable}
+        ,#{record.isDeletable}
+        ,#{record.isQuickAdd}
+        ,#{record.isImport}
+        ,#{record.isExport}
+        ,#{record.isAutoloading}
+        ,#{record.isFullForm}
+        ,#{record.isTreelayout}
+        ,#{record.isRealDelete}
+        ,#{record.definitionDcodes}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_entity
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+
+</mapper>

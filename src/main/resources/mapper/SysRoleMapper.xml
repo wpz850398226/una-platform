@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysRoleMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysRole" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,name
+        ,company_type_dcode
+        ,company_id
+        ,type
+        ,description
+        ,index_url
+        ,weight
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+        ,
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.name}
+        ,#{record.companyTypeDcode}
+        ,#{record.companyId}
+        ,#{record.type}
+        ,#{record.description}
+        ,#{record.indexUrl}
+        ,#{record.weight}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_role
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+    <!--条件查询-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+
+        ,compTypeDic.name as companyTypeDname
+        from sys_role as record
+
+        left join sys_dictionary as compTypeDic on compTypeDic.code = record.company_type_dcode
+        <where>
+            <if test="record != null">
+                <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
+                <if test="record.keyword != null and record.keyword !=''">
+                    and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+                </if>
+                <if test="record.companyTypeDcode != null and record.companyTypeDcode != ''">
+                    and record.company_type_dcode = #{record.companyTypeDcode}
+                </if>
+                <if test="record.companyId != null and record.companyId != ''">
+                    and (record.company_type_dcode = (SELECT sdic.`code` FROM sys_dictionary as sdic
+                    LEFT JOIN sys_company as sysCompany on sysCompany.type_dcode = sdic.code
+                    WHERE sysCompany.id = #{record.companyId}) or record.company_id = #{record.companyId})
+                </if>
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
+    </select>
+
+</mapper>

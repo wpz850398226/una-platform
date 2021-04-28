@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysQueryMapper">
+    <resultMap type="cn.kunli.una.pojo.system.SysQuery" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,name
+        ,assignment_mode_dcode
+        ,entity_id
+        ,field_id
+        ,select_parent_id
+        ,option_entity_id
+        ,option_param_name
+        ,option_param_value
+        ,option_value_field_id
+        ,default_value
+        ,query_sql
+        ,sequence
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+        ,
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.name}
+        ,#{record.assignmentModeDcode}
+        ,#{record.entityId}
+        ,#{record.fieldId}
+        ,#{record.selectParentId}
+        ,#{record.optionEntityId}
+        ,#{record.optionParamName}
+        ,#{record.optionParamValue}
+        ,#{record.defaultValue}
+        ,#{record.querySql}
+        ,#{record.sequence}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_query
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+    <!--条件查询-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+
+        ,(SELECT GROUP_CONCAT(selectParentField.id) FROM sys_query as selectParentField WHERE selectParentField.select_parent_id = record.id) as selectSubIds
+        ,sysEntity.name as entityName
+        ,sysField.name as fieldName
+        ,optionEntity.name as optionEntityName
+        ,sysDictionary.name as assignmentModeDname
+        from sys_query as record
+        left join sys_field as sysField on sysField.id = record.field_id
+        left join sys_entity as sysEntity on sysEntity.id = record.entity_id
+        left join sys_entity as optionEntity on optionEntity.id = record.option_entity_id
+        left join sys_dictionary as sysDictionary on sysDictionary.code = record.assignment_mode_dcode
+        <where>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.entityId != null and record.entityId !=''">
+                and record.entity_id = #{record.entityId}
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
+    </select>
+
+    <select id="selectByEntityIdCollection" resultMap="BaseResultMap">
+ 	select record.*
+    ,sysField.assignment_code as fieldCode
+    ,optionEntity.path as optionEntityPath
+    ,sysDictionary.name as assignmentModeDname
+    ,(SELECT GROUP_CONCAT(selectParentField.id) FROM sys_query as selectParentField WHERE selectParentField.select_parent_id = record.id) as selectSubIds
+    from sys_query as record
+    left join sys_field as sysField on sysField.id = record.field_id
+    left join sys_entity as optionEntity on optionEntity.id = record.option_entity_id
+    left join sys_dictionary as sysDictionary on sysDictionary.code = record.assignment_mode_dcode
+    where record.entity_id = #{entityId} and record.is_delete = 0
+    order by record.sequence
+  </select>
+
+</mapper>

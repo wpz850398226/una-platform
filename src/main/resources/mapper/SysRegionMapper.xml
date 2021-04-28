@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysRegionMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysRegion" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--条件查询公共语句-->
+    <sql id="baseQuery">
+        select record.*
+        ,rootRecord.name as rootName
+        ,parentRecord.name as parentName
+        from sys_region as record
+        LEFT JOIN sys_region as rootRecord on record.root_id = rootRecord.id
+        LEFT JOIN sys_region as parentRecord on record.parent_id = parentRecord.id
+        <where>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',rootRecord.name,record.name,parentRecord.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.rootName != null and record.rootName !=''">
+                and rootRecord.name = #{record.rootName}
+            </if>
+            <if test="record.parentName != null and record.parentName !=''">
+                and parentRecord.name = #{record.parentName}
+            </if>
+            <if test="record.rootId != null and record.rootId != ''">
+                and record.root_id = #{record.rootId}
+            </if>
+            <if test="record.parentId != null and record.parentId != ''">
+                and record.parent_id = #{record.parentId}
+            </if>
+            <if test="record.level != null and record.level != ''">
+                and record.level = #{record.level}
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
+    </sql>
+
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,type_dic_id
+        ,name
+        ,level
+        ,code
+        ,area
+        ,population
+        ,description
+        ,root_id
+        ,parent_id
+        ,weight
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+        ,
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.typeDicId}
+        ,#{record.name}
+        ,#{record.level}
+        ,#{record.code}
+        ,#{record.area}
+        ,#{record.population}
+        ,#{record.description}
+        ,#{record.rootId}
+        ,#{record.parentId}
+        ,#{record.sequence}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+
+    </sql>
+
+
+
+
+
+
+
+
+
+
+    <!--条件查询（返回实体类）-->
+    <select id="selectBySelective" resultType="cn.kunli.una.pojo.system.SysRegion">
+        <include refid="baseQuery" />
+    </select>
+
+    <!--条件查询（返回封装类）-->
+    <select id="selectResultMapBySelective" resultMap="BaseResultMap">
+        <include refid="baseQuery" />
+    </select>
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_region
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+
+</mapper>

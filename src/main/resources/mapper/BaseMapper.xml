@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.handler.BasicMapper">
+<!--where标签中的通用条件-->
+  <sql id="baseCondition">
+        record.is_delete = 0
+    <if test="record.id != null and record.id != ''">
+      and record.id = #{record.id}
+    </if>
+    <if test="record.isDelete != null and record.isDelete != ''">
+      and record.is_delete = #{record.isDelete}
+    </if>
+    <if test="record.name != null and record.name != ''">
+      and record.name like '%${record.name}%'
+    </if>
+    <if test="record.ids != null and record.ids != ''">
+      and FIND_IN_SET(record.id,#{record.ids})
+    </if>
+    <if test="record.creatorId != null and record.creatorId != ''">
+      and sysAccount.id = #{record.creatorId}
+    </if>
+    <if test="record.dataCompanyId != null and record.dataCompanyId != ''">
+      and FIND_IN_SET(sysAccount.company_id,#{record.dataCompanyId})
+    </if>
+    <if test="record.dataDepartmentId != null and record.dataDepartmentId != ''">
+      and sysAccount.department_id = #{record.dataDepartmentId}
+    </if>
+    <if test="record.dataCreatorId != null and record.dataCreatorId != ''">
+      and sysAccount.id = #{record.dataCreatorId}
+    </if>
+    <if test="record.advancedQuery != null and record.advancedQuery != ''">
+      ${record.advancedQuery}
+    </if>
+  </sql>
+
+  <sql id="baseOrder">
+    ORDER BY
+    <choose>
+      <when test="record.sortsql != null and record.sortsql != ''">
+        ${record.sortsql}
+      </when>
+      <otherwise>
+        record.create_time
+      </otherwise>
+    </choose>
+  </sql>
+</mapper>

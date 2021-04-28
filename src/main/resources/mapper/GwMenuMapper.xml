@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.GwMenuMapper">
+
+    <resultMap type="cn.kunli.una.pojo.duohui.guanwang.GwMenu" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.duohui.guanwang.GwMenu"
+                    select="cn.kunli.una.mapper.GwMenuMapper.selectByParentIdCollection" property="children" />
+    </resultMap>
+
+    <!--条件查询（返回封装类）-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+        from gw_menu as record
+        <where>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition"/>
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysUser.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.level != null">
+                and record.level = #{record.level}
+            </if>
+            <if test="record.parentId != null and record.parentId != ''">
+                and record.parent_id = #{record.parentId}
+            </if>
+            <if test="record.name != null and record.name != ''">
+                and record.name = #{record.name}
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder"/>
+    </select>
+
+    <select id="selectByParentIdCollection" resultMap="BaseResultMap">
+        select
+        record.*
+        from gw_menu as record
+        where record.parent_id = #{parentId} and record.is_delete=0
+        order by record.sequence
+    </select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.SysButtonMapper">
+
+    <resultMap type="cn.kunli.una.pojo.system.SysButton" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--实体类数据库字段-->
+    <sql id="columnName" >
+        id
+        ,name
+        ,entity_id
+        ,position_dcode
+        ,event
+        ,onclick
+        ,class_value
+        ,icon_dcode
+        ,label
+        ,sequence
+        ,remark
+        ,creator_id
+        ,create_time
+        ,modifier_id
+        ,modify_time
+        ,is_delete
+    </sql>
+
+    <!--实体类传值语句-->
+    <sql id="columnValue" >
+        #{record.id}
+        ,#{record.name}
+        ,#{record.entityId}
+        ,#{record.positionDcode}
+        ,#{record.event}
+        ,#{record.onclick}
+        ,#{record.classValue}
+        ,#{record.iconDcode}
+        ,#{record.label}
+        ,#{record.sequence}
+        ,#{record.remark}
+        ,#{record.creatorId}
+        ,#{record.createTime}
+        ,#{record.modifierId}
+        ,#{record.modifyTime}
+        ,#{record.isDelete}
+    </sql>
+
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_button
+        (<include refid="columnName" />)values
+        <foreach collection="recordList" item="record" separator=",">
+            (<include refid="columnValue" />)
+        </foreach>
+    </insert>
+    <!--条件查询-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+        ,sysEntity.name as entityName
+        ,positionDic.name as positionDname
+        ,iconDic.value as iconDvalue
+        from sys_button as record
+        left join sys_entity sysEntity on record.entity_id = sysEntity.id
+        left join sys_dictionary positionDic on record.position_dcode = positionDic.code
+        left join sys_dictionary iconDic on record.icon_dcode = iconDic.code
+        <where>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysAccount.name)) like '%${record.keyword}%'
+            </if>
+            <if test="record.entityId != null and record.entityId !=''">
+                and record.entity_id = #{record.entityId}
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
+    </select>
+
+    <select id="selectByEntityIdCollection" resultMap="BaseResultMap">
+        select record.*
+        ,positionDic.value as positionDvalue
+        ,iconDic.value as iconDvalue
+        from sys_button as record
+        left join sys_dictionary positionDic on record.position_dcode = positionDic.code
+        left join sys_dictionary iconDic on record.icon_dcode = iconDic.code
+        where record.entity_id = #{entityId} and record.is_delete = 0
+        order by record.position_dcode,record.sequence
+    </select>
+
+</mapper>
