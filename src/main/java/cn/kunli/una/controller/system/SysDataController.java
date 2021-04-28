@@ -4,7 +4,6 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysDataService;
-import cn.kunli.una.utils.common.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,7 @@ public class SysDataController extends BaseController<SysDataService, SysData> {
      */
     @RequestMapping("/saveData")
     @ResponseBody
-    public SysResult save(@Valid SysData record, @RequestParam Map<String, Object> params) {
+    public SysResult saveData(@Valid SysData record, @RequestParam Map<String, Object> params) {
         JSONObject jsonObject = new JSONObject();
         params.remove("id");
         params.remove("entityId");
