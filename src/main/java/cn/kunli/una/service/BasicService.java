@@ -197,10 +197,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     //获取父字段值
                     Object parentValueObj = parentField.get(obj);
                     nameParamMap.put(sysField.getAssignmentCode(),parentValueObj);
-                    //获取父字段set方法
-                    //Method setParent = entityClass.getMethod("set"+ StringUtil.capitalizeInitial(sysField.getAssignmentCode()), String.class);
-                    //实例化的对象赋值父字段
-                    //setParent.invoke(sample, parentValueObj);
                 }
                 List<T> nameResultList = this.list(wrapperUtil.mapToWrapper(nameParamMap));
                 if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
@@ -209,18 +205,21 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 }
             }
 
-            Field codeField = entityClass.getDeclaredField("code");
-            if(codeField!=null){
-                //如果有code字段
-                codeField.setAccessible(true);
-                Object codeObject = codeField.get(obj);
-                //如果传入了code值，验证code全局唯一性
-                if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
-                    List<T> codeResultList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
-                    if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
-                        //通过新文件的编码查询到数据
-                        return SysResult.fail("编码重复，保存失败");
+            Field[] declaredFields = entityClass.getDeclaredFields();
+            for (Field declaredField : declaredFields) {
+                if(declaredField.getName().equals("code")){
+                    //如果有code字段
+                    declaredField.setAccessible(true);
+                    Object codeObject = declaredField.get(obj);
+                    //如果传入了code值，验证code全局唯一性
+                    if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
+                        List<T> codeResultList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
+                        if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
+                            //通过新文件的编码查询到数据
+                            return SysResult.fail("编码重复，保存失败");
+                        }
                     }
+                    break;
                 }
             }
         }

@@ -45,7 +45,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
             //新增时设置默认值
 //			sysField = new SysField().setDisplayModeDcode("field_display_text").setAssignmentModeDcode("field_manual_assign_text");
             params.put("displayModeDcode", "field_display_text");
-            params.put("assignmentModeDcode", "field_manual_assign_text");
+            params.put("assignmentModeDcode", "field_assignment_text");
         }
         model.addAttribute("record", params);
         SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code","SysField")));

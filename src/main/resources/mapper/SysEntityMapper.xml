@@ -54,7 +54,7 @@
     <sql id="columnName" >
         id
         ,name
-        ,class_name
+        ,code
         ,parent_field_id
         ,path
         ,is_addible

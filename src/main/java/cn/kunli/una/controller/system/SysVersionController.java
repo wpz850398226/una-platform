@@ -38,9 +38,9 @@ public class SysVersionController extends BaseController<SysVersionService, SysV
             List<SysVersion> list = service.list(wrapperUtil.mapToWrapper(params));
             if (CollectionUtils.isNotEmpty(list)) {
                 SysVersion sysVersion = list.get(0);
-                if (StringUtils.isNotBlank(sysVersion.getFileUrl()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {
+                if (StringUtils.isNotBlank(sysVersion.getPath()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {
                     String fileName = sysVersion.getInternalVersion();
-                    String filePath = Constant.UPLOAD_FILE_PATH + sysVersion.getFileUrl().substring(6);
+                    String filePath = Constant.UPLOAD_FILE_PATH + sysVersion.getPath().substring(6);
                     FileUtils.downloadFile(response, fileName, filePath);
                 }
             }

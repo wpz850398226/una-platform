@@ -7,6 +7,7 @@ import cn.kunli.una.pojo.vo.error.BeanValidateErrorVo;
 import cn.kunli.una.service.system.SysExceptionService;
 import cn.kunli.una.utils.common.UserUtil;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,18 @@ import java.util.stream.Collectors;
  * @author: Ponzio
  * @create: 2020-07-20 10:13
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @Autowired
     private SysExceptionService sysExceptionService;
 
+    @ExceptionHandler(value = NoSuchFieldException.class)
+    public void noSuchFieldException(BindException validateEx) {
+        log.info("反射异常：没有该字段");
+        //不做处理
+    }
 
     @ExceptionHandler(value = BindException.class)
     public SysResult bindExceptionHandler(BindException validateEx) {

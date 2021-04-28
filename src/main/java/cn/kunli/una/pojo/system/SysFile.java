@@ -16,7 +16,7 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysFile extends BasePojo implements Serializable {
 
-    private String originalTitle;
+    private String originName;
 
     private Long size;
 
@@ -24,7 +24,7 @@ public class SysFile extends BasePojo implements Serializable {
 
     private Integer height;
 
-    private String fileUrl;
+    private String path;
 
     private String typeDcode;
 

@@ -28,7 +28,7 @@ public class SysVersion extends BasePojo implements Serializable {
     //版本编码
     private Integer versionCode;
     //地址
-    private String fileUrl;
+    private String path;
     //更新内容
     private String description;
     //移动端类型字典id

@@ -75,6 +75,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@PostMapping("")
 	@ResponseBody
 	public SysResult add(@Valid T entity) {
+		//数据校验
+		SysResult validationResult = service.validation(entity);
+		if(!validationResult.getIsSuccess())return validationResult;
+
 		boolean saveResult = service.save(service.saveFormat(entity));
 		if(saveResult){
 			return SysResult.success();
@@ -95,6 +99,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		if(loginUser.getRoleIds().indexOf("100000")==-1){
 			if(!UserUtil.isPermitted(entityClassName+":create",entityClassName+":update"))return SysResult.fail("无权操作");
 		}
+
+		//数据校验
+		SysResult validationResult = service.validation(entity);
+		if(!validationResult.getIsSuccess())return validationResult;
 
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
@@ -136,6 +144,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@PutMapping("")
 	@ResponseBody
 	public SysResult update(T entity) {
+		//数据校验
+		SysResult validationResult = service.validation(entity);
+		if(!validationResult.getIsSuccess())return validationResult;
+
+
 		boolean updateResult = service.updateById(service.saveFormat(entity));
 		if(updateResult){
 			return SysResult.success();

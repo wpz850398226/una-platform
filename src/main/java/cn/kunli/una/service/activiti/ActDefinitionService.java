@@ -77,7 +77,7 @@ public class ActDefinitionService {
     public SysResult save(ActDefinition obj) {
 
         if (StringUtils.isNotBlank(obj.getFileId())) {
-            //String fileUrl = sysFileMapper.getById(obj.getFileId()).getFileUrl();
+            //String fileUrl = sysFileMapper.getById(obj.getFileId()).getPath();
             Deployment deployment = definitionUtil.deployFromDisk(obj.getName(), "/file/" + obj.getName());
             if (deployment != null) return new SysResult().success("部署成功", deployment);
         }
@@ -88,7 +88,7 @@ public class ActDefinitionService {
 /*if(obj.getDeployType()!=null&&obj.getDeployType()==1){
 			//磁盘加载
 			if(StringUtils.isNotBlank(obj.getFileId())) {
-				//String fileUrl = sysFileMapper.getById(obj.getFileId()).getFileUrl();
+				//String fileUrl = sysFileMapper.getById(obj.getFileId()).getPath();
 				Deployment deployment = DefinitionUtil.deployFromDisk(obj.getName(),"/file/"+obj.getName());
 				if(deployment!=null)return SysResult.success("部署成功",deployment);
 			}

@@ -48,10 +48,10 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
                 record.setFile(multipartFile);
                 boolean saveResult = this.save(this.saveFormat(record));
                 if (!saveResult) return SysResult.fail(ListUtil.listToStr(urlList));
-                urlList.add(record.getFileUrl());
+                urlList.add(record.getPath());
 
                 //------------------    图片生成缩略图 start   --------------------------
-                String filePath = record.getFileUrl();
+                String filePath = record.getPath();
                 int i = filePath.indexOf(".");
                 //如果是文件
                 if (i > 0) {
@@ -75,7 +75,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
             boolean saveResult = this.save(this.saveFormat(record));
             if (saveResult) {
                 //------------------    图片生成缩略图 start   --------------------------
-                String filePath = record.getFileUrl();
+                String filePath = record.getPath();
                 int i = filePath.indexOf(".");
                 //如果是文件
                 if (i > 0) {
@@ -93,7 +93,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
                     }
                 }
                 //------------------    图片生成缩略图 end   --------------------------
-                return new SysResult().success("保存成功", record.getFileUrl());
+                return new SysResult().success("保存成功", record.getPath());
             }
         }
         return SysResult.fail();
@@ -109,12 +109,6 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     public SysResult validation(SysFile obj) {
         if (obj.getFile() != null) {
             String fileName = obj.getFile().getOriginalFilename();
-            //去掉文件重复上传限制
-			/*List<SysFile> objList = objMapper.select((SysFile) new SysFile().setOriginalTitle(obj.getFile().getOriginalFilename()).setSize(obj.getFile().getSize()).setIsDelete(0));
-			if(objList.size()>0&&!objList.get(0).getId().equals(obj.getId())) {
-				//通过新文件的源文件名称和大小查询到数据
-				return SysResult.fail("文件不可重复上传",fileName);
-			}*/
 
             if (fileName.indexOf("jpg") != -1 || fileName.indexOf("png") != -1 || fileName.indexOf("bmp") != -1 || fileName.indexOf("gif") != -1 || fileName.indexOf("jpeg") != -1) {
                 if (obj.getFile().getSize() > 2 * 1024 * 1024) {
@@ -136,7 +130,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
         if (obj.getId() == null || obj.getId().equals("")) {
             //如果id为空，新增数据
-            obj.setOriginalTitle(obj.getFile().getOriginalFilename());
+            obj.setOriginName(obj.getFile().getOriginalFilename());
             obj.setSize(obj.getFile().getSize());
         }
 
@@ -148,7 +142,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
             //文件展示路径
             String url = "/file" + fileUrl;
             //原始文件名
-            obj.setFileUrl(url);
+            obj.setPath(url);
             obj.setName(url.substring(url.lastIndexOf("/") + 1));
 
             List<SysDictionary> fileTypeList = sysDictionaryService.list(
