@@ -5,17 +5,17 @@ import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysFile;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.SavePicUtils;
-import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.ThumbnailatorUtil;
+import cn.kunli.una.utils.common.MinIoUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -29,74 +29,26 @@ import java.util.List;
 public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     @Autowired
-    private SavePicUtils savePicUtils;
+    private MinIoUtil minIoUtil;
 
-    /**
-     * 插入数据,只操作record中的非空属性
-     *
-     * @param record
-     * @return
-     */
-    public SysResult insertSelective(SysFile record) {
-        String imgExpande = ".jpg .JPG .png .PNG .bmp .BMP";
-        SysResult validationResult = this.validation(record);
-        if (validationResult.getCode() != 200) return validationResult;
-        if (record.getFileArray() != null) {
-            List<String> urlList = new ArrayList<>();
-            for (MultipartFile multipartFile : record.getFileArray()) {
-                record.setId(null);
-                record.setFile(multipartFile);
-                boolean saveResult = this.save(this.saveFormat(record));
-                if (!saveResult) return SysResult.fail(ListUtil.listToStr(urlList));
-                urlList.add(record.getPath());
 
-                //------------------    图片生成缩略图 start   --------------------------
-                String filePath = record.getPath();
-                int i = filePath.indexOf(".");
-                //如果是文件
-                if (i > 0) {
-                    String expandedName = filePath.substring(i);
-                    if (imgExpande.indexOf(expandedName) >= 0) {
-                        //如果是图片生成缩略图
-                        try {
-                            filePath = filePath.replaceAll("/file", "D:/una/fileUpload");
-                            String purposeImg = filePath.replaceAll("fileUpload", "fileUpload/thumbnailFile");
-
-                            ThumbnailatorUtil.generateFixedSizeImage(filePath, purposeImg);
-                        } catch (Exception e) {
-                            log.error("生成缩略图失败 " + filePath);
-                        }
-                    }
-                }
-                //------------------    图片生成缩略图 end   --------------------------
-            }
-            return new SysResult().success("保存成功", ListUtil.listToStr(urlList));
-        } else if (record.getFile() != null) {
-            boolean saveResult = this.save(this.saveFormat(record));
-            if (saveResult) {
-                //------------------    图片生成缩略图 start   --------------------------
-                String filePath = record.getPath();
-                int i = filePath.indexOf(".");
-                //如果是文件
-                if (i > 0) {
-                    String expandedName = filePath.substring(i);
-                    if (imgExpande.indexOf(expandedName) >= 0) {
-                        //如果是图片生成缩略图
-                        try {
-                            filePath = filePath.replaceAll("/file", "D:/una/fileUpload");
-                            String purposeImg = filePath.replaceAll("fileUpload", "fileUpload/thumbnailFile");
-
-                            ThumbnailatorUtil.generateFixedSizeImage(filePath, purposeImg);
-                        } catch (Exception e) {
-                            log.error("生成缩略图失败 " + filePath);
-                        }
-                    }
-                }
-                //------------------    图片生成缩略图 end   --------------------------
-                return new SysResult().success("保存成功", record.getPath());
-            }
+    @Override
+    public boolean save(SysFile entity) {
+        String path = minIoUtil.putObject(entity.getFile());
+        if(StringUtils.isNotBlank(path)){
+            entity.setName(path.substring(path.lastIndexOf("/")+1));
+            entity.setPath(path);
         }
-        return SysResult.fail();
+        return super.save(entity);
+    }
+
+    @Override
+    public boolean deleteById(Serializable id) {
+        SysFile record = this.getById(id);
+        if(record!=null){
+            minIoUtil.delete(record.getPath());
+        }
+        return super.deleteById(id);
     }
 
     /**
@@ -107,6 +59,11 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
      */
     @Override
     public SysResult validation(SysFile obj) {
+        if(obj.getId()==null){
+            if(obj.getFile()==null){
+                return SysResult.fail("保存失败:文件不能为空");
+            }
+        }
         if (obj.getFile() != null) {
             String fileName = obj.getFile().getOriginalFilename();
 
@@ -128,37 +85,37 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     @Override
     public SysFile saveFormat(SysFile obj) {
 
-        if (obj.getId() == null || obj.getId().equals("")) {
+        if (obj.getId() == null) {
+            String originalFilename = obj.getFile().getOriginalFilename();
             //如果id为空，新增数据
-            obj.setOriginName(obj.getFile().getOriginalFilename());
+            obj.setOriginName(originalFilename);
             obj.setSize(obj.getFile().getSize());
-        }
-
-        obj.setExtension(obj.getFile().getOriginalFilename().substring(obj.getFile().getOriginalFilename().lastIndexOf(".") + 1));
-
-        try {
-            //保存文件
-            String fileUrl = savePicUtils.saveUpload(obj.getFile(), obj.getEntityId());
-            //文件展示路径
-            String url = "/file" + fileUrl;
-            //原始文件名
-            obj.setPath(url);
-            obj.setName(url.substring(url.lastIndexOf("/") + 1));
-
-            List<SysDictionary> fileTypeList = sysDictionaryService.list(
-                    sysDictionaryService.getWrapper(new MapUtil<>().put("parentName", "扩展名").put("code", obj.getExtension()).build()));
-            if (fileTypeList != null && fileTypeList.size() > 0) {
-                obj.setTypeDcode(fileTypeList.get(0).getCode());
-            }
-
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            obj.setExtension(originalFilename.substring(originalFilename.lastIndexOf(".") + 1));
+            obj.setTypeDcode("platform_file_extension_" + obj.getExtension());
         }
 
         super.saveFormat(obj);
         return obj;
     }
 
+    @Override
+    public List<SysFile> resultFormat(List<SysFile> list) {
+        list = super.resultFormat(list);
+        if(CollectionUtils.isNotEmpty(list)){
+            for (SysFile sysFile : list) {
+                if(StringUtils.isNotBlank(sysFile.getTypeDcode())){
+                    SysDictionary codeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", sysFile.getTypeDcode())));
+                    if(codeDic!=null){
+                        sysFile.getMap().put("typeDvalue",codeDic.getValue());
+                    }
+                }
+
+                if(StringUtils.isNotBlank(sysFile.getPath())){
+                    sysFile.setPath(minIoUtil.getDownLoadPath(sysFile.getPath()));
+                }
+            }
+        }
+
+        return list;
+    }
 }

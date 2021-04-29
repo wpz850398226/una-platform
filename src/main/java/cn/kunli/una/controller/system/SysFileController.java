@@ -1,12 +1,10 @@
 package cn.kunli.una.controller.system;
 
-import cn.kunli.una.annotation.DisableAuth;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysFile;
 import cn.kunli.una.pojo.vo.SysParameter;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
-import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysFileService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
@@ -14,11 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * (SysFile)表控制层
@@ -53,13 +47,5 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
         model.addAttribute("textInputId", textInputId);
         model.addAttribute("num", num);
         return "system/file/respository";
-    }
-
-
-    @PostMapping("/uploadFile")
-    @DisableAuth
-    @ResponseBody
-    public SysResult uploadFile(SysFile file, HttpServletRequest request, Integer fileType) {
-        return service.insertSelective(file);
     }
 }

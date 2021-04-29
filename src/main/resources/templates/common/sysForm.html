@@ -28,7 +28,7 @@
                     <div class="layui-card-body">
 
                         <div th:each="record : ${sysFieldList}" class="layui-form-item" th:switch="${record['assignmentModeDcode']}">
-                            <label th:if="${record.assignmentTypeDname != '自动赋值' && record['assignmentModeDcode'] != 'field_assignment_hidden' && record['assignmentModeDcode'] != 'field_assignment_treeNode'}" class="layui-form-label" th:text="${record['name']}"></label>
+                            <label class="layui-form-label" th:text="${record['name']}" th:if="${record['assignmentType'] != '自动赋值' }"></label>
                             <div th:case="field_assignment_text"  class="layui-input-block">
                                 <input type="text"
                                        class="layui-input"

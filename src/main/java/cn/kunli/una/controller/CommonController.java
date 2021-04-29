@@ -259,8 +259,8 @@ public class CommonController {
             List<String> downRows = new ArrayList<>();
             for (int i = 0; i < fieldList.size(); i++) {
                 headers.add(fieldList.get(i).getName());
-                if ("单选下拉框".equals(fieldList.get(i).getAssignmentModeDname()) ||
-                        "多选下拉框".equals(fieldList.get(i).getAssignmentModeDname())) {
+                if ("field_assignment_singleselect".equals(fieldList.get(i).getAssignmentModeDcode()) ||
+                        "field_assignment_multiselect".equals(fieldList.get(i).getAssignmentModeDcode())) {
                     downRows.add(String.valueOf(i));
                     String url = "http://localhost:" + Constant.SERVICE_PORT + "/" + fieldList.get(i).getOptionEntityPath() + "/list";
                     String param = fieldList.get(i).getOptionParamValue();
@@ -305,7 +305,7 @@ public class CommonController {
                     }
 
                 }
-                if ("普通单选".equals(fieldList.get(i).getAssignmentModeDname())) {
+                if ("field_assignment_radio".equals(fieldList.get(i).getAssignmentModeDcode())) {
                     downData.add(fieldList.get(i).getRadioOptions().split(","));
                 }
 

@@ -33,12 +33,10 @@ public class SysFile extends BasePojo implements Serializable {
     private Integer entityId;
 
 
-    @TableField(exist = false)
-    private MultipartFile[] fileArray;
+//    @TableField(exist = false)
+//    private MultipartFile[] fileArray;
     @TableField(exist = false)
     private MultipartFile file;
-    @TableField(exist = false)
-    private String typeDname;
 
     private static final long serialVersionUID = 1L;
 

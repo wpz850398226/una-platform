@@ -367,6 +367,18 @@
                               name="optionSql"></textarea>
                 </div>
             </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <input type="text"
+                           name="remark"
+                           autocomplete="off"
+                           placeholder="请输入备注"
+                           class="layui-input"
+                           th:value="${record['remark']}">
+                </div>
+            </div>
         </div>
     </div>
 

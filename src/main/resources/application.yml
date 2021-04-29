@@ -92,8 +92,6 @@ http:
   socketTimeout: 10000  #数据传输的最长时间
   staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
 
-
-
 upload:
   file:
     path: D:\\una\\fileUpload\\ #  上传基础路径
@@ -103,5 +101,12 @@ token:
     seconds: 14400
   jwtSecret: Ponzio-Una
 
-
+minio:
+  endpoint: 192.168.133.128
+  port: 9000
+  accessKey: admin
+  secretKey: 12345678
+  secure: false
+  bucketName: "test"
+  configDir: "/home/data/"
 

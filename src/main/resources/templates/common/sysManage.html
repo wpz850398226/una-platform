@@ -191,14 +191,14 @@
                     if(record['displayLength']!=null&&record['displayLength']!=0)dataMap.set("width",record['displayLength']);
                     if(record['isSort']==1)dataMap.set("sort",true);
                     if(record['fixedType']!=null && record['fixedType']!='none')dataMap.set("fixed",record['fixedType']);
-                    switch(record.displayModeDname){
-                        case '是否':
+                    switch(record.displayModeDcode){
+                        case 'field_display_whether':
                             dataMap.set("templet","<div>{{d."+record['displayCode']+"==1?'<span class=\"layui-badge layui-bg-blue\">是</span>':'<span class=\"layui-badge\">否</span>'}}</div>")
                             break;
-                        case '图标':
+                        case 'field_display_icon':
                             dataMap.set("templet","<div><i class=\"layui-icon {{d."+record['displayCode']+"}}\" style=\"color: #1e9fff;font-size: 15px\"></i></div>")
                             break;
-                        case '图片':
+                        case 'field_display_img':
                             hasImg = true;
                             dataMap.set("templet","<div><img src=\"{{d."+record['displayCode']+"}}\" style=\"width:100px;\"></div>")
                             break;
@@ -542,6 +542,17 @@
                     },'json');
                     break;
                 case 'authorization':
+                    var index = layer.open({
+                        type: 2,
+                        title: '角色授权',
+                        maxmin: true,
+                        shadeClose: true, //点击遮罩关闭层
+                        area : ['800px' , '520px'],
+                        content: entityPath+"/authorization?id="+data.id
+                    });
+                    layer.full(index);
+                    break;
+                case 'preview':
                     var index = layer.open({
                         type: 2,
                         title: '角色授权',
