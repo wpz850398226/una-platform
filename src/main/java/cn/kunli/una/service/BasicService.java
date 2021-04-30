@@ -90,8 +90,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
-    @MyCacheEvict(value = "list")
-    @CacheEvict(value = "record", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = "list,record:one")
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         String className = entityClass.getSimpleName();
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
@@ -114,8 +114,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
-    @MyCacheEvict(value = "list")
-    @CacheEvict(value = "record", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = "list,record:one")
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     @Override
     public boolean updateById(T entity) {
         return super.updateById(entity);
@@ -133,7 +133,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @Override
-    @Cacheable(value = "record", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "record:id", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T getById(Serializable id) {
         return super.getById(id);
     }
@@ -144,7 +144,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @Override
-    @Cacheable(value = "record", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T getOne(Wrapper<T> queryWrapper) {
         return super.getOne(queryWrapper);
     }

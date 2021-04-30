@@ -83,6 +83,7 @@
                                                 th:lay-verify="${record.formatDetectionTypeDcodes}"
                                                 th:id="${record['id']}"
                                                 th:name="${record['assignmentCode']}"
+                                                th:data-url="${record['optionEntityPath']}"
                                                 th:data-sub_id="${record.selectSubIds}"
                                                 th:data-param_name="${record['optionParamName']}"
                                                 th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
@@ -90,8 +91,7 @@
                                                 th:data-option_name_field_title="${record['optionNameFieldCode']}"
                                                 th:data-option_value_field_title="${record['optionValueFieldCode']}"
                                                 th:data-switch_hide_ids="${record['switchHideIds']}"
-                                                th:data-switch_hide_option="${record['switchHideOption']}"
-                                                th:data-url="${record['optionEntityPath']}">
+                                                th:data-switch_hide_option="${record['switchHideOption']}">
                                         </select>
                                     </div>
 

@@ -3,6 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysFieldMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysDictionary;
+import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -75,18 +76,22 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      */
     public List<SysField> resultFormat(List<SysField> list) {
         super.resultFormat(list);
-        for (SysField obj : list) {
-            if (StringUtils.isNotBlank(obj.getRadioOptions())){
-                obj.setRadioOptionArray(StringUtils.split(obj.getRadioOptions(), ","));
+        for (SysField record : list) {
+            if (StringUtils.isNotBlank(record.getRadioOptions())){
+                record.setRadioOptionArray(StringUtils.split(record.getRadioOptions(), ","));
             }
 
-            if(StringUtils.isNotBlank(obj.getAssignmentModeDcode())){
-                SysDictionary assignmentModeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", obj.getAssignmentModeDcode())));
+            if(StringUtils.isNotBlank(record.getAssignmentModeDcode())){
+                SysDictionary assignmentModeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", record.getAssignmentModeDcode())));
                 if(assignmentModeDic!=null){
-                    obj.setAssignmentType(assignmentModeDic.getRemark());
+                    record.setAssignmentType(assignmentModeDic.getRemark());
                 }
             }
 
+            if(record.getOptionEntityId()!=null){
+                SysEntity optionEntity = sysEntityService.getById(record.getOptionEntityId());
+                if(optionEntity!=null)record.setOptionEntityPath(optionEntity.getPath());
+            }
         }
         return list;
     }

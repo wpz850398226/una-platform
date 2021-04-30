@@ -128,13 +128,17 @@
         <div class="layui-card-body">
 
             <div class="layui-form-item">
-                <!--<div class="layui-inline">
-                    <label class="layui-form-label">赋值类型</label>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否必填</label>
                     <div class="layui-input-inline">
-                        <input type="radio" th:checked="${record.isManumotive eq 1 || record.isManumotive==null?'true':'false'}" name="isManumotive" value="1" title="手动">
-                        <input type="radio" th:checked="${record.isManumotive eq 0?'true':'false'}" name="isManumotive" value="0" title="自动">
+                        <input type="checkbox"
+                               th:checked="${record['isRequired'] eq 1?'true':'false'}"
+                               name="isRequired"
+                               value="1"
+                               title="是">
                     </div>
-                </div>-->
+                </div>
+
                 <div class="layui-inline">
                     <label class="layui-form-label">可否修改</label>
                     <div class="layui-input-inline">

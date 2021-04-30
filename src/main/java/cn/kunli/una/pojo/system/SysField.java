@@ -41,6 +41,8 @@ public class SysField extends BasePojo implements Serializable {
     private String formatDetectionTypeDcodes;
     //数据检测类型 复数
     private String dataDetectionTypeDcodes;
+    //是否必填
+    private Integer isRequired;
     //是否排序展示
     private Integer isSort;
     //是否可修改；0不可以，1可以
