@@ -170,7 +170,7 @@
             url: "/sys/field/list",
             traditional:true,
             async:false,
-            data:{entityId:virtualEntityId},
+            data:{entityId:virtualEntityId,isEffect:1},
             success:function(result){
                 $.each(result,function (index,record) {
                     var dataMap = new Map();
@@ -535,24 +535,21 @@
                     if(isFullForm==1)layer.full(index);
                     break;
                 case 'ascend':
-                    $.post(entityPath+"/ascend/"+data.id,function(result){
-                        layer.msg(result.message,function(){
-                            if(result.isSuccess)table.reload("unaDataTable");
-                        })
-                    },'json');
+                    $.ajax({
+                        type: 'PUT',
+                        dataType: 'json',
+                        url: entityPath+"/ascend/"+data.id,
+                        success:function(result){
+                            layer.msg(result.message,function(){
+                                if(result.isSuccess)table.reload("unaDataTable");
+                            })
+                        },
+                        error: function(XMLHttpRequest) {
+                            console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+                        }
+                    })
                     break;
                 case 'authorization':
-                    var index = layer.open({
-                        type: 2,
-                        title: '角色授权',
-                        maxmin: true,
-                        shadeClose: true, //点击遮罩关闭层
-                        area : ['800px' , '520px'],
-                        content: entityPath+"/authorization?id="+data.id
-                    });
-                    layer.full(index);
-                    break;
-                case 'preview':
                     var index = layer.open({
                         type: 2,
                         title: '角色授权',

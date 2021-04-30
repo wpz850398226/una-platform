@@ -21,6 +21,8 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysField extends BasePojo implements Serializable {
     private static final long serialVersionUID = 233532239948549239L;
+    //组名
+    private String groupName;
     //赋值字段名称
     private String assignmentCode;
     //取值字段
@@ -86,10 +88,6 @@ public class SysField extends BasePojo implements Serializable {
     //非持久化字段
     @TableField(exist = false)
     private String optionEntityPath;   //选项关联实体地址前缀
-    @TableField(exist = false)
-    private String formatDetectionTypeDvalues;  //格式检测类型值，用,分隔
-    @TableField(exist = false)
-    private String dataDetectionTypeDvalues;  //格式检测类型名称，用,分隔
     @TableField(exist = false)
     private String selectSubIds;                //联动子id，用,分隔
     @TableField(exist = false)

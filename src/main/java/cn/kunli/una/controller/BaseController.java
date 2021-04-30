@@ -1,10 +1,11 @@
 package cn.kunli.una.controller;
 
 
+import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
-import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.vo.*;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.BaseUtil;
@@ -12,23 +13,23 @@ import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -161,23 +162,42 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 * @param id
 	 * @return
 	 */
+	@SneakyThrows
 	@PutMapping("/ascend/{id}")
 	@ResponseBody
 	public SysResult ascend(@PathVariable Serializable id) {
-
 		//查询升序记录
-		BasePojo ascendRecord = service.getById(id);
+		T ascendRecord = (T) service.getById(id);
 		if(ascendRecord!=null){
 			Integer sequence = ascendRecord.getSequence();
 			if(sequence!=null&&sequence>1){
-				//查询降序记录
-				BasePojo descendRecord = service.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("sequence", sequence - 1)));
+				Map<String, Object> paramMap = MapUtil.getMap("sequence", sequence - 1);
+				//获取当前类对应实体类对象
+				SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
+				if(sysEntity!=null){
+					//获取父字段字段类对象
+					SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
+					if(sysField!=null){
+						//获取父字段
+						Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
+						parentField.setAccessible(true);
+						//获取父字段值
+						Object parentValueObj = parentField.get(ascendRecord);
+						paramMap.put(sysField.getAssignmentCode(),parentValueObj);
+					}
+				}
+				//查询要降序的记录
+				BasePojo descendRecord = service.getOne(wrapperUtil.mapToWrapper(paramMap));
 				if(descendRecord!=null){
+					T descT = entityClass.newInstance();
+					descT.setId(descendRecord.getId()).setSequence(sequence);
 					//降序
-					service.updateById(new BasePojo().setId(descendRecord.getId()).setSequence(sequence+1));
+					service.updateById(descT);
 				}
 				//升序
-				boolean ascendResult = service.updateById(new BasePojo().setId(ascendRecord.getId()).setSequence(sequence - 1));
+				T ascT = entityClass.newInstance();
+				ascT.setId(ascendRecord.getId()).setSequence(sequence - 1);
+				boolean ascendResult = service.updateById(ascT);
 				if(ascendResult)return SysResult.success();
 			}
 			return SysResult.fail("顺序为空或无法提升");
@@ -289,8 +309,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					/**
 					 * 判断是否是必填项且是否为空
 					 */
-					if(StringUtils.isNotBlank(sysField.getFormatDetectionTypeDvalues())
-							&&sysField.getFormatDetectionTypeDvalues().indexOf("required")!=-1
+					if(StringUtils.isNotBlank(sysField.getFormatDetectionTypeDcodes())
+							&&sysField.getFormatDetectionTypeDcodes().indexOf("required")!=-1
 							&&StringUtils.isBlank(cellValue)) {
 						//如果必填项为空
 						return SysResult.fail("导入失败，第"+(i+1)+"行第"+(j+1)+"列内容为空");
@@ -308,8 +328,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					if(!isRepeat){//如果本行已经检测出有重复项，则不进一步检测
 						//反射获取查询样本类
 						T sample = entityClass.newInstance();
-						if(StringUtils.isNotBlank(sysField.getDataDetectionTypeDvalues())
-								&&sysField.getDataDetectionTypeDvalues().indexOf("global_unique")!=-1
+						if(StringUtils.isNotBlank(sysField.getDataDetectionTypeDcodes())
+								&&sysField.getDataDetectionTypeDcodes().indexOf("global_unique")!=-1
 								&&StringUtils.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
 							List<T> objList = service.list(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),cellValue)));

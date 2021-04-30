@@ -45,7 +45,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     @Override
     public boolean deleteById(Serializable id) {
         SysFile record = this.getById(id);
-        if(record!=null){
+        if(record!=null&&StringUtils.isNotBlank(record.getPath())){
             minIoUtil.delete(record.getPath());
         }
         return super.deleteById(id);

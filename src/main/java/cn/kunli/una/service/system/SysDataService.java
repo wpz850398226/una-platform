@@ -2,8 +2,17 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysDataMapper;
 import cn.kunli.una.pojo.system.SysData;
+import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -14,36 +23,48 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysDataService extends BasicService<SysDataMapper, SysData> {
-
-    /*@Override
-    public List<SysData> selectBySelective(SysParamMap sysParamMap) {
-        Example example = new Example(entityClass);
-        if (sysParamMap.entrySet().size() > 0) {
-            Example.Criteria criteria = example.createCriteria();
-            Iterator var5 = sysParamMap.entrySet().iterator();
-
-            for (Map.Entry<String, Object> entry : sysParamMap.entrySet()) {
-                if(entry.getValue()!=null&&!entry.getValue().equals("")){
-                    try {
-                        Field declaredField = entityClass.getDeclaredField(entry.getKey());
-                        if(declaredField!=null)criteria.andEqualTo(entry.getKey(), entry.getValue());
-                    } catch (NoSuchFieldException e) {
-                        //e.printStackTrace();
-                        continue;
+    @Override
+    public Map<String, Object> queryFormat(Map<String, Object> map) {
+        if(MapUtils.isEmpty(map))return map;
+        SysEntity sysEntity = null;
+        if(map.containsKey("entityId")){
+            //虚拟实体
+            sysEntity = sysEntityService.getById(map.get("entityId").toString());
+        }else{
+            sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code","SysData")));
+        }
+        if((map.get("orderByAsc")==null|| StringUtils.isBlank(map.get("orderByAsc").toString()))
+                &&(map.get("orderByDesc")==null||StringUtils.isBlank(map.get("orderByDesc").toString()))) {
+            if(sysEntity!=null) {
+                //查询本实体综合排序方法
+                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
+                //格式化排序条件，转为查询语句，并将语句赋值给查询对象
+                if(CollectionUtils.isNotEmpty(sortList)){
+                    StringBuffer ascFieldBuffer = new StringBuffer();
+                    StringBuffer descFieldBuffer = new StringBuffer();
+                    for (SysSort sysSort : sortList) {
+                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
+                        if(sysSort.getSortord()){
+                            ascFieldBuffer.append(",").append(assignmentCode);
+                        }else{
+                            descFieldBuffer.append(",").append(assignmentCode);
+                        }
                     }
 
+                    if(ascFieldBuffer.length()>0){
+                        map.put("orderByAsc",ascFieldBuffer.delete(0, 1).toString());
+                    }
+
+                    if(descFieldBuffer.length()>0){
+                        map.put("orderByDesc",descFieldBuffer.delete(0, 1).toString());
+                    }
                 }
             }
         }
 
-        if (sysParamMap.getOrderBy() != null && !sysParamMap.getOrderBy().trim().isEmpty()) {
-            example.setOrderByClause(sysParamMap.getOrderBy());
-        }
 
-        List<SysData> list = mapper.selectByExample(example);
-        return resultFormat(list);
-
-    }*/
+        return map;
+    }
 
     /*@Override
     public List<SysData> resultFormat(List<SysData> list) {

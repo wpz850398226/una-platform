@@ -190,9 +190,9 @@ public class CommonController {
         for (int j = 0; j < fieldList.size(); j++) {
             String contentText = "文本";
             //String contentText = fieldList.get(j).get==null?"文本":fieldList.get(j).getStorageType();
-            if (StringUtils.isNotBlank(fieldList.get(j).getFormatDetectionTypeDvalues())) {
+            if (StringUtils.isNotBlank(fieldList.get(j).getFormatDetectionTypeDcodes())) {
 
-                contentText += "(" + fieldList.get(j).getFormatDetectionTypeDvalues() + ")";
+                contentText += "(" + fieldList.get(j).getFormatDetectionTypeDcodes() + ")";
             }
             content[0][j] = contentText;
         }

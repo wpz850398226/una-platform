@@ -107,40 +107,35 @@ $(function () {
   <div class="main" >
     <div class=" aboutus  clearBoth clearfix">
       <div class="w1200">
-        <h2 class="title clearBoth clearfix" > <a href="about.html" >关于我们</a><em>致力成为具有可持续化发展的工业贸易型领先企业！</em><i></i> </h2>
+        <h2 class="title clearBoth clearfix" > <a href="about.html" >关于我们</a><em>[[${record.value.gywmDescription}]]</em><i></i> </h2>
         <div class="clearBoth clearfix" style="height:80px;"></div>
-        <div class=" left  aboutusnr wow bounce animated" >
-          <p><em style=" font-size:18px;">多汇供应链管理有限公司</em><Br />
-            <Br />
-            创建于2019年。是集多元化商品贸易为主的贸易公司！<Br />
-            <em style=" font-size:18px;">我们做什么――</em><Br />
-            <Br />
-            依托京津冀重工制造业相对集中的工业产业优势，充分发掘上游供应商与下游加工业、物流行业及其他配套产业资源，结合国家相关产业政策，服务于实体贸易，引入先进的供应链管理综合服务，打造具有联动性的产业链，促进制造流通业的健康发展，致力成为具有可持续化发展的工业贸易型领先企业！</p>
+        <div class="left aboutusnr wow bounce animated" id="gywmContent">
+
           <a href="#" class="left mt20"><img th:src="@{/duohui/guanwang/images/nore.jpg}" /></a> </div>
-        <div class="abouttu right wow fadeInRight animated"><img th:src="@{/duohui/guanwang/images/abouttu.jpg}"/></div>
+        <div class="abouttu right wow fadeInRight animated"><img th:src="${record.value.gywmImg}"/></div>
       </div>
     </div>
     <div class="server clearBoth clearfix">
       <div class="w1200 clearBoth clearfix">
-        <h2 class="title clearBoth clearfix" > <a href="about.html" style="color:#fff;" >业务体系</a><em style="color:#fff;" >主要涵盖产品平台、服务平台、信息平台、招投标等服务体系！</em><i style=" background:#fff;" ></i> </h2>
+        <h2 class="title clearBoth clearfix" > <a href="about.html" style="color:#fff;" >业务体系</a><em style="color:#fff;" >[[${record.value.ywtxDescription}]]</em><i style=" background:#fff;" ></i> </h2>
         <div class="clearBoth clearfix" style="height:80px;"></div>
         <div class="serverlist">
           <ul>
-            <li><a href="#">
+            <li><a th:href="${record.value.xxptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>信息平台</b> </div>
-              <div class="xia"><img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /></div>
+              <div class="xia"><img th:src="${record.value.xxptImg}" /></div>
               </a> </li>
-            <li><a href="#">
+            <li><a th:href="${record.value.cpptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>产品平台</b> </div>
-              <div class="xia"> <img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /></div>
+              <div class="xia"> <img th:src="${record.value.cpptImg}" /></div>
               </a> </li>
-            <li><a href="#">
+            <li><a th:href="${record.value.fwptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>服务平台</b> </div>
-              <div class="xia"><img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /></div>
+              <div class="xia"><img th:src="${record.value.fwptImg}" /></div>
               </a> </li>
-            <li><a href="#">
+            <li><a th:href="${record.value.ztbptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>招投标</b> </div>
-              <div class="xia"><img th:src="@{/duohui/guanwang/images/duohui_37.jpg}" /> </div>
+              <div class="xia"><img th:src="${record.value.ztbptImg}" /> </div>
               </a> </li>
           </ul>
         </div>
@@ -209,7 +204,12 @@ $(function () {
   </div>
   <link rel="stylesheet"  th:href="@{/duohui/guanwang/css/animate.min.css}">
   <script th:src="@{/duohui/guanwang/js/wow.min.js}"></script>
-  <script>
+<script>
+  console.log("start")
+  var gywmContent = '[[${record.value.gywmContent}]]';
+  console.log(gywmContent)
+  $("#gywmContent").innerHTML=gywmContent;
+
 if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
 	new WOW().init();
 };

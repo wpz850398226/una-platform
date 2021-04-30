@@ -6,6 +6,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,16 +15,21 @@ import java.util.List;
 @Service
 public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
 
+    @Autowired
+    private SysMenuService sysMenuService;
+
     @Override
     public List<SysMenu> resultFormat(List<SysMenu> list) {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.resultFormat(list);
         for (SysMenu record : list) {
-            List<SysMenu> subList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
-            if(CollectionUtils.isNotEmpty(subList)){
-                this.resultFormat(subList);
+            if(record.getLevel()<2){
+                List<SysMenu> subList = sysMenuService.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+                if(CollectionUtils.isNotEmpty(subList)){
+                    this.resultFormat(subList);
+                }
+                record.setChildren(subList);
             }
-            record.setChildren(subList);
         }
         return list;
     }
@@ -32,7 +38,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     public List<SysMenu> selectTreeBySelective(SysMenu obj) {
         List<SysMenu> menuList = new ArrayList<>();
         if (obj.getId() == 100000) {
-            menuList = this.list();
+            menuList = sysMenuService.list();
         } else {
             menuList = mapper.selectTreeBySelective(obj);
         }
@@ -90,7 +96,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             if (obj.getParentId() != null) {
                 if (obj.getSequence() == null)
                     obj.setSequence(this.count(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
-                obj.setLevel(this.getById(obj.getParentId()).getLevel() + 1);
+                obj.setLevel(sysMenuService.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");

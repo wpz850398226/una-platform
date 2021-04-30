@@ -18,26 +18,27 @@ import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
+@Primary
 @Transactional
 public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> extends ServiceImpl<M,T> {
 
@@ -103,7 +104,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
         }
 
-//        this.deleteFromCacheByCode(id);
         return super.removeById(id);
     }
 
@@ -118,7 +118,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @CacheEvict(value = "record", keyGenerator = "myCacheKeyGenerator")
     @Override
     public boolean updateById(T entity) {
-//        this.deleteFromCacheByCode(entity.getId());
         return super.updateById(entity);
     }
 

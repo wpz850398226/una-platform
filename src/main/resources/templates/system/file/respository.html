@@ -127,6 +127,7 @@
 <script th:src="@{/una/js/private/una.validation.js}" charset="utf-8"></script>
 
 <script>
+    var entityId = '[[${sysResponseParameter.sysEntity.id }]]';
     var entityName = '[[${sysResponseParameter.sysEntity.name }]]';
     var isFullForm = '[[${sysResponseParameter.sysEntity.isFullForm }]]';
     var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
@@ -137,47 +138,56 @@
             ,form = layui.form
             ,fieldDataArray = []
             ,fieldData = [{type: 'checkbox', fixed: 'left', width:60}]
-            ,dataIds = [];
+            ,pathArray = [];
 
         form.render();
 
         //查询表格字段数据
         $.ajax({
-            type: 'PUT',
+            type: 'GET',
             url: "/sys/field/list",
             traditional:true,
             async:false,
-            data:{entityId:'[[${sysResponseParameter.sysEntity.id}]]'},
+            data:{entityId:entityId},
             success:function(result){
                 $.each(result,function (index,record) {
                     var dataMap = new Map();
                     var hasImg = false;
-                    dataMap.set("field",record['displayCode']);
+                    if(record['assignmentCode']==record['displayCode']){
+                        dataMap.set("field",record['displayCode']);
+                    }else{
+                        dataMap.set("templet","<div>{{d['map']['"+record['displayCode']+"']}}</div>")
+                    }
+
+                    //通用 数据 从map中取值
+                    if(entityClass == 'SysData'){
+                        if(record.name != 'id' && record.name != 'name' && record.name != 'remark'){
+                            dataMap.set("templet","<div>{{d['value']['"+record['displayCode']+"']}}</div>")
+                        }
+                    }
                     dataMap.set("title",record['name']);
                     if(record['displayLength']!=null&&record['displayLength']!=0)dataMap.set("width",record['displayLength']);
                     if(record['isSort']==1)dataMap.set("sort",true);
                     if(record['fixedType']!=null && record['fixedType']!='none')dataMap.set("fixed",record['fixedType']);
-                    switch(record.displayModeDname){
-                        case '判断':
+                    switch(record.displayModeDcode){
+                        case 'field_display_whether':
                             dataMap.set("templet","<div>{{d."+record['displayCode']+"==1?'<span class=\"layui-badge layui-bg-blue\">是</span>':'<span class=\"layui-badge\">否</span>'}}</div>")
                             break;
-                        case '时间':
-                            dataMap.set("templet","<div>{{layui.util.toDateString(d."+record['displayCode']+", 'yyyy-MM-dd HH:mm:ss')}}</div>")
-                            break;
-                        case '图标':
+                        case 'field_display_icon':
                             dataMap.set("templet","<div><i class=\"layui-icon {{d."+record['displayCode']+"}}\" style=\"color: #1e9fff;font-size: 15px\"></i></div>")
                             break;
-                        /*case '图片':
-                            dataMap.set("templet","<div><a style='color: blue' href=\"javascript:preview('{{d."+record['displayCode']+"}}')\">预览</a></div>")
-                            break;*/
-                        case '图片':
+                        case 'field_display_img':
                             hasImg = true;
                             dataMap.set("templet","<div><img src=\"{{d."+record['displayCode']+"}}\" style=\"width:100px;\"></div>")
                             break;
-                    };
+                    }
 
                     //map转json对象再传入
                     fieldData.push(mapToJson(dataMap))
+                    /*if(hasImg){
+                        console.log("safsfsafd")
+                        $(".layui-table-cell").css("height","100px");
+                    }*/
                 })
                 fieldData.push({fixed: 'right', title:'操作',width:120, toolbar: '#barDemo'})
                 fieldDataArray.push(fieldData)
@@ -275,18 +285,15 @@
                         if(data.length>'[[${num}]]'){
                             layer.msg("选中项超过规定数量，可选数量为："+'[[${num}]]',function(){})
                         }else{
-
-                            /*$.each(data,function (index,obj) {
-                                ids.push(obj.fileUrl);
-                            })*/
-
                             //父页面元素赋值
-                            window.parent.document.getElementById('[[${textInputId}]]').value=dataIds;
-                            for(var i=0;i<dataIds.length;i++){
-                                $("#"+'[[${textInputId}]]',window.parent.document).closest(".layui-input-block").find(".layui-input-block:first").find("img").remove();
-                                $("#"+'[[${textInputId}]]',window.parent.document).closest(".layui-input-block").find(".layui-input-block:first").append("<img src=\""+dataIds[i]+"\" style=\"width:100px;\"/>");
-                            }
-
+                            $("#"+'[[${textInputId}]]',window.parent.document).closest(".layui-input-block").find(".layui-input-block:first").find("img").remove();
+                            pathArray = [];
+                            // pathArray = window.parent.document.getElementById('[[${textInputId}]]').value
+                            $.each(data,function (index,obj) {
+                                pathArray.push(obj.path);
+                                $("#"+'[[${textInputId}]]',window.parent.document).closest(".layui-input-block").find(".layui-input-block:first").append("<img src=\""+obj.path+"\" style=\"width:100px;\"/>");
+                            })
+                            window.parent.document.getElementById('[[${textInputId}]]').value = pathArray
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                             parent.layer.close(index); //再执行关闭
                         }
@@ -332,21 +339,21 @@
             //console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
             if(obj.checked==true){
                 if(obj.type=='one'){
-                    dataIds.push(obj.data.fileUrl);
+                    pathArray.push(obj.data.path);
                 }else{
                     //清空dataIds，保存所有选中行，顺序按上到下的顺序
-                    dataIds=[];
+                    pathArray=[];
                     var checkStatus = table.checkStatus("unaDataTable");
                     var data = checkStatus.data;
                     $.each(data,function (index,ele) {
-                        dataIds.push(ele.fileUrl);
+                        pathArray.push(ele.path);
                     })
                 }
             }else{
                 if(obj.type=='one'){
-                    dataIds.remove(obj.data.fileUrl);
+                    pathArray.remove(obj.data.path);
                 }else{
-                    dataIds=[];
+                    pathArray=[];
                 }
             }
         });
