@@ -120,7 +120,22 @@ public class CommonController {
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.list(sysFieldService.getWrapper(map));
+        List<SysField> sysFieldList = sysFieldService.resultFormat(sysFieldService.list(sysFieldService.getWrapper(map)));
+        List<List<SysField>> sysFieldListList = new ArrayList<>();
+
+
+        for (SysField sysField : sysFieldList) {
+            if(StringUtils.isNotBlank(sysField.getGroupName())){
+                List<SysField> subFieldList  = new ArrayList<>();
+                subFieldList.add(sysField);
+                sysFieldListList.add(subFieldList);
+            }else{
+                if(sysFieldListList.size()==0){
+                    sysFieldListList.add(new ArrayList<SysField>());
+                }
+                sysFieldListList.get(sysFieldListList.size()-1).add(sysField);
+            }
+        }
 
         switch (className) {
             case "SysDictionary":
@@ -150,7 +165,8 @@ public class CommonController {
         }
 
         model.addAttribute("sample", obj);
-        model.addAttribute("sysFieldList", sysFieldService.resultFormat(sysFieldList));
+        model.addAttribute("sysFieldList", sysFieldList);
+        model.addAttribute("sysFieldListList", sysFieldListList);
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("activeUser", UserUtil.getLoginAccount());
 
