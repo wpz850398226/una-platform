@@ -73,8 +73,9 @@
                             </div>
 
                             <div th:case="field_assignment_singleselect"  class="layui-input-inline">
+                                <!--单选下拉-->
                                 <select th:class="'una-select una-select-linkage'+${record['switchHideOption']!=null?' una-switch-hide':''}" lay-search=""
-                                        th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                        th:lay-verify="${record.isRequired==1?'required '+ record.formatDetectionTypeDcodes:record.formatDetectionTypeDcodes}"
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
                                         th:data-url="${record['optionEntityPath']}"
@@ -297,9 +298,11 @@
 
         $(".una-switch-hide").each(function () {
             var eleIds = $(this).data("switch_hide_ids");
-            var eleArray = eleIds.split(",");
-            for(var i=0;i<eleArray.length;i++){
-                $("#"+eleArray[i]).closest(".layui-form-item").addClass("layui-hide");
+            if(eleIds!=null&&eleIds.length>0){
+                var eleArray = eleIds.split(",");
+                for(var i=0;i<eleArray.length;i++){
+                    $("#"+eleArray[i]).closest(".layui-form-item").addClass("layui-hide");
+                }
             }
         })
 
