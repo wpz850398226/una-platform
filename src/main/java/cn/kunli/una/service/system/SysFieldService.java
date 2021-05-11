@@ -7,12 +7,15 @@ import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,6 +80,17 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     public List<SysField> resultFormat(List<SysField> list) {
         super.resultFormat(list);
         for (SysField record : list) {
+            List<SysField> children = this.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
+            if(CollectionUtils.isNotEmpty(children)){
+                List<String> idList = new ArrayList<>();
+                for (SysField sysField : children) {
+                    idList.add(sysField.getId().toString());
+                }
+
+                String idStr = ListUtil.listToStr(idList);
+                record.setSelectSubIds(idStr);
+            }
+
             if (StringUtils.isNotBlank(record.getRadioOptions())){
                 record.setRadioOptionArray(StringUtils.split(record.getRadioOptions(), ","));
             }
@@ -85,6 +99,19 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 SysDictionary assignmentModeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", record.getAssignmentModeDcode())));
                 if(assignmentModeDic!=null){
                     record.setAssignmentType(assignmentModeDic.getRemark());
+                }
+            }
+
+            if(StringUtils.isNotBlank(record.getFormatCheckTypeDcode())){
+                SysDictionary codeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", record.getFormatCheckTypeDcode())));
+                if(codeDic!=null)record.getMap().put("formatCheckTypeDvalue",codeDic.getValue());
+            }
+
+            if(record.getIsRequired()==1){
+                if(record.getMap().containsKey("formatCheckTypeDvalue")){
+                    record.getMap().put("formatCheckTypeDvalue",record.getMap().get("formatCheckTypeDvalue")+" required");
+                }else{
+                    record.getMap().put("formatCheckTypeDvalue","required");
                 }
             }
 

@@ -309,8 +309,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					/**
 					 * 判断是否是必填项且是否为空
 					 */
-					if(StringUtils.isNotBlank(sysField.getFormatDetectionTypeDcodes())
-							&&sysField.getFormatDetectionTypeDcodes().indexOf("required")!=-1
+					if(StringUtils.isNotBlank(sysField.getFormatCheckTypeDcode())
+							&&sysField.getFormatCheckTypeDcode().indexOf("required")!=-1
 							&&StringUtils.isBlank(cellValue)) {
 						//如果必填项为空
 						return SysResult.fail("导入失败，第"+(i+1)+"行第"+(j+1)+"列内容为空");
@@ -328,8 +328,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					if(!isRepeat){//如果本行已经检测出有重复项，则不进一步检测
 						//反射获取查询样本类
 						T sample = entityClass.newInstance();
-						if(StringUtils.isNotBlank(sysField.getDataDetectionTypeDcodes())
-								&&sysField.getDataDetectionTypeDcodes().indexOf("global_unique")!=-1
+						if(StringUtils.isNotBlank(sysField.getDataCheckTypeDcode())
+								&&sysField.getDataCheckTypeDcode().indexOf("global_unique")!=-1
 								&&StringUtils.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
 							List<T> objList = service.list(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),cellValue)));

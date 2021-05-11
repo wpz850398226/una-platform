@@ -32,29 +32,14 @@
                                 <input type="text"
                                        class="layui-input"
                                        th:id="${record['id']}"
-                                       th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                       th:lay-verify="${record.formatCheckTypeDcode}"
                                        th:name="${record['assignmentCode']}"
                                        th:placeholder="${'请输入'+record['name']}"
                                        th:value="${record['defaultValue']!=null&& #strings.contains(record['defaultValue'],'$u')?activeUser[#strings.substringAfter(record['defaultValue'],'.')]:record['defaultValue']}">
                             </div>
 
-                            <div th:case="field_assignment_textarea"  class="layui-input-block">
-                            <textarea th:lay-verify="${record.formatDetectionTypeDcodes}"
-                                      class="layui-textarea"
-                                      th:id="${record['id']}"
-                                      th:name="${record['assignmentCode']}"
-                                      th:placeholder="${'请输入'+record['name']}"></textarea>
-                            </div>
-
-                            <div th:case="field_assignment_editor"  class="layui-input-block">
-                                <!--富文本-->
-                                <textarea class="layedit"
-                                          th:lay-verify="${record.formatDetectionTypeDcodes}"
-                                          th:name="${record['assignmentCode']}"
-                                          th:id="${record['id']}"></textarea>
-                            </div>
-
                             <div th:case="field_assignment_switch"  class="layui-input-block">
+                                <!--开关按钮-->
                                 <input class=""
                                        th:id="${record['id']}"
                                        type="checkbox"
@@ -65,6 +50,7 @@
                             </div>
 
                             <div th:case="field_assignment_radio"  class="layui-input-block">
+                                <!--普通单选-->
                                 <input th:each="option:${record.radioOptionArray}"
                                        type="radio"
                                        th:name="${record['assignmentCode']}"
@@ -72,9 +58,11 @@
                                        th:value="${option}" th:title="${option}">
                             </div>
 
+
                             <div th:case="field_assignment_singleselect"  class="layui-input-inline">
+                                <!--单选下拉-->
                                 <select th:class="'una-select una-select-linkage'+${record['switchHideOption']!=null?' una-switch-hide':''}" lay-search=""
-                                        th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                        th:lay-verify="${record['map']['formatCheckTypeDvalue']}"
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
                                         th:data-url="${record['optionEntityPath']}"
@@ -90,9 +78,10 @@
                             </div>
 
                             <div th:case="field_assignment_multiSelect"  class="layui-input-block">
+                                <!--多选下拉-->
                                 <div class="una-select-multiple una-select-linkage"
                                      lay-search=""
-                                     th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                     th:lay-verify="${record.formatCheckTypeDcode}"
                                      th:id="${record['id']}"
                                      th:name="${record['assignmentCode']}"
                                      th:data-sub_id="${record.selectSubIds}"
@@ -103,6 +92,22 @@
                                      th:data-option_value_field_title="${record['optionValueFieldCode']}"
                                      th:data-url="${record['optionEntityPath']}">
                                 </div>
+                            </div>
+
+                            <div th:case="field_assignment_textarea"  class="layui-input-block">
+                                <textarea th:lay-verify="${record.formatCheckTypeDcode}"
+                                          class="layui-textarea"
+                                          th:id="${record['id']}"
+                                          th:name="${record['assignmentCode']}"
+                                          th:placeholder="${'请输入'+record['name']}"></textarea>
+                            </div>
+
+                            <div th:case="field_assignment_editor"  class="layui-input-block">
+                                <!--富文本-->
+                                <textarea class="layedit"
+                                          th:lay-verify="${record.formatCheckTypeDcode}"
+                                          th:name="${record['assignmentCode']}"
+                                          th:id="${record['id']}"></textarea>
                             </div>
 
                             <div th:case="地区三级联动"  class="layui-input-inline">
@@ -118,7 +123,7 @@
                                         th:data-url="${record['optionEntityPath']}">
                                 </select>
                                 <select class="una-select una-select-linkage" lay-search=""
-                                        th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                        th:lay-verify="${record.formatCheckTypeDcode}"
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
                                         th:data-sub_id="${record.selectSubIds}"
@@ -130,7 +135,7 @@
                                         th:data-url="${record['optionEntityPath']}">
                                 </select>
                                 <select class="una-select una-select-linkage" lay-search=""
-                                        th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                        th:lay-verify="${record.formatCheckTypeDcode}"
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
                                         th:data-sub_id="${record.selectSubIds}"
@@ -145,7 +150,7 @@
 
                             <div th:case="field_assignment_date"  class="layui-input-block">
                                 <input class="layui-input una-laydate-date"
-                                       th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                       th:lay-verify="${record.formatCheckTypeDcode}"
                                        th:id="${record['id']}"
                                        type="text"
                                        th:name="${record['assignmentCode']}"
@@ -155,7 +160,7 @@
 
                             <div th:case="field_assignment_time"  class="layui-input-block">
                                 <input class="layui-input una-laydate-time"
-                                       th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                       th:lay-verify="${record.formatCheckTypeDcode}"
                                        th:id="${record['id']}"
                                        type="text"
                                        th:name="${record['assignmentCode']}"
@@ -165,7 +170,7 @@
 
                             <div th:case="field_assignment_datetime"  class="layui-input-block">
                                 <input class="layui-input una-laydate-datetime"
-                                       th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                       th:lay-verify="${record.formatCheckTypeDcode}"
                                        th:id="${record['id']}"
                                        type="text"
                                        th:name="${record['assignmentCode']}"
@@ -175,7 +180,7 @@
 
                             <div th:case="field_assignment_yearmonth"  class="layui-input-block">
                                 <input class="layui-input una-laydate-month"
-                                       th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                       th:lay-verify="${record.formatCheckTypeDcode}"
                                        th:id="${record['id']}"
                                        type="text"
                                        th:name="${record['assignmentCode']}"
@@ -217,7 +222,7 @@
                                 <input type="text" onchange="showFile()"
                                        th:name="${record['assignmentCode']}"
                                        disabled autocomplete="off"
-                                       th:lay-verify="${record.formatDetectionTypeDcodes}"
+                                       th:lay-verify="${record.formatCheckTypeDcode}"
                                        placeholder="请打开文件资源库"
                                        th:id="${record['id']}"
                                        class="layui-input">
@@ -297,9 +302,11 @@
 
         $(".una-switch-hide").each(function () {
             var eleIds = $(this).data("switch_hide_ids");
-            var eleArray = eleIds.split(",");
-            for(var i=0;i<eleArray.length;i++){
-                $("#"+eleArray[i]).closest(".layui-form-item").addClass("layui-hide");
+            if(eleIds!=null&&eleIds.length>0){
+                var eleArray = eleIds.split(",");
+                for(var i=0;i<eleArray.length;i++){
+                    $("#"+eleArray[i]).closest(".layui-form-item").addClass("layui-hide");
+                }
             }
         })
 
