@@ -38,9 +38,9 @@ public class SysField extends BasePojo implements Serializable {
     //前端展示类型
     private String displayModeDcode;
     //格式检测类型 复数
-    private String formatDetectionTypeDcodes;
+    private String formatCheckTypeDcode;
     //数据检测类型 复数
-    private String dataDetectionTypeDcodes;
+    private String dataCheckTypeDcode;
     //是否必填
     private Integer isRequired;
     //是否排序展示

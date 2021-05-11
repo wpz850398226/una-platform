@@ -3,8 +3,8 @@
 <mapper namespace="cn.kunli.una.mapper.SysFieldMapper">
     <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysField">
         <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="format_detection_type_dcodes" jdbcType="VARCHAR" property="formatDetectionTypeDcodes"></result>
-        <!--<association property="formatDetectionTypeDcodes" column="format_detection_type_dcodes" javaType="java.lang.String"
+        <result column="format_check_type_dcode" jdbcType="VARCHAR" property="formatCheckTypeDcode"></result>
+        <!--<association property="formatCheckTypeDcode" column="format_check_type_dcode" javaType="java.lang.String"
                      select="cn.kunli.una.mapper.SysDictionaryMapper.selectValueByIdsAssociation"/>-->
     </resultMap>
 
@@ -17,9 +17,9 @@
         ,dptSdic.name as displayModeDname
         ,(SELECT GROUP_CONCAT(selectParentField.id) FROM sys_field as selectParentField WHERE selectParentField.select_parent_id = record.id) as selectSubIds
         ,(select group_concat(formatDictionary.value SEPARATOR ',')
-        from sys_dictionary as formatDictionary where formatDictionary.is_delete = 0 and FIND_IN_SET(formatDictionary.code,record.format_detection_type_dcodes)) as formatDetectionTypeDcodes
+        from sys_dictionary as formatDictionary where formatDictionary.is_delete = 0 and FIND_IN_SET(formatDictionary.code,record.format_check_type_dcode)) as formatCheckTypeDcode
         ,(select group_concat(dataDetecDictionary.value SEPARATOR ',')
-        from sys_dictionary as dataDetecDictionary where dataDetecDictionary.is_delete = 0 and FIND_IN_SET(dataDetecDictionary.code,record.data_detection_type_dcodes)) as dataDetectionTypeDcodes
+        from sys_dictionary as dataDetecDictionary where dataDetecDictionary.is_delete = 0 and FIND_IN_SET(dataDetecDictionary.code,record.data_check_type_dcode)) as dataCheckTypeDcode
         from sys_field as record
         left join sys_entity as sysEntity on sysEntity.id = record.entity_id
         left join sys_entity as optionEntity on optionEntity.id = record.option_entity_id

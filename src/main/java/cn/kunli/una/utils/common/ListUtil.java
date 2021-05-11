@@ -1,5 +1,7 @@
 package cn.kunli.una.utils.common;
 
+import cn.kunli.una.pojo.BasePojo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
@@ -88,6 +90,17 @@ public class ListUtil {
             return true;
         }
         return false;
+    }
+
+    //字符串集合转字符串逗号分隔
+    public static String getIdStrByPojoList(List<BasePojo> list){
+        if(CollectionUtils.isEmpty(list))return null;
+        List<String> idList = new ArrayList<>();
+        for (BasePojo basePojo : list) {
+            idList.add(basePojo.getId().toString());
+        }
+
+        return listToStr(idList);
     }
 
     //字符串集合转字符串逗号分隔

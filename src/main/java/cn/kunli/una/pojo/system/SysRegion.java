@@ -23,7 +23,7 @@ import java.util.List;
 public class SysRegion extends BasePojo implements Serializable {
     private static final long serialVersionUID = -94885096018253815L;
     //类型字典id
-    private String typeDid;
+    private String typeDcode;
     //等级
     private Integer level;
     //地区编号
@@ -35,18 +35,14 @@ public class SysRegion extends BasePojo implements Serializable {
     //描述
     private String description;
     //根（顶级父id）id
-    private String rootId;
+    private Integer rootId;
     //父字典 id（私有）
-    private String parentId;
+    private Integer parentId;
     //权重，排序用
 
 
     @TableField(exist = false)
-    private String parentName;
-    @TableField(exist = false)
     private String rootName;        //根目录名称
-    @TableField(exist = false)
-    private String typeDname;     //类型名称
     @TableField(exist = false)
     private List<SysRegion> children;
 

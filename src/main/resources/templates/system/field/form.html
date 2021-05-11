@@ -178,7 +178,7 @@
                     </div>
                 </div>
 
-                <div class="layui-inline fileSelectConfigUnit layui-hide">
+                <div class="layui-inline">
                     <label class="layui-form-label">可选上限</label>
                     <div class="layui-input-inline">
                         <input type="text"
@@ -195,11 +195,11 @@
                     <label class="layui-form-label">格式校验</label>
                     <div class="layui-input-inline">
                         <select class="una-select"
-                                name="formatDetectionTypeDcodes"
+                                name="formatCheckTypeDcode"
                                 lay-search=""
                                 data-param_name="parentCode"
                                 data-param_value="field_formatDetection"
-                                th:data-selected="${record['formatDetectionTypeDcodes']}"
+                                th:data-selected="${record['formatCheckTypeDcode']}"
                                 data-option_value_field_title="code"
                                 data-url="/sys/dictionary"></select>
                     </div>
@@ -209,11 +209,11 @@
                     <label class="layui-form-label">数据检测</label>
                     <div class="layui-input-inline">
                         <select class="una-select"
-                                name="dataDetectionTypeDcodes"
+                                name="dataCheckTypeDcode"
                                 lay-search=""
                                 data-param_name="parentCode"
                                 data-param_value="field_data_detection"
-                                th:data-selected="${record['dataDetectionTypeDcodes']}"
+                                th:data-selected="${record['dataCheckTypeDcode']}"
                                 data-option_value_field_title="code"
                                 data-url="/sys/dictionary"></select>
                     </div>
@@ -237,7 +237,7 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">选项名字段</label>
+                    <label class="layui-form-label">选项展示</label>
                     <div class="layui-input-inline">
                         <select class="una-select"
                                 id="optionNameFieldIdSelectUnit"
@@ -251,7 +251,7 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">选项值字段</label>
+                    <label class="layui-form-label">选项提交</label>
                     <div class="layui-input-inline">
                         <select class="una-select"
                                 id="optionValueFieldIdSelectUnit"
@@ -265,7 +265,7 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">选项参数名</label>
+                    <label class="layui-form-label">选项参数键</label>
                     <div class="layui-input-inline">
                         <input type="text"
                                name="optionParamName"
@@ -300,12 +300,10 @@
                                 data-url="/sys/field"></select>
                     </div>
                 </div>
-            </div>
 
-            <div class="layui-form-item selectConfigUnit layui-hide">
-                <div class="layui-form-item" th:style="${record['id']!=null&&record['id']!=''?'':'display:none'}">
+                <div class="layui-inline">
                     <label class="layui-form-label">触发隐藏</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <div class="una-select una-select-multiple"
                              lay-search=""
                              name="switchHideOption"
@@ -319,9 +317,9 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item" th:style="${record['id']!=null&&record['id']!=''?'':'display:none'}">
+                <div class="layui-inline">
                     <label class="layui-form-label">被隐藏字段</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <input type="text"
                                name="switchHideIds"
                                autocomplete="off"
