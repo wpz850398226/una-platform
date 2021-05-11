@@ -14,9 +14,6 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${upload.file.path}")
-    private String fileUrl;
-
     /**
      * 添加视图解析器
      */
@@ -25,11 +22,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("login/login");
     }
 
-    @Override
+    /*@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/file/**")
                 .addResourceLocations("file:/"+fileUrl);
-    }
+    }*/
 
 
     @Override

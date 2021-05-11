@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/sys/file")
 public class SysFileController extends BaseController<SysFileService, SysFile> {
-    @Value("${upload.file.path}")
-    public String uploadFilePath;
 
     /**
      * 跳转通用表单页
