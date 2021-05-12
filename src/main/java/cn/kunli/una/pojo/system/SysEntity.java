@@ -52,8 +52,6 @@ public class SysEntity extends BasePojo implements Serializable {
     private Integer isTreelayout;
     //是否真实删除
     private Integer isRealDelete;
-    //可启动流程定义keys
-    private String definitionDcodes;
 
 
     @TableField(exist = false)
