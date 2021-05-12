@@ -3,6 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysRolePermissionMapper;
 import cn.kunli.una.pojo.system.SysRolePermission;
 import cn.kunli.una.service.BasicService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysRolePermissionService extends BasicService<SysRolePermissionMapper, SysRolePermission> {
+
+    @Autowired
+    private SysRolePermissionService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
 
     public Integer insertByPermissionId(Integer permissionId) {
         return mapper.insertByPermissionId(permissionId);

@@ -9,10 +9,7 @@ import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.system.SysDictionaryService;
-import cn.kunli.una.service.system.SysEntityService;
-import cn.kunli.una.service.system.SysFieldService;
-import cn.kunli.una.service.system.SysSortService;
+import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -44,6 +41,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     //全局参数
     protected M mapper;
+    //本类的代理
+    public abstract BasicService<M,T> getThisProxy();
 
     @Autowired
     public void setMapper(M mapper) {
@@ -62,6 +61,16 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     protected SysFieldService sysFieldService;
     @Autowired
     protected SysSortService sysSortService;
+    @Autowired
+    protected SysRelationService sysRelationService;
+    @Autowired
+    protected SysButtonService sysButtonService;
+    @Autowired
+    protected SysQueryService sysQueryService;
+    @Autowired
+    protected SysFilterService sysFilterService;
+    @Autowired
+    protected SysAccountService sysAccountService;
     @Autowired
     protected SysDictionaryService sysDictionaryService;
     @Autowired
@@ -197,7 +206,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     Object parentValueObj = parentField.get(obj);
                     nameParamMap.put(sysField.getAssignmentCode(),parentValueObj);
                 }
-                List<T> nameResultList = this.list(wrapperUtil.mapToWrapper(nameParamMap));
+                List<T> nameResultList = getThisProxy().list(wrapperUtil.mapToWrapper(nameParamMap));
                 if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
                     return SysResult.fail("名称重复，保存失败");
@@ -212,7 +221,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     Object codeObject = declaredField.get(obj);
                     //如果传入了code值，验证code全局唯一性
                     if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
-                        List<T> codeResultList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
+                        List<T> codeResultList = getThisProxy().list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
                         if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                             //通过新文件的编码查询到数据
                             return SysResult.fail("编码重复，保存失败");
@@ -407,7 +416,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
                             if(null != value){
                                 //实体中该字段值为空的
-                                SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),this);
+                                SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy());
                                 if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
                             }
                             Map<String, Object> map = entity.getMap();

@@ -17,6 +17,13 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
 
     @Autowired
     private SysMenuService sysMenuService;
+    @Autowired
+    private SysMenuService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
 
     @Override
     public List<SysMenu> resultFormat(List<SysMenu> list) {

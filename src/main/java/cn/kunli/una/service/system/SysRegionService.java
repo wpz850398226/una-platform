@@ -4,10 +4,8 @@ import cn.kunli.una.mapper.SysRegionMapper;
 import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.service.SpringContextUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +19,14 @@ import java.util.List;
 @Service
 public class SysRegionService extends BasicService<SysRegionMapper, SysRegion> {
 
+    @Autowired
+    private SysRegionService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
+
     /**
      * 查询结果格式化
      *
@@ -28,11 +34,11 @@ public class SysRegionService extends BasicService<SysRegionMapper, SysRegion> {
      * @return
      */
     public List<SysRegion> resultFormat(List<SysRegion> list) {
-        SysRegionService _this = SpringContextUtil.getBean(SysRegionService.class);
+//        SysRegionService _this = SpringContextUtil.getBean(SysRegionService.class);
         super.resultFormat(list);
         for (SysRegion record : list) {
             if(record.getLevel() == 2){
-                List<SysRegion> subList = _this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+                List<SysRegion> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.resultFormat(subList);
                 }

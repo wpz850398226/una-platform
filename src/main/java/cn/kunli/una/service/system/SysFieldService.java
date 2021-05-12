@@ -21,8 +21,10 @@ import java.util.List;
 @Service
 public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
-    @Autowired
-    private SysAccountService sysAccountService;
+    @Override
+    public BasicService getThisProxy() {
+        return sysFieldService;
+    }
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
@@ -80,7 +82,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     public List<SysField> resultFormat(List<SysField> list) {
         super.resultFormat(list);
         for (SysField record : list) {
-            List<SysField> children = this.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
+            List<SysField> children = sysFieldService.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
             if(CollectionUtils.isNotEmpty(children)){
                 List<String> idList = new ArrayList<>();
                 for (SysField sysField : children) {

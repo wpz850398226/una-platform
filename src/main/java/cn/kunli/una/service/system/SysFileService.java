@@ -30,6 +30,13 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     @Autowired
     private MinIoUtil minIoUtil;
+    @Autowired
+    private SysFileService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
 
 
     @Override
@@ -44,7 +51,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     @Override
     public boolean deleteById(Serializable id) {
-        SysFile record = this.getById(id);
+        SysFile record = thisProxy.getById(id);
         if(record!=null&&StringUtils.isNotBlank(record.getPath())){
             minIoUtil.delete(record.getPath());
         }

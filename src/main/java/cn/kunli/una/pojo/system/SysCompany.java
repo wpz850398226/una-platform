@@ -73,80 +73,10 @@ public class SysCompany extends BasePojo implements Serializable {
     //用户同步ID
     private String subId;
 
-
-    @TableField(exist = false)
-    private String[] industryIdArray;            //行业id数组
-    @TableField(exist = false)
-    private String[] fileIdArray;            //附件id数组
     @TableField(exist = false)
     private String legalPersonName;        //法人姓名
     @TableField(exist = false)
     private List<SysDepartment> departmentList;        //公司部门
     @TableField(exist = false)
     private List<SysAccount> userList;        //公司员工
-    @TableField(exist = false)
-    private List<SysFile> fileList;
-    @TableField(exist = false)
-    private String typeName;
-    @TableField(exist = false)
-    private String industryNames;
-    @TableField(exist = false)
-    private String regionName;
-    @TableField(exist = false)
-    private List<SysCompany> children;
-    @TableField(exist = false)
-    private String employeeId;
-    @TableField(exist = false)
-    private String rootCompanyId;
-    //根公司id，组织上级，查询用
-    @TableField(exist = false)
-    private String grandCompanyId;
-    @TableField(exist = false)
-    private String companyId;
-    @TableField(exist = false)
-    private Integer userNumber;
-    @TableField(exist = false)
-    private String provinceName;    //省
-    @TableField(exist = false)
-    private String provinceId;    //省
-    @TableField(exist = false)
-    private String districtName;    //区
-    @TableField(exist = false)
-    private String districtId;    //区
-    @TableField(exist = false)
-    private String countyName;      //县
-    @TableField(exist = false)
-    private String levelName;   //公司等级
-    @TableField(exist = false)
-    private String parentCompanyName;
-    @TableField(exist = false)
-    private String principalRoleTitle;  //负责人角色名称
-    @TableField(exist = false)
-    private Integer personNum; //公司人数
-    @TableField(exist = false)
-    private Integer equipmentNum;   //器材库存
-    @TableField(exist = false)
-    private Integer equipageVehicleNum;   //器材库存
-    @TableField(exist = false)
-    private Integer vehicleNum; //备勤车辆总数
-    @TableField(exist = false)
-    private String subCompanyNum;
-    @TableField(exist = false)
-    private List<SysCompany> subCompany;
-    @TableField(exist = false)
-    private List<SysAccount> legalPersons;
-    @TableField(exist = false)
-    private String manageCompanyTitle;
-    @TableField(exist = false)
-    private String characterDname;
-    @TableField(exist = false)
-    private String isShow;
-    /**
-     * 公司ID in查询条件
-     */
-    @TableField(exist = false)
-    private List<String> companyIds;
-
-    @TableField(exist = false)
-    private String pId;
 }

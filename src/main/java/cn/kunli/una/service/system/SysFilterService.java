@@ -13,4 +13,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysFilterService extends BasicService<SysFilterMapper, SysFilter> {
+
+    @Override
+    public BasicService getThisProxy() {
+        return sysFilterService;
+    }
 }

@@ -6,6 +6,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,18 @@ import java.util.List;
 @Service
 public class SysUserService extends BasicService<SysUserMapper, SysUser> {
 
+    @Autowired
+    private SysUserService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
+
     //校验格式
     public SysResult validation(SysUser obj) {
         if (StringUtils.isNotBlank(obj.getMobile())) {
-            List<SysUser> objList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("mobile",obj.getMobile())));
+            List<SysUser> objList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("mobile",obj.getMobile())));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("手机号码重复，保存失败:" + obj.getMobile());
@@ -30,7 +39,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
         }
 
         if (StringUtils.isNotBlank(obj.getIdNumber())) {
-            List<SysUser> objList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("idNumber",obj.getIdNumber())));
+            List<SysUser> objList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("idNumber",obj.getIdNumber())));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("证件号重复，保存失败:" + obj.getIdNumber());
@@ -39,7 +48,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
 
 
         if (StringUtils.isNotBlank(obj.getEmail())) {
-            List<SysUser> objList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("email",obj.getEmail())));
+            List<SysUser> objList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("email",obj.getEmail())));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("邮箱重复，保存失败:" + obj.getEmail());

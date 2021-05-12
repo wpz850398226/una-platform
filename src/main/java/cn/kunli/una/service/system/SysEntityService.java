@@ -14,14 +14,10 @@ import java.util.Map;
 @Service
 public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
 
-    @Autowired
-    private SysRelationService sysRelationService;
-    @Autowired
-    private SysButtonService sysButtonService;
-    @Autowired
-    private SysQueryService sysQueryService;
-    @Autowired
-    private SysFilterService sysFilterService;
+    @Override
+    public BasicService getThisProxy() {
+        return sysEntityService;
+    }
 
     @Override
     public SysEntity saveFormat(SysEntity obj) {

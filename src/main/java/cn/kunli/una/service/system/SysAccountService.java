@@ -22,6 +22,11 @@ import java.util.List;
 @Service
 public class SysAccountService extends BasicService<SysAccountMapper, SysAccount> {
 
+    @Override
+    public BasicService getThisProxy() {
+        return sysAccountService;
+    }
+
     //校验格式
     public SysResult validation(SysAccount obj) {
         if (obj.getMap() != null && obj.getMap().get("confirmPassword") != null) {
@@ -35,7 +40,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         }
 
         if (StringUtils.isNotBlank(obj.getUsername())) {
-            List<SysAccount> objList = this.list(wrapperUtil.mapToWrapper(MapUtil.getMap("username",obj.getUsername().trim())));
+            List<SysAccount> objList = sysAccountService.list(wrapperUtil.mapToWrapper(MapUtil.getMap("username",obj.getUsername().trim())));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());

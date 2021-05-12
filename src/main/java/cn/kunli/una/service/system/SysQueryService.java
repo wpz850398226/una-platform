@@ -13,4 +13,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysQueryService extends BasicService<SysQueryMapper, SysQuery> {
+
+    @Override
+    public BasicService getThisProxy() {
+        return sysQueryService;
+    }
 }

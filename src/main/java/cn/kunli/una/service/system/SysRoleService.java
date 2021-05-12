@@ -17,6 +17,13 @@ import org.springframework.stereotype.Service;
 public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
     @Autowired
     private SysRolePermissionService sysRolePermissionService;
+    @Autowired
+    private SysRoleService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
 
     /**
      * 插入数据,只操作record中的非空属性

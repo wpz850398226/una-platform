@@ -9,4 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class SysSortService extends BasicService<SysSortMapper, SysSort> {
+
+    @Override
+    public BasicService getThisProxy() {
+        return sysSortService;
+    }
 }

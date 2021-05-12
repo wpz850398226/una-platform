@@ -20,6 +20,11 @@ import java.util.List;
 public class SysRelationService extends BasicService<SysRelationMapper, SysRelation> {
 
     @Override
+    public BasicService getThisProxy() {
+        return sysRelationService;
+    }
+
+    @Override
     public List<SysRelation> resultFormat(List<SysRelation> list) {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.resultFormat(list);

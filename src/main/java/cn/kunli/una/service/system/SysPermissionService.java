@@ -24,6 +24,13 @@ import java.util.List;
 public class SysPermissionService extends BasicService<SysPermissionMapper, SysPermission> {
     @Autowired
     private SysRolePermissionService sysRolePermissionService;
+    @Autowired
+    private SysPermissionService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
 
     /**
      * 插入数据,只操作record中的非空属性

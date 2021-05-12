@@ -4,6 +4,7 @@ import cn.kunli.una.mapper.SysAnnouncementMapper;
 import cn.kunli.una.pojo.system.SysAnnouncement;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +15,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysAnnouncementService extends BasicService<SysAnnouncementMapper, SysAnnouncement> {
+
+    @Autowired
+    private SysAnnouncementService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
+
     public SysResult read(SysAnnouncement obj) {
         //如果是全部转为已读，则删除该用户之前的已读记录
         if (obj.getIsAll() != null && obj.getIsAll().equals(1)) this.mapper.deleteRead(obj.getCreatorId());

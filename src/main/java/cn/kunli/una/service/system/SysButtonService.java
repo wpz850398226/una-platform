@@ -13,4 +13,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
+    @Override
+    public BasicService getThisProxy() {
+        return sysButtonService;
+    }
 }

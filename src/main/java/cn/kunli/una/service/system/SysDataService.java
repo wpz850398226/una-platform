@@ -9,6 +9,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,15 @@ import java.util.Map;
  */
 @Service
 public class SysDataService extends BasicService<SysDataMapper, SysData> {
+
+    @Autowired
+    private SysDataService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
+
     @Override
     public Map<String, Object> queryFormat(Map<String, Object> map) {
         if(MapUtils.isEmpty(map))return map;

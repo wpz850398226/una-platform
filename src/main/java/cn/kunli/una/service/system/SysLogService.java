@@ -3,6 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysLogMapper;
 import cn.kunli.una.pojo.system.SysLog;
 import cn.kunli.una.service.BasicService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,5 +14,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysLogService extends BasicService<SysLogMapper, SysLog> {
+
+    @Autowired
+    private SysLogService thisProxy;
+
+    @Override
+    public BasicService getThisProxy() {
+        return thisProxy;
+    }
 
 }
