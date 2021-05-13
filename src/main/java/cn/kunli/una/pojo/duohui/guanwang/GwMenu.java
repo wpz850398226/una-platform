@@ -1,17 +1,14 @@
 package cn.kunli.una.pojo.duohui.guanwang;
 
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.system.SysMenu;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,8 +31,6 @@ public class GwMenu extends BasePojo implements Serializable {
     private String type;
     //链接地址
     private String path;
-    //顺序，按从小到大排序，0开始
-    private Integer sequence;
     //导航等级
     private Integer level;
     //父id

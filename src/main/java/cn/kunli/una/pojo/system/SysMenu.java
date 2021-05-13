@@ -29,8 +29,6 @@ public class SysMenu extends BasePojo implements Serializable {
     private String type;
     //链接地址
     private String path;
-    //顺序，按从小到大排序，0开始
-    private Integer sequence;
     //导航等级
     private Integer level;
     //父id

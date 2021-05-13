@@ -15,7 +15,7 @@
         ,value
         ,link_url
         ,company_id
-        ,sequence
+        ,sort_order
         ,remark
         ,creator_id
         ,create_time
@@ -35,7 +35,7 @@
         ,#{record.value}
         ,#{record.path}
         ,#{record.companyId}
-        ,#{record.sequence}
+        ,#{record.sort_order}
         ,#{record.remark}
         ,#{record.creatorId}
         ,#{record.createTime}

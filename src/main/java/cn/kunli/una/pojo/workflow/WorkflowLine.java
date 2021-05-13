@@ -57,6 +57,6 @@ public class WorkflowLine extends BasePojo implements Serializable {
     //租户id
     private Integer tentId;
     //顺序
-    private Integer sequence;
+    private Integer sortOrder;
 
 }

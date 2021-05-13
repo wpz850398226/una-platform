@@ -164,7 +164,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @Override
-    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null || #result.size()==0")
+    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> list(Wrapper<T> queryWrapper) {
         return super.list(queryWrapper);
     }

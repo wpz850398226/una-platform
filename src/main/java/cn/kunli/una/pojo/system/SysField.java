@@ -31,8 +31,6 @@ public class SysField extends BasePojo implements Serializable {
     private Integer entityId;
     //字段注释
     private String annotation;
-    //顺序
-    private Integer sequence;
     //赋值方式
     private String assignmentModeDcode;
     //前端展示类型

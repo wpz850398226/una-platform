@@ -30,7 +30,7 @@
     ,praise_amount
     ,criticize_amount
     ,heat
-    ,sequence
+    ,sort_order
     ,remark
     ,creator_id
     ,create_time
@@ -49,7 +49,7 @@
     ,#{record.praiseAmount}
     ,#{record.criticizeAmount}
     ,#{record.heat}
-    ,#{record.sequence}
+    ,#{record.sort_order}
     ,#{record.remark}
     ,#{record.creatorId}
     ,#{record.createTime}

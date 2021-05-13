@@ -72,6 +72,6 @@
         left join sys_entity as optionEntity on optionEntity.id = record.option_entity_id
         where record.entity_id = #{entityId}
         and record.is_effect = 1
-        ORDER BY record.sequence
+        ORDER BY record.sort_order
     </select>
 </mapper>

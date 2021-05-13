@@ -18,7 +18,7 @@
         ,sign_name
         ,template_code
         ,file_id
-        ,sequence
+        ,sort_order
         ,is_send
         ,is_read
         ,is_artificial
@@ -46,7 +46,7 @@
         ,#{record.signName}
         ,#{record.templateCode}
         ,#{record.fileId}
-        ,#{record.sequence}
+        ,#{record.sort_order}
         ,#{record.isSend}
         ,#{record.isRead}
         ,#{record.isArtificial}

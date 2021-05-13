@@ -4,21 +4,21 @@
     <update id="ascend">
         update ${tableName} as table1
         join ${tableName} as table2
-        on table1.sequence = table2.sequence+1
+        on table1.sort_order = table2.sort_order+1
         <if test="fieldCode != null and fieldCode !=''">
             and table1.${fieldCode} = table2.${fieldCode}
         </if>
-        set table1.sequence = table2.sequence,
-        table2.sequence = table1.sequence
+        set table1.sort_order = table2.sort_order,
+        table2.sort_order = table1.sort_order
         where table1.id = #{id}
     </update>
     <update id="increaseOrderBehindById">
         UPDATE ${tableName} as table1
-        JOIN ${tableName} as table2 on table2.sequence &lt; table1.sequence
+        JOIN ${tableName} as table2 on table2.sort_order &lt; table1.sort_order
         <if test="fieldCode != null and fieldCode !=''">
             and table1.${fieldCode} = table2.${fieldCode}
         </if>
-        SET table1.sequence = table1.sequence - 1
+        SET table1.sort_order = table1.sort_order - 1
         where table2.id = #{id}
     </update>
 </mapper>

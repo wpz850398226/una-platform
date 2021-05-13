@@ -11,7 +11,7 @@
         ,entity_id
         ,field_id
         ,sortord
-        ,sequence
+        ,sort_order
         ,remark
         ,creator_id
         ,create_time
@@ -28,7 +28,7 @@
         ,#{record.entityId}
         ,#{record.fieldId}
         ,#{record.sortord}
-        ,#{record.sequence}
+        ,#{record.sort_order}
         ,#{record.remark}
         ,#{record.creatorId}
         ,#{record.createTime}
@@ -77,6 +77,6 @@
         from sys_sort as record
         left join sys_field as sysField on sysField.id = record.field_id
         where record.entity_id = #{entityId} and record.is_delete = 0
-        order by record.sequence
+        order by record.sort_order
   </select>
 </mapper>

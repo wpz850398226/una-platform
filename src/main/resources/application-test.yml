@@ -39,10 +39,10 @@ spring:
     cache: false  #关闭thymeleaf缓存
 
   redis:
-    host: 42.192.150.206
+    host: 127.0.0.1
     port: 6379
     database: 1
-    password: wpz1992124*
+    password:
     ssl: false
 
   jackson:

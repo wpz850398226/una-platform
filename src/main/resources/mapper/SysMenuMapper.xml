@@ -41,14 +41,14 @@
         record.*
         from sys_menu as record
         where record.parent_id = #{parentId} and record.is_delete=0
-        order by record.sequence
+        order by record.sort_order
     </select>
     <select id="selectTreeBySelective" resultType="cn.kunli.una.pojo.system.SysMenu">
         SELECT DISTINCT smnu.id
         ,smnu.name
         ,smnu.type
         ,smnu.link_url
-        ,smnu.sequence
+        ,smnu.sort_order
         ,smnu.level
         ,smnu.parent_id
         ,smnu.permission_id
@@ -75,6 +75,6 @@
         where sysUser2.id = #{record.id} AND smnu2.is_effect = 1 and smnu2.is_delete=0
         ))AND smnu1.is_effect = 1 and smnu1.is_delete=0
         ))AND smnu.is_effect = 1 and smnu.is_delete=0
-        ORDER BY smnu.parent_id,smnu.sequence
+        ORDER BY smnu.parent_id,smnu.sort_order
     </select>
 </mapper>

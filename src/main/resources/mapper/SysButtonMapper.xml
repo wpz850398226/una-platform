@@ -16,7 +16,7 @@
         ,class_value
         ,icon_dcode
         ,label
-        ,sequence
+        ,sort_order
         ,remark
         ,creator_id
         ,create_time
@@ -36,7 +36,7 @@
         ,#{record.classValue}
         ,#{record.iconDcode}
         ,#{record.label}
-        ,#{record.sequence}
+        ,#{record.sort_order}
         ,#{record.remark}
         ,#{record.creatorId}
         ,#{record.createTime}
@@ -84,7 +84,7 @@
         left join sys_dictionary positionDic on record.position_dcode = positionDic.code
         left join sys_dictionary iconDic on record.icon_dcode = iconDic.code
         where record.entity_id = #{entityId} and record.is_delete = 0
-        order by record.position_dcode,record.sequence
+        order by record.position_dcode,record.sort_order
     </select>
 
 </mapper>

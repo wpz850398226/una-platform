@@ -1,14 +1,13 @@
 package cn.kunli.una.pojo.workflow;
 
-import java.util.Date;
-import java.io.Serializable;
-
+import cn.kunli.una.pojo.BasePojo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.kunli.una.pojo.BasePojo;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 流程定义(WorkflowDefinition)实体类
@@ -58,7 +57,5 @@ public class WorkflowDefinition extends BasePojo implements Serializable {
     private String modifierHost;
     //租户id
     private Integer tentId;
-    //顺序
-    private Integer sequence;
 
 }

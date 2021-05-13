@@ -29,12 +29,17 @@ public class SysRelationService extends BasicService<SysRelationMapper, SysRelat
         if(CollectionUtils.isEmpty(list))return list;
         list = super.resultFormat(list);
         for (SysRelation sysRelation : list) {
-            sysRelation.setRelatedFieldCode(sysFieldService.getById(sysRelation.getRelatedFieldId()).getAssignmentCode());
-            SysEntity parentEntity = sysEntityService.getById(sysRelation.getParentEntityId());
-            sysRelation.setParentEntityName(parentEntity.getName()).setParentEntityPath(parentEntity.getPath());
+            if(sysRelation.getRelatedFieldId()!=null)sysRelation.setRelatedFieldCode(sysFieldService.getById(sysRelation.getRelatedFieldId()).getAssignmentCode());
 
-            SysField parentDataField = sysFieldService.getById(sysRelation.getParentDataFieldId());
-            if(parentDataField!=null)sysRelation.setParentDataFieldCode(parentDataField.getAssignmentCode());
+            if(sysRelation.getParentEntityId()!=null){
+                SysEntity parentEntity = sysEntityService.getById(sysRelation.getParentEntityId());
+                sysRelation.setParentEntityName(parentEntity.getName()).setParentEntityPath(parentEntity.getPath());
+            }
+
+            if(sysRelation.getParentDataFieldId()!=null){
+                SysField parentDataField = sysFieldService.getById(sysRelation.getParentDataFieldId());
+                if(parentDataField!=null)sysRelation.setParentDataFieldCode(parentDataField.getAssignmentCode());
+            }
         }
         return list;
     }

@@ -90,7 +90,7 @@
  	select *
  	from sys_dictionary
    	where is_delete = 0 and parent_id = #{parentId}
-   	order by sequence
+   	order by sort_order
   </select>
     <select id="selectValueByIdsAssociation" resultType="String">
  	    select group_concat(value SEPARATOR '|')

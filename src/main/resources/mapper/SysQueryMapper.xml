@@ -18,7 +18,7 @@
         ,option_value_field_id
         ,default_value
         ,query_sql
-        ,sequence
+        ,sort_order
         ,remark
         ,creator_id
         ,create_time
@@ -41,7 +41,7 @@
         ,#{record.optionParamValue}
         ,#{record.defaultValue}
         ,#{record.querySql}
-        ,#{record.sequence}
+        ,#{record.sort_order}
         ,#{record.remark}
         ,#{record.creatorId}
         ,#{record.createTime}
@@ -97,7 +97,7 @@
     left join sys_entity as optionEntity on optionEntity.id = record.option_entity_id
     left join sys_dictionary as sysDictionary on sysDictionary.code = record.assignment_mode_dcode
     where record.entity_id = #{entityId} and record.is_delete = 0
-    order by record.sequence
+    order by record.sort_order
   </select>
 
 </mapper>

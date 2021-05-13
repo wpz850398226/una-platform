@@ -1,4 +1,4 @@
 #通过active指定选用配置环境
 spring:
   profiles:
-    active: test
+    active: dev

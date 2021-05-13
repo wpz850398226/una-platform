@@ -169,9 +169,9 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		//查询升序记录
 		T ascendRecord = (T) service.getById(id);
 		if(ascendRecord!=null){
-			Integer sequence = ascendRecord.getSequence();
-			if(sequence!=null&&sequence>1){
-				Map<String, Object> paramMap = MapUtil.getMap("sequence", sequence - 1);
+			Integer sortOrder = ascendRecord.getSortOrder();
+			if(sortOrder!=null&&sortOrder>1){
+				Map<String, Object> paramMap = MapUtil.getMap("sortOrder", sortOrder - 1);
 				//获取当前类对应实体类对象
 				SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
 				if(sysEntity!=null){
@@ -190,13 +190,13 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 				BasePojo descendRecord = service.getOne(wrapperUtil.mapToWrapper(paramMap));
 				if(descendRecord!=null){
 					T descT = entityClass.newInstance();
-					descT.setId(descendRecord.getId()).setSequence(sequence);
+					descT.setId(descendRecord.getId()).setSortOrder(sortOrder);
 					//降序
 					service.updateById(descT);
 				}
 				//升序
 				T ascT = entityClass.newInstance();
-				ascT.setId(ascendRecord.getId()).setSequence(sequence - 1);
+				ascT.setId(ascendRecord.getId()).setSortOrder(sortOrder - 1);
 				boolean ascendResult = service.updateById(ascT);
 				if(ascendResult)return SysResult.success();
 			}

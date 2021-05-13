@@ -26,7 +26,7 @@
         ,longitude
         ,latitude
         ,level_dcode
-        ,sequence
+        ,sort_order
     </sql>
 
     <!--实体类传值语句-->
@@ -50,7 +50,7 @@
         ,#{record.longitude}
         ,#{record.latitude}
         ,#{record.levelDcode}
-        ,#{record.sequence}
+        ,#{record.sort_order}
     </sql>
 
 

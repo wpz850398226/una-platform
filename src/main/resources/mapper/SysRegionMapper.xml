@@ -72,7 +72,7 @@
         ,#{record.description}
         ,#{record.rootId}
         ,#{record.parentId}
-        ,#{record.sequence}
+        ,#{record.sort_order}
         ,#{record.remark}
         ,#{record.creatorId}
         ,#{record.createTime}

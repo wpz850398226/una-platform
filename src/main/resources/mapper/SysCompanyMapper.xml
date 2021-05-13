@@ -141,7 +141,7 @@
             </if>
         </where>
         group by record.id
-        <!--order by typeDic.sequence,record.sequence-->
+        <!--order by typeDic.sort_order,record.sort_order-->
         <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </sql>
 
@@ -150,7 +150,7 @@
  	from sys_company
    	where is_delete = 0
    	and parent_id = #{parentId}
-   	order by sequence,CONVERT(name USING gbk)
+   	order by sort_order,CONVERT(name USING gbk)
   </select>
 
 

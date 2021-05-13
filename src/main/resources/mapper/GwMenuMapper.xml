@@ -35,6 +35,6 @@
         record.*
         from gw_menu as record
         where record.parent_id = #{parentId} and record.is_delete=0
-        order by record.sequence
+        order by record.sort_order
     </select>
 </mapper>

@@ -53,7 +53,7 @@ public class BasePojo implements Serializable{
 
     private Integer isDelete;			//是否删除：1删除；0未删除
 
-	private Integer sequence;
+	private Integer sortOrder;
 
 
 
