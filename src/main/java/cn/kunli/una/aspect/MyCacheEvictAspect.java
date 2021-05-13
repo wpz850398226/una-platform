@@ -42,7 +42,7 @@ public class MyCacheEvictAspect {
             key = key+"::"+serviceName+":*";
             Set set = redisUtil.hasKeys(key);
             redisUtil.delKeys(set);
-            log.info("cache key: " + key + " deleted");
+            log.info("==========> cache key {} deleted" ,key);
         }
     }
 }

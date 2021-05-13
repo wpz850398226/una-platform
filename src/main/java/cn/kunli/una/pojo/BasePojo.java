@@ -54,6 +54,10 @@ public class BasePojo implements Serializable{
     private Integer isDelete;			//是否删除：1删除；0未删除
 
 	private Integer sortOrder;
+	//公司id
+	private Integer companyId;
+	//部门id
+	private Integer departmentId;
 
 
 
