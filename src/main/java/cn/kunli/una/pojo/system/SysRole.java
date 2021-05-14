@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -20,13 +21,12 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysRole extends BasePojo implements Serializable {
     private static final long serialVersionUID = 535825710305670374L;
     //公司类型id
     private String companyTypeDcode;
-    //所属公司id
-    private Integer companyId;
     //描述
     private String description;
     //首页地址
@@ -35,8 +35,6 @@ public class SysRole extends BasePojo implements Serializable {
     private Integer weight;
 
 
-    @TableField(exist = false)
-    private String companyName;
     @TableField(exist = false)
     private String companyTypeDname;
     @TableField(exist = false)

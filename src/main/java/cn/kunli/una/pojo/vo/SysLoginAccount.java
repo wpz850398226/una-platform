@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.system.SysAccount;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SysLoginAccount extends SysAccount {

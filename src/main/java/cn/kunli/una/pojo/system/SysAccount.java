@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysAccount extends BasePojo implements Serializable {
     private static final long serialVersionUID = -32742696237078749L;
@@ -41,10 +43,6 @@ public class SysAccount extends BasePojo implements Serializable {
     private String password;
     //头像照片id（前端异步加载）
     private Integer iconId;
-    //公司id
-    private Integer companyId;
-    //部门id
-    private Integer departmentId;
     //是否允许多点登录
     private Integer isMultipointLogin;
     //角色ids

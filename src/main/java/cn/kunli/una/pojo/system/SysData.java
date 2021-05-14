@@ -21,9 +21,9 @@ import java.io.Serializable;
  * @since 2021-04-02 16:14:22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @TableName(autoResultMap = true)
 public class SysData extends BasePojo implements Serializable {

@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.system.SysEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 public class SysResponseParameter {

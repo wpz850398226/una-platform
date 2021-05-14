@@ -75,31 +75,13 @@ public class BasePojo implements Serializable{
 	@TableField(exist = false)
 	private Integer pageSize;  			//每页显示的条数,固定的
 	@TableField(exist = false)
-	private Integer isAll;				//是否全部：0否，1是
-	@TableField(exist = false)
-	private Integer isResult;			//mybatis查询结果是否是result，1是，0否
-	@TableField(exist = false)
 	private Integer count;				//数量，查询统计表用
 	@TableField(exist = false)
 	private String key;
 	@TableField(exist = false)
 	private String keyword;						//查询关键字
-//	@TableField(exist = false)
-//	private String sortsql;						//排序查询语句
-//	@TableField(exist = false)
-//	private String sortord;						//排序方式
-//	@TableField(exist = false)
-//	private String sortkey;						//排序关键字
-	@TableField(exist = false)
-	private String standbyCondition;			//备用查询条件
 	@TableField(exist = false)
 	private String advancedQuery;				//高级筛选语句
-	@TableField(exist = false)
-	private Integer dataCompanyId;						//所属公司id，通过权限范围查询用
-	@TableField(exist = false)
-	private Integer dataDepartmentId;					//所属部门id，通过权限范围查询用
-	@TableField(exist = false)
-	private Integer dataCreatorId;						//所属用户id，通过权限范围查询用
 	@TableField(exist = false)
 	private String statPattern;					//统计维度
 	@TableField(exist = false)

@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.system;
 import cn.kunli.una.pojo.BasePojo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysUser extends BasePojo implements Serializable {
     private static final long serialVersionUID = -40208367511437689L;

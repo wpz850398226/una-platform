@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,13 +22,10 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysAnnouncement extends BasePojo implements Serializable {
     private static final long serialVersionUID = -90237312437025059L;
-    //公司
-    private String companyId;
-    //所属部门
-    private String departmentId;
     //是否发送至微信公众号
     private String isWechat;
     //类型
@@ -52,4 +50,6 @@ public class SysAnnouncement extends BasePojo implements Serializable {
     private Integer isOverdue;  //过期的
     @TableField(exist = false)
     private Integer isReaded;  //已读的
+    @TableField(exist = false)
+    private Integer isAll;  //全部的
 }

@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.system.SysAccount;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SysLoginAccountDetails extends SysAccount implements UserDetails {

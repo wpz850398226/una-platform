@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -19,11 +20,10 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysDepartment extends BasePojo implements Serializable {
     private static final long serialVersionUID = 498032112231602074L;
-    //所属公司id
-    private String companyId;
     //部门经理id
     private String departmentManagerId;
     //办公室位置id

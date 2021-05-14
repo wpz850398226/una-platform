@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class GwMenu extends BasePojo implements Serializable {
     private static final long serialVersionUID = -80884215785303575L;

@@ -4,6 +4,7 @@ import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysImgConfig extends BasePojo implements Serializable {
     private static final long serialVersionUID = -79373983203602785L;
@@ -31,11 +33,6 @@ public class SysImgConfig extends BasePojo implements Serializable {
     private String value;
     //链接地址
     private String path;
-    //公司id
-    private String companyId;
-    //顺序
-
-
     //模块编码
     @TableField(exist = false)
     private String moduleDname;
