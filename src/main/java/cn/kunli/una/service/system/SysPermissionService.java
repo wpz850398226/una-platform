@@ -1,5 +1,6 @@
 package cn.kunli.una.service.system;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysPermissionMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysEntity;
@@ -39,6 +40,7 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
      * @return
      */
     @Override
+    @MyCacheEvict(value = "list")
     public boolean save(SysPermission entity) {
         boolean saveResult = super.save(entity);
         if(saveResult){

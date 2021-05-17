@@ -151,6 +151,7 @@
 
 <script>
     var entityName = '[[${sysResponseParameter.sysEntity.name }]]';
+    var isVirtual = '[[${sysResponseParameter.sysEntity.isVirtual }]]';
     var isFullForm = '[[${sysResponseParameter.sysEntity.isFullForm }]]';
     var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
     var entityClass = '[[${sysResponseParameter.sysEntity.code }]]';
@@ -182,8 +183,8 @@
                         dataMap.set("templet","<div>{{d['map']['"+record['displayCode']+"']}}</div>")
                     }
 
-                    //通用 数据 从map中取值
-                    if(entityClass == 'SysData'){
+                    //虚拟实体 从valule(json)中取值
+                    if(isVirtual == 1){
                         if(record.name != 'id' && record.name != 'name' && record.name != 'remark'){
                             dataMap.set("templet","<div>{{d['value']['"+record['displayCode']+"']}}</div>")
                         }
