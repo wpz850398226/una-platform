@@ -3,8 +3,12 @@ package cn.kunli.una.service.duohui.guanwang;
 import cn.kunli.una.mapper.GwMenuMapper;
 import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 菜单(GwMenu)表服务类
@@ -20,6 +24,23 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
     @Override
     public BasicService getThisProxy() {
         return thisProxy;
+    }
+
+
+    @Override
+    public List<GwMenu> resultFormat(List<GwMenu> list) {
+        if(CollectionUtils.isEmpty(list))return list;
+        list = super.resultFormat(list);
+        for (GwMenu record : list) {
+            if(record.getLevel()<2){
+                List<GwMenu> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+                if(CollectionUtils.isNotEmpty(subList)){
+                    this.resultFormat(subList);
+                }
+                record.setChildren(subList);
+            }
+        }
+        return list;
     }
 
 }

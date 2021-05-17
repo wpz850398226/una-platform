@@ -25,6 +25,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     public BasicService getThisProxy() {
         return sysFieldService;
     }
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
@@ -43,6 +45,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 break;
             case "eldId"://字段 fieldId
                 target = sysFieldService.getById(Integer.valueOf(value));
+                break;
+            case "ionId"://权限 permissionId
+                target = sysPermissionService.getById(Integer.valueOf(value));
                 break;
             case "entId"://父id parentId
                 target = bs.getById(Integer.valueOf(value));

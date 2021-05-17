@@ -16,8 +16,6 @@ import java.util.List;
 public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
 
     @Autowired
-    private SysMenuService sysMenuService;
-    @Autowired
     private SysMenuService thisProxy;
 
     @Override
@@ -31,7 +29,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         list = super.resultFormat(list);
         for (SysMenu record : list) {
             if(record.getLevel()<2){
-                List<SysMenu> subList = sysMenuService.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+                List<SysMenu> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.resultFormat(subList);
                 }
@@ -45,7 +43,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     public List<SysMenu> selectTreeBySelective(SysMenu obj) {
         List<SysMenu> menuList = new ArrayList<>();
         if (obj.getId() == 100000) {
-            menuList = sysMenuService.list();
+            menuList = thisProxy.list();
         } else {
             menuList = mapper.selectTreeBySelective(obj);
         }
@@ -103,7 +101,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
                     obj.setSortOrder(this.count(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
-                obj.setLevel(sysMenuService.getById(obj.getParentId()).getLevel() + 1);
+                obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");

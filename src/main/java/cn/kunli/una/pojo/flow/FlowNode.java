@@ -1,4 +1,4 @@
-package cn.kunli.una.pojo.workflow;
+package cn.kunli.una.pojo.flow;
 
 import cn.kunli.una.pojo.BasePojo;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * 流程节点(WorkflowNode)实体类
+ * 流程节点(FlowNode)实体类
  *
  * @author Ponzio
  * @since 2021-05-12 22:29:51
@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class WorkflowNode extends BasePojo implements Serializable {
+public class FlowNode extends BasePojo implements Serializable {
     private static final long serialVersionUID = 931384685256685913L;
     //类型字典编码
     private String typeDcode;

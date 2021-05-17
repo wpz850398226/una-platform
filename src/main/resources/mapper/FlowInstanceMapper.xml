@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.kunli.una.mapper.WorkflowNodeMapper">
+<mapper namespace="cn.kunli.una.mapper.FlowInstanceMapper">
 
-    <resultMap type="cn.kunli.una.pojo.workflow.WorkflowNode" id="BaseResultMap">
+    <resultMap type="cn.kunli.una.pojo.flow.FlowInstance" id="BaseResultMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--条件查询（返回封装类）-->
     <select id="selectBySelective" resultMap="BaseResultMap">
         select record.*
-        from workflow_node as record
+        from flow_instance as record
         <where>
             <include refid="cn.kunli.una.handler.BasicMapper.baseCondition"/>
             <if test="record.keyword != null and record.keyword !=''">
