@@ -1,5 +1,6 @@
 package cn.kunli.una.service.system;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysFileMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysFile;
@@ -10,9 +11,8 @@ import cn.kunli.una.utils.common.MinIoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -40,6 +40,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
 
     @Override
+    @MyCacheEvict(value = "list")
     public boolean save(SysFile entity) {
         String path = minIoUtil.putObject(entity.getFile());
         if(StringUtils.isNotBlank(path)){
@@ -50,6 +51,8 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     }
 
     @Override
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         SysFile record = thisProxy.getById(id);
         if(record!=null&&StringUtils.isNotBlank(record.getPath())){

@@ -22,10 +22,12 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class FlowDefinition extends BasePojo implements Serializable {
     private static final long serialVersionUID = -89055343881786180L;
-    //实体id
-    private Integer entityId;
     //流程定义编码
     private String code;
     //版本号
     private Integer version;
+    //启动次数
+    private Integer total;
+    //进行中的流程数量
+    private Integer running;
 }

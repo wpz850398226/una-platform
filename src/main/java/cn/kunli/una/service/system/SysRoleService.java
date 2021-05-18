@@ -1,5 +1,6 @@
 package cn.kunli.una.service.system;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysRoleMapper;
 import cn.kunli.una.pojo.system.SysRole;
 import cn.kunli.una.service.BasicService;
@@ -32,6 +33,7 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
      * @return
      */
     @Override
+    @MyCacheEvict(value = "list")
     public boolean save(SysRole entity) {
         boolean saveResult = super.save(entity);
         if(saveResult){

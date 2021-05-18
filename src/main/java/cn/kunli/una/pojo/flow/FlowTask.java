@@ -1,13 +1,16 @@
 package cn.kunli.una.pojo.flow;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 流程任务(FlowTask)实体类
@@ -24,16 +27,22 @@ public class FlowTask extends BasePojo implements Serializable {
     private static final long serialVersionUID = -67535831425503802L;
     //实例id
     private Integer instanceId;
+    //实体记录id
+    private String recordId;
     //办理人id
-    private Integer assigneeId;
-    //是否完成，0否，1是
-    private Integer isFinish;
+    private Integer accountId;
     //是否审批通过，0否，1是
-    private Integer isApproved;
+    private Integer isAgree;
     //意见
     private String opinion;
     //节点id
     private Integer nodeId;
-    //候选人ids
-    private String candidateIds;
+    //激活时间
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date activateTime;
+    //关闭时间
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date offTime;
 }

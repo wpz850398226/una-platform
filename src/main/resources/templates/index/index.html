@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/xadmin/css/font.css}">
     <link rel="stylesheet" th:href="@{/xadmin/css/xadmin.css}">
     <link rel="stylesheet" th:href="@{/xadmin/css/theme5.css}">
@@ -66,16 +67,15 @@
             </a>
         </li>
 
-        <!--<li class="layui-nav-item layui-hide-xs" lay-unselect="">
-            <input type="text" placeholder="搜索..." th:value="${session.token}" autocomplete="off" class="layui-input layui-input-search" una-event="serach" lay-action="template/search.html?keywords=">
-        </li>-->
+<!--        <li class="layui-nav-item layui-hide-xs" lay-unselect="">-->
+<!--            <input type="text" placeholder="搜索..." th:value="${session.token}" autocomplete="off" class="layui-input layui-input-search" una-event="serach" lay-action="template/search.html?keywords=">-->
+<!--        </li>-->
     </ul>
     <ul class="layui-nav right" lay-filter="">
-        <!--<li class="layui-nav-item" lay-unselect="">
+        <li class="layui-nav-item" lay-unselect="">
             <a lay-href="app/message/index.html" una-event="message" lay-text="消息中心">
                 <i class="layui-icon layui-icon-notice"></i>
-
-                &lt;!&ndash; 如果有新消息，则显示小圆点 &ndash;&gt;
+                <!--如果有新消息，则显示小圆点-->
                 <span class="layui-badge-dot"></span>
             </a>
         </li>
@@ -88,17 +88,17 @@
             <a href="javascript:;" una-event="note">
                 <i class="layui-icon layui-icon-note"></i>
             </a>
-        </li>-->
+        </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect="">
             <a href="javascript:;" una-event="fullscreen" class="una-switch-class">
                 <i class="layui-icon layui-icon-screen-full" data-switch1="layui-icon-screen-full" data-switch2="layui-icon-screen-restore"></i>
             </a>
         </li>
-        <!--<li class="layui-nav-item layui-hide-xs" lay-unselect="">
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
             <a href="javascript:;" una-event="help">
                 <i class="layui-icon layui-icon-help"></i>
             </a>
-        </li>-->
+        </li>
         <li class="layui-nav-item">
             <a href="javascript:;">王鹏兆</a>
             <dl class="layui-nav-child">

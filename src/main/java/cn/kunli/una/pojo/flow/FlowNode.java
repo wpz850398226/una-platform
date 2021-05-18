@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.flow;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,9 +28,15 @@ public class FlowNode extends BasePojo implements Serializable {
     //定义id
     private Integer definitionId;
     //候选人ids
-    private String candidateIds;
+    private String candidateValue;
     //候选人类型
-    private String candidateType;
-    //候选人范围
-    private String candidateScope;
+    private String candidateTypeDcode;
+    //实体/表单id
+    private Integer entityId;
+
+
+    @TableField(exist = false)
+    private String candidateRoleIds;
+    @TableField(exist = false)
+    private String candidateAccountIds;
 }

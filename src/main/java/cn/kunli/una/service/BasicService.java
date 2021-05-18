@@ -245,6 +245,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getId()==null){
             obj.setCreatorId(loginUser.getId());
+            obj.setCompanyId(loginUser.getCompanyId());
+            obj.setDepartmentId(loginUser.getDepartmentId());
             obj.setCreatorName(loginUser.getName());
             obj.setCreatorHost(RequestUtil.getIpAddress(request));
         }else{
@@ -403,22 +405,33 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                             &&StringUtils.isNotBlank(sysField.getDisplayCode())
                             &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
                         //如果赋值与取值的字段值不同，则反射获取赋值字段值，查询取值字段值
-                        Field assignmentCodeField = entityClass.getDeclaredField(sysField.getAssignmentCode());
-                        assignmentCodeField.setAccessible(true);
-                        for (T entity : list) {
-                            //获取记录中赋字段的值
-                            Object value = assignmentCodeField.get(entity);
-                            String displayValue = "";
 
-                            if(null != value){
-                                //实体中该字段值为空的
-                                SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy());
-                                if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
+                        Field assignmentCodeField = null;
+                        try {
+                            assignmentCodeField = entityClass.getDeclaredField(sysField.getAssignmentCode());
+                        } catch (NoSuchFieldException e) {
+                            assignmentCodeField = entityClass.getSuperclass().getDeclaredField(sysField.getAssignmentCode());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        if(assignmentCodeField!=null){
+                            assignmentCodeField.setAccessible(true);
+                            for (T entity : list) {
+                                //获取记录中赋字段的值
+                                Object value = assignmentCodeField.get(entity);
+                                String displayValue = "";
+
+                                if(null != value){
+                                    //实体中该字段值为空的
+                                    SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy());
+                                    if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
+                                }
+                                Map<String, Object> map = entity.getMap();
+                                if(map==null)map = new HashMap<>();
+                                map.put(sysField.getDisplayCode(), displayValue);
+                                entity.setMap(map);
                             }
-                            Map<String, Object> map = entity.getMap();
-                            if(map==null)map = new HashMap<>();
-                            map.put(sysField.getDisplayCode(), displayValue);
-                            entity.setMap(map);
                         }
                     }
 

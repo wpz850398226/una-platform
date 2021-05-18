@@ -24,8 +24,6 @@ public class FlowInstance extends BasePojo implements Serializable {
     private static final long serialVersionUID = 879519392584170197L;
     //定义id
     private String definitionId;
-    //实体记录id
-    private String recordId;
-    //是否完成，0否，1是
-    private Integer isFinish;
+    //是否进行中，0否，1是
+    private Integer isRunning;
 }
