@@ -31,12 +31,12 @@ public class WechatUtil {
 	 * @param secret	微信公众阿訇密钥（系统配置获取）
 	 * @return
 	 */
-	public static String getOpenid(String code, String appid, String secret){
+	/*public static String getOpenid(String code, String appid, String secret){
 		String result = HttpUtil.sendGet("https://api.weixin.qq.com/sns/oauth2/access_token","appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code");
 		Map<String,Object> map = (Map<String, Object>) JSON.parse(result);
 		String openid=(String) map.get("openid");
 		return openid;
-	}
+	}*/
 
 	/**
 	 * 获取微信access_token
@@ -45,7 +45,8 @@ public class WechatUtil {
 	 * @return
 	 */
 	public static String getAccessToken(String appid, String secret){
-		String result = HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/token","grant_type=client_credential&appid="+appid+"&secret="+secret);
+//		String result = HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/token","grant_type=client_credential&appid="+appid+"&secret="+secret);
+		String result = "";
 		Map<String,Object> map = (Map<String, Object>) JSON.parse(result);
 		String errmsg=(String) map.get("errmsg");
 		String access_token=(String) map.get("access_token");
@@ -149,7 +150,8 @@ public class WechatUtil {
 					"                   }\n" +
 					"           }\n" +
 					"       }";
-			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+//			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+			String openidResult="";
 
 			Map<String,Object> mapCode = (Map<String, Object>) JSON.parse(openidResult);
 			String ResultCode=(String) mapCode.get("errmsg");
@@ -212,7 +214,8 @@ public class WechatUtil {
 					"                   }\n" +
 					"           }\n" +
 					"       }";
-			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+//			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+			String openidResult="";
 
 			Map<String,Object> mapCode = (Map<String, Object>) JSON.parse(openidResult);
 			String ResultCode=(String) mapCode.get("errmsg");
@@ -276,7 +279,8 @@ public class WechatUtil {
 					"                   }\n" +
 					"           }\n" +
 					"       }";
-			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+//			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+			String openidResult="";
 
 			Map<String,Object> mapCode = (Map<String, Object>) JSON.parse(openidResult);
 			String ResultCode=(String) mapCode.get("errmsg");
@@ -342,7 +346,8 @@ public class WechatUtil {
 					"                   }\n" +
 					"           }\n" +
 					"       }";
-			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+//			String openidResult=HttpUtil.sendPostJson("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token,postData);
+			String openidResult="";
 
 			Map<String,Object> mapCode = (Map<String, Object>) JSON.parse(openidResult);
 			String ResultCode=(String) mapCode.get("errmsg");

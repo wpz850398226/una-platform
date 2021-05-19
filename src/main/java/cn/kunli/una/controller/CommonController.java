@@ -324,11 +324,11 @@ public class CommonController {
                     String param = fieldList.get(i).getOptionParamValue();
                     String rul = "";
                     if (StringUtils.isBlank(param) || "all".equals(param)) {
-                        rul = HttpUtil.doPost(url, null, "auth_token_data");
+//                        rul = HttpUtil.doPost(url, null, "auth_token_data");
                     } else {
                         Map<String, Object> mapParam = new HashMap<>();
                         mapParam.put(fieldList.get(i).getOptionParamName(), param);
-                        rul = HttpUtil.doPost(url, mapParam, "auth_token_data");
+//                        rul = HttpUtil.doPost(url, mapParam, "auth_token_data");
                     }
                     try {
                         System.out.println(rul);
