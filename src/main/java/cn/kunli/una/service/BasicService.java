@@ -249,36 +249,36 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             obj.setDepartmentId(loginUser.getDepartmentId());
             obj.setCreatorName(loginUser.getName());
             obj.setCreatorHost(RequestUtil.getIpAddress(request));
+
+            //通过反射赋值"顺序"字段
+            if(obj.getSortOrder()==null){
+                //获取当前类对应实体类对象
+                SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
+
+                if(sysEntity==null)return obj;
+                //获取父字段字段类对象
+                SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
+                int num = 0;
+                if(sysField!=null){
+                    //获取父字段
+                    Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
+                    parentField.setAccessible(true);
+                    //获取父字段值
+                    Object parentValueObj = parentField.get(obj);
+                    //查询该父字段下的数据数量
+                    num = this.count(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
+                }else{
+                    //没有设置父字段，查询所有数量
+                    num = this.count();
+                }
+
+                //给保存对象顺序字段赋值
+                obj.setSortOrder(num);
+            }
         }else{
             obj.setModifierId(loginUser.getId());
             obj.setModifierName(loginUser.getName());
             obj.setModifierHost(RequestUtil.getIpAddress(request));
-        }
-
-        //通过反射赋值"顺序"字段
-        if(obj.getSortOrder()==null){
-            //获取当前类对应实体类对象
-            SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
-
-            if(sysEntity==null)return obj;
-            //获取父字段字段类对象
-            SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-            int num = 0;
-            if(sysField!=null){
-                //获取父字段
-                Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
-                parentField.setAccessible(true);
-                //获取父字段值
-                Object parentValueObj = parentField.get(obj);
-                //查询该父字段下的数据数量
-                num = this.count(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
-            }else{
-                //没有设置父字段，查询所有数量
-                num = this.count();
-            }
-
-            //给保存对象顺序字段赋值
-            obj.setSortOrder(num);
         }
 
         return obj;

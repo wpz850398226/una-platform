@@ -1,6 +1,6 @@
 #连接数据库参数
 server:
-  port: 80
+  port: 10080
   tomcat:
     max-threads: 1000
     accept-count: 1000
@@ -9,9 +9,9 @@ server:
 spring:
   datasource:
     username: root
-    password: wpz1992124*
+    password: Wpz1992124*
     #测试环境
-    url: jdbc:mysql://42.192.150.206:3306/una-platform?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://127.0.0.1:3306/una-platform?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -44,6 +44,7 @@ spring:
     database: 1
     password:
     ssl: false
+    timeout: 5000
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -98,7 +99,7 @@ token:
   jwtSecret: Ponzio-Una
 
 minio:
-  endpoint: 42.192.150.206
+  endpoint: 127.0.0.1
   port: 9000
   accessKey: admin
   secretKey: wpz1992124*

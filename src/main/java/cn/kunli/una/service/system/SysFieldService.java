@@ -27,34 +27,39 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     }
     @Autowired
     private SysPermissionService sysPermissionService;
+    @Autowired
+    private FlowDefinitionService flowDefinitionService;
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
-        //字段赋值编码
-        String substring = assignmentCode.substring(assignmentCode.length() - 5);
         BasePojo target = null;
-        switch (substring) {
-            case "Dcode"://字典
-                target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
-                break;
-            case "ityId"://实体 entityId
-                target = sysEntityService.getById(Integer.valueOf(value));
-                break;
-            case "untId"://账号 accountId
-                target = sysAccountService.getById(Integer.valueOf(value));
-                break;
-            case "eldId"://字段 fieldId
-                target = sysFieldService.getById(Integer.valueOf(value));
-                break;
-            case "ionId"://权限 permissionId
-                target = sysPermissionService.getById(Integer.valueOf(value));
-                break;
-            case "entId"://父id parentId
-                target = bs.getById(Integer.valueOf(value));
-                break;
-            default:
-                return SysResult.fail("查询失败：赋值编码 未识别");
+        if(assignmentCode.substring(assignmentCode.length() - 5).equals("Dcode")){
+            target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
+        }else{
+            switch (assignmentCode) {
+                case "entityId"://实体 entityId
+                    target = sysEntityService.getById(Integer.valueOf(value));
+                    break;
+                case "accountId"://账号 accountId
+                    target = sysAccountService.getById(Integer.valueOf(value));
+                    break;
+                case "fieldId"://字段 fieldId
+                    target = sysFieldService.getById(Integer.valueOf(value));
+                    break;
+                case "permissionId"://权限 permissionId
+                    target = sysPermissionService.getById(Integer.valueOf(value));
+                    break;
+                case "definitionId"://权限 permissionId
+                    target = flowDefinitionService.getById(Integer.valueOf(value));
+                    break;
+                case "parentId"://父id parentId
+                    target = bs.getById(Integer.valueOf(value));
+                    break;
+                default:
+                    return SysResult.fail("查询失败：赋值编码 未识别");
+            }
         }
+
         if (target != null) return new SysResult().success("查询成功", target.getName());
         return SysResult.fail("查询失败：赋值编码 未识别");
     }

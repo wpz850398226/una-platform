@@ -1,7 +1,7 @@
 package cn.kunli.una.service.system;
 
-import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.mapper.FlowNodeMapper;
+import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -23,11 +23,14 @@ import java.io.Serializable;
 public class FlowLine extends BasePojo implements Serializable {
     private static final long serialVersionUID = -56496290891072647L;
     //条件
-    private String condition;
+    private String flowCondition;
     //来源节点id
     private Integer originNodeId;
     //目标节点id
     private Integer targetNodeId;
     //是否默认，0否，1是
     private Integer isDefault;
+    //定义id
+    private Integer definitionId;
+
 }
