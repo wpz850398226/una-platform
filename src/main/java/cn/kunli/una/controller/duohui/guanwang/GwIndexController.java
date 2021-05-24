@@ -13,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -47,25 +48,27 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
 
 
     /**
-     * 关于我们
+     * 列表页
      *
      * @param model
      * @return
      */
-    @RequestMapping("/about")
-    public String about(Model model) {
-        return "duohui/guanwang/about";
+    @RequestMapping("/list/{entityId}")
+    public String list(Model model) {
+        return "duohui/guanwang/news";
     }
 
     /**
-     * 新闻
+     * 单页
      *
      * @param model
      * @return
      */
-    @RequestMapping("/news")
-    public String news(Model model) {
-        return "duohui/guanwang/news";
+    @RequestMapping("/single/{entityId}/{id}")
+    public String single(Model model, @PathVariable("entityId") Integer entityId, @PathVariable("id") Integer id) {
+        SysData record = sysDataService.getById(id);
+        model.addAttribute("record",record);
+        return "duohui/guanwang/about";
     }
 
 }

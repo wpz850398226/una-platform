@@ -61,6 +61,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	protected SysDictionaryService sysDictionaryService;
 	@Autowired
 	protected SysRolePermissionService sysRolePermissionService;
+	@Autowired
+	protected SysDataService sysDataService;
 
 	// 当前Service上泛型的字节码对象
 	protected Class<T> entityClass;
