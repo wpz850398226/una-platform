@@ -33,14 +33,14 @@ public class SysRegionService extends BasicService<SysRegionMapper, SysRegion> {
      * @param list
      * @return
      */
-    public List<SysRegion> resultFormat(List<SysRegion> list) {
+    public List<SysRegion> parse(List<SysRegion> list) {
 //        SysRegionService _this = SpringContextUtil.getBean(SysRegionService.class);
-        super.resultFormat(list);
+        super.parse(list);
         for (SysRegion record : list) {
             if(record.getLevel() == 2){
                 List<SysRegion> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
                 if(CollectionUtils.isNotEmpty(subList)){
-                    this.resultFormat(subList);
+                    this.parse(subList);
                 }
                 record.setChildren(subList);
             }

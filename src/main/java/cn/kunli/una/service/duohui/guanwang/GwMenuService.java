@@ -29,14 +29,14 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
 
 
     @Override
-    public List<GwMenu> resultFormat(List<GwMenu> list) {
+    public List<GwMenu> parse(List<GwMenu> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        list = super.resultFormat(list);
+        list = super.parse(list);
         for (GwMenu record : list) {
             if(record.getLevel()<2){
                 List<GwMenu> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
                 if(CollectionUtils.isNotEmpty(subList)){
-                    this.resultFormat(subList);
+                    this.parse(subList);
                 }
                 record.setChildren(subList);
             }
@@ -51,7 +51,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
      * @return
      */
     @Override
-    public GwMenu saveFormat(GwMenu obj) {
+    public GwMenu initialize(GwMenu obj) {
 
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
@@ -64,7 +64,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         }
 
 
-        super.saveFormat(obj);
+        super.initialize(obj);
 
         return obj;
     }

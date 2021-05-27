@@ -1,7 +1,7 @@
-package cn.kunli.una.service.system;
+package cn.kunli.una.service.flow;
 
-import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.mapper.FlowLineMapper;
+import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

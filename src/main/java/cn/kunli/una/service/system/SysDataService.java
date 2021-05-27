@@ -34,7 +34,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
     }
 
     @Override
-    public Map<String, Object> queryFormat(Map<String, Object> map) {
+    public Map<String, Object> format(Map<String, Object> map) {
         if(MapUtils.isEmpty(map))return map;
         SysEntity sysEntity = null;
         if(map.containsKey("entityId")){
@@ -77,7 +77,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
     }
 
     /*@Override
-    public List<SysData> resultFormat(List<SysData> list) {
+    public List<SysData> parse(List<SysData> list) {
         if (CollectionUtils.isEmpty(list)) return list;
         for (SysData sysData : list) {
             Map<String, Object> map = new HashMap<>();

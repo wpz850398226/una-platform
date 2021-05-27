@@ -28,7 +28,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     }
 
     //校验格式
-    public SysResult validation(SysAccount obj) {
+    public SysResult validate(SysAccount obj) {
         if (obj.getMap() != null && obj.getMap().get("confirmPassword") != null) {
             if (obj.getPassword() != null && !obj.getPassword().equals("")) {
                 if (!obj.getPassword().trim().equals(obj.getMap().get("confirmPassword").toString().trim())) {
@@ -52,7 +52,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     }
 
     //格式化实体类
-    public SysAccount saveFormat(SysAccount obj) {
+    public SysAccount initialize(SysAccount obj) {
         if (obj.getId() == null) {
             //如果id为空，新增数据
             if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0) {
@@ -80,7 +80,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0)
             obj.setRoleIds(StringUtils.join(obj.getRoleIdArray(), ","));
 
-        super.saveFormat(obj);
+        super.initialize(obj);
         return obj;
     }
 

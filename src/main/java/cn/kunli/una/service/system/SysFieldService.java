@@ -7,6 +7,8 @@ import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.service.flow.FlowDefinitionService;
+import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
@@ -29,38 +31,51 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private SysPermissionService sysPermissionService;
     @Autowired
     private FlowDefinitionService flowDefinitionService;
+    @Autowired
+    private FlowNodeService flowNodeService;
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
+        int length = assignmentCode.length();
         BasePojo target = null;
-        if(assignmentCode.substring(assignmentCode.length() - 5).equals("Dcode")){
-            target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
-        }else{
-            switch (assignmentCode) {
-                case "entityId"://实体 entityId
-                    target = sysEntityService.getById(Integer.valueOf(value));
-                    break;
-                case "accountId"://账号 accountId
-                    target = sysAccountService.getById(Integer.valueOf(value));
-                    break;
-                case "fieldId"://字段 fieldId
-                    target = sysFieldService.getById(Integer.valueOf(value));
-                    break;
-                case "permissionId"://权限 permissionId
-                    target = sysPermissionService.getById(Integer.valueOf(value));
-                    break;
-                case "definitionId"://权限 permissionId
-                    target = flowDefinitionService.getById(Integer.valueOf(value));
-                    break;
-                case "parentId"://父id parentId
-                    target = bs.getById(Integer.valueOf(value));
-                    break;
-                default:
-                    return SysResult.fail("查询失败：赋值编码 未识别");
-            }
+        switch (assignmentCode.substring(length - 5)) {
+            case "Dcode"://字典编码
+                target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
+                break;
         }
-
         if (target != null) return new SysResult().success("查询成功", target.getName());
+
+        switch (assignmentCode.substring(length - 6)) {
+            case "NodeId"://流程节点 entityId
+                target = flowNodeService.getById(Integer.valueOf(value));
+                break;
+        }
+        if (target != null) return new SysResult().success("查询成功", target.getName());
+
+        switch (assignmentCode) {
+            case "entityId"://实体 entityId
+                target = sysEntityService.getById(Integer.valueOf(value));
+                break;
+            case "accountId"://账号 accountId
+                target = sysAccountService.getById(Integer.valueOf(value));
+                break;
+            case "fieldId"://字段 fieldId
+                target = sysFieldService.getById(Integer.valueOf(value));
+                break;
+            case "permissionId"://权限 permissionId
+                target = sysPermissionService.getById(Integer.valueOf(value));
+                break;
+            case "definitionId"://权限 permissionId
+                target = flowDefinitionService.getById(Integer.valueOf(value));
+                break;
+            case "parentId"://父id parentId
+                target = bs.getById(Integer.valueOf(value));
+                break;
+            default:
+                return SysResult.fail("查询失败：赋值编码 未识别");
+        }
+        if (target != null) return new SysResult().success("查询成功", target.getName());
+
         return SysResult.fail("查询失败：赋值编码 未识别");
     }
 
@@ -70,8 +85,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      * @param obj
      * @return
      */
-    public SysField saveFormat(SysField obj) {
-        super.saveFormat(obj);
+    public SysField initialize(SysField obj) {
+        super.initialize(obj);
         if (StringUtils.isNotBlank(obj.getRadioOptions())) obj.setRadioOptions(obj.getRadioOptions().replace("，", ","));
         if (obj.getId() == null) {
             if (StringUtils.isBlank(obj.getOptionNameFieldCode())) obj.setOptionNameFieldCode("name");
@@ -89,8 +104,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      * @param list
      * @return
      */
-    public List<SysField> resultFormat(List<SysField> list) {
-        super.resultFormat(list);
+    public List<SysField> parse(List<SysField> list) {
+        super.parse(list);
         for (SysField record : list) {
             List<SysField> children = sysFieldService.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
             if(CollectionUtils.isNotEmpty(children)){

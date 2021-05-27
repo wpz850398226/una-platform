@@ -20,8 +20,8 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     }
 
     @Override
-    public SysEntity saveFormat(SysEntity obj) {
-        obj = super.saveFormat(obj);
+    public SysEntity initialize(SysEntity obj) {
+        obj = super.initialize(obj);
 
         if(obj.getIsVirtual()==1){
             obj.setPath("/sys/data");
@@ -31,13 +31,13 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     }
 
     @Override
-    public List<SysEntity> resultFormat(List<SysEntity> list) {
+    public List<SysEntity> parse(List<SysEntity> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        list = super.resultFormat(list);
+        list = super.parse(list);
 
         for (SysEntity sysEntity : list) {
             Map<String, Object> map = MapUtil.getMap("entityId", sysEntity.getId());
-            sysEntity.setRelationList(sysRelationService.resultFormat(sysRelationService.list(sysRelationService.getWrapper(map))));
+            sysEntity.setRelationList(sysRelationService.parse(sysRelationService.list(sysRelationService.getWrapper(map))));
             sysEntity.setButtonList(sysButtonService.list(sysButtonService.getWrapper(map)));
             sysEntity.setQueryList(sysQueryService.list(sysQueryService.getWrapper(map)));
             sysEntity.setFilterList(sysFilterService.list(sysFilterService.getWrapper(map)));

@@ -24,14 +24,14 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     }
 
     @Override
-    public List<SysMenu> resultFormat(List<SysMenu> list) {
+    public List<SysMenu> parse(List<SysMenu> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        list = super.resultFormat(list);
+        list = super.parse(list);
         for (SysMenu record : list) {
             if(record.getLevel()<2){
                 List<SysMenu> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
                 if(CollectionUtils.isNotEmpty(subList)){
-                    this.resultFormat(subList);
+                    this.parse(subList);
                 }
                 record.setChildren(subList);
             }
@@ -95,7 +95,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
      * @return
      */
     @Override
-    public SysMenu saveFormat(SysMenu obj) {
+    public SysMenu initialize(SysMenu obj) {
 
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
@@ -108,7 +108,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         }
 
 
-        super.saveFormat(obj);
+        super.initialize(obj);
 
         return obj;
     }

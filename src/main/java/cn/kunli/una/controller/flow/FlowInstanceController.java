@@ -1,7 +1,7 @@
-package cn.kunli.una.controller.system;
+package cn.kunli.una.controller.flow;
 
 import cn.kunli.una.pojo.flow.FlowInstance;
-import cn.kunli.una.service.system.FlowInstanceService;
+import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

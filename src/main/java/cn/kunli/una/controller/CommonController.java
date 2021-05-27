@@ -60,7 +60,7 @@ public class CommonController {
         SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         SysResponseParameter sysResponseParameter = new SysResponseParameter();
         if(entityClass!=null){
-            entityClass = sysEntityService.resultFormat(ListUtil.getList(entityClass)).get(0);
+            entityClass = sysEntityService.parse(ListUtil.getList(entityClass)).get(0);
 
             //如果查询的虚拟实体，则通过参数获取实体类名
             if(className.equals("SysData")&&params!=null){
@@ -120,7 +120,7 @@ public class CommonController {
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.resultFormat(sysFieldService.list(sysFieldService.getWrapper(map)));
+        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.list(sysFieldService.getWrapper(map)));
         List<List<SysField>> sysFieldListList = new ArrayList<>();
 
 
@@ -189,7 +189,7 @@ public class CommonController {
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.resultFormat(sysFieldService.list(sysFieldService.getWrapper(map)));
+        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.list(sysFieldService.getWrapper(map)));
         List<List<SysField>> sysFieldListList = new ArrayList<>();
 
 

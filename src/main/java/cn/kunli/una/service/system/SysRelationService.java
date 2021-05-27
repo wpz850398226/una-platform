@@ -25,9 +25,9 @@ public class SysRelationService extends BasicService<SysRelationMapper, SysRelat
     }
 
     @Override
-    public List<SysRelation> resultFormat(List<SysRelation> list) {
+    public List<SysRelation> parse(List<SysRelation> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        list = super.resultFormat(list);
+        list = super.parse(list);
         for (SysRelation sysRelation : list) {
             if(sysRelation.getRelatedFieldId()!=null)sysRelation.setRelatedFieldCode(sysFieldService.getById(sysRelation.getRelatedFieldId()).getAssignmentCode());
 

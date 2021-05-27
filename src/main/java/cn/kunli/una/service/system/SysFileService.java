@@ -68,7 +68,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
      * @return
      */
     @Override
-    public SysResult validation(SysFile obj) {
+    public SysResult validate(SysFile obj) {
         if(obj.getId()==null){
             if(obj.getFile()==null){
                 return SysResult.fail("保存失败:文件不能为空");
@@ -93,7 +93,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     //格式化保存实例
     @Override
-    public SysFile saveFormat(SysFile obj) {
+    public SysFile initialize(SysFile obj) {
 
         if (obj.getId() == null) {
             String originalFilename = obj.getFile().getOriginalFilename();
@@ -104,13 +104,13 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
             obj.setTypeDcode("platform_file_extension_" + obj.getExtension());
         }
 
-        super.saveFormat(obj);
+        super.initialize(obj);
         return obj;
     }
 
     @Override
-    public List<SysFile> resultFormat(List<SysFile> list) {
-        list = super.resultFormat(list);
+    public List<SysFile> parse(List<SysFile> list) {
+        list = super.parse(list);
         if(CollectionUtils.isNotEmpty(list)){
             for (SysFile sysFile : list) {
                 if(StringUtils.isNotBlank(sysFile.getTypeDcode())){

@@ -185,7 +185,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
-    public SysResult validation(T obj){
+    public SysResult validate(T obj){
         //反射获取需要验证的字段值
         Map<String, Object> map = new HashMap<String, Object>();
         //获取当前类对应实体类对象
@@ -241,7 +241,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
-    public T saveFormat(T obj) {
+    public T initialize(T obj) {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getId()==null){
             obj.setCreatorId(loginUser.getId());
@@ -289,7 +289,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param map
      * @return
      */
-    public Map<String,Object> queryFormat(Map<String,Object> map) {
+    public Map<String,Object> format(Map<String,Object> map) {
 
         if(MapUtils.isEmpty(map))return map;
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
@@ -393,7 +393,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @return
      */
     @SneakyThrows
-    public List<T> resultFormat(List<T> list) {
+    public List<T> parse(List<T> list) {
         if(CollectionUtils.isEmpty(list))return list;
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
         if(sysEntity!=null){

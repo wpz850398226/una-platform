@@ -29,7 +29,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
     }
 
     //校验格式
-    public SysResult validation(SysUser obj) {
+    public SysResult validate(SysUser obj) {
         if (StringUtils.isNotBlank(obj.getMobile())) {
             List<SysUser> objList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("mobile",obj.getMobile())));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {

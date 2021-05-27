@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -79,10 +80,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	public SysResult add(@Valid T entity) {
 		//数据校验
-		SysResult validationResult = service.validation(entity);
+		SysResult validationResult = service.validate(entity);
 		if(!validationResult.getIsSuccess())return validationResult;
 
-		boolean saveResult = service.save(service.saveFormat(entity));
+		boolean saveResult = service.save(service.initialize(entity));
 		if(saveResult){
 			return SysResult.success();
 		}
@@ -104,13 +105,13 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		}
 
 		//数据校验
-		SysResult validationResult = service.validation(entity);
+		SysResult validationResult = service.validate(entity);
 		if(!validationResult.getIsSuccess())return validationResult;
 
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
 			//修改数据
-			boolean updateResult = service.updateById(service.saveFormat(entity));
+			boolean updateResult = service.updateById(service.initialize(entity));
 			if(updateResult){
 				return SysResult.success();
 			}
@@ -120,13 +121,13 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			String[] idsArray = entity.getIds().split(",");
 			for (String id : idsArray) {
 				entity.setId(Integer.valueOf(id));
-				service.updateById(service.saveFormat(entity));
+				service.updateById(service.initialize(entity));
 			}
 			return SysResult.success();
 
 		}else {//如果id为空，说明是新增数据
 			//插入数据
-			boolean saveResult = service.save(service.saveFormat(entity));
+			boolean saveResult = service.save(service.initialize(entity));
 			if(saveResult){
 				return SysResult.success();
 			}
@@ -148,11 +149,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	public SysResult update(T entity) {
 		//数据校验
-		SysResult validationResult = service.validation(entity);
+		SysResult validationResult = service.validate(entity);
 		if(!validationResult.getIsSuccess())return validationResult;
 
 
-		boolean updateResult = service.updateById(service.saveFormat(entity));
+		boolean updateResult = service.updateById(service.initialize(entity));
 		if(updateResult){
 			return SysResult.success();
 		}
@@ -211,9 +212,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	public SysResult get(@PathVariable Serializable id) {
 		T record = (T) service.getById(id);
-		return new SysResult().success(service.resultFormat(ListUtil.getList(record)).get(0));
+		return new SysResult().success(service.parse(ListUtil.getList(record)).get(0));
 	}
 
+	@SneakyThrows
 	@GetMapping("/page")
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> map) {
@@ -228,8 +230,24 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			map.remove("pageSize");
 		}
 		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
-		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(service.queryFormat(map)));
-		page.setRecords(service.resultFormat(page.getRecords()));
+		IPage page = service.page(objectPage, wrapperUtil.mapToWrapper(service.format(map)));
+		List<T> list = service.parse(page.getRecords());
+		//判断是否是统计查询
+		if(map.containsKey("groupBy")&&CollectionUtils.isNotEmpty(list)){
+			Integer total = 0;
+			String groupByField = map.get("groupBy").toString();
+			Field declaredField = entityClass.getDeclaredField(groupByField);
+			declaredField.setAccessible(true);
+			for (T record : list) {
+				Object groupByValue = declaredField.get(record);
+				int count = service.count(wrapperUtil.mapToWrapper(MapUtil.getMap(groupByField, groupByValue)));
+				record.setCount(count);
+				total += count;
+			}
+			page.setTotal(total);
+		}
+
+		page.setRecords(list);
 		return new SysResult().success(page.getRecords(),page.getTotal());
 	}
 
@@ -240,8 +258,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@GetMapping("/list")
 	@ResponseBody
 	public List<T> list(@RequestParam Map<String, Object> map) {
-		List list = service.list(wrapperUtil.mapToWrapper(service.queryFormat(map)));
-		return service.resultFormat(list);
+		List list = service.list(wrapperUtil.mapToWrapper(service.format(map)));
+		return service.parse(list);
 	}
 
 	@PostMapping("/import")

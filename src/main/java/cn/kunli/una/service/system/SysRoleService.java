@@ -45,9 +45,9 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
 
     //格式化保存实例
     @Override
-    public SysRole saveFormat(SysRole obj) {
+    public SysRole initialize(SysRole obj) {
         if (StringUtils.isBlank(obj.getCompanyTypeDcode())) obj.setCompanyTypeDcode("0");
-        super.saveFormat(obj);
+        super.initialize(obj);
         return obj;
     }
 

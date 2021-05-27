@@ -1,4 +1,4 @@
-package cn.kunli.una.service.system;
+package cn.kunli.una.service.flow;
 
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.FlowDefinitionMapper;
@@ -38,8 +38,8 @@ public class FlowDefinitionService extends BasicService<FlowDefinitionMapper, Fl
         boolean saveResult = super.save(entity);
         if(saveResult){
             //如果流程定义保存成功，自动新增开始和结束节点
-            flowNodeService.save(flowNodeService.saveFormat((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_start").setName("开始")));
-            flowNodeService.save(flowNodeService.saveFormat((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_end").setName("结束")));
+            flowNodeService.save(flowNodeService.initialize((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_start").setName("开始")));
+            flowNodeService.save(flowNodeService.initialize((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_end").setName("结束")));
         }
         return saveResult;
     }

@@ -28,7 +28,7 @@ public class SysVersionService extends BasicService<SysVersionMapper, SysVersion
     }
 
     //校验格式
-    public SysResult validation(SysVersion obj) {
+    public SysResult validate(SysVersion obj) {
 
         List<SysVersion> externalVersionObjList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("externalVersion",obj.getExternalVersion())));
         if (externalVersionObjList.size() > 0 && !externalVersionObjList.get(0).getId().equals(obj.getId())) {

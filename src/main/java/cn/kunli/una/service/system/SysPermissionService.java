@@ -66,7 +66,7 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
      * @param obj
      * @return
      */
-    public SysPermission saveFormat(SysPermission obj) {
+    public SysPermission initialize(SysPermission obj) {
         //如果权限名称为空，自动拼接名称
         if (StringUtils.isBlank(obj.getName())) {
             SysEntity sysEntity = sysEntityService.getById(obj.getEntityId());
@@ -76,7 +76,7 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
                 obj.setName(typeDictionary.getName() + sysEntity.getName()+"-"+platformDictionary.getName());
             }
         }
-        super.saveFormat(obj);
+        super.initialize(obj);
         return obj;
     }
 }

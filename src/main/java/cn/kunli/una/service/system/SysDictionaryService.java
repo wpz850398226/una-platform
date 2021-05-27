@@ -43,7 +43,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
 
     //格式化保存实例
     @Override
-    public SysDictionary saveFormat(SysDictionary obj) {
+    public SysDictionary initialize(SysDictionary obj) {
         //如果父字典不是根目录，则新增字典根id与父字典保持一致
         SysDictionary parentDictionary = sysDictionaryService.getById(obj.getParentId());
         if (obj.getParentId().equals(0)) {
@@ -52,18 +52,18 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
             obj.setRootId(parentDictionary.getRootId());
         }
 
-        super.saveFormat(obj);
+        super.initialize(obj);
         return obj;
     }
 
     @Override
-    public List<SysDictionary> resultFormat(List<SysDictionary> list) {
+    public List<SysDictionary> parse(List<SysDictionary> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        list = super.resultFormat(list);
+        list = super.parse(list);
         for (SysDictionary record : list) {
             List<SysDictionary> subList = sysDictionaryService.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
             if(CollectionUtils.isNotEmpty(subList)){
-                this.resultFormat(subList);
+                this.parse(subList);
             }
             record.setChildren(subList);
         }

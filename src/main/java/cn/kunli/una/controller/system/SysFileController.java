@@ -39,7 +39,7 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
         //如果redis已连接，则从redis中获取实体类，否则从数据库查询
         SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", "SysFile")));
         if(entityClass!=null){
-            entityClass = sysEntityService.resultFormat(ListUtil.getList(entityClass)).get(0);
+            entityClass = sysEntityService.parse(ListUtil.getList(entityClass)).get(0);
         }
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("textInputId", textInputId);
