@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -26,15 +26,17 @@ public class FlowLine extends BasePojo implements Serializable {
     //条件
     private String flowCondition;
     //来源节点id
-    @NotBlank(message = "来源节点不能为空！")
+    @NotNull(message = "来源节点不能为空！")
     private Integer originNodeId;
     //目标节点id
-    @NotBlank(message = "目标节点不能为空！")
+    @NotNull(message = "目标节点不能为空！")
     private Integer targetNodeId;
     //是否默认，0否，1是
     private Integer isDefault;
     //定义id
-    @NotBlank(message = "所属流程定义不能为空！")
+    @NotNull(message = "所属流程定义不能为空！")
     private Integer definitionId;
+    //描述说明
+    private String description;
 
 }

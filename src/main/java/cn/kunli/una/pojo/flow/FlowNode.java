@@ -25,6 +25,10 @@ public class FlowNode extends BasePojo implements Serializable {
     private static final long serialVersionUID = 931384685256685913L;
     //类型字典编码
     private String typeDcode;
+    //是否入口排他
+    private Boolean isEntryExclusive;
+    //是否出口排他
+    private Boolean isExitExclusive;
     //定义id
     private Integer definitionId;
     //候选人ids
