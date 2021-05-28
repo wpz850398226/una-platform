@@ -56,9 +56,9 @@ public class SysUser extends BasePojo implements Serializable {
     //微信公众号openid
     private String openid;
     //婚否（0，未婚；1，已婚）
-    private Integer isMarried;
+    private Boolean isMarried;
     //是否在职（0：否，1，是）
-    private Integer isInservice;
+    private Boolean isInservice;
     //籍贯 地区字典id
     private String nativePlaceRid;
     //籍贯名称

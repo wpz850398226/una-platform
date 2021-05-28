@@ -272,7 +272,7 @@ public class GlobalExceptionHandler {
             String requestParams = getRequestParams(request);
             ex.setInParam(requestParams);
 
-            sysExceptionService.save(ex);
+            sysExceptionService.saveRecord(ex);
             //写入到文件
 //        writeToFile(ex);
         }
@@ -338,7 +338,7 @@ public class GlobalExceptionHandler {
         ex.setErrorInfo(file.getPath());
 
         //持久化错误信息到数据库
-        sysExceptionService.save(ex);
+        sysExceptionService.saveRecord(ex);
     }
 
 }

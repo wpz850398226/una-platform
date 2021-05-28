@@ -44,7 +44,7 @@ public class SysAccount extends BasePojo implements Serializable {
     //头像照片id（前端异步加载）
     private Integer iconId;
     //是否允许多点登录
-    private Integer isMultipointLogin;
+    private Boolean isMultipointLogin;
     //角色ids
     @NotBlank(message = "角色不能为空！")
     private String roleIds;

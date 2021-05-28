@@ -3,6 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysRoleMapper;
 import cn.kunli.una.pojo.system.SysRole;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
      */
     @Override
     @MyCacheEvict(value = "list")
-    public boolean save(SysRole entity) {
-        boolean saveResult = super.save(entity);
-        if(saveResult){
+    public SysResult saveRecord(SysRole entity) {
+        SysResult sysResult = super.saveRecord(entity);
+        if(sysResult.getIsSuccess()){
             //通过角色id匹配所有权限，新增rolePermission
             sysRolePermissionService.insertByRoleId(entity.getId());
         }
-        return saveResult;
+        return sysResult;
     }
 
     //格式化保存实例

@@ -44,8 +44,8 @@ public class LogAdvice {
 
         try {
             Object proceed = point.proceed();
-            sysLog.setIsSuccess(1);
-            sysLogService.save(sysLog);
+            sysLog.setIsSuccess(true);
+            sysLogService.saveRecord(sysLog);
             return proceed;
 
         } catch (Exception e) {

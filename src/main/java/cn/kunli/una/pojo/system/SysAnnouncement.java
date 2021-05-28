@@ -47,9 +47,9 @@ public class SysAnnouncement extends BasePojo implements Serializable {
 
 
     @TableField(exist = false)
-    private Integer isOverdue;  //过期的
+    private Boolean isOverdue;  //过期的
     @TableField(exist = false)
-    private Integer isReaded;  //已读的
+    private Boolean isReaded;  //已读的
     @TableField(exist = false)
-    private Integer isAll;  //全部的
+    private Boolean isAll;  //全部的
 }

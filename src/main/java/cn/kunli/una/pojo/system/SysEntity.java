@@ -33,27 +33,27 @@ public class SysEntity extends BasePojo implements Serializable {
     //url前缀
     private String path;
     //是否虚拟实体
-    private Integer isVirtual;
+    private Boolean isVirtual;
     //可否手动添加数据
-    private Integer isAddible;
+    private Boolean isAddible;
     //是否可修改
-    private Integer isUpdatable;
+    private Boolean isUpdatable;
     //是否允许删除
-    private Integer isDeletable;
+    private Boolean isDeletable;
     //是否允许快速添加
-    private Integer isQuickAdd;
+    private Boolean isQuickAdd;
     //是否能导入
-    private Integer isImport;
+    private Boolean isImport;
     //是否能导出
-    private Integer isExport;
+    private Boolean isExport;
     //是否自动加载数据
-    private Integer isAutoloading;
+    private Boolean isAutoloading;
     //是否表单默认全屏
-    private Integer isFullForm;
+    private Boolean isFullForm;
     //是否自动展开树结构
-    private Integer isTreelayout;
+    private Boolean isTreelayout;
     //是否真实删除
-    private Integer isRealDelete;
+    private Boolean isRealDelete;
 
 
     @TableField(exist = false)

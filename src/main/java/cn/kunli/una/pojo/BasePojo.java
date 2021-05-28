@@ -51,7 +51,7 @@ public class BasePojo implements Serializable{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyTime;			//修订时间
 
-    private Integer isDelete;			//是否删除：1删除；0未删除
+    private Boolean isDelete;			//是否删除：1删除；0未删除
 
 	private Integer sortOrder;
 	//公司id

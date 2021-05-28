@@ -32,7 +32,7 @@ public class FlowLine extends BasePojo implements Serializable {
     @NotNull(message = "目标节点不能为空！")
     private Integer targetNodeId;
     //是否默认，0否，1是
-    private Integer isDefault;
+    private Boolean isDefault;
     //定义id
     @NotNull(message = "所属流程定义不能为空！")
     private Integer definitionId;

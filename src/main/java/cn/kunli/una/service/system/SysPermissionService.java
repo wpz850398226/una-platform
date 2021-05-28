@@ -5,6 +5,7 @@ import cn.kunli.una.mapper.SysPermissionMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysPermission;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -41,13 +42,13 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
      */
     @Override
     @MyCacheEvict(value = "list")
-    public boolean save(SysPermission entity) {
-        boolean saveResult = super.save(entity);
-        if(saveResult){
+    public SysResult saveRecord(SysPermission entity) {
+        SysResult sysResult = super.saveRecord(entity);
+        if(sysResult.getIsSuccess()){
             //通过权限id匹配所有角色，新增roleFunction
             sysRolePermissionService.insertByPermissionId(entity.getId());
         }
-        return saveResult;
+        return sysResult;
     }
 
     /**

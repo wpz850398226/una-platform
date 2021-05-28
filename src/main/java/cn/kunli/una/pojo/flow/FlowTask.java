@@ -32,7 +32,7 @@ public class FlowTask extends BasePojo implements Serializable {
     //办理人id
     private Integer accountId;
     //是否审批通过，0否，1是
-    private Integer isAgree;
+    private Boolean isAgree;
     //意见
     private String opinion;
     //节点id

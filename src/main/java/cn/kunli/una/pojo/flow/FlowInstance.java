@@ -25,5 +25,5 @@ public class FlowInstance extends BasePojo implements Serializable {
     //定义id
     private String definitionId;
     //是否进行中，0否，1是
-    private Integer isRunning;
+    private Boolean isRunning;
 }

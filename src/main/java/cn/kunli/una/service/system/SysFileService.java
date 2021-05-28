@@ -41,13 +41,13 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
 
     @Override
     @MyCacheEvict(value = "list")
-    public boolean save(SysFile entity) {
+    public SysResult saveRecord(SysFile entity) {
         String path = minIoUtil.putObject(entity.getFile());
         if(StringUtils.isNotBlank(path)){
             entity.setName(path.substring(path.lastIndexOf("/")+1));
             entity.setPath(path);
         }
-        return super.save(entity);
+        return super.saveRecord(entity);
     }
 
     @Override

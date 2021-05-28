@@ -42,17 +42,17 @@ public class SysField extends BasePojo implements Serializable {
     //数据检测类型 复数
     private String dataCheckTypeDcode;
     //是否必填
-    private Integer isRequired;
+    private Boolean isRequired;
     //是否排序展示
-    private Integer isSort;
+    private Boolean isSort;
     //是否可修改；0不可以，1可以
-    private Integer isUpdate;
+    private Boolean isUpdate;
     //是否导入
-    private Integer isImport;
+    private Boolean isImport;
     //是否导出
-    private Integer isExport;
+    private Boolean isExport;
     //是否批量修改
-    private Integer isBatchUpdate;
+    private Boolean isBatchUpdate;
     //高级查询单元名称
     private String dqlName;
     //前端展示长度
@@ -84,7 +84,7 @@ public class SysField extends BasePojo implements Serializable {
     //联动隐藏的元素ids，同一个选项触发的隐藏元素id用&分隔，不同选项触发的隐藏元素id用，分隔
     private String switchHideIds;
     //是否生效
-    private Integer isEffect;
+    private Boolean isEffect;
 
 
     //非持久化字段

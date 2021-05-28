@@ -76,19 +76,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		entityClassName = entityClass.getSimpleName();
 	}
 
-	@PostMapping("")
+	/*@PostMapping("")
 	@ResponseBody
 	public SysResult add(@Valid T entity) {
-		//数据校验
-		SysResult validationResult = service.validate(entity);
-		if(!validationResult.getIsSuccess())return validationResult;
-
-		boolean saveResult = service.save(service.initialize(entity));
-		if(saveResult){
-			return SysResult.success();
-		}
-		return SysResult.fail();
-	}
+		return service.saveRecord(entity);
+	}*/
 
 	/**
 	 * 保存/添加或修改
@@ -104,18 +96,9 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			if(!UserUtil.isPermitted(entityClassName+":create",entityClassName+":update"))return SysResult.fail("无权操作");
 		}
 
-		//数据校验
-		SysResult validationResult = service.validate(entity);
-		if(!validationResult.getIsSuccess())return validationResult;
-
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
-			//修改数据
-			boolean updateResult = service.updateById(service.initialize(entity));
-			if(updateResult){
-				return SysResult.success();
-			}
-			return SysResult.fail();
+			return service.updateRecordById(entity);
 		}else if(StringUtils.isNotBlank(entity.getIds())){
 			//如果ids不为空，说明是批量修改数据
 			String[] idsArray = entity.getIds().split(",");
@@ -127,11 +110,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 		}else {//如果id为空，说明是新增数据
 			//插入数据
-			boolean saveResult = service.save(service.initialize(entity));
-			if(saveResult){
-				return SysResult.success();
-			}
-			return SysResult.fail();
+			return service.saveRecord(entity);
 		}
 	}
 
@@ -376,8 +355,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 				Integer num = 0;
 				for (Map<String, Object> paramMap : insertMapList) {
 					T entity = JSON.parseObject(JSON.toJSONString(paramMap), entityClass);
-					boolean saveResult = service.save(entity);
-					if(saveResult)num++;
+					SysResult sysResult = service.saveRecord(entity);
+					if(sysResult.getIsSuccess())num++;
 				}
 				if(insertMapList.size() == num) {
 					//批量插入成功

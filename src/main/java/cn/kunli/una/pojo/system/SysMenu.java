@@ -46,7 +46,7 @@ public class SysMenu extends BasePojo implements Serializable {
     //动画效果
     private String animatedStyle;
     //是否生效
-    private Integer isEffect;
+    private Boolean isEffect;
 
 
     @TableField(exist = false)

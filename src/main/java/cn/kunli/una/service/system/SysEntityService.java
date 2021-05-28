@@ -23,7 +23,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     public SysEntity initialize(SysEntity obj) {
         obj = super.initialize(obj);
 
-        if(obj.getIsVirtual()==1){
+        if(obj.getIsVirtual()){
             obj.setPath("/sys/data");
         }
 

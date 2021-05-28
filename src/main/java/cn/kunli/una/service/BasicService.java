@@ -86,10 +86,17 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param entity
      * @return
      */
-    @Override
     @MyCacheEvict(value = "list")
-    public boolean save(T entity) {
-        return super.save(entity);
+    public SysResult saveRecord(T entity) {
+        //数据校验
+        SysResult validationResult = validate(entity);
+        if(!validationResult.getIsSuccess())return validationResult;
+        //保存数据，保存前进行初始化
+        boolean saveResult = super.save(initialize(entity));
+        if(saveResult){
+            return SysResult.success();
+        }
+        return SysResult.fail();
     }
 
     /**
@@ -125,9 +132,16 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @SneakyThrows
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
-    @Override
-    public boolean updateById(T entity) {
-        return super.updateById(entity);
+    public SysResult updateRecordById(T entity) {
+        //数据校验
+        SysResult validationResult = validate(entity);
+        if(!validationResult.getIsSuccess())return validationResult;
+        //保存数据，保存前进行初始化
+        boolean result = super.updateById(initialize(entity));
+        if(result){
+            return SysResult.success();
+        }
+        return SysResult.fail();
     }
 
     //自定义更新规则

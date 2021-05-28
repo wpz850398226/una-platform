@@ -4,6 +4,7 @@ import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.FlowDefinitionMapper;
 import cn.kunli.una.pojo.flow.FlowDefinition;
 import cn.kunli.una.pojo.flow.FlowNode;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,13 @@ public class FlowDefinitionService extends BasicService<FlowDefinitionMapper, Fl
      */
     @Override
     @MyCacheEvict(value = "list")
-    public boolean save(FlowDefinition entity) {
-        boolean saveResult = super.save(entity);
-        if(saveResult){
+    public SysResult saveRecord(FlowDefinition entity) {
+        SysResult sysResult = super.saveRecord(entity);
+        if(sysResult.getIsSuccess()){
             //如果流程定义保存成功，自动新增开始和结束节点
-            flowNodeService.save(flowNodeService.initialize((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_start").setName("开始")));
-            flowNodeService.save(flowNodeService.initialize((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_end").setName("结束")));
+            flowNodeService.saveRecord((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_start").setName("开始"));
+            flowNodeService.saveRecord((FlowNode) new FlowNode().setDefinitionId(entity.getId()).setTypeDcode("platform_flow_nudeType_end").setName("结束"));
         }
-        return saveResult;
+        return sysResult;
     }
 }

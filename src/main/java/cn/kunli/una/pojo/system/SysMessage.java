@@ -46,11 +46,11 @@ public class SysMessage extends BasePojo implements Serializable {
 
 
     //是否已推送
-    private Integer isSend;
+    private Boolean isSend;
     //是否已读：0未读，1已读
-    private Integer isRead;
+    private Boolean isRead;
     //是否人为（0：否，1：是）
-    private Integer isArtificial;
+    private Boolean isArtificial;
     //接收人id
     private String receiverId;
 

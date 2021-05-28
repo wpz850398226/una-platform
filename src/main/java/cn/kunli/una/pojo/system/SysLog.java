@@ -34,7 +34,7 @@ public class SysLog extends BasePojo implements Serializable {
     //来源类型（pc，app）
     private String originalType;
     //是否操作成功
-    private Integer isSuccess;
+    private Boolean isSuccess;
     //描述
     private String description;
 

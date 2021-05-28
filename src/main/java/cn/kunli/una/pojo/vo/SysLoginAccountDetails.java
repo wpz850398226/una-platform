@@ -30,7 +30,7 @@ public class SysLoginAccountDetails extends SysAccount implements UserDetails {
 
 	private String captcha;				//登录验证码
 
-	private Integer isRemember;	//登录验证码
+	private Boolean isRemember;	//登录验证码
 
 	private String loginIp;	//登录ip
 

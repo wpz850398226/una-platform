@@ -134,7 +134,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 if(codeDic!=null)record.getMap().put("formatCheckTypeDvalue",codeDic.getValue());
             }
 
-            if(record.getIsRequired()==1){
+            if(record.getIsRequired()){
                 if(record.getMap().containsKey("formatCheckTypeDvalue")){
                     record.getMap().put("formatCheckTypeDvalue",record.getMap().get("formatCheckTypeDvalue")+" required");
                 }else{

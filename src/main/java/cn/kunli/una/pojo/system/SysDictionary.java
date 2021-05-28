@@ -58,7 +58,7 @@ public class SysDictionary extends BasePojo implements Serializable {
     @TableField(exist = false)
     private Map<String, Object> assignMap;
     @TableField(exist = false)
-    private Integer isFinish;   //是否完成节点（工作流字典专用）
+    private Boolean isFinish;   //是否完成节点（工作流字典专用）
     @TableField(exist = false)
     private Object approveResult;   //审批结果（工作流字典专用）
     @TableField(exist = false)
