@@ -104,7 +104,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			String[] idsArray = entity.getIds().split(",");
 			for (String id : idsArray) {
 				entity.setId(Integer.valueOf(id));
-				service.updateById(service.initialize(entity));
+				service.updateRecordById(entity);
 			}
 			return SysResult.success();
 
@@ -124,7 +124,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return SysResult.success();
 	}
 
-	@PutMapping("")
+	/*@PutMapping("")
 	@ResponseBody
 	public SysResult update(T entity) {
 		//数据校验
@@ -137,7 +137,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			return SysResult.success();
 		}
 		return SysResult.fail();
-	}
+	}*/
 
 	/**
 	 * 提高顺序

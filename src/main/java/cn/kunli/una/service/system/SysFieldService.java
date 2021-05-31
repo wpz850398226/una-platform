@@ -52,15 +52,29 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         }
         if (target != null) return new SysResult().success("查询成功", target.getName());
 
-        switch (assignmentCode) {
-            case "entityId"://实体 entityId
-                target = sysEntityService.getById(Integer.valueOf(value));
-                break;
-            case "accountId"://账号 accountId
-                target = sysAccountService.getById(Integer.valueOf(value));
+        switch (assignmentCode.substring(length - 7)) {
+            case "FieldId"://字段 fieldId
+                target = sysFieldService.getById(Integer.valueOf(value));
                 break;
             case "fieldId"://字段 fieldId
                 target = sysFieldService.getById(Integer.valueOf(value));
+                break;
+        }
+        if (target != null) return new SysResult().success("查询成功", target.getName());
+
+        switch (assignmentCode.substring(length - 8)) {
+            case "EntityId"://实体 entityId
+                target = sysEntityService.getById(Integer.valueOf(value));
+                break;
+            case "entityId"://实体 entityId
+                target = sysEntityService.getById(Integer.valueOf(value));
+                break;
+        }
+        if (target != null) return new SysResult().success("查询成功", target.getName());
+
+        switch (assignmentCode) {
+            case "accountId"://账号 accountId
+                target = sysAccountService.getById(Integer.valueOf(value));
                 break;
             case "permissionId"://权限 permissionId
                 target = sysPermissionService.getById(Integer.valueOf(value));

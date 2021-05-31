@@ -31,10 +31,10 @@ public class FlowNode extends BasePojo implements Serializable {
     private Boolean isExitExclusive;
     //定义id
     private Integer definitionId;
-    //候选人ids
-    private String candidateValue;
     //候选人类型
     private String candidateTypeDcode;
+    //候选人ids，如果候选人类型为角色，则这里保存角色id；如果候选人类型为用户，则这里保存用户id
+    private String candidateValue;
     //实体/表单id
     private Integer entityId;
 

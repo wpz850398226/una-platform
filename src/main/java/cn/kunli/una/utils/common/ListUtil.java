@@ -93,7 +93,7 @@ public class ListUtil {
     }
 
     //字符串集合转字符串逗号分隔
-    public static String getIdStrByPojoList(List<BasePojo> list){
+    public static String getIdStrByPojoList(List<? extends BasePojo> list){
         if(CollectionUtils.isEmpty(list))return null;
         List<String> idList = new ArrayList<>();
         for (BasePojo basePojo : list) {
