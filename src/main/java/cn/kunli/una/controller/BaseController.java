@@ -92,7 +92,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	public SysResult save(@Valid T entity) {
 		//验证权限
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-		if(loginUser.getRoleIds().indexOf("100000")==-1){
+		if(loginUser.getRoleId().indexOf("100000")==-1){
 			if(!UserUtil.isPermitted(entityClassName+":create",entityClassName+":update"))return SysResult.fail("无权操作");
 		}
 

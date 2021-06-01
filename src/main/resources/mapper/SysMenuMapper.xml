@@ -59,19 +59,19 @@
         ,sysFile.file_url as iconFurl
         FROM sys_menu as smnu
         LEFT JOIN sys_role_permission as srfc on srfc.permission_id = smnu.permission_id AND srfc.scope != 0
-        LEFT JOIN sys_user as sysAccount on FIND_IN_SET(srfc.role_id,sysAccount.role_ids)
+        LEFT JOIN sys_user as sysAccount on FIND_IN_SET(srfc.role_id,sysAccount.role_id)
         LEFT JOIN sys_dictionary as iconDic on iconDic.code = smnu.icon_dcode
         LEFT JOIN sys_file as sysFile on sysFile.id = smnu.icon_fid
         where (sysAccount.id = #{record.id} AND smnu.is_effect=1 and smnu.is_delete=0 OR
         smnu.id in (
         SELECT DISTINCT smnu1.parent_id FROM sys_menu as smnu1
         LEFT JOIN sys_role_permission as srfc1 on srfc1.permission_id = smnu1.permission_id AND srfc1.scope != 0
-        LEFT JOIN sys_user as sysUser1 on FIND_IN_SET(srfc1.role_id,sysUser1.role_ids)
+        LEFT JOIN sys_user as sysUser1 on FIND_IN_SET(srfc1.role_id,sysUser1.role_id)
         where (sysUser1.id = #{record.id} OR
         smnu1.id in (
         SELECT DISTINCT smnu2.parent_id FROM sys_menu as smnu2
         LEFT JOIN sys_role_permission as srfc2 on srfc2.permission_id = smnu2.permission_id AND srfc2.scope != 0
-        LEFT JOIN sys_user as sysUser2 on FIND_IN_SET(srfc2.role_id,sysUser2.role_ids)
+        LEFT JOIN sys_user as sysUser2 on FIND_IN_SET(srfc2.role_id,sysUser2.role_id)
         where sysUser2.id = #{record.id} AND smnu2.is_effect = 1 and smnu2.is_delete=0
         ))AND smnu1.is_effect = 1 and smnu1.is_delete=0
         ))AND smnu.is_effect = 1 and smnu.is_delete=0

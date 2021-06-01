@@ -1,7 +1,6 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,9 +24,9 @@ import java.math.BigDecimal;
 public class SysDepartment extends BasePojo implements Serializable {
     private static final long serialVersionUID = 498032112231602074L;
     //部门经理id
-    private String departmentManagerId;
+    private Integer managerAccountId;
     //办公室位置id
-    private String officeId;
+    private String office;
     //最小内网ip
     private String intranetIpMin;
     //最大内网ip
@@ -43,16 +42,8 @@ public class SysDepartment extends BasePojo implements Serializable {
     //编号，自增列
 
     //党委委员id
-    private String partyCommissionerId;
+    private Integer partyCommissionerId;
     //科室联系电话
     private String phone;
-
-
-    @TableField(exist = false)
-    private String departmentManagerName;
-    @TableField(exist = false)
-    private String officePosition;
-    @TableField(exist = false)
-    private String companyName;
 
 }

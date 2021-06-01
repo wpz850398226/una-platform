@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
+import cn.kunli.una.pojo.system.SysRole;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
@@ -33,63 +34,79 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private FlowDefinitionService flowDefinitionService;
     @Autowired
     private FlowNodeService flowNodeService;
+    @Autowired
+    private SysRoleService sysRoleService;
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
         int length = assignmentCode.length();
         BasePojo target = null;
-        switch (assignmentCode.substring(length - 5)) {
-            case "Dcode"://字典编码
-                target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
-                break;
+        if(target==null&&assignmentCode.length()>=5){
+            switch (assignmentCode.substring(length - 5)) {
+                case "Dcode"://字典编码
+                    target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
+                    break;
+            }
         }
-        if (target != null) return new SysResult().success("查询成功", target.getName());
 
-        switch (assignmentCode.substring(length - 6)) {
-            case "NodeId"://流程节点 entityId
-                target = flowNodeService.getById(Integer.valueOf(value));
-                break;
+        if(target==null&&assignmentCode.length()>=6){
+            switch (assignmentCode.substring(length - 6)) {
+                case "NodeId"://流程节点 entityId
+                    target = flowNodeService.getById(Integer.valueOf(value));
+                    break;
+                case "roleId"://角色id，复数，以逗号分隔
+                    List<SysRole> list = sysRoleService.list(sysRoleService.getWrapper(MapUtil.getMap("in:id", value)));
+                    List<String> nameList = new ArrayList<>();
+                    for (SysRole sysRole : list) {
+                        nameList.add(sysRole.getName());
+                    }
+                    target = new BasePojo().setName(ListUtil.listToStr(nameList));
+                    break;
+            }
         }
-        if (target != null) return new SysResult().success("查询成功", target.getName());
 
-        switch (assignmentCode.substring(length - 7)) {
-            case "FieldId"://字段 fieldId
-                target = sysFieldService.getById(Integer.valueOf(value));
-                break;
-            case "fieldId"://字段 fieldId
-                target = sysFieldService.getById(Integer.valueOf(value));
-                break;
+        if(target==null&&assignmentCode.length()>=7){
+            switch (assignmentCode.substring(length - 7)) {
+                case "FieldId"://字段 fieldId
+                    target = sysFieldService.getById(Integer.valueOf(value));
+                    break;
+                case "fieldId"://字段 fieldId
+                    target = sysFieldService.getById(Integer.valueOf(value));
+                    break;
+            }
         }
-        if (target != null) return new SysResult().success("查询成功", target.getName());
 
-        switch (assignmentCode.substring(length - 8)) {
-            case "EntityId"://实体 entityId
-                target = sysEntityService.getById(Integer.valueOf(value));
-                break;
-            case "entityId"://实体 entityId
-                target = sysEntityService.getById(Integer.valueOf(value));
-                break;
+        if(target==null&&assignmentCode.length()>=8){
+            switch (assignmentCode.substring(length - 8)) {
+                case "EntityId"://实体 entityId
+                    target = sysEntityService.getById(Integer.valueOf(value));
+                    break;
+                case "entityId"://实体 entityId
+                    target = sysEntityService.getById(Integer.valueOf(value));
+                    break;
+            }
         }
-        if (target != null) return new SysResult().success("查询成功", target.getName());
 
-        switch (assignmentCode) {
-            case "accountId"://账号 accountId
-                target = sysAccountService.getById(Integer.valueOf(value));
-                break;
-            case "permissionId"://权限 permissionId
-                target = sysPermissionService.getById(Integer.valueOf(value));
-                break;
-            case "definitionId"://权限 permissionId
-                target = flowDefinitionService.getById(Integer.valueOf(value));
-                break;
-            case "parentId"://父id parentId
-                target = bs.getById(Integer.valueOf(value));
-                break;
-            default:
-                return SysResult.fail("查询失败：赋值编码 未识别");
+        if(target==null){
+            switch (assignmentCode) {
+                case "accountId"://账号 accountId
+                    target = sysAccountService.getById(Integer.valueOf(value));
+                    break;
+                case "permissionId"://权限 permissionId
+                    target = sysPermissionService.getById(Integer.valueOf(value));
+                    break;
+                case "definitionId"://权限 permissionId
+                    target = flowDefinitionService.getById(Integer.valueOf(value));
+                    break;
+                case "parentId"://父id parentId
+                    target = bs.getById(Integer.valueOf(value));
+                    break;
+                default:
+                    return SysResult.fail("查询失败：赋值编码 未识别");
+            }
         }
-        if (target != null) return new SysResult().success("查询成功", target.getName());
 
+        if (target != null) return new SysResult().success("查询成功", target.getName());
         return SysResult.fail("查询失败：赋值编码 未识别");
     }
 

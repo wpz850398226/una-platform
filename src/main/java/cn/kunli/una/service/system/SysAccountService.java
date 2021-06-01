@@ -2,14 +2,18 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysAccountMapper;
 import cn.kunli.una.pojo.system.SysAccount;
+import cn.kunli.una.pojo.system.SysRole;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +25,13 @@ import java.util.List;
 @Slf4j
 @Service
 public class SysAccountService extends BasicService<SysAccountMapper, SysAccount> {
-
+    @Autowired
+    private SysRoleService sysRoleService;
     @Override
     public BasicService getThisProxy() {
         return sysAccountService;
     }
+
 
     //校验格式
     public SysResult validate(SysAccount obj) {
@@ -53,12 +59,13 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
     //格式化实体类
     public SysAccount initialize(SysAccount obj) {
+        super.initialize(obj);
         if (obj.getId() == null) {
             //如果id为空，新增数据
             if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0) {
-                obj.setRoleIds(StringUtils.join(obj.getRoleIdArray(), ","));
+                obj.setRoleId(StringUtils.join(obj.getRoleIdArray(), ","));
             }
-            //新增保存
+            //默认密码123456
             if (StringUtils.isBlank(obj.getPassword())) {
                 obj.setPassword(new BCryptPasswordEncoder().encode("123456"));
             }
@@ -77,10 +84,20 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         //格式化账号，姓名（去空格）
         if (obj.getUsername() != null) obj.setUsername(obj.getUsername().replace(" ", ""));
         if (obj.getName() != null) obj.setName(obj.getName().replace(" ", ""));
-        if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0)
+        /*if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0){
             obj.setRoleIds(StringUtils.join(obj.getRoleIdArray(), ","));
+        }*/
 
-        super.initialize(obj);
+        /*if(StringUtils.isNotBlank(obj.getRoleId())){
+            List<String> roleNameList = new ArrayList<>();
+            String[] roleIdArray = obj.getRoleId().split(",");
+            for (String roleId : roleIdArray) {
+                SysRole sysRole = sysRoleService.getById(Integer.valueOf(roleId));
+                roleNameList.add(sysRole.getName());
+            }
+            obj.setRoleNames(ListUtil.listToStr(roleNameList));
+        }*/
+
         return obj;
     }
 

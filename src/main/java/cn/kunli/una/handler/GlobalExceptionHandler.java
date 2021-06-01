@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
             errorVo.setErrorMsg(error.getDefaultMessage());
             result.add(errorVo);
         });
-        return new SysResult().fail("错误：参数校验",result);
+        return new SysResult().fail(result.get(0).getErrorField()+":"+result.get(0).getErrorMsg(),result);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -108,6 +108,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = {NullPointerException.class})
     public SysResult nullException(HttpServletRequest request, NullPointerException ex) {
+        ex.printStackTrace();
         SysException sysException = new SysException();
         sysException.setName("空指针异常处理");
         saveExceptionRecord(sysException, ex, request);

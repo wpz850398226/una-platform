@@ -5,8 +5,10 @@ import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.flow.FlowTask;
 import cn.kunli.una.mapper.FlowTaskMapper;
 import cn.kunli.una.pojo.system.SysAccount;
+import cn.kunli.una.pojo.system.SysDepartment;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysAccountService;
+import cn.kunli.una.service.system.SysDepartmentService;
 import cn.kunli.una.service.system.SysRoleService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
@@ -30,6 +32,8 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
     private FlowNodeService flowNodeService;
     @Autowired
     private FlowInstanceService flowInstanceService;
+    @Autowired
+    private SysDepartmentService sysDepartmentService;
     @Override
     public BasicService<FlowTaskMapper, FlowTask> getThisProxy() {
         return thisProxy;
@@ -42,6 +46,8 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             //新增任务时，如果是激活待办任务，则查询所有候选人id，并保存
             FlowNode flowNode = flowNodeService.getById(obj.getNodeId());
             FlowInstance flowInstance = flowInstanceService.getById(obj.getInstanceId());
+            //流程发起人
+            SysAccount initiator = sysAccountService.getById(flowInstance.getCreatorId());
 
             switch(flowNode.getTypeDcode()){
                 case "platform_flow_candidateType_account":             //账号（复数）
@@ -58,12 +64,15 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                         }
                     }
                     break;
-                case "platform_flow_candidateType_superior":            //直接上级
-
+                case "platform_flow_candidateType_superior":            //流程发起人的直接上级
+                    obj.setCandidateAccountId(initiator.getSuperiorAccountId().toString());
                     break;
                 case "platform_flow_candidateType_departmentManager":   //部门主管
+                    SysDepartment sysDepartment = sysDepartmentService.getById(initiator.getDepartmentId());
+                    obj.setCandidateAccountId(sysDepartment.getManagerAccountId().toString());
                     break;
                 case "platform_flow_candidateType_initiator":           //流程发起人
+                    obj.setCandidateAccountId(flowInstance.getCreatorId().toString());
                     break;
             }
         }

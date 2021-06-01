@@ -47,11 +47,11 @@ public class SysAccount extends BasePojo implements Serializable {
     private Boolean isMultipointLogin;
     //角色ids
     @NotBlank(message = "角色不能为空！")
-    private String roleIds;
-    //角色名称
-    private String roleNames;
+    private String roleId;
     //在线验证sessionid（登录刷新）
     private String onlineSession;
+    //直接上级 账号id
+    private Integer superiorAccountId;
 
     @TableField(exist = false)
     private String[] roleIdArray;

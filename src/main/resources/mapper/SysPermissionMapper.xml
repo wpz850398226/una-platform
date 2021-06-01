@@ -30,7 +30,7 @@
         LEFT JOIN sys_entity as sysEntity on sysEntity.id = record.entity_id
         LEFT JOIN sys_dictionary as sysDictionary on sysDictionary.code = record.type_dcode
         LEFT JOIN sys_role_permission as srf on srf.permission_id = record.id
-        LEFT JOIN sys_account as sysAccount on FIND_IN_SET(srf.role_id,sysAccount.role_ids)
+        LEFT JOIN sys_account as sysAccount on FIND_IN_SET(srf.role_id,sysAccount.role_id)
         WHERE sysAccount.id = #{userId}
         and srf.scope != 0
     </select>
