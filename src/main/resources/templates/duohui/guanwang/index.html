@@ -27,57 +27,9 @@ myNav[i].parentNode.parentNode.previousElementSibling.className="on";
 </head>
 <body>
 <div id="wrapper"  >
-  <div class="header_top">
-    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
-      <div class=" right  top" >
-        <ul class="duohui_menu fr font-f">
-          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/guanwang/images/shoucang.jpg}" /></a></span></li>
-          <li> <a class="bgt" href="gouwuche.html">购物车</a>
-            <ul>
-              <li><a  href="#">已加入购物车</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="#">我的业务体系</a>
-            <ul>
-              <li><a  href="#">信息平台</a></li>
-              <li><a href="#">产品平台</a></li>
-              <li><a  href="#">服务平台</a></li>
-              <li><a href="#">招投标平台</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="project.html">客服中心</a>
-            <ul>
-              <li><a  href="#">新手入门</a></li>
-              <li><a href="#">找回密码</a></li>
-              <li><a  href="#">注销店铺</a></li>
-              <li><a href="#">联系客服</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="#">会员中心</a>
-            <ul>
-              <li><a  href="#">会员中心</a></li>
-              <li><a href="#">我的资料</a></li>
-              <li><a href="#">退出</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="header">
-    <div class="w1200 clearBoth clearfix"> <a class="logo left" href="index.html"><img th:src="@{/duohui/guanwang/images/logo.jpg}" border="0"></a>
-      <!--menu start-->
-      <ul class="menu right" id="menu">
-        <li class="on"> <a class="on"  href="index.html">首页</a> </li>
-        <li class="on" th:each="primaryMenu : ${gwMenuList}">
-          <a class=" " th:href="${primaryMenu.path}">[[${primaryMenu.name}]]</a>
-          <ul class="submenu">
-            <li th:each="secondaryMenu : ${primaryMenu.children}"><a th:href="${secondaryMenu.path}">[[${secondaryMenu.name}]]</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <div th:replace="/duohui/guanwang/include/headerTop :: header_top"></div>
+  <div th:replace="/duohui/guanwang/include/header :: header"></div>
+
   <div id="pz_m_1" class=" section">
     <script type="text/javascript" th:src="@{/duohui/guanwang/js/jquery-1.js}"></script>
     <script type="text/javascript" th:src="@{/duohui/guanwang/js/responsiveslides.js}"></script>
@@ -193,15 +145,7 @@ $(function () {
     </div>
   </div>
   <div class="clearBoth clearfix" style="height:60px;"></div>
-  <div class="footer clearBoth">
-    <div class="w1200">
-      <div class="foot-nav"> <a href="#">关于我们</a><a>|</a> <a href="#">供求信息</a> <a>|</a> <a href="#">产品商城</a> <a>|</a> <a href="#">招投标</a> <a>|</a> <a href="#">产品及服务</a> <a>|</a> <a href="#">公司动态</a> <a>|</a> <a href="#">联系我们</a> </div>
-      <div class="banquan "> 咨询热线：400-635-1907        企业邮箱：yewubu@dhgyl.com<br />
-        河北省石家庄市裕华区槐安东路鑫科国际广场C座1806室<br />
-        版权所有：多汇供应链管理有限公司<br />
-        备案号： 冀ICP备19032765号 </div>
-    </div>
-  </div>
+  <div th:replace="/duohui/guanwang/include/footer :: footer"></div>
   <link rel="stylesheet"  th:href="@{/duohui/guanwang/css/animate.min.css}">
   <script th:src="@{/duohui/guanwang/js/wow.min.js}"></script>
 <script>

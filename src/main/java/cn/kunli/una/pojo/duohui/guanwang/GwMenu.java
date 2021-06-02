@@ -29,7 +29,7 @@ public class GwMenu extends BasePojo implements Serializable {
     private String route;
     //平台id（pc后台，app）
     private String platformDcode;
-    //菜单类型（0，菜单类；1，链接类）
+    //菜单类型（菜单，链接）
     private String type;
     //链接地址
     private String path;

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<title>多汇供应链管理有限公司</title>
+<meta name="keywords" content="多汇供应链管理有限公司" />
+<meta name="description" content="多汇供应链管理有限公司" />
+<link th:href="@{/duohui/guanwang/css/base1.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/duohui/guanwang/css/main_001.css}" rel="stylesheet" type="text/css">
+<script type="text/javascript" th:src="@{/duohui/guanwang/js/jquery-1.11.3.min.js}"></script>
+<script type="text/javascript">
+
+$(function(){
+var myNav = document.getElementById("menu").getElementsByTagName("a");
+for(var i=0;i<myNav.length;i++){
+var links = myNav[i].getAttribute("href");
+var myURL = document.location.href;
+if(myURL.indexOf(links) != -1){
+
+myNav[i].className="on";
+myNav[i].parentNode.parentNode.previousElementSibling.className="on";
+
+}
+}
+			});
+</script>
+</head>
+<body>
+<div id="wrapper"  >
+  <div th:replace="/duohui/guanwang/include/headerTop :: header_top"></div>
+  <div th:replace="/duohui/guanwang/include/header :: header"></div>
+  <div class="banner" th:style="'background:url(/duohui/guanwang/images/banner-ny.jpg)'"></div>
+  <!--<div class="banner" th:style="'background:url('+'/duohui/guanwang/images/banner-ny.jpg'+')'"></div>-->
+  <div class="breadcrumbs">
+    <p class="w1200"><em class=" left"></em>
+      <span class="ml10">您当前的位置  :
+        <a href="index.html">首页</a>>
+        <a th:href="${currentPrimaryMenu.path}">[[${currentPrimaryMenu.name}]]</a>>
+        <a th:href="${currentMenu.path}">[[${currentMenu.name}]]</a>
+      </span></p>
+  </div>
+  <div th:replace="/duohui/guanwang/include/innerMenu :: inner_menu"></div>
+  <div th:replace="/duohui/guanwang/include/footer :: footer"></div>
+  <link rel="stylesheet"  th:href="@{/duohui/guanwang/css/animate.min.css}">
+  <script th:src="@{/duohui/guanwang/js/wow.min.js}"></script>
+</div>
+
+<script>
+  $(".una-editor-show").each(function (){
+    var className = $(this).attr("class");
+    var newClassName = $.trim(className.replace("una-editor-show",""));
+    $(this).after('<div class="'+newClassName+'">'+$(this).text()+'</div>').remove()
+  })
+
+  if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+    new WOW().init();
+  }
+
+
+
+</script>
+</body>
+</html>
