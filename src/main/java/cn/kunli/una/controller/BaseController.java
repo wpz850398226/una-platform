@@ -87,7 +87,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 * @param obj
 	 * @return
 	 */
-	@RequestMapping("/save")
+	@PostMapping("/save")
 	@ResponseBody
 	public SysResult save(@Valid T entity) {
 		//验证权限
@@ -384,7 +384,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	}
 
 
-	@RequestMapping("/export")
+	@GetMapping("/export")
 	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> map) {
 		//获取数据
 		List<T> objList = service.list(wrapperUtil.mapToWrapper(map));
