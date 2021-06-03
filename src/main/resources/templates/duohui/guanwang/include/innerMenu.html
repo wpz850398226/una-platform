@@ -1,19 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-  <div th:fragment="inner_menu" class="main-ny" >
-    <div class="w1200">
-      <div class="left w240 mt10">
-        <h3 class="title"><a class="lanse" href="#">[[${currentPrimaryMenu.name}]]</a></h3>
-        <div class="category mt30">
-          <ul>
-            <li th:each="currentSecondaryMenu : ${currentPrimaryMenu.children}"><a th:href="${currentSecondaryMenu.path + '?menuId=' + currentSecondaryMenu.id}">[[${currentSecondaryMenu.name}]]</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="right w890 mt10">
-        <h3 class="title"><a class="heise" href="#">[[${record.name }]]</a></h3>
-        <div th:if="${record.value != null}" class="una-editor-show nr clearBoth line30">[[${record.value.content }]]</div>
-      </div>
+  <div th:fragment="inner_menu" class="left w240 mt10">
+    <h3 class="title"><a class="lanse" href="#">[[${currentPrimaryMenu.name}]]</a></h3>
+    <div class="category mt30">
+      <ul>
+        <li th:each="currentSecondaryMenu : ${currentPrimaryMenu.children}"><a th:href="${currentSecondaryMenu.path + '?menuId=' + currentSecondaryMenu.id}">[[${currentSecondaryMenu.name}]]</a></li>
+      </ul>
     </div>
   </div>
 </html>

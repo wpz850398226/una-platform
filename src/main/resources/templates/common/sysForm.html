@@ -20,8 +20,8 @@
                 <input th:if="${sample['id']!=null}" type="hidden" th:value="${sample['id'] }" id="hiddenObjId" name="id">
                 <input th:if="${sample['batch']!=null}" type="hidden" th:value="${sample['ids'] }" id="hiddenObjIds" name="ids">
                 <!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/querySinglePrivate" id="queryUrlInForm">-->
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual} eq 'true'" type="hidden" value="/sys/data/saveData" id="saveUrlInForm">
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual} eq 'true'" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">
+                <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" value="/sys/data/saveData" id="saveUrlInForm">
+                <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">
 
                 <div th:each="subFieldList : ${sysFieldListList}" class="layui-card">
                     <div class="layui-card-header" th:text="${subFieldList[0].groupName}"></div>
