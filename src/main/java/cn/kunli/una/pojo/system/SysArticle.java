@@ -22,7 +22,7 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysArticle extends BasePojo implements Serializable {
     private static final long serialVersionUID = 478525008536411865L;
-    //所属平台id（后台，商城，供求平台。。）
+    //类型
     private String type;
     //内容
     private String content;

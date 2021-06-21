@@ -82,7 +82,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     }
 
     /**
-     * 根据主键进行查询
+     * 新增记录
      * @param entity
      * @return
      */

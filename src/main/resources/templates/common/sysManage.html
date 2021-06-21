@@ -185,6 +185,7 @@
 
                     //虚拟实体 从valule(json)中取值
                     if(isVirtual == "true"){
+                        console.log("展示虚拟实体数据")
                         if(record.name != 'id' && record.name != 'name' && record.name != 'remark'){
                             dataMap.set("templet","<div>{{d['value']['"+record['displayCode']+"']}}</div>")
                         }
