@@ -11,6 +11,7 @@ import cn.kunli.una.service.system.SysDataService;
 import cn.kunli.una.utils.common.MapUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,8 +59,8 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
      * @param model
      * @return
      */
-    @GetMapping("/page/{entityId}")
-    public String list(Model model,@RequestParam Map<String, Object> map) {
+    @GetMapping("/page/{code}")
+    public String list(Model model,@PathVariable("code") String code, @RequestParam Map<String, Object> map) {
 
         Object menuId = null;
         if(map.containsKey("menuId")){
@@ -69,7 +70,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
         getCommonItem(model,menuId);
 
         Long pageNum = 1L;
-        Long pageSize = 10L;
+        Long pageSize = 5L;
         if(map.get("pageNum")!=null){
             pageNum = Long.valueOf(map.get("pageNum").toString());
             map.remove("pageNum");
@@ -77,6 +78,15 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
         if(map.get("pageSize")!=null){
             pageSize = Long.valueOf(map.get("pageSize").toString());
             map.remove("pageSize");
+        }
+        if(StringUtils.isNotBlank(code)){
+            SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", code)));
+            if(sysEntity!=null){
+                map.put("entityId",sysEntity.getId());
+            }
+        }
+        if(!map.containsKey("orderByAsc")&&!map.containsKey("orderByDesc")){
+            map.put("orderByDesc","createTime");
         }
         Page<SysData> objectPage = new Page<SysData>().setCurrent(pageNum).setSize(pageSize);
         Page page = sysDataService.page(objectPage, wrapperUtil.mapToWrapper(service.format(map)));
@@ -122,7 +132,6 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
                         }
                     }
                 }
-
             }
         }
     }

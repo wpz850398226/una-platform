@@ -68,6 +68,7 @@ public class CommonController {
                 if(classNameObject!=null){
                     SysEntity virtualEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",classNameObject.toString())));
                     if(virtualEntity!=null){
+                        entityClass = virtualEntity;
                         params.put("entityId",virtualEntity.getId());
                         params.remove("className");
                         sysResponseParameter.setEntityId(virtualEntity.getId()).setEntityClass(virtualEntity.getCode()).setParams(params);
@@ -120,7 +121,7 @@ public class CommonController {
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.list(sysFieldService.getWrapper(map)));
+        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.list(sysFieldService.getWrapper(sysFieldService.format(map))));
         List<List<SysField>> sysFieldListList = new ArrayList<>();
 
 
@@ -165,7 +166,7 @@ public class CommonController {
         }
 
         model.addAttribute("sample", obj);
-        model.addAttribute("sysFieldList", sysFieldList);
+//        model.addAttribute("sysFieldList", sysFieldList);
         model.addAttribute("sysFieldListList", sysFieldListList);
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("activeUser", UserUtil.getLoginAccount());
@@ -174,7 +175,7 @@ public class CommonController {
     }
 
     /**
-     * 跳转通用表单页
+     * 跳转详情页
      *
      * @param model
      * @param obj
