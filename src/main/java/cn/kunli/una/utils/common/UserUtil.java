@@ -2,10 +2,12 @@ package cn.kunli.una.utils.common;
 
 
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import java.util.Collection;
 
@@ -25,7 +27,8 @@ public class UserUtil {
     public static SysLoginAccountDetails getLoginAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication!=null){
-            return (SysLoginAccountDetails) authentication.getPrincipal();
+            Object principal = authentication.getPrincipal();
+            if(principal instanceof SysLoginAccountDetails)return (SysLoginAccountDetails) principal;
         }
         return null;
     }

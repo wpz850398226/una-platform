@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="header" class="header">
-  <div class="w1200 clearBoth clearfix"> <a class="logo left" href="index.html"><img th:src="@{/duohui/guanwang/images/logo.jpg}" border="0"></a>
-    <!--menu start-->
-    <ul class="menu right" id="menu">
-      <li class="on" th:each="primaryMenu : ${gwMenuList}">
-        <a class=" " th:href="${primaryMenu.type=='链接'?primaryMenu.path:'javascript:void(0)'}">[[${primaryMenu.name}]]</a>
-        <ul class="submenu">
-          <li th:each="secondaryMenu : ${primaryMenu.children}"><a th:href="${secondaryMenu.path + '?menuId=' + secondaryMenu.id}">[[${secondaryMenu.name}]]</a></li>
-        </ul>
-      </li>
-    </ul>
+  <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
+    <h1 class="logo fl"><a href="index.html" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
+    <div class="fr fabu"><a class="" href="mffbxx.html">发布产品信息</a></div>
+    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
+    <div class="sousuo fr mr30  ml10" >
+      <form>
+        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
+        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
+      </form>
+    </div>
   </div>
 </div>
 </html>
