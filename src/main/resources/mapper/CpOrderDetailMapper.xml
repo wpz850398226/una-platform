@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kunli.una.mapper.CpOrderDetailMapper">
+
+    <resultMap type="cn.kunli.una.pojo.chanpin.CpOrderDetail" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--条件查询（返回封装类）-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select record.*
+        from cp_order_detail as record
+        <where>
+            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition"/>
+            <if test="record.keyword != null and record.keyword !=''">
+                and (CONCAT_WS('|',record.name,sysUser.name)) like '%${record.sysRequestParameter.keyword}%'
+            </if>
+        </where>
+        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder"/>
+    </select>
+</mapper>
