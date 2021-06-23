@@ -45,6 +45,12 @@ public class CommonController {
     private SysMenuService sysMenuService;
     @Autowired
     private SysRelationService sysRelationService;
+    @Autowired
+    private SysButtonService sysButtonService;
+    @Autowired
+    private SysQueryService sysQueryService;
+    @Autowired
+    private SysFilterService sysFilterService;
 
     /**
      * 跳转通用管理页
@@ -88,6 +94,24 @@ public class CommonController {
                 }
             }
 
+            List<SysButton> sysButtonList = sysButtonService.parse(
+                    sysButtonService.list(
+                            sysButtonService.getWrapper(
+                                    sysButtonService.format(MapUtil.getMap("entityId", entityClass.getId())))));
+
+            List<SysQuery> sysQueryList = sysQueryService.parse(
+                    sysQueryService.list(
+                            sysQueryService.getWrapper(
+                                    sysQueryService.format(MapUtil.getMap("entityId", entityClass.getId())))));
+
+            List<SysFilter> sysFilterList = sysFilterService.parse(
+                    sysFilterService.list(
+                            sysFilterService.getWrapper(
+                                    sysFilterService.format(MapUtil.getMap("entityId", entityClass.getId())))));
+
+            entityClass.setButtonList(sysButtonList);
+            entityClass.setQueryList(sysQueryList);
+            entityClass.setFilterList(sysFilterList);
             sysResponseParameter.setSysEntity(entityClass);
         }
 

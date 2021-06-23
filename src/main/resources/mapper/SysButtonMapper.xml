@@ -59,11 +59,9 @@
         select record.*
         ,sysEntity.name as entityName
         ,positionDic.name as positionDname
-        ,iconDic.value as iconDvalue
         from sys_button as record
         left join sys_entity sysEntity on record.entity_id = sysEntity.id
         left join sys_dictionary positionDic on record.position_dcode = positionDic.code
-        left join sys_dictionary iconDic on record.icon_dcode = iconDic.code
         <where>
             <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
@@ -78,11 +76,7 @@
 
     <select id="selectByEntityIdCollection" resultMap="BaseResultMap">
         select record.*
-        ,positionDic.value as positionDvalue
-        ,iconDic.value as iconDvalue
         from sys_button as record
-        left join sys_dictionary positionDic on record.position_dcode = positionDic.code
-        left join sys_dictionary iconDic on record.icon_dcode = iconDic.code
         where record.entity_id = #{entityId} and record.is_delete = 0
         order by record.position_dcode,record.sort_order
     </select>

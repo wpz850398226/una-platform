@@ -1,7 +1,6 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,17 +36,6 @@ public class SysButton extends BasePojo implements Serializable {
     private String iconDcode;
     //标签
     private String label;
-    //顺序
-
-
-    @TableField(exist = false)
-    private String entityName;
-    @TableField(exist = false)
-    private String positionDname;
-    @TableField(exist = false)
-    private String positionDvalue;
-    @TableField(exist = false)
-    private String iconDvalue;
 
 
 }

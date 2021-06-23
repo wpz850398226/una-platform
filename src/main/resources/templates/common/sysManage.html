@@ -42,11 +42,17 @@
                     </div>
                     <form id="unaTableForm" th:action="${sysResponseParameter.sysEntity.path }+'/export'">
                         <div th:class="${#lists.isEmpty(sysResponseParameter.sysEntity.queryList)?'layui-card-header layui-form layui-hide':'layui-card-header layui-form'}" style="padding: 10px;margin-bottom: 20px" lay-filter="unaTableForm">
-                            <div th:each="query:${sysResponseParameter.sysEntity.queryList}" th:switch="${query.assignmentModeDname}" class="layui-inline">
+                            <div th:each="query:${sysResponseParameter.sysEntity.queryList}" th:switch="${query.assignmentModeDcode}" class="layui-inline">
                                 <div class="layui-input-inline">
                                     <label class="layui-form-label" th:text="${query.name}"></label>
-                                    <div th:case="文本"  class="layui-input-block">
+                                    <!--文本精确匹配-->
+                                    <div th:case="field_query_exactText"  class="layui-input-block">
                                         <input type="text" class="layui-input" th:name="${query.fieldCode}" th:placeholder="${'请输入'+query.name}">
+                                    </div>
+
+                                    <!--文本模糊匹配-->
+                                    <div th:case="field_query_fuzzyText"  class="layui-input-block">
+                                        <input type="text" class="layui-input" th:name="${':'+query.fieldCode}" th:placeholder="${'请输入'+query.name}">
                                     </div>
 
                                     <div th:case="日期选择器"  class="layui-input-block">
@@ -57,13 +63,10 @@
                                         <input type="text" class="layui-input una-laydate-datetime" th:name="${query.fieldCode}" th:placeholder="${'请输入'+query.name}">
                                     </div>
 
-                                    <div th:case="开关单选"  class="layui-input-block">
+                                    <!--开关单选-->
+                                    <div th:case="field_query_switch"  class="layui-input-block">
                                         <input class="" type="checkbox" th:name="${query.fieldCode}" lay-skin="switch" lay-text="是|否" value="1">
                                     </div>
-
-                                    <!--<div th:case="普通单选"  class="layui-input-block">
-                                        <input th:each="option:${record.radioOptionArray}" type="radio" th:name="${query.fieldCode}" th:value="${option}" th:title="${option}">
-                                    </div>-->
 
                                     <div th:case="单选下拉框"  class="layui-input-block">
                                         <select class="una-select una-select-linkage"
@@ -123,12 +126,12 @@
 </script>
 
 <script type="text/html" id="barDemo">
-    <a lay-event="detail" title="详情" href="javascript:"><i class="layui-icon layui-icon-search" style="color: #1e9fff;font-size: 20px"></i></a>
+    <!--<a lay-event="detail" title="详情" href="javascript:"><i class="layui-icon layui-icon-search" style="color: #1e9fff;font-size: 20px"></i></a>-->
     <a lay-event="edit" title="修改" href="javascript:"><i class="layui-icon layui-icon-edit" style="color: #1e9fff;font-size: 20px"></i></a>
     <a lay-event="ascend" title="升序" href="javascript:"><i class="layui-icon layui-icon-up" style="color: #1e9fff;font-size: 20px"></i></a>
     <a lay-event="del" title="删除" href="javascript:"><i class="layui-icon layui-icon-delete" style="color: red;font-size: 20px"></i></a>
     <a th:each="button:${sysResponseParameter.sysEntity.buttonList}" th:if="${button.positionDcode eq 'entity_buttonPosition_inLine'}" th:lay-event="${button.event}" th:title="${button.name}" href="javascript:">
-        <i th:class="${'layui-icon '+button.iconDvalue}" style="color: #1e9fff;font-size: 16px"></i>
+        <i th:class="${'layui-icon '+button.map['iconDname']}" style="color: #1e9fff;font-size: 16px"></i>
     </a>
 </script>
 

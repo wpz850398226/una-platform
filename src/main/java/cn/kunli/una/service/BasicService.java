@@ -309,33 +309,25 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
 
         //如果没有指定排序条件，则启用系统设置的排序方式
-        if((map.get("orderByAsc")==null||StringUtils.isBlank(map.get("orderByAsc").toString()))
-                &&(map.get("orderByDesc")==null||StringUtils.isBlank(map.get("orderByDesc").toString()))) {
+        if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
+                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(
+                        MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build()));
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
-                    StringBuffer ascFieldBuffer = new StringBuffer();
-                    StringBuffer descFieldBuffer = new StringBuffer();
                     for (SysSort sysSort : sortList) {
                         String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
                         if(sysSort.getSortord()){
-                            ascFieldBuffer.append(",").append(assignmentCode);
+                            map.put("orderByAsc",assignmentCode);
                         }else{
-                            descFieldBuffer.append(",").append(assignmentCode);
+                            map.put("orderByDesc",assignmentCode);
                         }
-                    }
-
-                    if(ascFieldBuffer.length()>0){
-                        map.put("orderByAsc",ascFieldBuffer.delete(0, 1).toString());
-                    }
-
-                    if(descFieldBuffer.length()>0){
-                        map.put("orderByDesc",descFieldBuffer.delete(0, 1).toString());
                     }
                 }
             }
+        }else{
+            map.put("orderByAsc","sortOrder");
         }
 
         if(map.containsKey("rootTreeIds")){

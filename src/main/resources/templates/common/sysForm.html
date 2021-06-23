@@ -265,7 +265,7 @@
                     <div class="layui-btn-group">
                         <button type="submit" id="submit" una-event="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="unaDataForm">提交</button>
                         <button type="button" una-event="reload" class="layui-btn layui-btn-normal layui-btn-sm">刷新</button>
-                        <button type="button" th:each="button:${sysResponseParameter.sysEntity.buttonList}" th:if="${button.positionDvalue eq 'form_bottom'}" th:class="${button.classValue + 'layui-btn layui-btn-sm'}" th:una-event="${button.event}" th:text="${button.name}"></button>
+                        <button type="button" th:each="button:${sysResponseParameter.sysEntity.buttonList}" th:if="${button.positionDcode eq 'entity_buttonPosition_formBottom'}" th:class="${button.classValue + 'layui-btn layui-btn-sm'}" th:una-event="${button.event}" th:text="${button.name}"></button>
                         <button type="button" una-event="close" class="layui-btn layui-btn-danger layui-btn-sm">返回</button>
                     </div>
                 </div>

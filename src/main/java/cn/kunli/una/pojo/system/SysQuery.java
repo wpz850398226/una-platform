@@ -43,10 +43,6 @@ public class SysQuery extends BasePojo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableField(exist = false)
-    private String entityName;
-    @TableField(exist = false)
-    private String fieldName;
-    @TableField(exist = false)
     private String fieldCode;
     @TableField(exist = false)
     private String optionEntityName;
