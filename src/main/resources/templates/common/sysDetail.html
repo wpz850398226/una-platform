@@ -19,8 +19,8 @@
 
                 <input th:if="${sample['id']!=null}" type="hidden" th:value="${sample['id'] }" id="hiddenObjId" name="id">
                 <input th:if="${sample['batch']!=null}" type="hidden" th:value="${sample['ids'] }" id="hiddenObjIds" name="ids">
-                <!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/querySinglePrivate" id="queryUrlInForm">-->
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" value="/sys/data/saveData" id="saveUrlInForm">
+                <!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/api/sys/data/querySinglePrivate" id="queryUrlInForm">-->
+                <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" value="/api/sys/data/saveData" id="saveUrlInForm">
                 <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">
 
                 <div th:each="subFieldList : ${sysFieldListList}" class="layui-card">
@@ -513,7 +513,7 @@
         var demoListView = $('#demoList')
             ,uploadListIns = upload.render({
             elem: '#testList'
-            ,url: '/sys/file/save' //改成您自己的上传接口
+            ,url: '/api/sys/file/save' //改成您自己的上传接口
             ,accept: 'file'
             ,multiple: true
             ,auto: false
@@ -624,7 +624,7 @@
 
                 var textInputId = $(this).closest(".layui-input-block").find("input[type='text']:first").prop("id");
                 var textInputVal = $(this).closest(".layui-input-block").find("input[type='text']:first").val();
-                var url = "/sys/map?textId="+textInputId;
+                var url = "/api/sys/map?textId="+textInputId;
                 if(textInputVal!=null&&textInputVal!=""){
                     url = url + "&textVal="+textInputVal;
                 }
@@ -647,7 +647,7 @@
                     maxmin: true,
                     shadeClose: true, //点击遮罩关闭层
                     area : ['1000px' , '700px'],
-                    content: "/sys/file/respository?textInputId="+textInputId+"&num="+selectedLimitNum
+                    content: "/api/sys/file/respository?textInputId="+textInputId+"&num="+selectedLimitNum
                 });
                 break;
         };

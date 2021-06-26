@@ -24,8 +24,6 @@ import lombok.EqualsAndHashCode;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CpOrder extends BasePojo implements Serializable {
     private static final long serialVersionUID = -51268776736736818L;
-
-    private Integer id;
     //订单编号
     private String code;
     //订单支付方式
@@ -54,35 +52,4 @@ public class CpOrder extends BasePojo implements Serializable {
     private Double paymentAmount;
     //商品总数量
     private Integer goodsAmount;
-    //名称
-    private String name;
-    //备注
-    private String remark;
-    //创建人id
-    private Integer creatorId;
-    //创建人名称
-    private String creatorName;
-    //创建人IP
-    private String creatorHost;
-    //创建时间
-    private Date createTime;
-    //修改人
-    private Integer modifierId;
-    //修订人名称
-    private String modifierName;
-    //修订人IP
-    private String modifierHost;
-    //修订时间
-    private Date modifyTime;
-    //租户id
-    private Integer tentId;
-    //是否逻辑删除
-    private Integer isDelete;
-    //顺序
-    private Integer sortOrder;
-    //所属组织id
-    private Integer companyId;
-    //所属部门id
-    private Integer departmentId;
-
 }

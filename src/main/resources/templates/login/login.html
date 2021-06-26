@@ -54,7 +54,7 @@
             type: 'get',
             url: '/users/current?token=' + token,
             success : function () {
-                location.href = '/sys/index/index';
+                location.href = '/api/sys/index/index';
             }
         })
     }*/
@@ -64,7 +64,7 @@
 
         if(checkForm(selector)){
             $.ajax({
-                url: '/sys/login/login',
+                url: '/api/sys/login/login',
                 type: "POST",
                 data: form.serialize(),
                 dataType: 'json',
@@ -73,7 +73,7 @@
                         layer.msg(result.message);
                         localStorage.setItem("token",result.data);
                         setTimeout(function () {
-                            window.location.href="/sys/index/index";
+                            window.location.href="/api/sys/index/index";
                         },'500')
 
                     }else{
@@ -112,7 +112,7 @@
             form.on('submit(login)', function(data){
                 // alert(888)
                 layer.msg(JSON.stringify(data.field),function(){
-                    location.href='/sys/index/index'
+                    location.href='/api/sys/index/index'
                 });
                 return false;
             });

@@ -66,10 +66,8 @@ public class SysCompany extends BasePojo implements Serializable {
     private String corporateAccount;
     //所属地址（营业执照为准）
     private String regionId;
-    //纬度
-    private Double latitude;
-    //经度
-    private Double longitude;
+    //坐标
+    private String coord;
     //附件
     private String fileIds;
     //用户同步ID

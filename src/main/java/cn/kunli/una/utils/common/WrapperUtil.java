@@ -43,16 +43,16 @@ public class WrapperUtil<T> {
                         case "ne":
                             queryWrapper.ne(column,value);
                             break;
-                        case "gt":
+                        case "gt"://大于
                             queryWrapper.gt(column,value);
                             break;
-                        case "ge":
+                        case "ge"://大于等于
                             queryWrapper.ge(column,value);
                             break;
-                        case "lt":
+                        case "lt"://小于
                             queryWrapper.lt(column,value);
                             break;
-                        case "le":
+                        case "le"://小于等于
                             queryWrapper.le(column,value);
                             break;
                         case "notLike":

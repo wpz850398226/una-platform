@@ -100,7 +100,7 @@
                                     data-param_value="field_display"
                                     th:data-selected="${record['displayModeDcode']}"
                                     data-option_value_field_title="code"
-                                    data-url="/sys/dictionary"></select>
+                                    data-url="/api/sys/dictionary"></select>
                         </div>
                     </div>
 
@@ -174,7 +174,7 @@
                                 data-switch_hide_option="100005"
                                 th:data-selected="${record['assignmentModeDcode']}"
                                 data-option_value_field_title="code"
-                                data-url="/sys/dictionary"></select>
+                                data-url="/api/sys/dictionary"></select>
                     </div>
                 </div>
 
@@ -201,7 +201,7 @@
                                 data-param_value="field_formatDetection"
                                 th:data-selected="${record['formatCheckTypeDcode']}"
                                 data-option_value_field_title="code"
-                                data-url="/sys/dictionary"></select>
+                                data-url="/api/sys/dictionary"></select>
                     </div>
                 </div>
 
@@ -212,10 +212,10 @@
                                 name="dataCheckTypeDcode"
                                 lay-search=""
                                 data-param_name="parentCode"
-                                data-param_value="field_data_detection"
+                                data-param_value="field_dataDetection"
                                 th:data-selected="${record['dataCheckTypeDcode']}"
                                 data-option_value_field_title="code"
-                                data-url="/sys/dictionary"></select>
+                                data-url="/api/sys/dictionary"></select>
                     </div>
                 </div>
             </div>
@@ -232,7 +232,7 @@
                                 data-param_name="parentName"
                                 data-param_value="all"
                                 th:data-selected="${record['optionEntityId']}"
-                                data-url="/sys/entity"></select>
+                                data-url="/api/sys/entity"></select>
                     </div>
                 </div>
 
@@ -246,7 +246,7 @@
                                 data-param_name="entityId"
                                 data-option_value_field_title="assignmentCode"
                                 th:data-selected="${record['optionNameFieldCode']}"
-                                data-url="/sys/field"></select>
+                                data-url="/api/sys/field"></select>
                     </div>
                 </div>
 
@@ -260,7 +260,7 @@
                                 data-param_name="entityId"
                                 data-option_value_field_title="assignmentCode"
                                 th:data-selected="${record['optionValueFieldCode']}"
-                                data-url="/sys/field"></select>
+                                data-url="/api/sys/field"></select>
                     </div>
                 </div>
 
@@ -297,7 +297,7 @@
                                 data-param_name="entityId,assignmentModeDcode"
                                 th:data-param_value="${record['entityId']}+',field_assignment_singleselect'"
                                 th:data-selected="${record['selectParentId']}"
-                                data-url="/sys/field"></select>
+                                data-url="/api/sys/field"></select>
                     </div>
                 </div>
 
@@ -449,7 +449,7 @@
                     //ajax保存数据
                 $.ajax({
                     type: 'post',
-                    url: '[[${sysResponseParameter.sysEntity.path}]]/save',
+                    url: '/api[[${sysResponseParameter.sysEntity.path}]]/save',
                     dataType: 'json',
                     data: data.field,
                     success: function (result) {

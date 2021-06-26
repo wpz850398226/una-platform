@@ -110,7 +110,7 @@
         //通过角色id查询所有权限信息
         $.ajax({
             type: 'GET',
-            url: "/sys/rolePermission/list",
+            url: "/api/sys/rolePermission/list",
             traditional:true,
             async:false,
             data:{roleId:'[[${sample.id}]]'},
@@ -179,7 +179,7 @@
             //ajax保存数据
             $.ajax({
                 type: 'post',
-                url: '/sys/role/saveAuthorization',
+                url: '/api/sys/role/saveAuthorization',
                 dataType: 'json',
                 data: data.field,
                 success: function (result) {

@@ -45,26 +45,40 @@
                             <div th:each="query:${sysResponseParameter.sysEntity.queryList}" th:switch="${query.assignmentModeDcode}" class="layui-inline">
                                 <div class="layui-input-inline">
                                     <label class="layui-form-label" th:text="${query.name}"></label>
-                                    <!--文本精确匹配-->
                                     <div th:case="field_query_exactText"  class="layui-input-block">
+                                        <!--文本精确匹配-->
                                         <input type="text" class="layui-input" th:name="${query.fieldCode}" th:placeholder="${'请输入'+query.name}">
                                     </div>
 
-                                    <!--文本模糊匹配-->
                                     <div th:case="field_query_fuzzyText"  class="layui-input-block">
+                                        <!--文本模糊匹配-->
                                         <input type="text" class="layui-input" th:name="${':'+query.fieldCode}" th:placeholder="${'请输入'+query.name}">
                                     </div>
 
-                                    <div th:case="日期选择器"  class="layui-input-block">
-                                        <input type="text" class="layui-input una-laydate-date" th:name="${query.fieldCode}" th:placeholder="${'请输入'+query.name}">
+                                    <div th:case="field_query_geDate"  class="layui-input-block">
+                                        <!--大于等于日期-->
+                                        <input class="layui-input una-laydate-date"
+                                               type="text"
+                                               th:name="${'ge:'+query.fieldCode}"
+                                               placeholder="yyyy-MM-dd"
+                                               autocomplete="off">
+                                    </div>
+
+                                    <div th:case="field_query_leDate"  class="layui-input-block">
+                                        <!--小于等于日期-->
+                                        <input class="layui-input una-laydate-date"
+                                               type="text"
+                                               th:name="${'le:'+query.fieldCode}"
+                                               placeholder="yyyy-MM-dd"
+                                               autocomplete="off">
                                     </div>
 
                                     <div th:case="时间选择器"  class="layui-input-block">
                                         <input type="text" class="layui-input una-laydate-datetime" th:name="${query.fieldCode}" th:placeholder="${'请输入'+query.name}">
                                     </div>
 
-                                    <!--开关单选-->
                                     <div th:case="field_query_switch"  class="layui-input-block">
+                                        <!--开关单选-->
                                         <input class="" type="checkbox" th:name="${query.fieldCode}" lay-skin="switch" lay-text="是|否" value="1">
                                     </div>
 
@@ -88,7 +102,7 @@
                                    th:name="${sysResponseParameter.sysEntity.relationList[0].relatedFieldCode }"
                                    th:value="${sysResponseParameter.sysEntity.relationList[0].parentDataValue!=null&&#strings.contains(sysResponseParameter.sysEntity.relationList[0].parentDataValue,'$u')?activeUser[#strings.substringAfter(sysResponseParameter.sysEntity.relationList[0].parentDataValue,'.')]:sysResponseParameter.sysEntity.relationList[0].parentDataValue }"
                                    th:data-parent-entity-title="${sysResponseParameter.sysEntity.relationList[0].parentEntityName }"
-                                   th:data-url="${sysResponseParameter.sysEntity.relationList[0].parentEntityPath }"
+                                   th:data-url="'/api'+${sysResponseParameter.sysEntity.relationList[0].parentEntityPath }"
                                    th:data-parent-field="${sysResponseParameter.sysEntity.relationList[0].parentDataFieldCode }">
                             <input type="hidden" id="treeObjName" th:if="${sysResponseParameter.sysEntity.relationList!=null&&sysResponseParameter.sysEntity.relationList.size()>0}">
                             <input type="hidden" id="unaFilterParamHidden">
@@ -156,7 +170,7 @@
     var entityName = '[[${sysResponseParameter.sysEntity.name }]]';
     var isVirtual = '[[${sysResponseParameter.sysEntity.isVirtual }]]';
     var isFullForm = '[[${sysResponseParameter.sysEntity.isFullForm }]]';
-    var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
+    var entityPath = '/api'+'[[${sysResponseParameter.sysEntity.path }]]';
     var entityClass = '[[${sysResponseParameter.sysEntity.code }]]';
 
     layui.use(['form', 'table'], function(){
@@ -172,7 +186,7 @@
         //查询表格字段数据
         $.ajax({
             type: 'GET',
-            url: "/sys/field/list",
+            url: "/api/sys/field/list",
             traditional:true,
             async:false,
             data:{entityId:virtualEntityId,isEffect:1},
@@ -246,7 +260,7 @@
                         $("#unaDataTree").closest(".layui-card-body").find("legend:first").text(parentEntityName+"结构");
                         //递归拼接树结构的id给treeValueHidden元素
                         $("#treeObjId").val("");
-                        if(treePath=='/sys/company'){
+                        if(treePath=='/api/sys/company'){
                             getAllTreeIdStr(result);
                         }else{
                             /*for(var i=0;i<result.length;i++){
@@ -340,7 +354,7 @@
                         if(virtualEntityClass == 'SysField'){
                             contentUrl = entityPath+"/form";
                         }else{
-                            contentUrl = "/sys/form/"+virtualEntityClass;
+                            contentUrl = "/api/sys/form/"+virtualEntityClass;
                         }
                         if($("#treeObjId").length>0&&$("#treeObjId").val()!=''){
                             var treeIdName = $("#treeObjId").prop("name");
@@ -421,7 +435,7 @@
                         if(virtualEntityClass == 'SysField'){
                             contentUrl = entityPath+"/form?id="+data.id;
                         }else{
-                            contentUrl = "/sys/form/"+virtualEntityClass+"?batch=true";
+                            contentUrl = "/api/sys/form/"+virtualEntityClass+"?batch=true";
                         }
                         var index = layer.open({
                             type: 2,
@@ -453,7 +467,7 @@
                         area: ['420px', '240px'], //宽高
                         btn: ['下载模板'], //按钮
                         yes: function(index){
-                            window.location.href="/sys/importTemplate/"+entityClass;
+                            window.location.href="/api/sys/importTemplate/"+entityClass;
                         },
                         content: '<div class="layui-upload" style="text-align: center;margin-top: 10%;">\n' +
                             '<button type="button" class="layui-btn layui-btn-normal" id="importFile">选择文件</button>\n' +
@@ -528,7 +542,7 @@
                     if(virtualEntityClass == 'SysField'){
                         contentUrl = entityPath+"/form?id="+data.id;
                     }else{
-                        contentUrl = "/sys/detail/"+virtualEntityClass+"?id="+data.id;
+                        contentUrl = "/api/sys/detail/"+virtualEntityClass+"?id="+data.id;
                     }
                     var index = layer.open({
                         type: 2,
@@ -545,7 +559,7 @@
                     if(virtualEntityClass == 'SysField'){
                         contentUrl = entityPath+"/form?id="+data.id;
                     }else{
-                        contentUrl = "/sys/form/"+virtualEntityClass+"?id="+data.id;
+                        contentUrl = "/api/sys/form/"+virtualEntityClass+"?id="+data.id;
                     }
                     var index = layer.open({
                         type: 2,

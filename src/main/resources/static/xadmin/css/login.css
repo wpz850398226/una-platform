@@ -6,7 +6,8 @@
 */
 .login-bg{
     /*background: #eeeeee url() 0 0 no-repeat;*/
-     background:url(/una/images/loginBack.jpg) no-repeat center;
+     background:url(/api/una/images/loginBack.jpg) no-repeat center;
+
     background-size: cover;
     overflow: hidden;
 }

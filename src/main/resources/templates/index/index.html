@@ -128,14 +128,14 @@
                             <cite th:text="${secondaryMenu.name}"></cite>
                         </a>
 
-                        <a th:case="链接" th:onclick="xadmin.add_tab([[${secondaryMenu.name}]],[[${secondaryMenu.path}]])">
+                        <a th:case="链接" th:onclick="xadmin.add_tab([[${secondaryMenu.name}]],'/api'+[[${secondaryMenu.path}]])">
                             <i class="layui-icon layui-icon-circle"></i>
                             <cite th:text="${secondaryMenu.name}"></cite>
                         </a>
 
                         <ul class="sub-menu">
                             <li th:each="ternaryMenu:${secondaryMenu.children}">
-                                <a th:onclick="xadmin.add_tab([[${ternaryMenu.name}]],[[${ternaryMenu.path}]])">
+                                <a th:onclick="xadmin.add_tab([[${ternaryMenu.name}]],'/api'+[[${ternaryMenu.path}]])">
                                     <i class="layui-icon layui-icon-circle"></i>
                                     <cite th:text="${ternaryMenu.name}"></cite></a>
                             </li>
@@ -211,12 +211,12 @@
                     }, function(){
                         $.ajax({
                             type: 'POST',
-                            url: "/sys/login/logout",
+                            url: "/api/sys/login/logout",
                             dataType: 'json',
                             success:function(result){
                                 if(result.isSuccess){
                                     localStorage.removeItem("token");
-                                    window.location.href="/sys/login/toLogin";
+                                    window.location.href="/api/sys/login/toLogin";
                                 } else {
                                     layer.msg(result.message, {icon: 2});
                                 }
@@ -232,10 +232,10 @@
                             if(pass==confirmPass){
                                 $.ajax({
                                     type: 'POST',
-                                    url: "/sys/user/save",
+                                    url: "/api/sys/user/save",
                                     success:function(result){
                                         layer.msg(result.message,function(){
-                                            if(result.isSuccess)window.location.href="/sys/login/logout";
+                                            if(result.isSuccess)window.location.href="/api/sys/login/logout";
                                         })
                                     },
                                     dataType: 'json',

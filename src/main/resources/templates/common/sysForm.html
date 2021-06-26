@@ -19,8 +19,8 @@
 
                 <input th:if="${sample['id']!=null}" type="hidden" th:value="${sample['id'] }" id="hiddenObjId" name="id">
                 <input th:if="${sample['batch']!=null}" type="hidden" th:value="${sample['ids'] }" id="hiddenObjIds" name="ids">
-                <!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/sys/data/querySinglePrivate" id="queryUrlInForm">-->
-                <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" value="/sys/data/saveData" id="saveUrlInForm">
+                <!--                <input th:if="${sysResponseParameter.sysEntity.isVirtual == 1}" type="hidden" value="/api/sys/data/querySinglePrivate" id="queryUrlInForm">-->
+                <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" value="/api/sys/data/saveData" id="saveUrlInForm">
                 <input th:if="${sysResponseParameter.sysEntity.isVirtual}" type="hidden" th:value="${sysResponseParameter.sysEntity.id}" name="entityId">
 
                 <div th:each="subFieldList : ${sysFieldListList}" class="layui-card">
@@ -65,7 +65,7 @@
                                         th:lay-verify="${record['map']['formatCheckTypeDvalue']}"
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
-                                        th:data-url="${record['optionEntityPath']}"
+                                        th:data-url="'/api'+${record['optionEntityPath']}"
                                         th:data-sub_id="${record.selectSubIds}"
                                         th:data-param_name="${record['optionParamName']}"
                                         th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
@@ -293,7 +293,7 @@
     <script th:src="@{/una/js/private/una.validation.js}" charset="utf-8"></script>
 
     <script>
-        var entityPath = '[[${sysResponseParameter.sysEntity.path }]]';
+        var entityPath = '/api'+'[[${sysResponseParameter.sysEntity.path }]]';
         var isVirtual = '[[${sysResponseParameter.sysEntity.isVirtual}]]';
         var sample;
 
@@ -524,7 +524,7 @@
             var demoListView = $('#demoList')
                 ,uploadListIns = upload.render({
                 elem: '#testList'
-                ,url: '/sys/file/save' //改成您自己的上传接口
+                ,url: '/api/sys/file/save' //改成您自己的上传接口
                 ,accept: 'file'
                 ,multiple: true
                 ,auto: false
@@ -635,7 +635,7 @@
 
                     var textInputId = $(this).closest(".layui-input-block").find("input[type='text']:first").prop("id");
                     var textInputVal = $(this).closest(".layui-input-block").find("input[type='text']:first").val();
-                    var url = "/sys/map?textId="+textInputId;
+                    var url = "/api/sys/map?textId="+textInputId;
                     if(textInputVal!=null&&textInputVal!=""){
                         url = url + "&textVal="+textInputVal;
                     }
@@ -658,7 +658,7 @@
                         maxmin: true,
                         shadeClose: true, //点击遮罩关闭层
                         area : ['1000px' , '700px'],
-                        content: "/sys/file/respository?textInputId="+textInputId+"&num="+selectedLimitNum
+                        content: "/api/sys/file/respository?textInputId="+textInputId+"&num="+selectedLimitNum
                     });
                 break;
             };

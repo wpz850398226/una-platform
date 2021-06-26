@@ -3,9 +3,11 @@ package cn.kunli.una.controller.duohui.chanpin;
 import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
 import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
 import cn.kunli.una.pojo.system.SysConfiguration;
+import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.system.SysConfigurationService;
+import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysMenuService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
@@ -24,6 +26,8 @@ public class CpIndexController {
     SysMenuService sysMenuService;
     @Autowired
     SysConfigurationService sysConfigurationService;
+    @Autowired
+    private SysDictionaryService sysDictionaryService;
 
     /**
      * 打开主体框架
@@ -34,6 +38,11 @@ public class CpIndexController {
     @RequestMapping("/index")
     public String index(Model model) {
         getCommonItem(model);
+
+//        List<SysDictionary> statusList = sysDictionaryService.list(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("parentCode", "dh_goodsStatus"))));
+
+
+
         return "duohui/chanpin/index";
     }
 

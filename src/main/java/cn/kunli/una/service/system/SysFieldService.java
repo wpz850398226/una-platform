@@ -124,7 +124,11 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             if (StringUtils.isBlank(obj.getOptionValueFieldCode())) obj.setOptionValueFieldCode("id");
             if (StringUtils.isBlank(obj.getDqlName()))
                 obj.setDqlName("record." + StringUtil.upperCharToUnderLine(obj.getAssignmentCode()));
+        }else{
+            if(obj.getOptionNameFieldCode()!=null&&obj.getOptionNameFieldCode().equals(""))obj.setOptionNameFieldCode("name");
+            if(obj.getOptionValueFieldCode()!=null&&obj.getOptionValueFieldCode().equals(""))obj.setOptionValueFieldCode("id");
         }
+
 
         return obj;
     }

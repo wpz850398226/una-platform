@@ -145,7 +145,7 @@
         //查询表格字段数据
         $.ajax({
             type: 'GET',
-            url: "/sys/field/list",
+            url: "/api/sys/field/list",
             traditional:true,
             async:false,
             data:{entityId:entityId},
@@ -227,7 +227,7 @@
                         if(entityClass == 'SysField'){
                             contentUrl = entityPath+"/form";
                         }else{
-                            contentUrl = "/sys/form/"+entityClass;
+                            contentUrl = "/api/sys/form/"+entityClass;
                         }
                         if($("#treeObjId").length>0&&$("#treeObjId").val()!=''){
                             var parentName = $("#treeObjId").prop("name");
