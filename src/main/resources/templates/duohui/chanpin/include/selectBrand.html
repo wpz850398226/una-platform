@@ -2,79 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="selectBrand" class="nav_bom fl" id="selectBrand">
     <div class="cat_show lanmu-list" id="seleAttr" >
-        <dl>
-            <a href=""><dd class="biao">快消品</dd></a>
+        <dl th:each="primaryIndustry:${industryDlist}">
+            <a href=""><dd class="biao">[[${primaryIndustry.name}]]</dd></a>
             <div class="show_more" style="display: none;">
-                <div class="show_more_l">
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a></div>
+                <div class="show_more_l" th:each="secondryIndustry:${primaryIndustry.children}">
+                    <div class="title"> <a href="">[[${secondryIndustry.name}]]</a></div>
+                    <div class="content">
+                        <a href="" th:each="thirdryIndustry:${secondryIndustry.children}">[[${thirdryIndustry.name}]]</a>
+                    </div>
                 </div>
             </div>
             <div class="clear"></div>
         </dl>
-        <dl>
-            <dd class="biao"><a href="">轻工业</a></dd>
-            <div class="show_more" style="display: none;">
-                <div class="show_more_l">
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a></div>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </dl>
-        <dl>
-            <dd class="biao"><a href="">重工业</a></dd>
-            <div class="show_more" style="display: none;">
-                <div class="show_more_l">
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a></div>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </dl>
-        <dl>
-            <dd class="biao"><a href="">原料</a></dd>
-            <div class="show_more" style="display: none;">
-                <div class="show_more_l">
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a></div>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </dl>
-        <dl>
-            <dd class="biao"><a href="">加工厂</a></dd>
-            <div class="show_more" style="display: none;">
-                <div class="show_more_l">
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a></div>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </dl>
-        <dl>
-            <dd class="biao"><a href="">商贸类</a></dd>
-            <div class="show_more" style="display: none;">
-                <div class="show_more_l">
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a><a href="">三级分类</a></div>
-                    <div class="title"> <a href="">二级分类</a></div>
-                    <div class="content"><a href="">三级分类</a></div>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </dl>
-
         <a class="listmore" style="display:none;" href="javascript:;">查看更多 ↓</a> </div>
 </div>
 </html>
