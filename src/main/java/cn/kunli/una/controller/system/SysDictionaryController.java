@@ -37,7 +37,7 @@ public class SysDictionaryController extends BaseController<SysDictionaryService
             if(map.get("parentCode")!=null){
                 String parentCode = map.get("parentCode").toString();
                 map.remove("parentCode");
-                SysDictionary parentDictionary = service.getOne(wrapperUtil.mapToWrapper(MapUtil.getMap("code", parentCode)));
+                SysDictionary parentDictionary = service.getOne(service.getWrapper(MapUtil.getMap("code", parentCode)));
                 if(parentDictionary!=null)map.put("parentId",parentDictionary.getId());
             }
         }

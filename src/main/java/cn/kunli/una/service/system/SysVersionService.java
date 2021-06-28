@@ -30,13 +30,13 @@ public class SysVersionService extends BasicService<SysVersionMapper, SysVersion
     //校验格式
     public SysResult validate(SysVersion obj) {
 
-        List<SysVersion> externalVersionObjList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("externalVersion",obj.getExternalVersion())));
+        List<SysVersion> externalVersionObjList = thisProxy.list(getWrapper(MapUtil.getMap("externalVersion",obj.getExternalVersion())));
         if (externalVersionObjList.size() > 0 && !externalVersionObjList.get(0).getId().equals(obj.getId())) {
             //通过新文件的名称查询到数据
             return SysResult.fail("外部版本号重复，保存失败:" + obj.getExternalVersion());
         }
 
-        List<SysVersion> internalVersionObjList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("internalVersion",obj.getInternalVersion())));
+        List<SysVersion> internalVersionObjList = thisProxy.list(getWrapper(MapUtil.getMap("internalVersion",obj.getInternalVersion())));
         if (internalVersionObjList.size() > 0 && !internalVersionObjList.get(0).getId().equals(obj.getId())) {
             //通过新文件的名称查询到数据
             return SysResult.fail("内部版本号重复，保存失败:" + obj.getInternalVersion());

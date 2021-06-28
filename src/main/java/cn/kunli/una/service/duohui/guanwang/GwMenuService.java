@@ -33,7 +33,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
         for (GwMenu record : list) {
-            List<GwMenu> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+            List<GwMenu> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
             if(CollectionUtils.isNotEmpty(subList)){
                 this.parse(subList);
             }
@@ -54,7 +54,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
-                    obj.setSortOrder(this.count(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
+                    obj.setSortOrder(this.count(getWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
                 obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");

@@ -89,7 +89,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
             map.put("orderByDesc","createTime");
         }
         Page<SysData> objectPage = new Page<SysData>().setCurrent(pageNum).setSize(pageSize);
-        Page page = sysDataService.page(objectPage, wrapperUtil.mapToWrapper(service.format(map)));
+        Page page = sysDataService.page(objectPage, sysDataService.getWrapper(service.format(map)));
 
         model.addAttribute("page", page);
         return "duohui/guanwang/page";

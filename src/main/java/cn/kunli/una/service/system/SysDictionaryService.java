@@ -35,7 +35,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
      * @return
      */
     public List<SysDictionary> selectByLikeCode(String code) {
-        QueryWrapper<SysDictionary> wrapper = wrapperUtil.mapToWrapper(MapUtil.getMap(":code", code)).orderByAsc("sortOrder");
+        QueryWrapper<SysDictionary> wrapper = getWrapper(MapUtil.getMap(":code", code)).orderByAsc("sortOrder");
         List<SysDictionary> list = sysDictionaryService.list(wrapper);
         return list;
     }
@@ -61,7 +61,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
         for (SysDictionary record : list) {
-            List<SysDictionary> subList = sysDictionaryService.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+            List<SysDictionary> subList = sysDictionaryService.list(sysDictionaryService.getWrapper(MapUtil.getMap("parentId", record.getId())));
             if(CollectionUtils.isNotEmpty(subList)){
                 this.parse(subList);
             }

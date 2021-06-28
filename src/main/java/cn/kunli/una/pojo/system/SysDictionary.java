@@ -56,6 +56,8 @@ public class SysDictionary extends BasePojo implements Serializable {
     @TableField(exist = false)
     private List<Map<String, Object>> mapList;
     @TableField(exist = false)
+    private List<BasePojo> pojoList;
+    @TableField(exist = false)
     private Map<String, Object> assignMap;
     @TableField(exist = false)
     private Boolean isFinish;   //是否完成节点（工作流字典专用）
@@ -63,6 +65,7 @@ public class SysDictionary extends BasePojo implements Serializable {
     private Object approveResult;   //审批结果（工作流字典专用）
     @TableField(exist = false)
     private Object approveOpinion;   //审批意见（工作流字典专用）
+
 
     private static final long serialVersionUID = 1L;
 

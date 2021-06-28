@@ -29,7 +29,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         list = super.parse(list);
         for (SysMenu record : list) {
             if(record.getLevel()<2){
-                List<SysMenu> subList = thisProxy.list(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId", record.getId())));
+                List<SysMenu> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.parse(subList);
                 }
@@ -100,7 +100,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
-                    obj.setSortOrder(this.count(wrapperUtil.mapToWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
+                    obj.setSortOrder(this.count(getWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
                 obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");

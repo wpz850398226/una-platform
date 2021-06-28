@@ -41,7 +41,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
         SysResult saveResult = super.save(entity);
         if(saveResult.getIsSuccess()){
             //保存流程实例成功，查找开始节点
-            FlowNode startNode = flowNodeService.getOne(wrapperUtil.mapToWrapper(MapUtil.buildHashMap()
+            FlowNode startNode = flowNodeService.getOne(flowNodeService.getWrapper(MapUtil.buildHashMap()
                     .put("definitionId", entity.getDefinitionId())
                     .put("typeDcode", "platform_flow_nudeType_start").build()));
 

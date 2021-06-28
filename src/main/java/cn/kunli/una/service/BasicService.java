@@ -173,6 +173,26 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     }
 
     /**
+     * 根据条件构造查询单条
+     * @param queryWrapper
+     * @return
+     */
+    /*@Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    public T selectOne(Map<String,Object> map) {
+        return super.getOne(wrapperUtil.mapToWrapper(format(map)));
+    }*/
+
+    /**
+     * 根据条件构造查询多条
+     * @param queryWrapper
+     * @return
+     */
+    /*@Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    public List<T> selectList(Map<String,Object> map) {
+        return super.list(wrapperUtil.mapToWrapper(format(map)));
+    }*/
+
+    /**
      * 根据条件构造查询多条
      * @param queryWrapper
      * @return
@@ -220,7 +240,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     Object parentValueObj = parentField.get(obj);
                     nameParamMap.put(sysField.getAssignmentCode(),parentValueObj);
                 }
-                List<T> nameResultList = getThisProxy().list(wrapperUtil.mapToWrapper(nameParamMap));
+                List<T> nameResultList = getThisProxy().list(getWrapper(nameParamMap));
                 if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
                     return SysResult.fail("名称重复，保存失败");
@@ -235,7 +255,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     Object codeObject = declaredField.get(obj);
                     //如果传入了code值，验证code全局唯一性
                     if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
-                        List<T> codeResultList = getThisProxy().list(wrapperUtil.mapToWrapper(MapUtil.getMap("code",codeObject)));
+                        List<T> codeResultList = getThisProxy().list(getWrapper(MapUtil.getMap("code",codeObject)));
                         if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                             //通过新文件的编码查询到数据
                             return SysResult.fail("编码重复，保存失败");
@@ -280,7 +300,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     //获取父字段值
                     Object parentValueObj = parentField.get(obj);
                     //查询该父字段下的数据数量
-                    num = this.count(wrapperUtil.mapToWrapper(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
+                    num = this.count(getWrapper(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
                 }else{
                     //没有设置父字段，查询所有数量
                     num = this.count();

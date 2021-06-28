@@ -1,23 +1,25 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
-import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
-import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
+import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.pojo.system.SysDictionary;
-import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysMenuService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/duohui/chanpin")
@@ -28,6 +30,8 @@ public class CpIndexController {
     SysConfigurationService sysConfigurationService;
     @Autowired
     private SysDictionaryService sysDictionaryService;
+    @Autowired
+    private CpGoodsService cpGoodsService;
 
     /**
      * 打开主体框架
@@ -39,9 +43,21 @@ public class CpIndexController {
     public String index(Model model) {
         getCommonItem(model);
 
-//        List<SysDictionary> statusList = sysDictionaryService.list(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("parentCode", "dh_goodsStatus"))));
-
-
+        SysDictionary goodsStatusDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("code", "dh_goodsStatus"))));
+        if(goodsStatusDic!=null){
+            List<SysDictionary> goodsStatusDicList = sysDictionaryService.list(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("parentId", goodsStatusDic.getId()))));
+            if(CollectionUtils.isNotEmpty(goodsStatusDicList)){
+                //按商品状态查询商品列表
+                Page<CpGoods> objectPage = new Page<CpGoods>().setCurrent(1).setSize(4);
+                Map<String,Object> goodsListMap = new HashMap<>();
+                for (SysDictionary sysDictionary : goodsStatusDicList) {
+                    Page<CpGoods> goodsPage = cpGoodsService.page(objectPage, cpGoodsService.getWrapper(MapUtil.getMap("statusDcode", sysDictionary.getCode())));
+                    goodsListMap.put(sysDictionary.getCode(),goodsPage.getRecords());
+                }
+                model.addAttribute("goodsStatusDicList",goodsStatusDicList);
+                model.addAttribute("goodsListMap",goodsListMap);
+            }
+        }
 
         return "duohui/chanpin/index";
     }

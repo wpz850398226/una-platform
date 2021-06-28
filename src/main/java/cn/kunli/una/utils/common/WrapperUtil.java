@@ -70,6 +70,9 @@ public class WrapperUtil<T> {
                         case "notInSql":
                             queryWrapper.notInSql(column,value.toString());
                             break;
+                        case "apply":
+                            queryWrapper.apply(value.toString());
+                            break;
                     }
                 }else{
                     String[] fieldCodeArray = value.toString().split(",");
