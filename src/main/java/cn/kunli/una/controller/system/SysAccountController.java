@@ -8,7 +8,6 @@ import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.utils.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +28,7 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     @ResponseBody
     public SysResult getInfo() {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        return new SysResult().setData(loginUser);
+        return new SysResult().success(loginUser);
     }
 
 }

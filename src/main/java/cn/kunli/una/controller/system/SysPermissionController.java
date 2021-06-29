@@ -29,7 +29,7 @@ public class SysPermissionController extends BaseController<SysPermissionService
     public SysResult getByToken() {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         List<String> list = service.selectCodeByUserIdCollection(loginUser.getId());
-        return new SysResult().setData(list);
+        return new SysResult().success(list);
     }
 
 }
