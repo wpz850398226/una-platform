@@ -38,9 +38,9 @@ public class SysDictionary extends BasePojo implements Serializable {
 
     private String introduction;    //介绍
 
-
-    @TableField(exist = false)
     private String parentCode;      //父目录编码
+
+
     @TableField(exist = false)
     private String brotherName;     //兄弟目录名称
     @TableField(exist = false)

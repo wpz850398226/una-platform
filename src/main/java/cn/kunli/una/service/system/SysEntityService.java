@@ -18,6 +18,8 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     public BasicService getThisProxy() {
         return sysEntityService;
     }
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     @Override
     public SysEntity initialize(SysEntity obj) {
@@ -41,6 +43,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
             sysEntity.setButtonList(sysButtonService.parse(sysButtonService.list(sysButtonService.getWrapper(map))));
             sysEntity.setQueryList(sysQueryService.parse(sysQueryService.list(sysQueryService.getWrapper(map))));
             sysEntity.setFilterList((sysFilterService.parse(sysFilterService.list(sysFilterService.getWrapper(map)))));
+            sysEntity.setPermissionList(sysPermissionService.list(sysPermissionService.getWrapper(sysPermissionService.format(MapUtil.getMap("entityId",sysEntity.getId())))));
         }
 
         return list;

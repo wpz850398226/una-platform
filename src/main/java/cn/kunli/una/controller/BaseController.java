@@ -73,11 +73,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		entityClassName = entityClass.getSimpleName();
 	}
 
-	/*@PostMapping("")
+	@PostMapping("")
 	@ResponseBody
 	public SysResult add(@Valid T entity) {
 		return service.saveRecord(entity);
-	}*/
+	}
 
 	/**
 	 * 保存/添加或修改
@@ -121,20 +121,24 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		return SysResult.success();
 	}
 
-	/*@PutMapping("")
+	@PutMapping("")
 	@ResponseBody
 	public SysResult update(T entity) {
-		//数据校验
-		SysResult validationResult = service.validate(entity);
-		if(!validationResult.getIsSuccess())return validationResult;
-
-
-		boolean updateResult = service.updateById(service.initialize(entity));
-		if(updateResult){
+		if(entity.getId()!=null) {
+			//如果id不为空，说明是修改数据
+			return service.updateRecordById(entity);
+		}else if(StringUtils.isNotBlank(entity.getIds())){
+			//如果ids不为空，说明是批量修改数据
+			String[] idsArray = entity.getIds().split(",");
+			for (String id : idsArray) {
+				entity.setId(Integer.valueOf(id));
+				SysResult sysResult = service.updateRecordById(entity);
+				if(!sysResult.getIsSuccess())return sysResult;
+			}
 			return SysResult.success();
 		}
-		return SysResult.fail();
-	}*/
+		return SysResult.fail("修改失败，id为空");
+	}
 
 	/**
 	 * 提高顺序

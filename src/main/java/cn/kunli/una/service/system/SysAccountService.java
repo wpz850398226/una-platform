@@ -82,8 +82,9 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         }
 
         //格式化账号，姓名（去空格）
-        if (obj.getUsername() != null) obj.setUsername(obj.getUsername().replace(" ", ""));
-        if (obj.getName() != null) obj.setName(obj.getName().replace(" ", ""));
+        if (StringUtils.isNotBlank(obj.getUsername())) obj.setUsername(obj.getUsername().replace(" ", ""));
+        if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
+        if (StringUtils.isNotBlank(obj.getPassword())) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
         /*if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0){
             obj.setRoleIds(StringUtils.join(obj.getRoleIdArray(), ","));
         }*/
