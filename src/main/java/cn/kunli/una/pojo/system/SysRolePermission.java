@@ -28,7 +28,7 @@ public class SysRolePermission extends BasePojo implements Serializable {
 
     private Integer permissionId;
     //范围字典id
-    private Integer scope;
+    private String scopeDcode;
 
 
     @TableField(exist = false)

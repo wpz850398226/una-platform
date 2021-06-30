@@ -15,6 +15,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,23 +39,35 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private SysRoleService sysRoleService;
     @Autowired
     private SysRegionService sysRegionService;
+    @Autowired
+    private SysFileService sysFileService;
 
-    public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
+    /**
+     * 转换存储值为显示值
+     * @param assignmentCode    赋值编码
+     * @param value 存储至
+     * @param bs    源服务
+     * @param transformDisplayCode       取值编码
+     * @return
+     */
+    public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs,String transformDisplayCode) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
         int length = assignmentCode.length();
-        BasePojo target = null;
-        if(target==null&&assignmentCode.length()>=5){
+        BasePojo result = null;
+        List<? extends BasePojo> resultList = new ArrayList<>();
+
+        if(result==null&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=5){
             switch (assignmentCode.substring(length - 5)) {
                 case "Dcode"://字典编码
-                    target = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",value)));
+                    result = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", value)));
                     break;
             }
         }
 
-        if(target==null&&assignmentCode.length()>=6){
+        if(result==null&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=6){
             switch (assignmentCode.substring(length - 6)) {
                 case "NodeId"://流程节点 entityId
-                    target = flowNodeService.getById(Integer.valueOf(value));
+                    result = flowNodeService.getById(Integer.valueOf(value));
                     break;
                 case "roleId"://角色id，复数，以逗号分隔
                     List<SysRole> list = sysRoleService.list(sysRoleService.getWrapper(MapUtil.getMap("in:id", value)));
@@ -62,56 +75,60 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     for (SysRole sysRole : list) {
                         nameList.add(sysRole.getName());
                     }
-                    target = new BasePojo().setName(ListUtil.listToStr(nameList));
+                    result = new BasePojo().setName(ListUtil.listToStr(nameList));
+                    break;
+                case "fileId"://流程节点 entityId
+                case "FileId"://流程节点 entityId
+                    result = sysFileService.getById(Integer.valueOf(value));
                     break;
             }
         }
 
-        if(target==null&&assignmentCode.length()>=7){
+        if(result==null&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=7){
             switch (assignmentCode.substring(length - 7)) {
                 case "FieldId"://字段 fieldId
-                    target = sysFieldService.getById(Integer.valueOf(value));
-                    break;
                 case "fieldId"://字段 fieldId
-                    target = sysFieldService.getById(Integer.valueOf(value));
+                    result = sysFieldService.getById(Integer.valueOf(value));
+                    break;
+                case "FileIds"://文件 fieldId
+                case "fileIds"://文件 fieldId
+                    resultList = sysFileService.list(sysFileService.getWrapper(MapUtil.getMap("in:ids",value)));
                     break;
             }
         }
 
-        if(target==null&&assignmentCode.length()>=8){
+        if(result==null&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=8){
             switch (assignmentCode.substring(length - 8)) {
                 case "EntityId"://实体 entityId
-                    target = sysEntityService.getById(Integer.valueOf(value));
-                    break;
                 case "entityId"://实体 entityId
-                    target = sysEntityService.getById(Integer.valueOf(value));
+                    result = sysEntityService.getById(Integer.valueOf(value));
                     break;
                 case "regionId"://地区 regionId
-                    target = sysRegionService.getById(Integer.valueOf(value));
+                    result = sysRegionService.getById(Integer.valueOf(value));
                     break;
             }
         }
 
-        if(target==null){
+        if(result==null&&CollectionUtils.isEmpty(resultList)){
             switch (assignmentCode) {
                 case "accountId"://账号 accountId
-                    target = sysAccountService.getById(Integer.valueOf(value));
+                    result = sysAccountService.getById(Integer.valueOf(value));
                     break;
                 case "permissionId"://权限 permissionId
-                    target = sysPermissionService.getById(Integer.valueOf(value));
+                    result = sysPermissionService.getById(Integer.valueOf(value));
                     break;
                 case "definitionId"://权限 permissionId
-                    target = flowDefinitionService.getById(Integer.valueOf(value));
+                    result = flowDefinitionService.getById(Integer.valueOf(value));
                     break;
                 case "parentId"://父id parentId
-                    target = bs.getById(Integer.valueOf(value));
+                    result = bs.getById(Integer.valueOf(value));
                     break;
                 default:
                     return SysResult.fail("查询失败：赋值编码 未识别");
             }
         }
 
-        if (target != null) return new SysResult().success("查询成功", target.getName());
+        if (result != null) return new SysResult().success("查询成功", result.getName());
         return SysResult.fail("查询失败：赋值编码 未识别");
     }
 

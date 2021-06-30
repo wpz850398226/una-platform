@@ -450,7 +450,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
                                 if(null != value){
                                     //实体中该字段值为空的
-                                    SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy());
+                                    SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
                                     if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
                                 }
                                 Map<String, Object> map = entity.getMap();

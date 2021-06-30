@@ -29,6 +29,8 @@ public class SysField extends BasePojo implements Serializable {
     private String assignmentCode;
     //取值字段
     private String displayCode;
+    //转换取值编码
+    private String transformDisplayCode;
     //所属实体id
     private Integer entityId;
     //字段注释

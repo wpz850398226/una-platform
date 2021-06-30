@@ -32,7 +32,7 @@
         LEFT JOIN sys_role_permission as srf on srf.permission_id = record.id
         LEFT JOIN sys_account as sysAccount on FIND_IN_SET(srf.role_id,sysAccount.role_id)
         WHERE sysAccount.id = #{userId}
-        and srf.scope != 0
+        and srf.scope_dcode != 0
     </select>
     <select id="selectCodeById" resultType="java.lang.String">
         SELECT CONCAT(sysEntity.code,':',sysDictionary.`value`) FROM sys_permission as record

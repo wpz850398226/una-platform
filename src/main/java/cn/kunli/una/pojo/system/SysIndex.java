@@ -30,7 +30,7 @@ public class SysIndex extends BasePojo implements Serializable {
 
     private String title;
 
-    private String pictureUrl;
+    private Integer fileId;
 
     private String iconDicId;
 

@@ -29,7 +29,7 @@ public class OaReissue extends BasePojo implements Serializable {
     //事由
     private String reason;
     //图片
-    private String pictureUrl;
+    private String fileIds;
     //是否审批通过
     private Integer isApprove;
     //流程实例id

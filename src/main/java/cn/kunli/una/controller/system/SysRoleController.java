@@ -50,18 +50,18 @@ public class SysRoleController extends BaseController<SysRoleService, SysRole> {
     }
 
     //授权
-    @RequestMapping("/saveAuthorization")
+    /*@RequestMapping("/saveAuthorization")
     @ResponseBody
     public SysResult saveAuthorization(Model model, SysRole obj) {
-        if (obj.getMap() != null) {
-            for (Map.Entry<Integer, Integer> entry : obj.getPermMap().entrySet()) {
+        if (obj.getPermMap() != null) {
+            for (Map.Entry<Integer, String> entry : obj.getPermMap().entrySet()) {
                 boolean updateResult = sysRolePermissionService.updateById(
-                        (SysRolePermission) new SysRolePermission().setScope(entry.getValue()).setId(entry.getKey()));
+                        (SysRolePermission) new SysRolePermission().setScopeDcode(entry.getValue()).setId(entry.getKey()));
                 if (!updateResult) return SysResult.fail();
             }
             return SysResult.success();
         }
         return SysResult.fail();
-    }
+    }*/
 
 }

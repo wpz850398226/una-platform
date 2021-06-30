@@ -41,11 +41,11 @@ public class CpShop extends BasePojo implements Serializable {
     //微信
     private String wechat;
 
-    private String titlePictureUrl;
+    private Integer titleFileId;
     //微信二维码图片
     private String wechatErweimaPictureUrl;
-    //图片数量
-    private String pictureUrls;
+    //图片
+    private String fileIds;
     //是否置顶
     private Integer isStick;
     //是否热门

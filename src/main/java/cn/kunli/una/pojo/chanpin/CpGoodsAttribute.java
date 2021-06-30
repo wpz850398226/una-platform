@@ -48,7 +48,7 @@ public class CpGoodsAttribute extends BasePojo implements Serializable {
     //不含税市场价
     private Double taxExclusiveMarketPrice;
     //示意图url
-    private String pictureUrl;
+    private Integer fileId;
     //积分
     private Integer points;
     //生效标记：0无效；1有效

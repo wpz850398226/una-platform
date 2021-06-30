@@ -36,7 +36,7 @@ public class SysUser extends BasePojo implements Serializable {
     //生日
     private Date birthday;
     //证件照片（身份证，营业执照等）
-    private String pictureUrls;
+    private String fileIds;
     //邮箱
     private String email;
     //座机号

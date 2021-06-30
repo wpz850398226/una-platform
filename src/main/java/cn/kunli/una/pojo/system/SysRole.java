@@ -44,5 +44,5 @@ public class SysRole extends BasePojo implements Serializable {
     @TableField(exist = false)
     private List<SysIndex> indexList;
     @TableField(exist = false)
-    private Map<Integer, Integer> permMap;
+    private Map<Integer, String> permMap;
 }
