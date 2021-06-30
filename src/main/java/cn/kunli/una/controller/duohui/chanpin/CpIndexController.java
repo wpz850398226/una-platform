@@ -52,7 +52,7 @@ public class CpIndexController {
                 Map<String,Object> goodsListMap = new HashMap<>();
                 for (SysDictionary sysDictionary : goodsStatusDlist) {
                     Page<CpGoods> goodsPage = cpGoodsService.page(objectPage, cpGoodsService.getWrapper(MapUtil.getMap("statusDcode", sysDictionary.getCode())));
-                    goodsListMap.put(sysDictionary.getCode(),goodsPage.getRecords());
+                    goodsListMap.put(sysDictionary.getCode(),cpGoodsService.parse(goodsPage.getRecords()));
                 }
                 //商品状态字典
                 model.addAttribute("goodsStatusDlist",goodsStatusDlist);

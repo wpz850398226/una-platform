@@ -1,31 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <!--<div th:replace="/duohui/guanwang/include/head :: head"></div>-->
-<head>
-<meta charset="utf-8"/>
-<title>多汇供应链管理有限公司</title>
-<meta name="keywords" content="多汇供应链管理有限公司">
-<meta name="description" content="多汇供应链管理有限公司">
-  <link rel="stylesheet" th:href="@{/duohui/chanpin/css/base1.css}">
-  <link rel="stylesheet" th:href="@{/duohui/chanpin/css/main_001.css}">
-  <link rel="stylesheet" th:href="@{/duohui/chanpin/css/demo.css}">
-  <link rel="stylesheet" th:href="@{/duohui/chanpin/css/iconfont.css}">
-  <style>
-    .listmore{display:block;text-align:center;height:40px;width:160px;border-top:0; margin-top:20px; font-weight:600;}
-  </style>
-
-  <script th:src="@{/duohui/chanpin/js/jquery-1.js}" charset="utf-8"></script>
-  <script th:src="@{/duohui/chanpin/js/public.js}" charset="utf-8"></script>
-  <script type="text/javascript">        var _curWeb = "news";</script>
-  <script type="text/javascript" src="script/global.js}"></script>
-  <script type="text/javascript" th:src="@{/duohui/chanpin/js/jquery.min.js}"></script>
-  <script type="text/javascript" th:src="@{/duohui/chanpin/js/jquery-1.js}"></script>
-  <script type="text/javascript" th:src="@{/duohui/chanpin/js/responsiveslides.js}"></script>
-  <script th:src="@{/duohui/chanpin/js/flickerplate.min.js}"></script>
-  <script type="text/javascript" th:src="@{/duohui/chanpin/js/jcarousellite_1.0.1.js}"></script>
-  <script type="text/javascript" th:src="@{/duohui/chanpin/js/js.js}"></script>
-<!--下面是大图，上面是导航-->
-</head>
+<div th:replace="/duohui/chanpin/include/head :: head"></div>
 <body>
 <div class="header ">
   <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
@@ -67,11 +43,11 @@
       <div class="fr product-r">
         <ul>
           <li th:each="goods:${goodsListMap[goodsStatusDic.code]}">
-            <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a>
-            <a class="biaoti" href="">[[${goods.name}]]</a>
-            <em class="diqu">行业 | 地区</em>
-            <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i>
-            <a class="company" href="#">多汇供应链管理有限公司</a>
+            <a class="pic" th:href="${'/api/cp/goods/detail/'+goods.id}"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a>
+            <a class="biaoti" th:href="${'/api/cp/goods/detail/'+goods.id}">[[${goods.name}]]</a>
+            <em class="diqu">[[${goods.map['industryDname']}]] | [[${goods.map['regionName']}]]</em>
+            <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>[[${goods.sellingPrice]}]]</b> 元</i>
+            <a class="company" href="#">[[${goods.map['companyName']}]]</a>
           </li>
         </ul>
       </div>

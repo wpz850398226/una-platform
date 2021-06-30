@@ -36,6 +36,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private FlowNodeService flowNodeService;
     @Autowired
     private SysRoleService sysRoleService;
+    @Autowired
+    private SysRegionService sysRegionService;
 
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
@@ -83,6 +85,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     break;
                 case "entityId"://实体 entityId
                     target = sysEntityService.getById(Integer.valueOf(value));
+                    break;
+                case "regionId"://地区 regionId
+                    target = sysRegionService.getById(Integer.valueOf(value));
                     break;
             }
         }
