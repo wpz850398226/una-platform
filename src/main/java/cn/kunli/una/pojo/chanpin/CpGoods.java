@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.chanpin;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 账号(CpGoods)实体类
@@ -107,7 +106,7 @@ public class CpGoods extends BasePojo implements Serializable {
     //置顶截止时间
     private Date stickDeadline;
     //商品图片
-    private String fileIds;
+    private String fileId;
     //所属组织id
     private Integer companyId;
     //所属部门id

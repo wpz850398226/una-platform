@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.chanpin;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 商城-店铺类(CpShop)实体类
@@ -45,7 +44,7 @@ public class CpShop extends BasePojo implements Serializable {
     //微信二维码图片
     private String wechatErweimaPictureUrl;
     //图片
-    private String fileIds;
+    private String fileId;
     //是否置顶
     private Integer isStick;
     //是否热门

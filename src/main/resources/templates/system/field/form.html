@@ -60,6 +60,12 @@
                     </div>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">转换值编码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="transformDisplayCode" autocomplete="off" placeholder="请输入转换值编码" class="layui-input" th:value="${record['transformDisplayCode']}">
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <label class="layui-form-label">sql代码</label>
                     <div class="layui-input-inline">
                         <input type="text" name="dqlName" autocomplete="off" placeholder="请输入sql代码" class="layui-input" th:value="${record['dqlName']}">

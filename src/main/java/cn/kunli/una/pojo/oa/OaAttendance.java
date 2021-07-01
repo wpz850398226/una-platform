@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.oa;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 办公-考勤(OaAttendance)实体类
@@ -35,7 +34,7 @@ public class OaAttendance extends BasePojo implements Serializable {
     //事由
     private String reason;
     //外勤照片
-    private String fileIds;
+    private String fileId;
     //打卡时间
     private Date signTime;
 

@@ -1,15 +1,13 @@
 package cn.kunli.una.pojo.oa;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * 办公-补卡(OaReissue)实体类
@@ -29,7 +27,7 @@ public class OaReissue extends BasePojo implements Serializable {
     //事由
     private String reason;
     //图片
-    private String fileIds;
+    private String fileId;
     //是否审批通过
     private Integer isApprove;
     //流程实例id
