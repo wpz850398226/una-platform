@@ -37,7 +37,7 @@
                 <div class="layui-card" lay-filter="unaTableForm">
                     <div th:class="${#lists.isEmpty(sysResponseParameter.sysEntity.filterList)?'layui-hide':'layui-card-header'}" id="unaFilterHeader" style="padding: 10px 15px 10px 15px;">
                         <span class="layui-breadcrumb" lay-separator="|">
-                          <a th:each="filter:${sysResponseParameter.sysEntity.filterList}" href="javascript:" th:data-filter_name="${filter.fieldCode}" th:data-filter_value="${filter.filterValue}" th:text="${filter.name}"></a>
+                          <a th:each="filter:${sysResponseParameter.sysEntity.filterList}" href="javascript:" th:data-filter_name="${filter.fieldCode}" th:data-filter_value="${filter.value}" th:text="${filter.name}"></a>
                         </span>
                     </div>
                     <form id="unaTableForm" th:action="${sysResponseParameter.sysEntity.path }+'/export'">

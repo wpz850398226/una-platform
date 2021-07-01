@@ -72,11 +72,12 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     resultList = flowNodeService.list(flowNodeService.getWrapper(MapUtil.getMap("id",value)));
                     break;
                 case "roleId"://角色id，复数，以逗号分隔
+                case "RoleId"://角色id，复数，以逗号分隔
                     resultList = sysRoleService.list(sysRoleService.getWrapper(MapUtil.getMap("in:id", value)));
                     break;
                 case "fileId"://流程节点 entityId
                 case "FileId"://流程节点 entityId
-                    resultList = sysFileService.list(sysFileService.getWrapper(MapUtil.getMap("in:id", value)));
+                    resultList = sysFileService.parse(sysFileService.list(sysFileService.getWrapper(MapUtil.getMap("in:id", value))));
                     break;
             }
         }
@@ -97,6 +98,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     resultList = sysEntityService.list(sysEntityService.getWrapper(MapUtil.getMap("id",value)));
                     break;
                 case "regionId"://地区 regionId
+                case "RegionId"://地区 regionId
                     resultList = sysRegionService.list(sysRegionService.getWrapper(MapUtil.getMap("id",value)));
                     break;
             }

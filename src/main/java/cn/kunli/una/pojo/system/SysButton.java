@@ -24,6 +24,8 @@ public class SysButton extends BasePojo implements Serializable {
     private static final long serialVersionUID = 643270690059007717L;
     //所属实体
     private Integer entityId;
+    //所属权限id
+    private Integer permissionId;
     //位置（table,form
     private String positionDcode;
     //事件名称
@@ -36,6 +38,8 @@ public class SysButton extends BasePojo implements Serializable {
     private String iconDcode;
     //标签
     private String label;
+    //警示语
+    private String warning;
 
 
 }

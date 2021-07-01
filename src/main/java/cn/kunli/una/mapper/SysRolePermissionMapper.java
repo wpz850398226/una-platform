@@ -14,10 +14,10 @@ import org.apache.ibatis.annotations.Param;
 
 public interface SysRolePermissionMapper extends BasicMapper<SysRolePermission> {
 
-    @Insert("insert into sys_role_permission (role_id,permission_id,scope) select #{roleId},id,0 from sys_permission order by id")
+    @Insert("insert into sys_role_permission (role_id,permission_id,scope_dcode) select #{roleId},id,'permission_scope_none' from sys_permission order by id")
     Integer insertByRoleId(@Param("roleId") Integer roleId);
 
-    @Insert("insert into sys_role_permission (role_id,permission_id,scope) select id,#{permissionId},0 from sys_role order by id")
+    @Insert("insert into sys_role_permission (role_id,permission_id,scope_dcode) select id,#{permissionId},'permission_scope_none' from sys_role order by id")
     Integer insertByPermissionId(@Param("permissionId") Integer permissionId);
 
 }

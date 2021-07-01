@@ -21,15 +21,11 @@ public class SysFilter extends BasePojo implements Serializable {
 
     private String fieldId;
 
-    private String filterValue;
+    private String value;
 
 
-    @TableField(exist = false)
-    private String entityName;
     @TableField(exist = false)
     private String fieldCode;
-    @TableField(exist = false)
-    private String fieldName;
 
 
     private static final long serialVersionUID = 1L;

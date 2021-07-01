@@ -27,7 +27,7 @@
         ,#{record.name}
         ,#{record.entityId}
         ,#{record.fieldId}
-        ,#{record.filterValue}
+        ,#{record.value}
         ,#{record.sort_order}
         ,#{record.remark}
         ,#{record.creatorId}

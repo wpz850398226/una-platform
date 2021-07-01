@@ -3,15 +3,20 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysDataMapper;
 import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysSort;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,18 +81,45 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
         return map;
     }
 
-    /*@Override
+    @Override
     public List<SysData> parse(List<SysData> list) {
-        if (CollectionUtils.isEmpty(list)) return list;
-        for (SysData sysData : list) {
-            Map<String, Object> map = new HashMap<>();
-            if(sysData.getValue()!=null){
-                for (Map.Entry<String, Object> entry : sysData.getValue().entrySet()) {
-                    map.put(entry.getKey(),entry.getValue());
+        if(CollectionUtils.isEmpty(list))return list;
+        SysData sysData0 = list.get(0);
+
+        if(sysData0.getEntityId()!=null){
+            //虚拟实体，查询虚拟实体类，而不是sysData类
+            Integer entityId = sysData0.getEntityId();
+            List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(MapUtil.getMap("entityId",entityId)));
+
+            if(CollectionUtils.isNotEmpty(fieldList)){
+                //遍历该实体类的所有字段
+                for (SysField sysField : fieldList) {
+                    if(StringUtils.isNotBlank(sysField.getAssignmentCode())&&StringUtils.isNotBlank(sysField.getDisplayCode())
+                            &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
+                        for (SysData sysData : list) {
+                            //获取记录中赋字段的值
+                            Object value = sysData.getValue().get(sysField.getAssignmentCode());
+                            String displayValue = "";
+
+                            if(null != value){
+                                //实体中该字段值为空的
+                                SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
+                                if(displayResult.getIsSuccess()){
+                                    displayValue = displayResult.getData().toString();
+//                                    sysData.getValue().put(sysField.getDisplayCode(),displayValue);
+                                    Map<String, Object> map = sysData.getMap();
+                                    if(map==null)map = new HashMap<>();
+                                    map.put(sysField.getDisplayCode(), displayValue);
+                                    sysData.setMap(map);
+                                }
+                            }
+                        }
+                    }
+
                 }
-                sysData.setMap(map);
             }
         }
+
         return list;
-    }*/
+    }
 }
