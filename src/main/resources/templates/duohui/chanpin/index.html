@@ -45,8 +45,8 @@
           <li th:each="goods:${goodsListMap[goodsStatusDic.code]}">
             <a class="pic" th:href="${'/api/cp/goods/detail/'+goods.id}"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a>
             <a class="biaoti" th:href="${'/api/cp/goods/detail/'+goods.id}">[[${goods.name}]]</a>
-            <em class="diqu">[[${goods.map['industryDname']}]] | [[${goods.map['regionName']}]]</em>
-            <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>[[${goods.sellingPrice]}]]</b> 元</i>
+            <em class="diqu">[[${goods.map['thirdryIndustryDname']}]] | [[${goods.map['regionName']}]]</em>
+            <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>[[${goods.sellingPrice}]]</b> 元</i>
             <a class="company" href="#">[[${goods.map['companyName']}]]</a>
           </li>
         </ul>
@@ -199,20 +199,6 @@ function gopage1(n)
   document.getElementById("m"+n).className="title1_cur";
   document.getElementById("c"+n).style.display='';
 }
-
-$(function () {
-  // Slideshow
-  $("#slider").responsiveSlides({
-    auto: true,
-    pager: false,
-    nav: true,
-    speed: 500,
-    timeout:4000,
-    pager: true,
-    pauseControls: true,
-    namespace: "callbacks"
-  });
-});
 </script>
 </body>
 </html>

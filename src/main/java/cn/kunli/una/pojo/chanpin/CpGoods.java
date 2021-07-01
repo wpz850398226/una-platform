@@ -33,8 +33,12 @@ public class CpGoods extends BasePojo implements Serializable {
     private Integer sales;
     //所属店铺id
     private Integer shopId;
-    //所属行业id
-    private String industryDcode;
+    //所属一级行业编码
+    private String primaryIndustryDcode;
+    //所属二级行业编码
+    private String secondryIndustryDcode;
+    //所属三级行业编码
+    private String thirdryIndustryDcode;
     //类型id
     private String typeDcode;
     //产品状态id

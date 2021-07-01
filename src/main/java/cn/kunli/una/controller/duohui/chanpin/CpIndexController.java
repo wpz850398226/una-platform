@@ -34,8 +34,7 @@ public class CpIndexController {
     private CpGoodsService cpGoodsService;
 
     /**
-     * 打开主体框架
-     *
+     * 打开主页
      * @param model
      * @return
      */
@@ -63,10 +62,16 @@ public class CpIndexController {
         return "duohui/chanpin/index";
     }
 
-    //未授权页面
-    @RequestMapping("/unauthorized")
-    public String unauthorized() {
-        return "error/401";
+    /**
+     * 打开搜索页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/product")
+    public String product(Model model) {
+        getCommonItem(model);
+
+        return "duohui/chanpin/product";
     }
 
     private void getCommonItem(Model model){

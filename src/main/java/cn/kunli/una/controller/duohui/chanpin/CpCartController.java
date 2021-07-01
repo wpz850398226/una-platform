@@ -1,9 +1,12 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpCart;
+import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.service.duohui.chanpin.CpCartService;
 import cn.kunli.una.controller.BaseController;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -15,4 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/cp/cart")
 public class CpCartController extends BaseController<CpCartService, CpCart> {
+
+    /**
+     * 打开前端 商品详情
+     * @param model
+     * @return
+     */
+    @RequestMapping("/fDetail")
+    public String fDetail(Model model) {
+        return "duohui/chanpin/gwc";
+    }
+
 }

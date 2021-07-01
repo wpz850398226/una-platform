@@ -13,4 +13,9 @@ public class DhLoginController {
     public String toLogin() {
         return "duohui/denglu/login";
     }
+
+    @GetMapping("/toRegister")
+    public String toRegister() {
+        return "duohui/denglu/register";
+    }
 }

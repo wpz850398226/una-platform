@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
 
     /**
-     * 打开商品详情
+     * 打开前端 商品详情
      * @param model
      * @return
      */
     @RequestMapping("/fDetail/{id}")
-    public String detail(Model model, @PathVariable Integer id) {
+    public String fDetail(Model model, @PathVariable Integer id) {
         CpGoods record = service.getById(id);
         model.addAttribute("record",record);
 

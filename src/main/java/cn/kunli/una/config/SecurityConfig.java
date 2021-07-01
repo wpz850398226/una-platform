@@ -53,11 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //表单提交
         http.formLogin()
                 //自定义登录页面
-                .loginPage("/sys/login/toLogin")
+                .loginPage("/duohui/login/toLogin")
                 //登录表单提交地址
                 .loginProcessingUrl("/sys/login/login")
                 //登录成功后跳转的页面，必须是post请求
-                .successForwardUrl("/sys/index")
+//                .successForwardUrl("/sys/index")
                 //自定义登录成功处理器
                 .successHandler(myAuthenticationSuccessHandler)
                 //自定义登录失败处理器
