@@ -37,6 +37,8 @@ public class FlowNode extends BasePojo implements Serializable {
     private String candidateValue;
     //实体/表单id
     private Integer entityId;
+    //要审批的节点
+    private String approveNodeId;
 
 
     @TableField(exist = false)

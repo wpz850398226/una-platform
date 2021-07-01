@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
@@ -185,15 +187,31 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     public List<SysField> parse(List<SysField> list) {
         super.parse(list);
         for (SysField record : list) {
-            List<SysField> children = sysFieldService.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
-            if(CollectionUtils.isNotEmpty(children)){
+            //下拉联动子组件
+            List<SysField> selectChildren = sysFieldService.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
+            if(CollectionUtils.isNotEmpty(selectChildren)){
                 List<String> idList = new ArrayList<>();
-                for (SysField sysField : children) {
+                for (SysField sysField : selectChildren) {
                     idList.add(sysField.getId().toString());
                 }
 
                 String idStr = ListUtil.listToStr(idList);
                 record.setSelectSubIds(idStr);
+            }
+
+            //隐藏子组件
+            List<SysField> hiddenChildren = sysFieldService.list(this.getWrapper(MapUtil.getMap("hideFieldId", record.getId())));
+            if(CollectionUtils.isNotEmpty(hiddenChildren)){
+                Map<String,String> map = new HashMap<>();
+                for (SysField sysField : hiddenChildren) {
+                    if(map.containsKey(sysField.getHideFieldValue())){
+                        //触发多个隐藏
+                        map.put(sysField.getHideFieldValue(),map.get(sysField.getHideFieldValue())+","+sysField.getId());
+                    }else{
+                        map.put(sysField.getHideFieldValue(),String.valueOf(sysField.getId()));
+                    }
+                }
+                record.setHideSubMap(map);
             }
 
             if (StringUtils.isNotBlank(record.getRadioOptions())){

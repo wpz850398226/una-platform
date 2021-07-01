@@ -293,7 +293,9 @@
                                th:value="${record['optionParamValue']}">
                     </div>
                 </div>
+            </div>
 
+            <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">联动父元素</label>
                     <div class="layui-input-inline">
@@ -308,30 +310,27 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">触发隐藏</label>
+                    <label class="layui-form-label">触发隐藏字段</label>
                     <div class="layui-input-inline">
-                        <div class="una-select una-select-multiple"
-                             lay-search=""
-                             name="switchHideOption"
-                             th:data-param_name="${record['optionParamName']}"
-                             th:data-param_value="${record['optionParamValue']}"
-                             th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                             th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                             th:data-selected="${record['switchHideOption']}"
-                             th:data-url="${record['optionEntityPath']}">
-                        </div>
+                        <select class="una-select"
+                                name="hideFieldId"
+                                lay-search=""
+                                data-param_name="entityId,assignmentModeDcode"
+                                th:data-param_value="${record['entityId']}+',field_assignment_singleselect'"
+                                th:data-selected="${record['hideFieldId']}"
+                                data-url="/api/sys/field"></select>
                     </div>
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">被隐藏字段</label>
+                    <label class="layui-form-label">触发隐藏值</label>
                     <div class="layui-input-inline">
                         <input type="text"
-                               name="switchHideIds"
+                               name="hideFieldValue"
                                autocomplete="off"
-                               placeholder="请输入被隐藏字段"
+                               placeholder="请输入触发隐藏值"
                                class="layui-input"
-                               th:value="${record['switchHideIds']}">
+                               th:value="${record['hideFieldValue']}">
                     </div>
                 </div>
             </div>
@@ -506,9 +505,9 @@
                 if(data.elem.classList.contains("una-switch-hide")){
                     var value = data.value
                         ,switchHideClass = data.elem.dataset.switch_hide_class
-                        ,switchHideOption = data.elem.dataset.switch_hide_option
+                        ,hideFieldId = data.elem.dataset.switch_hide_option
                         ,optionArray = new Array(); //定义一数组
-                    if(switchHideOption!=null)optionArray = switchHideOption.split(",");
+                    if(hideFieldId!=null)optionArray = hideFieldId.split(",");
 
                     if(switchHideClass!=null){
                         classArray = new Array();

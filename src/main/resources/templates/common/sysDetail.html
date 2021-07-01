@@ -53,7 +53,7 @@
 
                             <div th:case="field_assignment_singleselect"  class="layui-input-inline">
                                 <!--单选下拉-->
-                                <select th:class="'una-select una-select-linkage'+${record['switchHideOption']!=null?' una-switch-hide':''}" lay-search=""
+                                <select th:class="'una-select una-select-linkage'+${record['hideFieldId']!=null?' una-switch-hide':''}" lay-search=""
                                         th:lay-verify="${record['map']['formatCheckTypeDvalue']}"
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
@@ -64,8 +64,6 @@
                                     record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
                                         th:data-option_name_field_title="${record['optionNameFieldCode']}"
                                         th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                        th:data-switch_hide_ids="${record['switchHideIds']}"
-                                        th:data-switch_hide_option="${record['switchHideOption']}">
                                 </select>
                             </div>
 
@@ -427,36 +425,34 @@
             }
 
             //判断类名，是否有隐藏联动
-            if(data.elem.classList.contains("una-switch-hide")){
-                var value = data.value
-                    ,switchHideIds = data.elem.dataset.switch_hide_ids
-                    ,switchHideOption = data.elem.dataset.switch_hide_option
-                    ,optionArray = new Array()
-                    ,idsArray= new Array(); //定义一数组
-                if(switchHideOption!=null)optionArray = switchHideOption.split(",");
-
-                if(switchHideIds!=null){
-                    idsArray = switchHideIds.split(",");
-                    for (var i=0;i<optionArray.length ;i++ ){
-                        var idArray = idsArray[i].split("&");
-                        if(value!=optionArray[i]){
-                            //未选中
-                            for(var j=0;j<idArray.length ;j++ ){
-                                $("#"+idArray[j]).closest(".layui-form-item").addClass("layui-hide");
-                            }
-                        }
-                    }
-                    for (var i=0;i<optionArray.length ;i++ ){
-                        var idArray = idsArray[i].split("&");
-                        if(value==optionArray[i]){
-                            //选中
-                            for(var j=0;j<idArray.length ;j++ ){
-                                $("#"+idArray[j]).closest(".layui-form-item").removeClass("layui-hide");
-                            }
-                        }
-                    }
-                }
-            }
+            // if(data.elem.classList.contains("una-switch-hide")){
+            //     var value = data.value
+            //         ,optionArray = new Array()
+            //         ,idsArray= new Array(); //定义一数组
+            //     if(hideFieldId!=null)optionArray = hideFieldId.split(",");
+            //
+            //     if(switchHideIds!=null){
+            //         idsArray = switchHideIds.split(",");
+            //         for (var i=0;i<optionArray.length ;i++ ){
+            //             var idArray = idsArray[i].split("&");
+            //             if(value!=optionArray[i]){
+            //                 //未选中
+            //                 for(var j=0;j<idArray.length ;j++ ){
+            //                     $("#"+idArray[j]).closest(".layui-form-item").addClass("layui-hide");
+            //                 }
+            //             }
+            //         }
+            //         for (var i=0;i<optionArray.length ;i++ ){
+            //             var idArray = idsArray[i].split("&");
+            //             if(value==optionArray[i]){
+            //                 //选中
+            //                 for(var j=0;j<idArray.length ;j++ ){
+            //                     $("#"+idArray[j]).closest(".layui-form-item").removeClass("layui-hide");
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
         });
 

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 字段(SysField)实体类
@@ -81,10 +82,10 @@ public class SysField extends BasePojo implements Serializable {
     private Integer selectParentId;
     //列固定方式：左，右，无
     private String fixedType;
+    //触发隐藏的字段
+    private Integer hideFieldId;
     //触发隐藏的选项值
-    private String switchHideOption;
-    //联动隐藏的元素ids，同一个选项触发的隐藏元素id用&分隔，不同选项触发的隐藏元素id用，分隔
-    private String switchHideIds;
+    private String hideFieldValue;
     //是否生效
     private Boolean isEffect;
 
@@ -98,5 +99,7 @@ public class SysField extends BasePojo implements Serializable {
     private String[] radioOptionArray;          //单选备选值数组
     @TableField(exist = false)
     private String assignmentType;      //赋值类型：手动赋值，自动赋值
+    @TableField(exist = false)
+    private Map<String,String> hideSubMap;   //联动隐藏子组件，map<组件id，触发值>
 
 }
