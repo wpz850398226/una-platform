@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.chanpin;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 账号(CpGoods)实体类
@@ -115,5 +117,14 @@ public class CpGoods extends BasePojo implements Serializable {
     private Integer companyId;
     //所属部门id
     private Integer departmentId;
+
+
+
+    @TableField(exist = false)
+    private List<CpSpecification> specificationList;
+    @TableField(exist = false)
+    private List<CpAttribute> attributeList;
+    @TableField(exist = false)
+    private List<CpGoodsAttribute> goodsAttributeList;
 
 }
