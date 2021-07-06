@@ -55,7 +55,7 @@ $(function () {
               </a> </li>
             <li><a th:href="${record.value.cpptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>产品平台</b> </div>
-              <div class="xia"> <img th:src="${record.value.cpptImg}" /></div>
+              <div class="xia"> <img th:src="${record.map.cpptImgFileUrl}" /></div>
               </a> </li>
             <li><a th:href="${record.value.fwptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>服务平台</b> </div>

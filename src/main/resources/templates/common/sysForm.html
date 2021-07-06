@@ -71,7 +71,7 @@
                                         th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
                                     record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
                                         th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
+                                        th:data-option_value_field_title="${record['optionValueFieldCode']}">
                                 </select>
                             </div>
 

@@ -84,6 +84,19 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
     @Override
     public List<SysData> parse(List<SysData> list) {
         if(CollectionUtils.isEmpty(list))return list;
+        for (SysData sysData : list) {
+            if(sysData.getEntityId()!=null){
+                SysEntity sysEntity = sysEntityService.getById(sysData.getEntityId());
+                if(sysEntity!=null){
+                    Map<String, Object> map = sysData.getMap();
+                    if(map==null)map = new HashMap<>();
+                    map.put("entityName", sysEntity.getName());
+                    sysData.setMap(map);
+                }
+            }
+        }
+
+
         SysData sysData0 = list.get(0);
 
         if(sysData0.getEntityId()!=null){
@@ -98,19 +111,20 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
                             &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
                         for (SysData sysData : list) {
                             //获取记录中赋字段的值
-                            Object value = sysData.getValue().get(sysField.getAssignmentCode());
                             String displayValue = "";
-
-                            if(null != value){
-                                //实体中该字段值为空的
-                                SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
-                                if(displayResult.getIsSuccess()){
-                                    displayValue = displayResult.getData().toString();
+                            if(sysData.getValue()!=null){
+                                Object value = sysData.getValue().get(sysField.getAssignmentCode());
+                                if(null != value){
+                                    //实体中该字段值为空的
+                                    SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
+                                    if(displayResult.getIsSuccess()){
+                                        displayValue = displayResult.getData().toString();
 //                                    sysData.getValue().put(sysField.getDisplayCode(),displayValue);
-                                    Map<String, Object> map = sysData.getMap();
-                                    if(map==null)map = new HashMap<>();
-                                    map.put(sysField.getDisplayCode(), displayValue);
-                                    sysData.setMap(map);
+                                        Map<String, Object> map = sysData.getMap();
+                                        if(map==null)map = new HashMap<>();
+                                        map.put(sysField.getDisplayCode(), displayValue);
+                                        sysData.setMap(map);
+                                    }
                                 }
                             }
                         }

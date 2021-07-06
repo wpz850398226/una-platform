@@ -29,9 +29,9 @@ $.ajaxSetup({
 //自动加载单选下拉选择的选项
 $("select.una-select").each(function(){
 	//$(this).parent().after("<img src='/una/images/loading.gif' style='display: none'>")
-	if($(this).attr("data-param_value")!=null){
+	// if($(this).attr("data-param_value")!=null){
 		prepareAutoSingleSelect($(this));
-	}
+	// }
 })
 
 //自动加载下拉选择的选项
@@ -189,10 +189,9 @@ function autoLoadOption(e){
 	}
 
 	//如果参数值为all，则查询参数为空
-	if(paramValue!='all')paramJson = eval('({' + param + '})');
+	if(paramValue!='all'&&paramValue!=null&&paramValue!="")paramJson = eval('({' + param + '})');
 
-
-	if(paramValue!=null&&paramValue!=""){
+	console.log(paramJson)
 		$.ajax({
 			type: 'GET',
 			url: url,
@@ -213,7 +212,6 @@ function autoLoadOption(e){
 
 		layui.form.render();
 
-	}
 
 	//联动的下拉选择元素选项清空
 	if(oldOptionNum!=0){

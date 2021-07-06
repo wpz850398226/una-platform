@@ -43,6 +43,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private SysRegionService sysRegionService;
     @Autowired
     private SysFileService sysFileService;
+    @Autowired
+    private SysCompanyService sysCompanyService;
+    @Autowired
+    private SysDepartmentService sysDepartmentService;
 
     /**
      * 转换存储值为显示值
@@ -102,6 +106,18 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "regionId"://地区 regionId
                 case "RegionId"://地区 regionId
                     resultList = sysRegionService.list(sysRegionService.getWrapper(MapUtil.getMap("id",value)));
+                    break;
+            }
+        }
+
+        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=9){
+            switch (assignmentCode.substring(length - 9)) {
+                case "companyId"://公司 companyId
+                case "CompanyId"://公司 companyId
+                    resultList = sysCompanyService.list(sysCompanyService.getWrapper(MapUtil.getMap("id",value)));
+                    break;
+                case "artmentId"://部门 departmentId
+                    resultList = sysDepartmentService.list(sysDepartmentService.getWrapper(MapUtil.getMap("id",value)));
                     break;
             }
         }

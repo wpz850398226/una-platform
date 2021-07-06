@@ -21,7 +21,7 @@
 
 <!--盖楼-->
 <div class="clear">
-  <div class="clear w1200 product mt20" th:each="goodsStatusDic : ${goodsStatusDlist}">
+  <div class="clear w1200 product mt20" th:each="goodsStatusDic,status : ${goodsStatusDlist}">
     <h2>
       <span class="fr">
         <a href="#">小分类</a><a>|</a>
@@ -30,7 +30,7 @@
         <a href="#">小分类</a><a>|</a>
         <a href="#">小分类</a>
       </span>
-      <em class="mr10">1F</em>
+      <em class="mr10">[[${status.index+1}]]F</em>
       <a href="#">[[${goodsStatusDic.name}]]</a>
     </h2>
     <div class="clear product-nr clearfix">
@@ -43,11 +43,7 @@
       <div class="fr product-r">
         <ul>
           <li th:each="goods:${goodsListMap[goodsStatusDic.code]}">
-            <a class="pic" th:href="${'/api/cp/goods/detail/'+goods.id}"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a>
-            <a class="biaoti" th:href="${'/api/cp/goods/detail/'+goods.id}">[[${goods.name}]]</a>
-            <em class="diqu">[[${goods.map['thirdryIndustryDname']}]] | [[${goods.map['regionName']}]]</em>
-            <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>[[${goods.sellingPrice}]]</b> 元</i>
-            <a class="company" href="#">[[${goods.map['companyName']}]]</a>
+            <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
           </li>
         </ul>
       </div>

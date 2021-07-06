@@ -8,6 +8,7 @@ import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.service.duohui.guanwang.GwConfigurationService;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
 import cn.kunli.una.service.system.SysDataService;
+import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
@@ -46,6 +47,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
             model.addAttribute("record",list.get(0));
         }*/
         SysData record = sysDataService.getById(100001);
+        record = sysDataService.parse(ListUtil.getList(record)).get(0);
         model.addAttribute("record",record);
 
         getCommonItem(model,null);

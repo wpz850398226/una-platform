@@ -17,66 +17,13 @@
 </head>
 <body>
 <div class="header ">
-  <div class="header_top">
-    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
-      <div class=" right  top" >
-        <ul class="duohui_menu fr font-f">
-          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/chanpin/images/shoucang.jpg}" /></a></span></li>
-          <li> <a class="bgt" href="gouwuche.html">购物车</a>
-            <ul>
-              <li><a  href="#">已加入购物车</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="#">我的业务体系</a>
-            <ul>
-              <li><a  href="#">信息平台</a></li>
-              <li><a href="#">产品平台</a></li>
-              <li><a  href="#">服务平台</a></li>
-              <li><a href="#">招投标平台</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="project.html">客服中心</a>
-            <ul>
-              <li><a  href="#">新手入门</a></li>
-              <li><a href="#">找回密码</a></li>
-              <li><a  href="#">注销店铺</a></li>
-              <li><a href="#">联系客服</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="#">会员中心</a>
-            <ul>
-              <li><a  href="#">会员中心</a></li>
-              <li><a href="#">我的资料</a></li>
-              <li><a href="#">退出</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
-    <h1 class="logo fl"><a href="index.html" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
-    <div class="fr fabu"><a class="" href="mffbxx.html">发布产品信息</a></div>
-    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
-    <div class="sousuo fr mr30  ml10" >
-      <form>
-        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
-        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
-      </form>
-    </div>
-  </div>
-  <div class=" navbg clear clearfix">
-
-  </div>
+  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="/duohui/chanpin/include/header :: header"></div>
+  <div class=" navbg clear clearfix"></div>
 </div>
-
 <div class="huibg">
 <div class="clear clearfix mt10"></div>
-<div class="clear clearfix w1150"> <a href="#0"><img src="images/1_39.jpg}" width="1150"></a> </div>
-<div class="clear clearfix mt20"></div>
-<div class="weizhi w1150">
-  <p><em class="fl"></em><span class="ml10">您当前的位置 : : <a href="index.html">首页</a>><a href="newslist.html">品质保障</a></span></p>
-</div>
+
 <div class=" clear clearfix w1150  bor " style=" margin:10px auto;">
   <div class="fenleisousuo clear clearfix">
     <ul>
@@ -182,9 +129,12 @@ int();//初始化隐藏多余标签
 
       <div class=" product-r gsmc" style=" width:210px;">
         <ul>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
-           <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
-
+<!--          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>-->
+<!--           <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>-->
+<!--          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>-->
+          <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
+          <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
+          <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
         </ul>
       </div>
 
@@ -241,9 +191,9 @@ $(this).find("div").hide();
 
       <div class=" product-r gsmc">
         <ul>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
-           <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
-
+          <li th:each="goods:${goodsListMap[goodsStatusDic.code]}">
+            <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
+          </li>
         </ul>
       </div>
     </div>
