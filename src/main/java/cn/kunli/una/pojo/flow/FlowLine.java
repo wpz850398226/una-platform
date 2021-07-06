@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 流程连线(FlowLine)实体类
@@ -24,7 +25,7 @@ import java.io.Serializable;
 public class FlowLine extends BasePojo implements Serializable {
     private static final long serialVersionUID = -56496290891072647L;
     //条件
-    private String flowCondition;
+    private Map<String,Object> flowCondition;
     //来源节点id
     @NotNull(message = "来源节点不能为空！")
     private Integer originNodeId;

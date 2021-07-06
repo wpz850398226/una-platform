@@ -120,10 +120,10 @@ public class CpGoods extends BasePojo implements Serializable {
 
 
 
+    //规格列表
     @TableField(exist = false)
     private List<CpSpecification> specificationList;
-    @TableField(exist = false)
-    private List<CpAttribute> attributeList;
+    //商品规格属性列表
     @TableField(exist = false)
     private List<CpGoodsAttribute> goodsAttributeList;
 
