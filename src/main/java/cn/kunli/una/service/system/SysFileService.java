@@ -101,7 +101,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
             obj.setOriginName(originalFilename);
             obj.setSize(obj.getFile().getSize());
             obj.setExtension(originalFilename.substring(originalFilename.lastIndexOf(".") + 1));
-            obj.setTypeDcode("platform_file_extension_" + obj.getExtension());
+            obj.setTypeDcode("file_extension_" + obj.getExtension());
         }
 
         super.initialize(obj);

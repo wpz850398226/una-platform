@@ -1,7 +1,9 @@
 package cn.kunli.una.pojo.chanpin;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -117,6 +119,9 @@ public class CpGoods extends BasePojo implements Serializable {
     private Integer companyId;
     //所属部门id
     private Integer departmentId;
+    //值，扩展字段
+    @TableField(typeHandler = FastjsonTypeHandler.class)
+    private JSONObject goodsParam;
 
 
 

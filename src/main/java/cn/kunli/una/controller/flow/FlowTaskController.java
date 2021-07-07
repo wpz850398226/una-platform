@@ -56,7 +56,7 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                     if(entity.getIsAgree().equals(flowCondition.get("isAgree"))){
                         //符合条件，查询连线的目标节点，激活待办任务
                         FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
-                        if(targetNode.getTypeDcode().equals("platform_flow_nudeType_end")){
+                        if(targetNode.getTypeDcode().equals("flow_nudeType_end")){
                             //如果目标节点是结束类型，直接完成任务，并结束
                             service.saveRecord(new FlowTask().setInstanceId(entity.getId())
                                     .setAccountId(flowTask.getModifierId())

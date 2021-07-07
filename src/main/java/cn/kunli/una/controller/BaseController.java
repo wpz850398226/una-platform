@@ -52,6 +52,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@Autowired
 	protected SysFieldService sysFieldService;
 	@Autowired
+	protected SysAccountService sysAccountService;
+	@Autowired
 	protected SysEntityService sysEntityService;
 	@Autowired
 	protected SysRoleService sysRoleService;

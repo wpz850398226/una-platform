@@ -37,5 +37,9 @@ public class OaAttendance extends BasePojo implements Serializable {
     private String fileId;
     //打卡时间
     private Date signTime;
+    //所属日期
+    private Date attendanceDate;
+    //账号id
+    private Integer accountId;
 
 }

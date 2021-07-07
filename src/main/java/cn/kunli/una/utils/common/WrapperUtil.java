@@ -40,7 +40,7 @@ public class WrapperUtil<T> {
                         case "in":
                             queryWrapper.in(column,value.toString().split(","));
                             break;
-                        case "ne":
+                        case "ne"://不等于
                             queryWrapper.ne(column,value);
                             break;
                         case "gt"://大于

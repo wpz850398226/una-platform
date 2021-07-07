@@ -50,10 +50,10 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             SysAccount initiator = sysAccountService.getById(flowInstance.getCreatorId());
 
             switch(flowNode.getTypeDcode()){
-                case "platform_flow_candidateType_account":             //账号（复数）
+                case "flow_candidateType_account":             //账号（复数）
                     obj.setCandidateAccountId(flowNode.getCandidateValue());
                     break;
-                case "platform_flow_candidateType_role":                //角色（复数）
+                case "flow_candidateType_role":                //角色（复数）
                     String roleIds = flowNode.getCandidateValue();
                     if(StringUtils.isNotBlank(roleIds)){
                         String[] roleIdArray = roleIds.split(",");
@@ -64,14 +64,14 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                         }
                     }
                     break;
-                case "platform_flow_candidateType_superior":            //流程发起人的直接上级
+                case "flow_candidateType_superior":            //流程发起人的直接上级
                     obj.setCandidateAccountId(initiator.getSuperiorAccountId().toString());
                     break;
-                case "platform_flow_candidateType_departmentManager":   //部门主管
+                case "flow_candidateType_departmentManager":   //部门主管
                     SysDepartment sysDepartment = sysDepartmentService.getById(initiator.getDepartmentId());
                     obj.setCandidateAccountId(sysDepartment.getManagerAccountId().toString());
                     break;
-                case "platform_flow_candidateType_initiator":           //流程发起人
+                case "flow_candidateType_initiator":           //流程发起人
                     obj.setCandidateAccountId(flowInstance.getCreatorId().toString());
                     break;
             }

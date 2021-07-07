@@ -94,7 +94,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //保存数据，保存前进行初始化
         boolean saveResult = super.save(initialize(entity));
         if(saveResult){
-            return SysResult.success();
+            return new SysResult().success(entity.getId());
         }
         return SysResult.fail();
     }
