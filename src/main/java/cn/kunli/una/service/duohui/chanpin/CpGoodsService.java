@@ -8,6 +8,7 @@ import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,11 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
 
             }
+        }
+
+        if(StringUtils.isNotBlank(obj.getGoodsParamStr())){
+            JSONObject jsonObject = JSONObject.parseObject(obj.getGoodsParamStr());
+            obj.setGoodsParam(jsonObject);
         }
 
         return obj;

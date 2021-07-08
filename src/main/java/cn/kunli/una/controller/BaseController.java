@@ -77,7 +77,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@PostMapping("")
 	@ResponseBody
-	public SysResult add(@Valid T entity) {
+	public SysResult add(@Valid @RequestBody T entity) {
 		return service.saveRecord(entity);
 	}
 
@@ -125,7 +125,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@PutMapping("")
 	@ResponseBody
-	public SysResult update(T entity) {
+	public SysResult update(@RequestBody T entity) {
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
 			return service.updateRecordById(entity);
