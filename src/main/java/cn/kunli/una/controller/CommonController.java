@@ -58,9 +58,11 @@ public class CommonController {
     @SneakyThrows
     @RequestMapping("/manage/{className}")
     public String manage(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> params) {
+        if(StringUtils.isBlank(className))return null;
         //判断权限
         //if(!SecurityUtils.getSubject().isPermitted(className+":retrieve"))return "error/401";
         SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
+        if(entityClass==null)return null;
         SysResponseParameter sysResponseParameter = new SysResponseParameter();
         if(entityClass!=null){
             entityClass = sysEntityService.parse(ListUtil.getList(entityClass)).get(0);

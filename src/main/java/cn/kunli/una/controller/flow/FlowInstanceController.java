@@ -4,6 +4,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.flow.FlowInstance;
 import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.flow.FlowTask;
+import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
@@ -75,12 +76,23 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                                 flowTask.setCandidateAccountId(flowNode.getCandidateValue());
                                 break;
                             case "flow_candidateType_role":
+                                List<SysAccount> accountList = sysAccountService.list(sysAccountService.getWrapper(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1")));
+                                if(CollectionUtils.isNotEmpty(accountList)){
+                                    StringBuffer stringBuffer = new StringBuffer();
+                                    for (SysAccount sysAccount : accountList) {
+                                        stringBuffer.append(",").append(sysAccount.getId());
+                                    }
+                                    flowTask.setCandidateAccountId(stringBuffer.delete(0,1).toString());
+                                }
                                 break;
                             case "flow_candidateType_superior":
+                                SysAccount sysAccount = sysAccountService.getById(entity.getCreatorId());
+                                flowTask.setCandidateAccountId(sysAccount.getId().toString());
                                 break;
                             case "flow_candidateType_departmentManager":
                                 break;
                             case "flow_candidateType_initiator":
+                                flowTask.setCandidateAccountId(entity.getCreatorId().toString());
                                 break;
                         }
                         flowTaskService.saveRecord(flowTask);

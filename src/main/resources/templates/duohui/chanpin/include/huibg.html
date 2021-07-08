@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <div th:fragment="huibg" class="huibg">
-        <div class="w1200 "> <a href=""><img src="images/1_39.jpg}" height="96" width="1200"></a> </div>
+        <div class="w1200 "> <a href=""><img th:src="${record.map.sbggFileUrl}" height="96" width="1200"></a> </div>
         <div class=" w1200 clear clearfix">
             <div class="tuijian fl">
                 <h2><em class="fr "><a href="#">查看全部></a></em><a href="#">精品推荐</a></h2>

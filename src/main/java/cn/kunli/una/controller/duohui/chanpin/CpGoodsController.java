@@ -4,6 +4,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
+import cn.kunli.una.utils.common.ListUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
      */
     @RequestMapping("/fDetail/{id}")
     public String fDetail(Model model, @PathVariable Integer id) {
-        CpGoods record = service.getById(id);
+        CpGoods record = service.parse(ListUtil.getList(service.getById(id))).get(0);
         model.addAttribute("record",record);
 
         return "duohui/chanpin/procon";

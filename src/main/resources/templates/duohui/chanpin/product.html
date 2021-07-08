@@ -122,71 +122,25 @@ int();//初始化隐藏多余标签
 </div>
 <div class=" clear clearfix w1150 " style="padding:20px 0;  margin:0 auto;">
   <div class=" w210 fr ">
-  <div class=" clear clearfix  newslei product-nr">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">热卖推荐</a></h2>
-      </div>
+    <div th:replace="/duohui/chanpin/include/remaituijian :: remai"></div>
 
-      <div class=" product-r gsmc" style=" width:210px;">
-        <ul>
-<!--          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>-->
-<!--           <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>-->
-<!--          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>-->
-          <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
-          <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
-          <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
-        </ul>
-      </div>
-
-
-    </div>
-
-    <div class=" clear clearfix  newslei ">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">本周搜索排行</a></h2>
-      </div>
-      <div class="paixu mt20">
-        <ul>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-        </ul>
-      </div>
-    </div>
+    <div th:replace="/duohui/chanpin/include/searchPhb :: search"></div>
 
 
     <div class="clear clearfix mt20"></div>
-    <div class=" clear clearfix  newslei">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">按地区浏览</a></h2>
-      </div>
-      <div class="diqu mt10">
-        <ul>
-          <li><a href="#">北京</a></li>
-          <li><a href="#">上海</a></li>
-          <li><a href="#">天津</a></li>
-          <li><a href="#">河北</a></li>
-          <li><a href="#">河南</a></li>
-        </ul>
-      </div>
-    </div>
+    <div th:replace="/duohui/chanpin/include/diquliulan :: diqu"></div>
   </div>
   <div class=" W920 fl product-nr" style="padding:0;">
     <div class="list_left">
       <script type="text/javascript">
-$(function(){
-$(".biaoti_li li").hover(function(){
-$(this).find("div").show();
-},function(){
-$(this).find("div").hide();
-});
-});
-</script>
+      $(function(){
+      $(".biaoti_li li").hover(function(){
+      $(this).find("div").show();
+      },function(){
+      $(this).find("div").hide();
+      });
+      });
+      </script>
 
 
       <div class=" product-r gsmc">

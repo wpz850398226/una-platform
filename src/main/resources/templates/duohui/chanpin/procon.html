@@ -15,54 +15,8 @@
 </head>
 <body>
 <div class="header ">
-  <div class="header_top">
-    <div class="w1200 clear clearfix"> <span class="huan left"><a class="mr10">您好！欢迎来到多汇供应链管理有限公司</a>|<a class="ml10 mr10" href="login.html">请登录</a>|<a class="ml10 mr10" href="register.html">免费注册</a></span>
-      <div class=" right  top" >
-        <ul class="duohui_menu fr font-f">
-          <li class="no_sub"><span class="huan fl"><a >服务热线:</a><a class="red" ><b>400-635-1907</b></a><a ><img th:src="@{/duohui/chanpin/images/shoucang.jpg}" /></a></span></li>
-          <li> <a class="bgt" href="gouwuche.html">购物车</a>
-            <ul>
-              <li><a  href="#">已加入购物车</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="#">我的业务体系</a>
-            <ul>
-              <li><a  href="#">信息平台</a></li>
-              <li><a href="#">产品平台</a></li>
-              <li><a  href="#">服务平台</a></li>
-              <li><a href="#">招投标平台</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="project.html">客服中心</a>
-            <ul>
-              <li><a  href="#">新手入门</a></li>
-              <li><a href="#">找回密码</a></li>
-              <li><a  href="#">注销店铺</a></li>
-              <li><a href="#">联系客服</a></li>
-            </ul>
-          </li>
-          <li> <a class="bgt" href="#">会员中心</a>
-            <ul>
-              <li><a  href="#">会员中心</a></li>
-              <li><a href="#">我的资料</a></li>
-              <li><a href="#">退出</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
-    <h1 class="logo fl"><a href="index.html" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
-    <div class="fr fabu"><a class="" href="mffbxx.html">发布产品信息</a></div>
-    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
-    <div class="sousuo fr mr30  ml10" >
-      <form>
-        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
-        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
-      </form>
-    </div>
-  </div>
+  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="/duohui/chanpin/include/header :: header"></div>
   <div class=" navbg clear clearfix">
 
   </div>
@@ -250,24 +204,13 @@
 
       <!--放大镜代码开始-->
       <div id=preview>
-        <div class=jqzoom id=spec-n1 onClick="window.open('http:///')"><IMG height=500
-                                                                            th:src="@{/duohui/chanpin/images/img04.jpg}" jqimg="images/img04.jpg}" width=500> </div>
+        <div class=jqzoom id=spec-n1 onClick="window.open('http:///')">
+          <IMG height=500 th:src="${#strings.arraySplit(record.map.fileUrl, ',')[0]}" jqimg="images/img04.jpg}" width=500> </div>
         <div id=spec-n5>
           <div class=control id=spec-left> <img th:src="@{/duohui/chanpin/images/disabled-prev.png}" /> </div>
           <div id=spec-list>
             <ul class=list-h style=" left:30px;">
-              <li><img th:src="@{/duohui/chanpin/images/img01.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img02.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img03.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img04.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img01.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img02.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img03.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img04.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img01.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img02.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img03.jpg}"> </li>
-              <li><img th:src="@{/duohui/chanpin/images/img04.jpg}"> </li>
+              <li th:each="imageUrl : ${#strings.arraySplit(record.map.fileUrl, ',')}"><img th:src="${imageUrl}"> </li>
             </ul>
           </div>
           <div class=control id=spec-right> <img th:src="@{/duohui/chanpin/images/disabled-next.png}" /> </div>
@@ -324,12 +267,12 @@
 
     </div>
     <div class="fr w550 itemInfo-wrap">
-      <div class="title"> 【京东超市】德国进口 Wurenbacher瓦伦丁黑啤 500ml*24 听 </div>
+      <div class="title"> [[${record.fullName}]] </div>
 
       <div class="wr-fcs-panel clear clearfix">
         <dl class="wr-price-panel mt20">
           <dt class="wr-metatit">价格</dt>
-          <dd><em class="wr-yen">￥</em> <span class="wr-price">480.00</span></dd>
+          <dd><em class="wr-yen">￥</em> <span class="wr-price">480</span></dd>
         </dl>
         <dl class="wr-price-panel clear clearfix">
           <dt class="wr-metatit" style="line-height:50px;">促销价</dt>
@@ -389,7 +332,8 @@
       </section>
 
       <!--下面的js就是单选框的效果-->
-      <script type="text/jscript">
+      <script type="text/javascript">
+
 			  function click_search (){
 				  var search_ka = document.getElementById("search_ka");
 				  if (search_ka.className == "s-buy open ui-section-box"){
@@ -435,56 +379,13 @@ changePrice();
     </div>
     <div class="clear clearfix" style="height:20px;"></div>
     <div class=" w210 fr ">
-  <div class=" clear clearfix  newslei product-nr">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">热卖推荐</a></h2>
-      </div>
 
-      <div class=" product-r gsmc" style=" width:210px;">
-        <ul>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
-           <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li> <li> <a class="pic" href="#"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a> <a class="biaoti" href="">图片对应的标题信息</a> <em class="diqu"> <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/chanpin/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/chanpin/images/shiming.png}"></em></p> 行业 | 地区</em> <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>5.00</b> 万</i> <a class="company" href="#">多汇供应链管理有限公司</a> </li>
-
-        </ul>
-      </div>
-
-
-    </div>
-
-    <div class=" clear clearfix  newslei ">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">本周搜索排行</a></h2>
-      </div>
-      <div class="paixu mt20">
-        <ul>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-        </ul>
-      </div>
-    </div>
+    <div th:replace="/duohui/chanpin/include/remaituijian :: remai"></div>
+    <div th:replace="/duohui/chanpin/include/searchPhb :: search"></div>
 
 
     <div class="clear clearfix mt20"></div>
-    <div class=" clear clearfix  newslei">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">按地区浏览</a></h2>
-      </div>
-      <div class="diqu mt10">
-        <ul>
-          <li><a href="#">北京</a></li>
-          <li><a href="#">上海</a></li>
-          <li><a href="#">天津</a></li>
-          <li><a href="#">河北</a></li>
-          <li><a href="#">河南</a></li>
-        </ul>
-      </div>
-    </div>
+    <div th:replace="/duohui/chanpin/include/diquliulan :: diqu"></div>
   </div>
 
     <div class="chanpinshuoming W950 fl">

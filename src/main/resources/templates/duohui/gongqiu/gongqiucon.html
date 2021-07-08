@@ -199,20 +199,7 @@ int();//初始化隐藏多余标签
       </div>
     </div>
     <div class="clear clearfix mt20"></div>
-    <div class=" clear clearfix  newslei">
-      <div class="tjhy-title">
-        <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">按地区浏览</a></h2>
-      </div>
-      <div class="diqu mt10">
-        <ul>
-          <li><a href="#">北京</a></li>
-          <li><a href="#">上海</a></li>
-          <li><a href="#">天津</a></li>
-          <li><a href="#">河北</a></li>
-          <li><a href="#">河南</a></li>
-        </ul>
-      </div>
-    </div>
+    <div th:replace="/duohui/chanpin/include/diquliulan :: diqu"></div>
   </div>
   <div class=" W920 fl bor">
         <h2 style=" text-align:center; color:#000; font-size:24px; line-height:50px;"><span>标题展示位置</span><img class="ml10" th:src="@{/duohui/gongqiu/images/v.gif"></h2>

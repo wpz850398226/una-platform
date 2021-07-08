@@ -22,7 +22,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="una-tree layui-col-md2"
-                 th:if="${sysResponseParameter.sysEntity.relationList!=null&&sysResponseParameter.sysEntity.relationList.size()>0}">
+                 th:if="${sysResponseParameter.sysEntity!=null&&sysResponseParameter.sysEntity.relationList!=null&&sysResponseParameter.sysEntity.relationList.size()>0}">
                 <div class="layui-card">
                     <div class="layui-card-body">
                         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
@@ -35,7 +35,7 @@
 
             <div class="una-table">
                 <div class="layui-card" lay-filter="unaTableForm">
-                    <div th:class="${#lists.isEmpty(sysResponseParameter.sysEntity.filterList)?'layui-hide':'layui-card-header'}" id="unaFilterHeader" style="padding: 10px 15px 10px 15px;">
+                    <div th:if="${sysResponseParameter.sysEntity!=null&&sysResponseParameter.sysEntity.filterList!=null}" th:class="${#lists.isEmpty(sysResponseParameter.sysEntity.filterList)?'layui-hide':'layui-card-header'}" id="unaFilterHeader" style="padding: 10px 15px 10px 15px;">
                         <span class="layui-breadcrumb" lay-separator="|">
                           <a th:each="filter:${sysResponseParameter.sysEntity.filterList}" href="javascript:" th:data-filter_name="${filter.fieldCode}" th:data-filter_value="${filter.value}" th:text="${filter.name}"></a>
                         </span>
