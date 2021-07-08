@@ -21,8 +21,6 @@
             <div class="callbacks_container">
                 <ul class="rslides callbacks callbacks1" id="slider">
                     <li th:each="imageUrl : ${#strings.arraySplit(record.map.bannerFileUrl, ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
-<!--                    <li><a ><img th:src="@{/duohui/chanpin/images/banner.jpg}" alt=""></a></li>-->
-<!--                    <li><a ><img th:src="@{/duohui/chanpin/images/banner.jpg}" alt=""></a></li>-->
                 </ul>
             </div>
         </div>
@@ -30,24 +28,13 @@
     <div class="clear clearfix"></div>
     <div class="clear" style="color:#000;margin-left:190px; margin-top:45px;">
         <ul class="scroll_ul">
-            <li> <a href="" target="_blank" >
+            <li th:each="shop:${hotShopList}"> <a href="" target="_blank" >
                 <div class="txt">
                     <p class="t">热门商铺排行榜</p>
                     <p>热门商铺排行榜</p>
                 </div>
-                <img th:src="@{/duohui/chanpin/images/1_13.jpg}" alt="" > </a> </li>
-            <li> <a href="" target="_blank" >
-                <div class="txt">
-                    <p class="t">热门商铺排行榜</p>
-                    <p>热门商铺排行榜</p>
-                </div>
-                <img th:src="@{/duohui/chanpin/images/1_13.jpg}" alt="" > </a> </li>
-            <li> <a href="" target="_blank" data-scode="52202">
-                <div class="txt">
-                    <p class="t">热门商铺排行榜</p>
-                    <p>采购优选的实力商家</p>
-                </div>
-                <img th:src="@{/duohui/chanpin/images/1_13.jpg}" alt="热门商铺排行榜"> </a> </li>
+                <img th:src="${shop.map['titleFileUrl']}" alt="" > </a>
+            </li>
         </ul>
     </div>
 </div>

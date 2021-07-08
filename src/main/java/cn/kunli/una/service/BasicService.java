@@ -14,6 +14,8 @@ import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -159,6 +161,13 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Cacheable(value = "record:id", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T getById(Serializable id) {
         return super.getById(id);
+    }
+
+    public Page<T> page(Long current, Long size, Wrapper<T> queryWrapper) {
+        if(current==0)current = 1L;
+        if(size == 0)size = 10L;
+        Page<T> pageObj = new Page<T>().setCurrent(current).setSize(size);
+        return super.page(pageObj,queryWrapper);
     }
 
     /**

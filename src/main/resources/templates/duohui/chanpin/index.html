@@ -35,7 +35,7 @@
     </h2>
     <div class="clear product-nr clearfix">
       <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/chanpin/images/tu3.png}">
+        <div class=" product-l"> <a href="#"> <img th:src="${recommendShopList.size()>status.index?recommendShopList[status.index].map['titleFileUrl']:'/api/duohui/chanpin/images/tu3.png'}">
           <h3>推荐商家</h3>
           <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
           </a> </div>
@@ -56,8 +56,8 @@
 <div class=" clear clearfix mt20"></div>
 <div th:replace="/duohui/chanpin/include/bottomAd :: bottomAd"></div>
 <div class=" clear clearfix mt20"></div>
-<!--<div th:replace="/duohui/chanpin/include/cooperator :: cooperator"></div>-->
-<!--<div class=" clear clearfix mt20"></div>-->
+<div th:replace="/duohui/chanpin/include/cooperator :: cooperator"></div>
+<div class=" clear clearfix mt20"></div>
 
 <div th:replace="/duohui/chanpin/include/outlink :: outlink"></div>
 <div th:replace="/duohui/chanpin/include/footer :: footer"></div>

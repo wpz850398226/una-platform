@@ -1,11 +1,13 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
+import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
+import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysDataService;
 import cn.kunli.una.service.system.SysDictionaryService;
@@ -15,14 +17,13 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/duohui/chanpin")
@@ -37,6 +38,8 @@ public class CpIndexController {
     private CpGoodsService cpGoodsService;
     @Autowired
     private SysDataService sysDataService;
+    @Autowired
+    private CpShopService cpShopService;
 
     /**
      * 打开主页
@@ -48,6 +51,13 @@ public class CpIndexController {
         getCommonItem(model);
         SysData record = sysDataService.getById(100017);
         record = sysDataService.parse(ListUtil.getList(record)).get(0);
+        //热门商铺
+        if(record.getValue().get("rmsp")!=null){
+            String rmsp = String.valueOf(record.getValue().get("rmsp"));
+            List<CpShop> list = cpShopService.parse(cpShopService.list(cpShopService.getWrapper(MapUtil.getMap("in:code", rmsp))));
+            model.addAttribute("hotShopList",list);
+        }
+
         model.addAttribute("record",record);
 
         SysDictionary goodsStatusDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("code", "dh_goodsStatus"))));
@@ -64,6 +74,22 @@ public class CpIndexController {
                 //商品状态字典
                 model.addAttribute("goodsStatusDlist",goodsStatusDlist);
                 model.addAttribute("goodsListMap",goodsListMap);
+
+                //查询置顶商铺
+                List<CpShop> shopList = new ArrayList<>();
+//                Page<CpShop> shopPage = new Page<CpShop>().setCurrent(1).setSize(goodsStatusDlist.size());
+                Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), cpShopService.getWrapper(MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build()));
+                shopList = stickShopPage.getRecords();
+                if(shopList.size()<=goodsStatusDlist.size()){
+                    Page<CpShop> refreshShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), cpShopService.getWrapper(MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build()));
+                    shopList.addAll(refreshShopPage.getRecords());
+                }
+
+                model.addAttribute("recommendShopList",cpShopService.parse(shopList));
+
+                Page<CpShop> coopShopPage = cpShopService.page(1L,20L, cpShopService.getWrapper(MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build()));
+                model.addAttribute("coopShopList",cpShopService.parse(coopShopPage.getRecords()));
+
             }
         }
 

@@ -6,6 +6,9 @@ import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.UUID;
+
 /**
  * 商城-店铺类(CpShop)表服务类
  *
@@ -20,5 +23,16 @@ public class CpShopService extends BasicService<CpShopMapper, CpShop> {
     @Override
     public BasicService getThisProxy() {
         return thisProxy;
+    }
+
+    @Override
+    public CpShop initialize(CpShop obj) {
+        obj = super.initialize(obj);
+        if(obj.getId()==null){
+            obj.setCode(UUID.randomUUID().toString().replace("-",""));
+            obj.setRefreshTime(new Date());
+            obj.setStickDeadline(new Date());
+        }
+        return obj;
     }
 }

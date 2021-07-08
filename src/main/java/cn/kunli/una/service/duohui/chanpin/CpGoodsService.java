@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 账号(CpGoods)表服务类
@@ -62,6 +63,9 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     @Override
     public CpGoods initialize(CpGoods obj) {
         obj = super.initialize(obj);
+        if(obj.getId()==null){
+            obj.setCode(UUID.randomUUID().toString().replace("-",""));
+        }
         if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             SysDictionary thirdryIndustryDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", obj.getThirdryIndustryDcode())));
             if(thirdryIndustryDic!=null){

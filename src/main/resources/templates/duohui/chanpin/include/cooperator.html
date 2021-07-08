@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-  <div th:fragment="cooperator" class="w1200" style=" padding-bottom:30px;">
+  <div th:fragment="cooperator" class="m_inttd w1200" style=" padding-bottom:30px;">
     <div class="tjhy-title">
       <h2 class="fl"><a class="mr30" href="#">合作单位</a></h2>
     </div>
@@ -10,15 +10,18 @@
       <div class="m_intr"><a><img th:src="@{/duohui/chanpin/images/intr.png}"></a></div>
       <div class="m_intm" style="visibility: visible; overflow: hidden; position: relative; z-index: 2; left: 0px; width: 1104px;">
         <ul id="count1">
-          <li >
+          <li th:each="shop:${coopShopList}">
             <div class="playerdetail">
-              <div class="detailimg"><a href="" target="_blank" title="沐阳太阳能"><img th:src="@{/duohui/chanpin/images/chanpin.jpg}"></a></div>
-              <div class="teanames">沐阳太阳能</div>
-              <a class="checkdetail" href="" target="_blank" title="沐阳太阳能">查看详情</a>
+              <div class="detailimg"><a href="" target="_blank" th:title="${shop.name}"><img th:src="${shop.map['titleFileUrl']}"></a></div>
+              <div class="teanames">[[${shop.name}]]</div>
+              <a class="checkdetail" href="" target="_blank" th:title="${shop.name}">查看详情</a>
             </div>
           </li>
         </ul>
       </div>
     </div>
   </div>
+  <script th:src="@{/duohui/chanpin/js/flickerplate.min.js}"></script>
+  <script type="text/javascript" th:src="@{/duohui/chanpin/js/jcarousellite_1.0.1.js}"></script>
+  <script type="text/javascript" th:src="@{/duohui/chanpin/js/js.js}"></script>
 </html>
