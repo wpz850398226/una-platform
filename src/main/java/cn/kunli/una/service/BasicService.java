@@ -163,11 +163,11 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         return super.getById(id);
     }
 
-    public Page<T> page(Long current, Long size, Wrapper<T> queryWrapper) {
+    public Page<T> page(Long current, Long size, Map<String,Object> map) {
         if(current==0)current = 1L;
         if(size == 0)size = 10L;
         Page<T> pageObj = new Page<T>().setCurrent(current).setSize(size);
-        return super.page(pageObj,queryWrapper);
+        return super.page(pageObj,wrapperUtil.mapToWrapper(format(map)));
     }
 
     /**
@@ -186,20 +186,20 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    /*@Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
         return super.getOne(wrapperUtil.mapToWrapper(format(map)));
-    }*/
+    }
 
     /**
      * 根据条件构造查询多条
      * @param queryWrapper
      * @return
      */
-    /*@Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> selectList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToWrapper(format(map)));
-    }*/
+    }
 
     /**
      * 根据条件构造查询多条

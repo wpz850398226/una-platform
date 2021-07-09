@@ -2,11 +2,12 @@ package cn.kunli.una.interceptor;
 
 
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.utils.common.JSONUtil;
 import cn.kunli.una.utils.common.StringUtil;
+import cn.kunli.una.utils.common.WrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
+import org.apache.poi.ss.formula.functions.T;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,9 @@ import java.util.Map;
 @Slf4j
 @Component
 public class MyCacheKeyGenerator implements KeyGenerator {
+
+    @Autowired
+    protected WrapperUtil<T> wrapperUtil;
 
     @Override
     public Object generate(Object target, Method method, Object... params) {
@@ -43,15 +47,25 @@ public class MyCacheKeyGenerator implements KeyGenerator {
             return key+sqlSegment;
         }else if(param instanceof HashMap){
             //参数为HashMap，方法来源：selectOne、selectList
-            Map<String,Object> map = (HashMap)param;
-            StringBuffer sb = new StringBuffer();
-            sb.append("(");
-            for (String mapKey : map.keySet()) {
-                sb.append(",").append(StringUtil.upperCharToUnderLine(mapKey)).append(" = ").append(map.get(mapKey).toString());
+            QueryWrapper wrapper = wrapperUtil.mapToWrapper((HashMap) param);
+
+            String sqlSegment = wrapper.getExpression().getNormal().getSqlSegment();
+            Map map = wrapper.getParamNameValuePairs();
+            for (Object o : map.keySet()) {
+                String oldChar = "#{ew.paramNameValuePairs."+o.toString()+"}";
+                sqlSegment = sqlSegment.replace(oldChar, map.get(o).toString());
             }
-            sb.append(")");
-            sb.replace(1,2,"");
-            return key+sb.toString();
+            return key+sqlSegment;
+
+//            Map<String,Object> map = (HashMap)param;
+//            StringBuffer sb = new StringBuffer();
+//            sb.append("(");
+//            for (String mapKey : map.keySet()) {
+//                sb.append(",").append(StringUtil.upperCharToUnderLine(mapKey)).append(" = ").append(map.get(mapKey).toString());
+//            }
+//            sb.append(")");
+//            sb.replace(1,2,"");
+//            return key+sb.toString();
         }else if(param instanceof BasePojo){
             BasePojo basePojo = (BasePojo)param;
             if(basePojo.getId()!=null){

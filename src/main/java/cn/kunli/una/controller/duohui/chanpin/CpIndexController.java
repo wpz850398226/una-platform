@@ -17,7 +17,6 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,16 +77,16 @@ public class CpIndexController {
                 //查询置顶商铺
                 List<CpShop> shopList = new ArrayList<>();
 //                Page<CpShop> shopPage = new Page<CpShop>().setCurrent(1).setSize(goodsStatusDlist.size());
-                Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), cpShopService.getWrapper(MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build()));
+                Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
                 shopList = stickShopPage.getRecords();
                 if(shopList.size()<=goodsStatusDlist.size()){
-                    Page<CpShop> refreshShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), cpShopService.getWrapper(MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build()));
+                    Page<CpShop> refreshShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
                     shopList.addAll(refreshShopPage.getRecords());
                 }
 
                 model.addAttribute("recommendShopList",cpShopService.parse(shopList));
 
-                Page<CpShop> coopShopPage = cpShopService.page(1L,20L, cpShopService.getWrapper(MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build()));
+                Page<CpShop> coopShopPage = cpShopService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
                 model.addAttribute("coopShopList",cpShopService.parse(coopShopPage.getRecords()));
 
             }
