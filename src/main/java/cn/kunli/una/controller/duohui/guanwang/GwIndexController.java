@@ -41,7 +41,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
      */
     @RequestMapping("/index")
     public String index(Model model) {
-        /*SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", "GwIndex")));
+        /*SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", "GwIndex")));
         List<SysData> list = this.list(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("last", "limit 1").build());
         if(CollectionUtils.isNotEmpty(list)){
             model.addAttribute("record",list.get(0));
@@ -82,7 +82,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
             map.remove("pageSize");
         }
         if(StringUtils.isNotBlank(code)){
-            SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", code)));
+            SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", code));
             if(sysEntity!=null){
                 map.put("entityId",sysEntity.getId());
             }
@@ -119,7 +119,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
 
     private void getCommonItem(Model model,Object menuId){
         List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.selectList(MapUtil.getMap("parentId", 100000)));
-        GwConfiguration systemTitle = gwConfigurationService.getOne(gwConfigurationService.getWrapper(MapUtil.getMap("code","systemTitle")));
+        GwConfiguration systemTitle = gwConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("gwMenuList", gwMenuList);
         model.addAttribute("systemName", systemTitle.getValue());
 

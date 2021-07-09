@@ -39,11 +39,10 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
     @PostMapping("/autoAttendance")
     private void autoAttendance(){
         //查询所有有修改考勤记录权限的人，都需要打卡
-        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClassName)));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
         if(sysEntity!=null){
-            SysPermission permission = sysPermissionService.getOne(sysPermissionService.getWrapper(
-                    MapUtil.buildHashMap().put("type_dcode", "permission_type_update")
-                            .put("entityId", sysEntity.getId()).build()));
+            SysPermission permission = sysPermissionService.selectOne(MapUtil.buildHashMap().put("type_dcode", "permission_type_update")
+                            .put("entityId", sysEntity.getId()).build());
             if(permission!=null){
                 List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", permission.getId())
                                 .put("ne:scope_dcode", "permission_scope_none").build());

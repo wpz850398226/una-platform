@@ -46,7 +46,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
             //虚拟实体
             sysEntity = sysEntityService.getById(map.get("entityId").toString());
         }else{
-            sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code","SysData")));
+            sysEntity = sysEntityService.selectOne(MapUtil.getMap("code","SysData"));
         }
         if((map.get("orderByAsc")==null|| StringUtils.isBlank(map.get("orderByAsc").toString()))
                 &&(map.get("orderByDesc")==null||StringUtils.isBlank(map.get("orderByDesc").toString()))) {

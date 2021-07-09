@@ -54,8 +54,8 @@ public class SavePicUtils {
 	public String saveUpload(MultipartFile file, Integer entityId) throws IOException{
 		//获取不同操作系统的根目录
 		String path = GetPicUrlUtils.getUploadUrlBySystemType(
-		        sysConfigurationService.getOne(sysConfigurationService.getWrapper(MapUtil.getMap("code","windowsUploadUrl"))).getValue()
-				,sysConfigurationService.getOne(sysConfigurationService.getWrapper(MapUtil.getMap("code","linuxUploadUrl"))).getValue());
+		        sysConfigurationService.selectOne(MapUtil.getMap("code","windowsUploadUrl")).getValue()
+				,sysConfigurationService.selectOne(MapUtil.getMap("code","linuxUploadUrl")).getValue());
 		//原始文件名
 		String originalFileName = file.getOriginalFilename();
 		//新文件名，添加原始文件名后缀

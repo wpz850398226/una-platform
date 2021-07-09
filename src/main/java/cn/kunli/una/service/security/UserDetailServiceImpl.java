@@ -34,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("执行用户认证");
         //1、根据用户名去数据库查询，如果不存在则抛出UsernameNotFoundException异常
-        SysAccount sysAccount = sysAccountService.getOne(sysAccountService.getWrapper(MapUtil.getMap("username",username)));
+        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username",username));
         if(sysAccount ==null){
             throw new AuthenticationCredentialsNotFoundException("用户名不存在");
         }else if(sysAccount.getStatusDcode().equals("locked")){

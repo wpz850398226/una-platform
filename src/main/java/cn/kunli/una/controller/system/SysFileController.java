@@ -9,7 +9,6 @@ import cn.kunli.una.service.system.SysFileService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,7 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
     public String form(Model model, SysParameter sysParameter, String textInputId, Integer num) {
 
         //如果redis已连接，则从redis中获取实体类，否则从数据库查询
-        SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", "SysFile")));
+        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code", "SysFile"));
         if(entityClass!=null){
             entityClass = sysEntityService.parse(ListUtil.getList(entityClass)).get(0);
         }

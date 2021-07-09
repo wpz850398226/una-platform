@@ -31,7 +31,7 @@ public class SysRoleController extends BaseController<SysRoleService, SysRole> {
     //打开授权表单
     @RequestMapping("/authorization")
     public String authorization(Model model, SysRole obj) {
-        SysDictionary permissionScopeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", "permission_scope")));
+        SysDictionary permissionScopeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", "permission_scope"));
         if(permissionScopeDic!=null){
             model.addAttribute("scopeList", sysDictionaryService.selectList(MapUtil.getMap("parentId", permissionScopeDic.getId())));
         }

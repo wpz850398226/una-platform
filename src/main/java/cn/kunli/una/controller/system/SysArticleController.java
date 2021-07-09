@@ -45,7 +45,7 @@ public class SysArticleController extends BaseController<SysArticleService, SysA
             }
 
             String templateName = value.get("templateName").toString();
-            SysArticle templateArticle = service.getOne(service.getWrapper(MapUtil.getMap("name", templateName)));
+            SysArticle templateArticle = service.selectOne(MapUtil.getMap("name", templateName));
             if(templateArticle==null)return SysResult.fail("查看失败，模板不存在");
 
             String content = templateArticle.getContent();

@@ -67,7 +67,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
         }
         if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
-            SysDictionary thirdryIndustryDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", obj.getThirdryIndustryDcode())));
+            SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
             if(thirdryIndustryDic!=null){
                 SysDictionary secondryIndustryDic = sysDictionaryService.getById(thirdryIndustryDic.getParentId());
                 if(secondryIndustryDic!=null){

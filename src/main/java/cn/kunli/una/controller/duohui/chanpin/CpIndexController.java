@@ -59,7 +59,7 @@ public class CpIndexController {
 
         model.addAttribute("record",record);
 
-        SysDictionary goodsStatusDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("code", "dh_goodsStatus"))));
+        SysDictionary goodsStatusDic = sysDictionaryService.selectOne(sysDictionaryService.format(MapUtil.getMap("code", "dh_goodsStatus")));
         if(goodsStatusDic!=null){
             List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentId", goodsStatusDic.getId()));
             if(CollectionUtils.isNotEmpty(goodsStatusDlist)){
@@ -109,12 +109,12 @@ public class CpIndexController {
 
     private void getCommonItem(Model model){
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        SysConfiguration systemTitle = sysConfigurationService.getOne(sysConfigurationService.getWrapper(MapUtil.getMap("code","systemTitle")));
+        SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
 
         //行业字典
-        SysDictionary industryDictionary = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", "industry")));
+        SysDictionary industryDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code", "industry"));
         if(industryDictionary!=null){
             List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentId", industryDictionary.getId())));
             model.addAttribute("industryDlist",industryDlist);

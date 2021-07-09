@@ -50,9 +50,9 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
 //            }
 
             //保存流程实例成功，查找开始节点
-            FlowNode startNode = flowNodeService.getOne(flowNodeService.getWrapper(MapUtil.buildHashMap()
+            FlowNode startNode = flowNodeService.selectOne(MapUtil.buildHashMap()
                     .put("definitionId", entity.getDefinitionId())
-                    .put("typeDcode", "flow_nudeType_start").build()));
+                    .put("typeDcode", "flow_nudeType_start").build());
 
             if(startNode!=null){
                 //生成开始流程任务，并直接完成该任务

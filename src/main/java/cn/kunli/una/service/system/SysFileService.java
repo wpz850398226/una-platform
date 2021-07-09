@@ -114,7 +114,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
         if(CollectionUtils.isNotEmpty(list)){
             for (SysFile sysFile : list) {
                 if(StringUtils.isNotBlank(sysFile.getTypeDcode())){
-                    SysDictionary codeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", sysFile.getTypeDcode())));
+                    SysDictionary codeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", sysFile.getTypeDcode()));
                     if(codeDic!=null){
                         sysFile.getMap().put("typeDvalue",codeDic.getValue());
                     }

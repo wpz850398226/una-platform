@@ -235,14 +235,14 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
 
             if(StringUtils.isNotBlank(record.getAssignmentModeDcode())){
-                SysDictionary assignmentModeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", record.getAssignmentModeDcode())));
+                SysDictionary assignmentModeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", record.getAssignmentModeDcode()));
                 if(assignmentModeDic!=null){
                     record.setAssignmentType(assignmentModeDic.getRemark());
                 }
             }
 
             if(StringUtils.isNotBlank(record.getFormatCheckTypeDcode())){
-                SysDictionary codeDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", record.getFormatCheckTypeDcode())));
+                SysDictionary codeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", record.getFormatCheckTypeDcode()));
                 if(codeDic!=null)record.getMap().put("formatCheckTypeDvalue",codeDic.getValue());
             }
 

@@ -158,7 +158,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			if(sortOrder!=null&&sortOrder>1){
 				Map<String, Object> paramMap = MapUtil.getMap("sortOrder", sortOrder - 1);
 				//获取当前类对应实体类对象
-				SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
+				SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
 				if(sysEntity!=null){
 					//获取父字段字段类对象
 					SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
@@ -172,7 +172,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					}
 				}
 				//查询要降序的记录
-				BasePojo descendRecord = service.getOne(service.getWrapper(paramMap));
+				BasePojo descendRecord = service.selectOne(paramMap);
 				if(descendRecord!=null){
 					T descT = entityClass.newInstance();
 					descT.setId(descendRecord.getId()).setSortOrder(sortOrder);
@@ -271,7 +271,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			int colNum = headRow.getLastCellNum();
 
 			//查询对应实体类
-			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
+			SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
 			//查询需要导入的实体字段
 			Map<String, Object> map = new MapUtil<>().put("entityId", sysEntity.getId()).put("isImport",1).build();
 			List<SysField> fieldList = sysFieldService.selectList(map);
@@ -392,7 +392,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		//获取数据
 		List<T> objList = service.selectList(map);
 		//查询对应实体类
-		SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
+		SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
 		//查询可以导出的实体字段
 		List<SysField> fieldList = sysFieldService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isExport",1).build());
 		//excel标题行

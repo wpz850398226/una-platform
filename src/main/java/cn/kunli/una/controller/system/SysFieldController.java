@@ -48,7 +48,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
             params.put("assignmentModeDcode", "field_assignment_text");
         }
         model.addAttribute("record", params);
-        SysEntity entityClass = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code","SysField")));
+        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code","SysField"));
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
 
         return "system/field/form";

@@ -112,7 +112,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         String className = entityClass.getSimpleName();
-        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
         //获取当前类对应实体类对象
         if(sysEntity!=null) {
             //获取父字段字段类对象
@@ -186,7 +186,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    @Cacheable(value = "srecord:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
         return super.getOne(wrapperUtil.mapToWrapper(format(map)));
     }
@@ -196,7 +196,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    @Cacheable(value = "slist", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> selectList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToWrapper(format(map)));
     }
@@ -232,7 +232,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //反射获取需要验证的字段值
         Map<String, Object> map = new HashMap<String, Object>();
         //获取当前类对应实体类对象
-        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
         if(sysEntity!=null){
             //如果名称不为空，验证名称唯一性
             if(StringUtils.isNotBlank(obj.getName())){
@@ -296,7 +296,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             //通过反射赋值"顺序"字段
             if(obj.getSortOrder()==null){
                 //获取当前类对应实体类对象
-                SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
+                SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
 
                 if(sysEntity==null)return obj;
                 //获取父字段字段类对象
@@ -429,7 +429,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @SneakyThrows
     public List<T> parse(List<T> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
         if(sysEntity!=null){
             List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
             if(CollectionUtils.isNotEmpty(fieldList)){

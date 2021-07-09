@@ -72,8 +72,8 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
         if (StringUtils.isBlank(obj.getName())) {
             SysEntity sysEntity = sysEntityService.getById(obj.getEntityId());
             if (sysEntity != null) {
-                SysDictionary typeDictionary = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",obj.getTypeDcode())));
-                SysDictionary platformDictionary = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code",sysEntity.getPlatformDcode())));
+                SysDictionary typeDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code",obj.getTypeDcode()));
+                SysDictionary platformDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code",sysEntity.getPlatformDcode()));
                 obj.setName(typeDictionary.getName() + sysEntity.getName()+"-"+platformDictionary.getName());
             }
         }
