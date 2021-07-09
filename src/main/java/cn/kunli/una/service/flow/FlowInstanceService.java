@@ -1,14 +1,12 @@
 package cn.kunli.una.service.flow;
 
+import cn.kunli.una.mapper.FlowInstanceMapper;
 import cn.kunli.una.pojo.flow.FlowDefinition;
 import cn.kunli.una.pojo.flow.FlowInstance;
-import cn.kunli.una.mapper.FlowInstanceMapper;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.BaseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * 流程实例(FlowInstance)表服务类
@@ -34,7 +32,7 @@ public class FlowInstanceService extends BasicService<FlowInstanceMapper, FlowIn
         if(obj.getId()==null){
             FlowDefinition flowDefinition = flowDefinitionService.getById(obj.getDefinitionId());
             if(flowDefinition!=null){
-                obj.setName(flowDefinition.getName()+"-"+obj.getCreatorName()+"-"+ TimeUtil.getStrOfDate(new Date()));
+                obj.setName(flowDefinition.getName()+"-"+obj.getCreatorName()+"-"+ BaseUtil.getPrimaryId());
             }
         }
 

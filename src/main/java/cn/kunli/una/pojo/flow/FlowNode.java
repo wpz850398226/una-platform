@@ -28,7 +28,7 @@ public class FlowNode extends BasePojo implements Serializable {
     //是否入口排他
     private Boolean isEntryExclusive;
     //是否出口排他
-    private Boolean isExitExclusive;
+//    private Boolean isExitExclusive;
     //定义id
     private Integer definitionId;
     //候选人类型

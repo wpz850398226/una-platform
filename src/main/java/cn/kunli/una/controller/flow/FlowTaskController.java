@@ -11,6 +11,7 @@ import cn.kunli.una.service.flow.FlowLineService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.utils.common.MapUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 流程任务(FlowTask)表控制层
@@ -43,22 +43,30 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
     @PutMapping("/handle")
     @ResponseBody
     public SysResult handle(FlowTask entity) {
+        entity.setOffTime(new Date());
         super.update(entity);
 
         FlowTask flowTask = service.getById(entity.getId());
+        //查询任务后续连线
         List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
+        //查询任务后续的默认连线
+        List<FlowLine> defaultLineList = flowLineService.selectList(MapUtil.buildHashMap()
+                .put("originNodeId", flowTask.getNodeId()).put("isDefault",1).build());
         FlowNode flowNode = flowNodeService.getById(flowTask.getNodeId());
 
         for (FlowLine flowLine : flowLineList) {
-            Map<String, Object> flowCondition = flowLine.getFlowCondition();
-            if(MapUtils.isNotEmpty(flowCondition)){
+            JSONObject flowCondition = flowLine.getFlowCondition();
+            if(MapUtils.isEmpty(flowCondition)){
+                //连线无条件执行
+
+            }else{
                 if(flowCondition.containsKey("isAgree")){
                     if(entity.getIsAgree().equals(flowCondition.get("isAgree"))){
                         //符合条件，查询连线的目标节点，激活待办任务
                         FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
                         if(targetNode.getTypeDcode().equals("flow_nudeType_end")){
                             //如果目标节点是结束类型，直接完成任务，并结束
-                            service.saveRecord(new FlowTask().setInstanceId(entity.getId())
+                            service.saveRecord(new FlowTask().setInstanceId(flowTask.getInstanceId())
                                     .setAccountId(flowTask.getModifierId())
                                     .setNodeId(targetNode.getId())
                                     .setActivateTime(new Date())
@@ -70,9 +78,9 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                             service.saveRecord(new FlowTask().setInstanceId(flowTask.getInstanceId())
                                     .setNodeId(targetNode.getId()).setActivateTime(new Date()));
                             //如果出口排他，则只出一条符合条件的连线
-                            if(flowNode.getIsExitExclusive()){
-                                return SysResult.success("待办处理成功");
-                            }
+//                            if(flowNode.getIsExitExclusive()){
+//                                return SysResult.success("待办处理成功");
+//                            }
                         }
                     }
                 }

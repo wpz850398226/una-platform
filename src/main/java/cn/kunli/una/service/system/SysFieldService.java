@@ -7,6 +7,7 @@ import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
+import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
@@ -35,6 +36,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private SysPermissionService sysPermissionService;
     @Autowired
     private FlowDefinitionService flowDefinitionService;
+    @Autowired
+    private FlowInstanceService flowInstanceService;
     @Autowired
     private FlowNodeService flowNodeService;
     @Autowired
@@ -73,6 +76,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
         if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=6){
             switch (assignmentCode.substring(length - 6)) {
+                case "nodeId"://流程节点 entityId
                 case "NodeId"://流程节点 entityId
 //                    FlowNode flowNode = flowNodeService.getById(Integer.valueOf(value));
                     resultList = flowNodeService.selectList(MapUtil.getMap("id",value));
@@ -132,6 +136,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     break;
                 case "definitionId"://权限 permissionId
                     resultList = flowDefinitionService.selectList(MapUtil.getMap("id",value));
+                case "instanceId"://权限 permissionId
+                    resultList = flowInstanceService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "parentId"://父id parentId
                     resultList = bs.list(bs.getWrapper(MapUtil.getMap("id",value)));

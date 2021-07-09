@@ -4,13 +4,13 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.flow.FlowInstance;
 import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.flow.FlowTask;
-import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 流程实例(FlowInstance)表控制层
@@ -42,7 +44,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
     @PostMapping("")
     @ResponseBody
     public SysResult add(@Valid FlowInstance entity) {
-        SysResult saveResult = super.save(entity);
+        SysResult saveResult = super.add(entity);
         if(saveResult.getIsSuccess()){
 //            FlowDefinition flowDefinition = flowDefinitionService.getById(entity.getDefinitionId());
 //            if(flowDefinition!=null){
@@ -68,34 +70,42 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                 if(CollectionUtils.isNotEmpty(subsequentNodeList)){
                     //激活节点，生成待办任务
                     for (FlowNode flowNode : subsequentNodeList) {
-                        FlowTask flowTask = new FlowTask().setInstanceId(entity.getId())
-                                .setNodeId(flowNode.getId())
-                                .setActivateTime(new Date());
-                        switch(flowNode.getCandidateTypeDcode()){
-                            case "flow_candidateType_account":
-                                flowTask.setCandidateAccountId(flowNode.getCandidateValue());
-                                break;
-                            case "flow_candidateType_role":
-                                List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
-                                if(CollectionUtils.isNotEmpty(accountList)){
-                                    StringBuffer stringBuffer = new StringBuffer();
-                                    for (SysAccount sysAccount : accountList) {
-                                        stringBuffer.append(",").append(sysAccount.getId());
-                                    }
-                                    flowTask.setCandidateAccountId(stringBuffer.delete(0,1).toString());
+                        SysResult activateResult = flowTaskService.activate(flowNode.getId(), entity.getId());
+                        if(activateResult.getIsSuccess()){
+                            FlowTask flowTask = flowTaskService.getById(String.valueOf(activateResult.getData()));
+                            //判断，如果激活的任务候选人包含当前办理人，则立即办理
+                            if(StringUtil.containSubString(flowTask.getCandidateAccountId(),String.valueOf(entity.getCreatorId()),null)){
+                                Map<String, Object> dataMap = MapUtil.getMap("instanceId", entity.getId());
+                                FlowNode taskNode = flowNodeService.getById(flowTask.getNodeId());
+                                switch(taskNode.getTypeDcode()){
+                                    case "flow_nudeType_audit": //审批类型
+                                        dataMap.put("isImmediate", 1);
+                                        dataMap.put("taskTypeDcode", "flow_nudeType_audit");
+                                        List<FlowTask> flowTaskList = flowTaskService.selectList(MapUtil.buildHashMap().put("instanceId", entity.getId())
+                                                .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build());
+                                        if(CollectionUtils.isNotEmpty(flowTaskList)){
+                                            List<Map> mapList = new ArrayList<>();
+                                            for (FlowTask task : flowTaskList) {
+                                                FlowNode finishedTaskNode = flowNodeService.getById(task.getNodeId());
+                                                Map<String, Object> finishedMap = MapUtil.buildHashMap().put("entityId", finishedTaskNode.getEntityId()).put("recordId", task.getRecordId()).build();
+                                                mapList.add(finishedMap);
+                                            }
+                                            dataMap.put("finishedTaskList",mapList);
+                                        }
+                                        break;
+                                    case "flow_nudeType_submit":    //提交类型
+                                        dataMap.put("isImmediate", 1);
+                                        dataMap.put("entityId", taskNode.getEntityId());
+                                        dataMap.put("taskTypeDcode", "flow_nudeType_submit");
+                                        break;
+                                    default:
+                                        dataMap.put("isImmediate", 0);
+                                        break;
                                 }
-                                break;
-                            case "flow_candidateType_superior":
-                                SysAccount sysAccount = sysAccountService.getById(entity.getCreatorId());
-                                flowTask.setCandidateAccountId(sysAccount.getId().toString());
-                                break;
-                            case "flow_candidateType_departmentManager":
-                                break;
-                            case "flow_candidateType_initiator":
-                                flowTask.setCandidateAccountId(entity.getCreatorId().toString());
-                                break;
+
+                                saveResult.setData(dataMap);
+                            }
                         }
-                        flowTaskService.saveRecord(flowTask);
                     }
                 }
             }

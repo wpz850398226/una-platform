@@ -1,10 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="goodsUnit" class="header">
-  <a class="pic" th:href="${'/api/cp/goods/fDetail/'+goods.id}"><img th:src="${#strings.arraySplit(goods.map.fileUrl, ',')[0]}"></a>
+  <a class="pic" th:href="${'/api/cp/goods/fDetail/'+goods.id}">
+    <img th:src="${#strings.arraySplit(goods.map.fileUrl, ',')[0]}">
+  </a>
   <a class="biaoti" th:href="${'/api/cp/goods/fDetail/'+goods.id}">[[${goods.name}]]</a>
   <em class="diqu">[[${goods.map['thirdryIndustryDname']}]] | [[${goods.map['regionName']}]]</em>
-  <i class="jiage"><a class="fr mr10" href="#">议价</a>￥<b>[[${goods.sellingPrice}]]</b> 元</i>
+  <i class="jiage">
+    <a class="fr mr10" href="#">议价</a>
+    ￥<b>[[${goods.sellingPrice}]]</b> 元
+  </i>
   <a class="company" href="#">[[${goods.map['companyName']}]]</a>
 </div>
 </html>
