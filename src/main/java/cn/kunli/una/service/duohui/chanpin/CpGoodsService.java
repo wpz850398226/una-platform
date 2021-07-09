@@ -93,7 +93,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     public List<CpGoods> parse(List<CpGoods> list) {
         list = super.parse(list);
         for (CpGoods cpGoods : list) {
-            List<CpSpecification> specificationList = cpSpecificationService.list(cpSpecificationService.getWrapper(MapUtil.getMap("goodsId", cpGoods.getId())));
+            List<CpSpecification> specificationList = cpSpecificationService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setSpecificationList(specificationList);
         }
         return list;

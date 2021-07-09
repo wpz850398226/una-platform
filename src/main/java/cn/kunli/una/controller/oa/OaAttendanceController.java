@@ -45,9 +45,8 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                     MapUtil.buildHashMap().put("type_dcode", "permission_type_update")
                             .put("entityId", sysEntity.getId()).build()));
             if(permission!=null){
-                List<SysRolePermission> rolePermissionList = sysRolePermissionService.list(sysRolePermissionService.getWrapper(
-                        MapUtil.buildHashMap().put("permissionId", permission.getId())
-                                .put("ne:scope_dcode", "permission_scope_none").build()));
+                List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", permission.getId())
+                                .put("ne:scope_dcode", "permission_scope_none").build());
 
                 if(CollectionUtils.isNotEmpty(rolePermissionList)){
                     StringBuffer stringBuffer = new StringBuffer();
@@ -57,7 +56,7 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                     //获取到所有需要考勤的角色id
                     String roleIds = stringBuffer.delete(0, 1).toString();
                     //查询拥有这些角色的所有账号
-                    List<SysAccount> accountList = sysAccountService.list(sysAccountService.getWrapper(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+roleIds+"',',',',|'),',') =1")));
+                    List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+roleIds+"',',',',|'),',') =1"));
                     //生成考勤记录
                     OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(TimeUtil.getDayBegin()).setCreatorId(100000);
                     for (SysAccount sysAccount : accountList) {

@@ -186,7 +186,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "srecord:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
         return super.getOne(wrapperUtil.mapToWrapper(format(map)));
     }
@@ -196,7 +196,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "slist", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> selectList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToWrapper(format(map)));
     }
@@ -341,8 +341,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(
-                        MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build()));
+                List<SysSort> sortList = sysSortService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     for (SysSort sysSort : sortList) {
@@ -432,7 +431,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         if(CollectionUtils.isEmpty(list))return list;
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClass.getSimpleName())));
         if(sysEntity!=null){
-            List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
+            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
             if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {

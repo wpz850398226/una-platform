@@ -46,7 +46,7 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
         super.update(entity);
 
         FlowTask flowTask = service.getById(entity.getId());
-        List<FlowLine> flowLineList = flowLineService.list(flowLineService.getWrapper(MapUtil.getMap("originNodeId", flowTask.getNodeId())));
+        List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
         FlowNode flowNode = flowNodeService.getById(flowTask.getNodeId());
 
         for (FlowLine flowLine : flowLineList) {

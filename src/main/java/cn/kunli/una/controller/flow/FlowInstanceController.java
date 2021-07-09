@@ -76,7 +76,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                                 flowTask.setCandidateAccountId(flowNode.getCandidateValue());
                                 break;
                             case "flow_candidateType_role":
-                                List<SysAccount> accountList = sysAccountService.list(sysAccountService.getWrapper(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1")));
+                                List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
                                 if(CollectionUtils.isNotEmpty(accountList)){
                                     StringBuffer stringBuffer = new StringBuffer();
                                     for (SysAccount sysAccount : accountList) {

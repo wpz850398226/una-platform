@@ -53,7 +53,7 @@ public class CpIndexController {
         //热门商铺
         if(record.getValue().get("rmsp")!=null){
             String rmsp = String.valueOf(record.getValue().get("rmsp"));
-            List<CpShop> list = cpShopService.parse(cpShopService.list(cpShopService.getWrapper(MapUtil.getMap("in:code", rmsp))));
+            List<CpShop> list = cpShopService.parse(cpShopService.selectList(MapUtil.getMap("in:code", rmsp)));
             model.addAttribute("hotShopList",list);
         }
 
@@ -61,7 +61,7 @@ public class CpIndexController {
 
         SysDictionary goodsStatusDic = sysDictionaryService.getOne(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("code", "dh_goodsStatus"))));
         if(goodsStatusDic!=null){
-            List<SysDictionary> goodsStatusDlist = sysDictionaryService.list(sysDictionaryService.getWrapper(sysDictionaryService.format(MapUtil.getMap("parentId", goodsStatusDic.getId()))));
+            List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentId", goodsStatusDic.getId()));
             if(CollectionUtils.isNotEmpty(goodsStatusDlist)){
                 //按商品状态查询商品列表
                 Page<CpGoods> objectPage = new Page<CpGoods>().setCurrent(1).setSize(4);
@@ -116,7 +116,7 @@ public class CpIndexController {
         //行业字典
         SysDictionary industryDictionary = sysDictionaryService.getOne(sysDictionaryService.getWrapper(MapUtil.getMap("code", "industry")));
         if(industryDictionary!=null){
-            List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.list(sysDictionaryService.getWrapper(MapUtil.getMap("parentId", industryDictionary.getId()))));
+            List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentId", industryDictionary.getId())));
             model.addAttribute("industryDlist",industryDlist);
         }
     }

@@ -35,7 +35,7 @@ public class SysVersionController extends BaseController<SysVersionService, SysV
     @ResponseBody
     public String downloadNewVersion(HttpServletResponse response, @RequestParam Map<String, Object> params) {
         try {
-            List<SysVersion> list = service.list(service.getWrapper(params));
+            List<SysVersion> list = service.selectList(params);
             if (CollectionUtils.isNotEmpty(list)) {
                 SysVersion sysVersion = list.get(0);
                 if (StringUtils.isNotBlank(sysVersion.getPath()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {

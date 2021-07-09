@@ -94,19 +94,13 @@ public class CommonController {
             }
 
             List<SysButton> sysButtonList = sysButtonService.parse(
-                    sysButtonService.list(
-                            sysButtonService.getWrapper(
-                                    sysButtonService.format(MapUtil.getMap("entityId", entityClass.getId())))));
+                    sysButtonService.selectList(MapUtil.getMap("entityId", entityClass.getId())));
 
             List<SysQuery> sysQueryList = sysQueryService.parse(
-                    sysQueryService.list(
-                            sysQueryService.getWrapper(
-                                    sysQueryService.format(MapUtil.getMap("entityId", entityClass.getId())))));
+                    sysQueryService.selectList(MapUtil.getMap("entityId", entityClass.getId())));
 
             List<SysFilter> sysFilterList = sysFilterService.parse(
-                    sysFilterService.list(
-                            sysFilterService.getWrapper(
-                                    sysFilterService.format(MapUtil.getMap("entityId", entityClass.getId())))));
+                    sysFilterService.selectList(MapUtil.getMap("entityId", entityClass.getId())));
 
             entityClass.setButtonList(sysButtonList);
             entityClass.setQueryList(sysQueryList);
@@ -144,7 +138,7 @@ public class CommonController {
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.list(sysFieldService.getWrapper(sysFieldService.format(map))));
+        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.selectList(map));
         List<List<SysField>> sysFieldListList = new ArrayList<>();
 
 
@@ -213,7 +207,7 @@ public class CommonController {
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
-        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.list(sysFieldService.getWrapper(map)));
+        List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.selectList(map));
         List<List<SysField>> sysFieldListList = new ArrayList<>();
 
 
@@ -254,11 +248,8 @@ public class CommonController {
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         //excel标题
         //查询可以导出的实体字段
-        List<SysField> fieldList = sysFieldService.list(
-                sysFieldService.getWrapper(new MapUtil<>()
-                        .put("entityId",sysEntity.getId())
-                        .put("isImport",1)
-                        .put("isDelete",0).build()));
+        List<SysField> fieldList = sysFieldService.selectList(new MapUtil<>().put("entityId",sysEntity.getId())
+                        .put("isImport",1).put("isDelete",0).build());
         String[] title = new String[fieldList.size()];
         for (int j = 0; j < fieldList.size(); j++) {
             title[j] = fieldList.get(j).getName();
@@ -331,8 +322,8 @@ public class CommonController {
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",className)));
         //excel标题
         //查询可以导出的实体字段
-        List<SysField> fieldList = sysFieldService.list(
-                sysFieldService.getWrapper(new MapUtil<>().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build()));
+        List<SysField> fieldList = sysFieldService.selectList(
+                MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());
         String[] title = new String[fieldList.size()];
 
         if (fieldList != null && fieldList.size() > 0) {

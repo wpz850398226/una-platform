@@ -39,11 +39,11 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
 
         for (SysEntity sysEntity : list) {
             Map<String, Object> map = MapUtil.getMap("entityId", sysEntity.getId());
-            sysEntity.setRelationList(sysRelationService.parse(sysRelationService.list(sysRelationService.getWrapper(map))));
-            sysEntity.setButtonList(sysButtonService.parse(sysButtonService.list(sysButtonService.getWrapper(map))));
-            sysEntity.setQueryList(sysQueryService.parse(sysQueryService.list(sysQueryService.getWrapper(map))));
-            sysEntity.setFilterList((sysFilterService.parse(sysFilterService.list(sysFilterService.getWrapper(map)))));
-            sysEntity.setPermissionList(sysPermissionService.list(sysPermissionService.getWrapper(sysPermissionService.format(MapUtil.getMap("entityId",sysEntity.getId())))));
+            sysEntity.setRelationList(sysRelationService.parse(sysRelationService.selectList(map)));
+            sysEntity.setButtonList(sysButtonService.parse(sysButtonService.selectList(map)));
+            sysEntity.setQueryList(sysQueryService.parse(sysQueryService.selectList(map)));
+            sysEntity.setFilterList((sysFilterService.parse(sysFilterService.selectList(map))));
+            sysEntity.setPermissionList(sysPermissionService.selectList(MapUtil.getMap("entityId",sysEntity.getId())));
         }
 
         return list;

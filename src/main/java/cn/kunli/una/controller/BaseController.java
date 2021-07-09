@@ -240,7 +240,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@GetMapping("/list")
 	@ResponseBody
 	public List<T> list(@RequestParam Map<String, Object> map) {
-		List list = service.list(service.getWrapper(service.format(map)));
+		List list = service.selectList(map);
 		return service.parse(list);
 	}
 
@@ -274,7 +274,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
 			//查询需要导入的实体字段
 			Map<String, Object> map = new MapUtil<>().put("entityId", sysEntity.getId()).put("isImport",1).build();
-			List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(map));
+			List<SysField> fieldList = sysFieldService.selectList(map);
 			if(ListUtil.isNotNull(fieldList)) {
 				//如果需要导入的字段不为空且与excel列数相等
 				if(fieldList.size()==colNum) {
@@ -334,7 +334,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 								&&sysField.getDataCheckTypeDcode().indexOf("global_unique")!=-1
 								&&StringUtils.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
-							List<T> objList = service.list(service.getWrapper(MapUtil.getMap(sysField.getAssignmentCode(), cellValue)));
+							List<T> objList = service.selectList(MapUtil.getMap(sysField.getAssignmentCode(), cellValue));
 							if(ListUtil.isNotNull(objList)) {
 								//有重复数据，设置本行有重复项为true，并加入到重复项数据集合
 								isRepeat = true;
@@ -390,11 +390,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@GetMapping("/export")
 	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> map) {
 		//获取数据
-		List<T> objList = service.list(service.getWrapper(map));
+		List<T> objList = service.selectList(map);
 		//查询对应实体类
 		SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code",entityClassName)));
 		//查询可以导出的实体字段
-		List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(new MapUtil<>().put("entityId",sysEntity.getId()).put("isExport",1).build()));
+		List<SysField> fieldList = sysFieldService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isExport",1).build());
 		//excel标题行
 		String[] title = new String[fieldList.size()+1];
 		title[0] = "序号";

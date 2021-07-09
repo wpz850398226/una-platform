@@ -52,7 +52,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
                 &&(map.get("orderByDesc")==null||StringUtils.isBlank(map.get("orderByDesc").toString()))) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.getMap("entityId",sysEntity.getId())));
+                List<SysSort> sortList = sysSortService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     StringBuffer ascFieldBuffer = new StringBuffer();
@@ -102,7 +102,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
         if(sysData0.getEntityId()!=null){
             //虚拟实体，查询虚拟实体类，而不是sysData类
             Integer entityId = sysData0.getEntityId();
-            List<SysField> fieldList = sysFieldService.list(sysFieldService.getWrapper(MapUtil.getMap("entityId",entityId)));
+            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",entityId));
 
             if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段

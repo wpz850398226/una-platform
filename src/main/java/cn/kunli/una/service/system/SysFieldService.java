@@ -66,7 +66,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=5){
             switch (assignmentCode.substring(length - 5)) {
                 case "Dcode"://字典编码
-                    resultList = sysDictionaryService.list(sysDictionaryService.getWrapper(MapUtil.getMap("code", value)));
+                    resultList = sysDictionaryService.selectList(MapUtil.getMap("code", value));
                     break;
             }
         }
@@ -75,15 +75,15 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             switch (assignmentCode.substring(length - 6)) {
                 case "NodeId"://流程节点 entityId
 //                    FlowNode flowNode = flowNodeService.getById(Integer.valueOf(value));
-                    resultList = flowNodeService.list(flowNodeService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = flowNodeService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "roleId"://角色id，复数，以逗号分隔
                 case "RoleId"://角色id，复数，以逗号分隔
-                    resultList = sysRoleService.list(sysRoleService.getWrapper(MapUtil.getMap("in:id", value)));
+                    resultList = sysRoleService.selectList(MapUtil.getMap("in:id", value));
                     break;
                 case "fileId"://流程节点 entityId
                 case "FileId"://流程节点 entityId
-                    resultList = sysFileService.parse(sysFileService.list(sysFileService.getWrapper(MapUtil.getMap("in:id", value))));
+                    resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("in:id", value)));
                     break;
             }
         }
@@ -92,7 +92,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             switch (assignmentCode.substring(length - 7)) {
                 case "FieldId"://字段 fieldId
                 case "fieldId"://字段 fieldId
-                    resultList = sysFieldService.list(sysFieldService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysFieldService.selectList(MapUtil.getMap("id",value));
                     break;
             }
         }
@@ -101,11 +101,11 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             switch (assignmentCode.substring(length - 8)) {
                 case "EntityId"://实体 entityId
                 case "entityId"://实体 entityId
-                    resultList = sysEntityService.list(sysEntityService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysEntityService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "regionId"://地区 regionId
                 case "RegionId"://地区 regionId
-                    resultList = sysRegionService.list(sysRegionService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysRegionService.selectList(MapUtil.getMap("id",value));
                     break;
             }
         }
@@ -114,10 +114,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             switch (assignmentCode.substring(length - 9)) {
                 case "companyId"://公司 companyId
                 case "CompanyId"://公司 companyId
-                    resultList = sysCompanyService.list(sysCompanyService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysCompanyService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "artmentId"://部门 departmentId
-                    resultList = sysDepartmentService.list(sysDepartmentService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysDepartmentService.selectList(MapUtil.getMap("id",value));
                     break;
             }
         }
@@ -125,13 +125,13 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)){
             switch (assignmentCode) {
                 case "accountId"://账号 accountId
-                    resultList = sysAccountService.list(sysAccountService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysAccountService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "permissionId"://权限 permissionId
-                    resultList = sysPermissionService.list(sysPermissionService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = sysPermissionService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "definitionId"://权限 permissionId
-                    resultList = flowDefinitionService.list(flowDefinitionService.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = flowDefinitionService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "parentId"://父id parentId
                     resultList = bs.list(bs.getWrapper(MapUtil.getMap("id",value)));
@@ -204,7 +204,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         super.parse(list);
         for (SysField record : list) {
             //下拉联动子组件
-            List<SysField> selectChildren = sysFieldService.list(this.getWrapper(MapUtil.getMap("selectParentId", record.getId())));
+            List<SysField> selectChildren = sysFieldService.selectList(MapUtil.getMap("selectParentId", record.getId()));
             if(CollectionUtils.isNotEmpty(selectChildren)){
                 List<String> idList = new ArrayList<>();
                 for (SysField sysField : selectChildren) {
@@ -216,7 +216,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
 
             //隐藏子组件
-            List<SysField> hiddenChildren = sysFieldService.list(this.getWrapper(MapUtil.getMap("hideFieldId", record.getId())));
+            List<SysField> hiddenChildren = sysFieldService.selectList(MapUtil.getMap("hideFieldId", record.getId()));
             if(CollectionUtils.isNotEmpty(hiddenChildren)){
                 Map<String,String> map = new HashMap<>();
                 for (SysField sysField : hiddenChildren) {

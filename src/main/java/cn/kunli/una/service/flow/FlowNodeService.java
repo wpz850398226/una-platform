@@ -33,7 +33,7 @@ public class FlowNodeService extends BasicService<FlowNodeMapper, FlowNode> {
     public List<FlowNode> getSubsequent(Integer nodeId){
         if(nodeId==null)return null;
         List<FlowNode> flowNodeList = new ArrayList<>();
-        List<FlowLine> flowLineList = flowLineService.list(flowLineService.getWrapper(MapUtil.getMap("originNodeId", nodeId)));
+        List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", nodeId));
         if(CollectionUtils.isEmpty(flowLineList))return flowNodeList;
         for (FlowLine flowLine : flowLineList) {
             FlowNode flowNode = thisProxy.getById(flowLine.getTargetNodeId());

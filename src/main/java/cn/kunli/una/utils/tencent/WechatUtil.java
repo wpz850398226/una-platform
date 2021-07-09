@@ -62,8 +62,7 @@ public class WechatUtil {
 	 * @return
 	 */
 	public static String getAppId(){
-		List<SysConfiguration> appidConfigurationList = sysConfigurationService.list(
-				sysConfigurationService.getWrapper(MapUtil.getMap("code","wechatAppid")));
+		List<SysConfiguration> appidConfigurationList = sysConfigurationService.selectList(MapUtil.getMap("code","wechatAppid"));
 		if (ListUtil.isNotNull(appidConfigurationList)){
 			return appidConfigurationList.get(0).getValue();
 		}else {
@@ -76,8 +75,7 @@ public class WechatUtil {
 	 * @return
 	 */
 	public static String getSecret(){
-		List<SysConfiguration> secretConfigurationList = sysConfigurationService.list(
-				sysConfigurationService.getWrapper(MapUtil.getMap("code","wechatSecret")));
+		List<SysConfiguration> secretConfigurationList = sysConfigurationService.selectList(MapUtil.getMap("code","wechatSecret"));
 		if (ListUtil.isNotNull(secretConfigurationList)){
 			return secretConfigurationList.get(0).getValue();
 		}else {

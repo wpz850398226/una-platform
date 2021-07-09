@@ -58,7 +58,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                     if(StringUtils.isNotBlank(roleIds)){
                         String[] roleIdArray = roleIds.split(",");
                         for (String roleId : roleIdArray) {
-                            List<SysAccount> accountList = sysAccountService.list(sysAccountService.getWrapper(MapUtil.getMap("in:roleIds", roleId)));
+                            List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("in:roleIds", roleId));
                             String idStrByPojoList = ListUtil.getIdStrByPojoList(accountList);
                             obj.setCandidateAccountId(idStrByPojoList);
                         }

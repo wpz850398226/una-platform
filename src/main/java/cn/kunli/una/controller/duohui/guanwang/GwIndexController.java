@@ -118,7 +118,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
     }
 
     private void getCommonItem(Model model,Object menuId){
-        List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.list(gwMenuService.getWrapper(MapUtil.getMap("parentId", 100000))));
+        List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.selectList(MapUtil.getMap("parentId", 100000)));
         GwConfiguration systemTitle = gwConfigurationService.getOne(gwConfigurationService.getWrapper(MapUtil.getMap("code","systemTitle")));
         model.addAttribute("gwMenuList", gwMenuList);
         model.addAttribute("systemName", systemTitle.getValue());
