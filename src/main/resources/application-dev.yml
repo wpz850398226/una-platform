@@ -101,11 +101,11 @@ token:
   jwtSecret: Ponzio-Una
 
 minio:
-  endpoint: 192.168.133.128
+  endpoint: 42.192.150.206
   port: 9000
   accessKey: admin
-  secretKey: 12345678
+  secretKey: wpz1992124*
   secure: false
-  bucketName: "test"
+  bucketName: "una"
   configDir: "/home/data/"
 
