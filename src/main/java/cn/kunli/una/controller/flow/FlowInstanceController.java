@@ -15,6 +15,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,7 +44,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
 
     @PostMapping("")
     @ResponseBody
-    public SysResult add(@Valid FlowInstance entity) {
+    public SysResult add(@RequestBody @Valid FlowInstance entity) {
         SysResult saveResult = super.add(entity);
         if(saveResult.getIsSuccess()){
 //            FlowDefinition flowDefinition = flowDefinitionService.getById(entity.getDefinitionId());

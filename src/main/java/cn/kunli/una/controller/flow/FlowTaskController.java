@@ -1,7 +1,6 @@
 package cn.kunli.una.controller.flow;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.flow.FlowInstance;
 import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.flow.FlowTask;
@@ -16,6 +15,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -42,17 +42,14 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
     //办理任务
     @PutMapping("/handle")
     @ResponseBody
-    public SysResult handle(FlowTask entity) {
+    public SysResult handle(@RequestBody FlowTask entity) {
         entity.setOffTime(new Date());
         super.update(entity);
 
         FlowTask flowTask = service.getById(entity.getId());
         //查询任务后续连线
         List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
-        //查询任务后续的默认连线
-        List<FlowLine> defaultLineList = flowLineService.selectList(MapUtil.buildHashMap()
-                .put("originNodeId", flowTask.getNodeId()).put("isDefault",1).build());
-        FlowNode flowNode = flowNodeService.getById(flowTask.getNodeId());
+        StringBuffer stringBuffer = new StringBuffer();
 
         for (FlowLine flowLine : flowLineList) {
             JSONObject flowCondition = flowLine.getFlowCondition();
@@ -60,7 +57,16 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                 //连线无条件执行
                 FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
                 //激活任务
-                service.activate(targetNode.getId(),flowTask.getInstanceId());
+                SysResult activateResult = service.activate(targetNode.getId(), flowTask.getInstanceId());
+                if(activateResult.getIsSuccess()){
+                    if(activateResult.getData()!=null){
+                        stringBuffer.append(",").append(activateResult.getData());
+                    }else{
+                        return activateResult;
+                    }
+                }else{
+                    return activateResult;
+                }
             }else{
                 if(flowCondition.containsKey("isAgree")){
                     //条件是审批是否通过
@@ -68,7 +74,16 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                         //符合条件，查询连线的目标节点，激活待办任务
                         FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
                         //激活任务
-                        service.activate(targetNode.getId(),flowTask.getInstanceId());
+                        SysResult activateResult = service.activate(targetNode.getId(), flowTask.getInstanceId());
+                        if(activateResult.getIsSuccess()){
+                            if(activateResult.getData()!=null){
+                                stringBuffer.append(",").append(activateResult.getData());
+                            }else{
+                                return activateResult;
+                            }
+                        }else{
+                            return activateResult;
+                        }
                     }
                 }else{
                     //条件是其他参数
@@ -76,7 +91,6 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                 }
             }
         }
-
-        return SysResult.fail();
+        return SysResult.success();
     }
 }
