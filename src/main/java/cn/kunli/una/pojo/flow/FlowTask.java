@@ -39,6 +39,8 @@ public class FlowTask extends BasePojo implements Serializable {
     private Integer nodeId;
     //候选人id
     private String candidateAccountId;
+    //候选人id
+    private String nodeTypeDcode;
     //激活时间
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

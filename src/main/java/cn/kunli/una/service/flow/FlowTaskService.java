@@ -62,7 +62,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setId(instanceId));
             return SysResult.success("待办处理成功，流程结束");
         }else{
-            switch(flowNode.getCandidateTypeDcode()){
+            /*switch(flowNode.getCandidateTypeDcode()){
                 case "flow_candidateType_account":
                     flowTask.setCandidateAccountId(flowNode.getCandidateValue());
                     break;
@@ -85,7 +85,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                 case "flow_candidateType_initiator":
                     flowTask.setCandidateAccountId(flowInstance.getCreatorId().toString());
                     break;
-            }
+            }*/
             return getThisProxy().saveRecord(flowTask);
         }
 
@@ -97,6 +97,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
         if(obj.getId()==null){
             //新增任务时，如果是激活待办任务，则查询所有候选人id，并保存
             FlowNode flowNode = flowNodeService.getById(obj.getNodeId());
+            obj.setNodeTypeDcode(flowNode.getTypeDcode());
             FlowInstance flowInstance = flowInstanceService.getById(obj.getInstanceId());
             //流程发起人
             SysAccount initiator = sysAccountService.getById(flowInstance.getCreatorId());

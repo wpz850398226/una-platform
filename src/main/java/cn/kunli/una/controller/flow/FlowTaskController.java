@@ -36,8 +36,6 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
     private FlowLineService flowLineService;
     @Autowired
     private FlowNodeService flowNodeService;
-    @Autowired
-    private FlowInstanceService flowInstanceService;
 
     //办理任务
     @PutMapping("/handle")
