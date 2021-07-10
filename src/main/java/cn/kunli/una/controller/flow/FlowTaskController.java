@@ -58,31 +58,21 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
             JSONObject flowCondition = flowLine.getFlowCondition();
             if(MapUtils.isEmpty(flowCondition)){
                 //连线无条件执行
-
+                FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
+                //激活任务
+                service.activate(targetNode.getId(),flowTask.getInstanceId());
             }else{
                 if(flowCondition.containsKey("isAgree")){
+                    //条件是审批是否通过
                     if(entity.getIsAgree().equals(flowCondition.get("isAgree"))){
                         //符合条件，查询连线的目标节点，激活待办任务
                         FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
-                        if(targetNode.getTypeDcode().equals("flow_nudeType_end")){
-                            //如果目标节点是结束类型，直接完成任务，并结束
-                            service.saveRecord(new FlowTask().setInstanceId(flowTask.getInstanceId())
-                                    .setAccountId(flowTask.getModifierId())
-                                    .setNodeId(targetNode.getId())
-                                    .setActivateTime(new Date())
-                                    .setOffTime(new Date()));
-
-                            flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setId(flowTask.getInstanceId()));
-                            return SysResult.success("待办处理成功，流程结束");
-                        }else{
-                            service.saveRecord(new FlowTask().setInstanceId(flowTask.getInstanceId())
-                                    .setNodeId(targetNode.getId()).setActivateTime(new Date()));
-                            //如果出口排他，则只出一条符合条件的连线
-//                            if(flowNode.getIsExitExclusive()){
-//                                return SysResult.success("待办处理成功");
-//                            }
-                        }
+                        //激活任务
+                        service.activate(targetNode.getId(),flowTask.getInstanceId());
                     }
+                }else{
+                    //条件是其他参数
+                    return SysResult.fail("判断其他参数条件");
                 }
             }
         }

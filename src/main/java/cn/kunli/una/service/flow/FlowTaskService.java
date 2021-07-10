@@ -6,11 +6,13 @@ import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.flow.FlowTask;
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysDepartment;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysDepartmentService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,31 +52,43 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
         FlowTask flowTask = new FlowTask().setInstanceId(instanceId).setNodeId(nodeId).setActivateTime(new Date());
         FlowNode flowNode = flowNodeService.getById(nodeId);
         FlowInstance flowInstance = flowInstanceService.getById(instanceId);
-        switch(flowNode.getCandidateTypeDcode()){
-            case "flow_candidateType_account":
-                flowTask.setCandidateAccountId(flowNode.getCandidateValue());
-                break;
-            case "flow_candidateType_role":
-                List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
-                if(CollectionUtils.isNotEmpty(accountList)){
-                    StringBuffer stringBuffer = new StringBuffer();
-                    for (SysAccount sysAccount : accountList) {
-                        stringBuffer.append(",").append(sysAccount.getId());
+
+        if(flowNode.getTypeDcode().equals("flow_nudeType_end")){
+            //如果目标节点是结束类型，直接完成任务，并结束
+            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+            flowTask.setAccountId(loginUser.getId()).setOffTime(new Date());
+            getThisProxy().saveRecord(flowTask);
+            //关闭流程实例
+            flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setId(instanceId));
+            return SysResult.success("待办处理成功，流程结束");
+        }else{
+            switch(flowNode.getCandidateTypeDcode()){
+                case "flow_candidateType_account":
+                    flowTask.setCandidateAccountId(flowNode.getCandidateValue());
+                    break;
+                case "flow_candidateType_role":
+                    List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
+                    if(CollectionUtils.isNotEmpty(accountList)){
+                        StringBuffer stringBuffer = new StringBuffer();
+                        for (SysAccount sysAccount : accountList) {
+                            stringBuffer.append(",").append(sysAccount.getId());
+                        }
+                        flowTask.setCandidateAccountId(stringBuffer.delete(0,1).toString());
                     }
-                    flowTask.setCandidateAccountId(stringBuffer.delete(0,1).toString());
-                }
-                break;
-            case "flow_candidateType_superior":
-                SysAccount sysAccount = sysAccountService.getById(flowInstance.getCreatorId());
-                flowTask.setCandidateAccountId(String.valueOf(sysAccount.getSuperiorAccountId()));
-                break;
-            case "flow_candidateType_departmentManager":
-                break;
-            case "flow_candidateType_initiator":
-                flowTask.setCandidateAccountId(flowInstance.getCreatorId().toString());
-                break;
+                    break;
+                case "flow_candidateType_superior":
+                    SysAccount sysAccount = sysAccountService.getById(flowInstance.getCreatorId());
+                    flowTask.setCandidateAccountId(String.valueOf(sysAccount.getSuperiorAccountId()));
+                    break;
+                case "flow_candidateType_departmentManager":
+                    break;
+                case "flow_candidateType_initiator":
+                    flowTask.setCandidateAccountId(flowInstance.getCreatorId().toString());
+                    break;
+            }
+            return getThisProxy().saveRecord(flowTask);
         }
-        return getThisProxy().saveRecord(flowTask);
+
     }
 
     @Override
