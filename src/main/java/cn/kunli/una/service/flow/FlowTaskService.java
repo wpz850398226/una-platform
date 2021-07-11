@@ -88,15 +88,16 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                             for (SysAccount sysAccount : accountList) {
                                 stringBuffer.append(",").append(sysAccount.getId());
                             }
-                            obj.setCandidateAccountId(stringBuffer.delete(0,1).toString());
+                            String accountIds = stringBuffer.toString();
+                            if(StringUtils.isNotBlank(accountIds))obj.setCandidateAccountId(accountIds.substring(1));
                         }
                         break;
                     case "flow_candidateType_superior":            //流程发起人的直接上级
-                        obj.setCandidateAccountId(initiator.getSuperiorAccountId().toString());
+                        obj.setCandidateAccountId(String.valueOf(initiator.getSuperiorAccountId()));
                         break;
                     case "flow_candidateType_departmentManager":   //部门主管
                         SysDepartment sysDepartment = sysDepartmentService.getById(initiator.getDepartmentId());
-                        obj.setCandidateAccountId(sysDepartment.getManagerAccountId().toString());
+                        obj.setCandidateAccountId(String.valueOf(sysDepartment.getManagerAccountId()));
                         break;
                     case "flow_candidateType_initiator":           //流程发起人
                         obj.setCandidateAccountId(flowInstance.getCreatorId().toString());

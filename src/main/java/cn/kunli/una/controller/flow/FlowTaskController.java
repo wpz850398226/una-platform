@@ -11,7 +11,6 @@ import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.utils.common.MapUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -42,38 +41,35 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
     @ResponseBody
     public SysResult handle(@RequestBody FlowTask entity) {
         entity.setOffTime(new Date());
-        super.update(entity);
+        SysResult updateResult = super.update(entity);
 
-        FlowTask flowTask = service.getById(entity.getId());
-        //查询任务后续连线
-        List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
-        StringBuffer stringBuffer = new StringBuffer();
+        if(updateResult.getIsSuccess()){
+            FlowTask flowTask = service.getById(entity.getId());
+            //查询任务后续连线
+            List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
 
-        for (FlowLine flowLine : flowLineList) {
-            JSONObject flowCondition = flowLine.getFlowCondition();
-            if(MapUtils.isEmpty(flowCondition)){
-                //连线无条件执行
-                FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
-                //激活任务
-                SysResult activateResult = service.activate(targetNode.getId(), flowTask.getInstanceId());
-                if(activateResult.getIsSuccess()){
-                    if(activateResult.getData()!=null){
-                        stringBuffer.append(",").append(activateResult.getData());
-                    }else{
+            for (FlowLine flowLine : flowLineList) {
+                JSONObject flowCondition = flowLine.getFlowCondition();
+                if(MapUtils.isEmpty(flowCondition)){
+                    //连线无条件执行
+                    FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
+                    //激活任务
+                    SysResult activateResult = service.activate(targetNode.getId(), flowTask.getInstanceId());
+                    if(!activateResult.getIsSuccess()){
                         return activateResult;
                     }
                 }else{
-                    return activateResult;
-                }
-            }else{
-                if(flowCondition.containsKey("isAgree")){
-                    //条件是审批是否通过
-                    if(entity.getIsAgree().equals(flowCondition.get("isAgree"))){
-                        //符合条件，查询连线的目标节点，激活待办任务
-                        FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
-                        //激活任务
-                        SysResult activateResult = service.activate(targetNode.getId(), flowTask.getInstanceId());
-                        if(activateResult.getIsSuccess()){
+                    if(flowCondition.containsKey("isAgree")){
+                        //条件是审批是否通过
+                        if(entity.getIsAgree().equals(flowCondition.get("isAgree"))){
+                            //符合条件，查询连线的目标节点，激活待办任务
+                            FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
+                            //激活任务
+                            SysResult activateResult = service.activate(targetNode.getId(), flowTask.getInstanceId());
+                            if(!activateResult.getIsSuccess()){
+                                return activateResult;
+                            }
+                        /*if(activateResult.getIsSuccess()){
                             if(activateResult.getData()!=null){
                                 stringBuffer.append(",").append(activateResult.getData());
                             }else{
@@ -81,18 +77,20 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                             }
                         }else{
                             return activateResult;
+                        }*/
                         }
+                    }else{
+                        //条件是其他参数
+                        return SysResult.fail("需要判断其他参数条件");
                     }
-                }else{
-                    //条件是其他参数
-                    return SysResult.fail("需要判断其他参数条件");
                 }
             }
+            /*String activateTaskIds = stringBuffer.toString();
+            if(StringUtils.isNotBlank(activateTaskIds)){
+                activateTaskIds = activateTaskIds.substring(1);
+            }*/
         }
-        String activateTaskIds = stringBuffer.toString();
-        if(StringUtils.isNotBlank(activateTaskIds)){
-            activateTaskIds = activateTaskIds.substring(1);
-        }
-        return new SysResult().success("处理成功",activateTaskIds);
+
+        return updateResult;
     }
 }
