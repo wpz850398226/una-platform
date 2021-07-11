@@ -47,11 +47,6 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
     public SysResult add(@RequestBody @Valid FlowInstance entity) {
         SysResult saveResult = super.add(entity);
         if(saveResult.getIsSuccess()){
-//            FlowDefinition flowDefinition = flowDefinitionService.getById(entity.getDefinitionId());
-//            if(flowDefinition!=null){
-//                flowDefinitionService.updateRecordById(new FlowDefinition().setTotal(flowDefinition.getTotal()+1).setRunning(flowDefinition.getRunning()+1).setId(entity.getDefinitionId()));
-//            }
-
             //保存流程实例成功，查找开始节点
             FlowNode startNode = flowNodeService.selectOne(MapUtil.buildHashMap()
                     .put("definitionId", entity.getDefinitionId())
@@ -69,10 +64,11 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                 //查询后续节点
                 List<FlowNode> subsequentNodeList = flowNodeService.getSubsequent(startNode.getId());
                 if(CollectionUtils.isNotEmpty(subsequentNodeList)){
-                    //激活节点，生成待办任务
+                    //激活所有后续节点，生成待办任务
                     for (FlowNode flowNode : subsequentNodeList) {
                         SysResult activateResult = flowTaskService.activate(flowNode.getId(), entity.getId());
-                        if(activateResult.getIsSuccess()){
+                        if(!activateResult.getIsSuccess())return activateResult;
+                        /*if(activateResult.getIsSuccess()){
                             FlowTask flowTask = flowTaskService.getById(String.valueOf(activateResult.getData()));
                             //判断，如果激活的任务候选人包含当前办理人，则立即办理
                             if(StringUtil.containSubString(flowTask.getCandidateAccountId(),String.valueOf(entity.getCreatorId()),null)){
@@ -106,7 +102,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
 
                                 saveResult.setData(dataMap);
                             }
-                        }
+                        }*/
                     }
                 }
             }
