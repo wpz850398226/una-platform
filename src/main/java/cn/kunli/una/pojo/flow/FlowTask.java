@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.flow;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 流程任务(FlowTask)实体类
@@ -41,6 +43,8 @@ public class FlowTask extends BasePojo implements Serializable {
     private String candidateAccountId;
     //候选人id
     private String nodeTypeDcode;
+    //节点关联的实体id
+    private Integer nodeEntityId;
     //激活时间
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -49,4 +53,8 @@ public class FlowTask extends BasePojo implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date offTime;
+
+    //同一个实例中已经提交的任务
+    @TableField(exist = false)
+    private List<FlowTask> submitTaskList;
 }

@@ -81,7 +81,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                                 switch(taskNode.getTypeDcode()){
                                     case "flow_nudeType_audit": //审批类型
                                         dataMap.put("isImmediate", 1);
-                                        dataMap.put("taskTypeDcode", "flow_nudeType_audit");
+                                        dataMap.put("nodeTypeDcode", "flow_nudeType_audit");
                                         List<FlowTask> flowTaskList = flowTaskService.selectList(MapUtil.buildHashMap().put("instanceId", entity.getId())
                                                 .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build());
                                         if(CollectionUtils.isNotEmpty(flowTaskList)){
@@ -97,7 +97,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                                     case "flow_nudeType_submit":    //提交类型
                                         dataMap.put("isImmediate", 1);
                                         dataMap.put("entityId", taskNode.getEntityId());
-                                        dataMap.put("taskTypeDcode", "flow_nudeType_submit");
+                                        dataMap.put("nodeTypeDcode", "flow_nudeType_submit");
                                         break;
                                     default:
                                         dataMap.put("isImmediate", 0);
