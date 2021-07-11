@@ -12,6 +12,7 @@ import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.utils.common.MapUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -89,6 +90,10 @@ public class FlowTaskController extends BaseController<FlowTaskService, FlowTask
                 }
             }
         }
-        return SysResult.success();
+        String activateTaskIds = stringBuffer.toString();
+        if(StringUtils.isNotBlank(activateTaskIds)){
+            activateTaskIds = activateTaskIds.substring(1);
+        }
+        return new SysResult().success("处理成功",activateTaskIds);
     }
 }
