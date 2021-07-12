@@ -306,60 +306,6 @@ $(this).find("div").hide();
     </div>
   </div>
 </div></div>
-<div class="footer clear clearfix">
-  <div class="w1200">
-    <div class=" W950 clear clearfix" style="margin:0 auto;">
-      <div class="fl list w210">
-        <dl>
-          <dt>新手上路</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">会员注册</a></dd>
-          <dd><a href="">会员登录</a></dd>
-          <dd><a href="">找回密码</a></dd>
-          <dd><a href="">发布信息</a></dd>
-          <dd><a href="">查找信息</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210 ml23">
-        <dl>
-          <dt>会员服务</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">工程年费会员</a></dd>
-          <dd><a href="">认证队伍</a></dd>
-          <dd><a href="">认证机械商</a></dd>
-          <dd><a href="">主材商家</a></dd>
-          <dd><a href="">广告服务</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210  ml23">
-        <dl>
-          <dt>认证服务</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">手机认证服务</a></dd>
-          <dd><a href="">实名认证服务</a></dd>
-          <dd><a href="">公司认证服务</a></dd>
-          <dd><a href="">现场认证服务</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210  ml23">
-        <dl>
-          <dt>支付方式</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">积分</a></dd>
-          <dd><a href="">积分充值</a></dd>
-          <dd><a href="">银行汇款积分</a></dd>
-          <dd><a href="">提现须知</a></dd>
-        </dl>
-      </div>
-    </div>
-    <div class="w1200 clear clearfix" style="height:1px; background:#e2e2e2; margin:30px;"></div>
-    <div class="clear clearfix footerdibu" style="padding-bottom:30px;">
-      <div class="mt20 clear clearfix"><a href="about.html">关于我们</a>|<a href="contact.html">联系方式</a>|<a href="contact.html">免责条款</a>|<a href="contact.html">网站地图</a>|<a href="contact.html">网站留言</a>|<a href="contact.html">广告服务</a></div>
-      <p>备案号   全国服务热线:0311-888888888    商务邮箱:123@qq.com</p>
-      <p>&copy;2017-2019 SYSTEM All Rights Reserved 免责声明：本站信息均为网友自行发布，交易所带来的风险本站概不负责！</p>
-      <p class="mt30" ><img th:src="@{/duohui/chanpin/images/1_121.jpg}"></p>
-    </div>
-  </div>
-</div>
+<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
 </body>
 </html>

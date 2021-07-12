@@ -27,7 +27,7 @@ public class CpOrder extends BasePojo implements Serializable {
     //订单编号
     private String code;
     //订单支付方式
-    private String paymentType;
+    private String paymentTypeDcode;
     //配送地址id
     private Integer deliveryAddressId;
     //配送时间

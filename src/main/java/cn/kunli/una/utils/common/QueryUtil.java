@@ -36,7 +36,7 @@ public class QueryUtil {
 	}
 
 	//前端传回排序条件list，格式化为查询排序字符串
-	public static String sortListToSortSql(List<SysSort> sortList) {
+	/*public static String sortListToSortSql(List<SysSort> sortList) {
 
 		String sortSql = "";
 		if(sortList!=null&&sortList.size()>0) {
@@ -54,7 +54,7 @@ public class QueryUtil {
 			}
 		}
 		return sortSql;
-	}
+	}*/
 
 	//前端传回排序条件sortkey和sortord，格式化为查询排序字符串
 	public static String sortFieldToSortSql(String sortkey,String sortord) {

@@ -26,9 +26,7 @@ $(function () {
 </script>
     <div class="callbacks_container">
       <ul class="rslides callbacks callbacks1" id="slider">
-        <li><a ><img th:src="@{/duohui/guanwang/images/banner.jpg}" alt=""></a></li>
-        <li><a ><img th:src="@{/duohui/guanwang/images/banner.jpg}" alt=""></a></li>
-        <li><a ><img th:src="@{/duohui/guanwang/images/banner.jpg}" alt=""></a></li>
+        <li th:each="imageUrl : ${#strings.arraySplit(record.map['bannerFileUrl'], ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
       </ul>
     </div>
   </div>

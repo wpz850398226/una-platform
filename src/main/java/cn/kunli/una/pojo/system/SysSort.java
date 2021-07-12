@@ -20,19 +20,13 @@ public class SysSort extends BasePojo implements Serializable {
 
     private Integer entityId;
 
-    private String fieldId;
+    private Integer fieldId;
 
     private Boolean sortord;
 
 
     @TableField(exist = false)
-    private String entityName;            //实体名称
-    @TableField(exist = false)
-    private String fieldName;            //排序字段名称
-    @TableField(exist = false)
     private String fieldDqlName;        //排序查询字段语句
-    @TableField(exist = false)
-    private String name;
 
     private static final long serialVersionUID = 1L;
 

@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head>
-<meta charset="utf-8"/>
-<title>多汇供应链管理有限公司</title>
-<meta name="keywords" content="多汇供应链管理有限公司">
-<meta name="description" content="多汇供应链管理有限公司">
-<link th:href="@{/duohui/chanpin/css/base1.css}" rel="stylesheet" type="text/css">
-<link th:href="@{/duohui/chanpin/css/main_001.css}" rel="stylesheet" type="text/css">
-<link th:href="@{/duohui/chanpin/css/css.css}" rel="stylesheet" type="text/css">
-<script th:src="@{/duohui/chanpin/js/jquery-1.js}" type="text/javascript"></script>
-<script th:src="@{/duohui/chanpin/js/public.js}" type="text/javascript"></script>
-<script type="text/javascript">        var _curWeb = "news";</script>
-<!--下面是大图，上面是导航-->
-</head>
+<div th:replace="/duohui/chanpin/include/head :: head"></div>
 <body>
 <div class="header ">
   <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
@@ -123,7 +111,7 @@
         });
     </script>
 <div class=" clear clearfix ">
-  <div class="prodcateStyle_3  mt30">
+  <!--<div class="prodcateStyle_3  mt30">
     <ul class="oneBgSet w1200">
       <li class="oneSet"> <a href="" target="_self">一级分类<i class="fa fa-angle-down"></i></a>
         <div class="subCateUl">
@@ -185,7 +173,7 @@
         </div>
       </li>
     </ul>
-  </div>
+  </div>-->
   <script>
 		window.resizeTimeoutprodKind_style_03_1484741726227=setTimeout(function(){
 			diyAutoHeight($('#prodKind_style_03_1484741726227'));
@@ -217,7 +205,6 @@
         </div>
       </div>
       <!--放大镜图片功能，css跟js代码的顺序不能调整-->
-      <link th:href="@{/duohui/chanpin/css/css.css}" type="text/css" rel="stylesheet">
       <SCRIPT th:src="@{/duohui/chanpin/js/jquery-1.2.6.pack.js}" type=text/javascript></SCRIPT>
       <SCRIPT th:src="@{/duohui/chanpin/js/base.js}" type=text/javascript></SCRIPT>
       <SCRIPT type=text/javascript>
@@ -276,7 +263,7 @@
         </dl>
         <dl class="wr-price-panel clear clearfix">
           <dt class="wr-metatit" style="line-height:50px;">促销价</dt>
-          <dd><em class="wr-yen1">￥</em> <span class="wr-price1">480.00</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
+          <dd><em class="wr-yen1">￥</em> <span class="wr-price1">[[${record.sellingPrice}]]</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
         </dl>
       </div>
       <dl class="wr-price-panel clear clearfix mt10">
@@ -322,7 +309,7 @@
                   <script language="javascript" type="text/javascript">  function goods_cut(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  if(Num>1)Num=Num-1;  num_val.value=Num;}  function goods_add(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  Num=Num+1;  num_val.value=Num;} </script>
                   <span class="ui-number fl mr10">
                   <button type="button" class="decrease" onClick="goods_cut();changePrice();"></button>
-                  <input type="number" class="num" id="number" onBlur="changePrice();" name="number" value="1" min="1" max="99" style=" text-align:center"/>
+                  <input type="number" class="num" id="buyNumber" onBlur="changePrice();" value="1" min="1" max="99" style=" text-align:center"/>
                   <button type="button" class="increase" onClick="goods_add();changePrice();"></button>
                   </span>件<em class="ml10">库存27件</em> </div>
               </li>
@@ -371,10 +358,8 @@ changePrice();
 }
 </script>
       <div class="probuy">
-        <input type="button" value="立即购买" class="" onclick="Group_AddCart(2343578,0,0)">
-        <input type="button" value="加入购物车" class=" addcartBtn" onclick="ProdDetailAddCart('32bdf6e19b680b75c606d7b79359653b',2343578,0,0)">
-
-        <!--  -->
+        <input type="button" value="立即购买" class="" th:onclick="'javascript:bugNow('+${record.id}+');'">
+        <input type="button" value="加入购物车" class="addcartBtn" th:onclick="'javascript:addCart('+${record.id}+');'">
       </div>
     </div>
     <div class="clear clearfix" style="height:20px;"></div>
@@ -482,81 +467,62 @@ changePrice();
           </DIV>
         </DIV>
       </DIV>
-      <SCRIPT type=text/javascript>
-			function selectTag(showContent,selfObj){
-				// 操作标签
-				var tag = document.getElementById("tags").getElementsByTagName("li");
-				var taglength = tag.length;
-				for(i=0; i<taglength; i++){
-					tag[i].className = "";
-				}
-				selfObj.parentNode.className = "selectTag";
-				// 操作内容
-				for(i=0; j=document.getElementById("tagContent"+i); i++){
-					j.style.display = "none";
-				}
-				document.getElementById(showContent).style.display = "block";
-
-
-			}
-			</SCRIPT>
     </div>
   </div>
 </div>
-<div class="footer clear clearfix">
-  <div class="w1200">
-    <div class=" W950 clear clearfix" style="margin:0 auto;">
-      <div class="fl list w210">
-        <dl>
-          <dt>新手上路</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">会员注册</a></dd>
-          <dd><a href="">会员登录</a></dd>
-          <dd><a href="">找回密码</a></dd>
-          <dd><a href="">发布信息</a></dd>
-          <dd><a href="">查找信息</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210 ml23">
-        <dl>
-          <dt>会员服务</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">工程年费会员</a></dd>
-          <dd><a href="">认证队伍</a></dd>
-          <dd><a href="">认证机械商</a></dd>
-          <dd><a href="">主材商家</a></dd>
-          <dd><a href="">广告服务</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210  ml23">
-        <dl>
-          <dt>认证服务</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">手机认证服务</a></dd>
-          <dd><a href="">实名认证服务</a></dd>
-          <dd><a href="">公司认证服务</a></dd>
-          <dd><a href="">现场认证服务</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210  ml23">
-        <dl>
-          <dt>支付方式</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">积分</a></dd>
-          <dd><a href="">积分充值</a></dd>
-          <dd><a href="">银行汇款积分</a></dd>
-          <dd><a href="">提现须知</a></dd>
-        </dl>
-      </div>
-    </div>
-    <div class="w1200 clear clearfix" style="height:1px; background:#e2e2e2; margin:30px;"></div>
-    <div class="clear clearfix footerdibu" style="padding-bottom:30px;">
-      <div class="mt20 clear clearfix"><a href="about.html">关于我们</a>|<a href="contact.html">联系方式</a>|<a href="contact.html">免责条款</a>|<a href="contact.html">网站地图</a>|<a href="contact.html">网站留言</a>|<a href="contact.html">广告服务</a></div>
-      <p>备案号   全国服务热线:0311-888888888    商务邮箱:123@qq.com</p>
-      <p>&copy;2017-2019 SYSTEM All Rights Reserved 免责声明：本站信息均为网友自行发布，交易所带来的风险本站概不负责！</p>
-      <p class="mt30" ><img th:src="@{/duohui/chanpin/images/1_121.jpg}"></p>
-    </div>
-  </div>
-</div>
+<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
+<SCRIPT type=text/javascript>
+  function selectTag(showContent,selfObj){
+    // 操作标签
+    var tag = document.getElementById("tags").getElementsByTagName("li");
+    var taglength = tag.length;
+    for(i=0; i<taglength; i++){
+      tag[i].className = "";
+    }
+    selfObj.parentNode.className = "selectTag";
+    // 操作内容
+    for(i=0; j=document.getElementById("tagContent"+i); i++){
+      j.style.display = "none";
+    }
+    document.getElementById(showContent).style.display = "block";
+
+
+  }
+
+  //立即购买
+  function bugNow(goodsId){
+      var buyNumber = $("#buyNumber").val();
+      layer.msg("立即购买")
+
+  }
+
+  //加入购物车
+  function addCart(goodsId){
+    console.log(goodsId);
+    var buyNumber = $("#buyNumber").val();
+      $.ajax({
+          type: 'post',
+          contentType: "application/json",
+          url: "/api/cp/cart",
+          dataType: 'json',
+          data: {"goodsAttributeId":goodsId},
+          success: function (result) {
+              if(result.isSuccess){
+                  //操作成功时，弹层提示添加成功，并且刷新父页面
+                  layer.msg(result.message)
+              }else{
+                  layer.msg(result.message,function () {})
+              }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+              layer.closeAll('loading');
+              console.log(XMLHttpRequest.status);
+              console.log(XMLHttpRequest.readyState);
+              console.log(textStatus);
+          }
+      })
+
+  }
+</SCRIPT>
 </body>
 </html>

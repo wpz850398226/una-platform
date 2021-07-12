@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //放行登录页
                 .antMatchers("/sys/login/toLogin").permitAll()
                 //放行静态资源
-                .antMatchers("/una/**","/xadmin/**","/layui/**","/duohui/**").permitAll()
+                .antMatchers("/una/**","/xadmin/**","/layui/**","/duohui/**","/cp/goods/fDetail/**").permitAll()
                 //所有请求都必 须认证才能访问，必须登录
                 .anyRequest().authenticated();
                 //自定义access方法

@@ -290,7 +290,7 @@
                             pathArray = [];
                             // pathArray = window.parent.document.getElementById('[[${textInputId}]]').value
                             $.each(data,function (index,obj) {
-                                pathArray.push(obj.path);
+                                pathArray.push(obj.id);
                                 $("#"+'[[${textInputId}]]',window.parent.document).closest(".layui-input-block").find(".layui-input-block:first").append("<img src=\""+obj.path+"\" style=\"width:100px;\"/>");
                             })
                             window.parent.document.getElementById('[[${textInputId}]]').value = pathArray
