@@ -123,14 +123,15 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "artmentId"://部门 departmentId
                     resultList = sysDepartmentService.selectList(MapUtil.getMap("id",value));
                     break;
+                case "accountId"://账号 accountId
+                case "AccountId"://账号 accountId
+                    resultList = sysAccountService.selectList(MapUtil.getMap("id",value));
+                    break;
             }
         }
 
         if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)){
             switch (assignmentCode) {
-                case "accountId"://账号 accountId
-                    resultList = sysAccountService.selectList(MapUtil.getMap("id",value));
-                    break;
                 case "permissionId"://权限 permissionId
                     resultList = sysPermissionService.selectList(MapUtil.getMap("id",value));
                     break;

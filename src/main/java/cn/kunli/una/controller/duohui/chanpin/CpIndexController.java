@@ -64,10 +64,9 @@ public class CpIndexController {
             List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentId", goodsStatusDic.getId()));
             if(CollectionUtils.isNotEmpty(goodsStatusDlist)){
                 //按商品状态查询商品列表
-                Page<CpGoods> objectPage = new Page<CpGoods>().setCurrent(1).setSize(4);
                 Map<String,Object> goodsListMap = new HashMap<>();
                 for (SysDictionary sysDictionary : goodsStatusDlist) {
-                    Page<CpGoods> goodsPage = cpGoodsService.page(objectPage, cpGoodsService.getWrapper(MapUtil.getMap("statusDcode", sysDictionary.getCode())));
+                    Page<CpGoods> goodsPage = cpGoodsService.page(1L,4L, MapUtil.getMap("statusDcode", sysDictionary.getCode()));
                     goodsListMap.put(sysDictionary.getCode(),cpGoodsService.parse(goodsPage.getRecords()));
                 }
                 //商品状态字典
@@ -76,7 +75,6 @@ public class CpIndexController {
 
                 //查询置顶商铺
                 List<CpShop> shopList = new ArrayList<>();
-//                Page<CpShop> shopPage = new Page<CpShop>().setCurrent(1).setSize(goodsStatusDlist.size());
                 Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
                 shopList = stickShopPage.getRecords();
                 if(shopList.size()<=goodsStatusDlist.size()){
@@ -101,13 +99,14 @@ public class CpIndexController {
      * @return
      */
     @RequestMapping("/product")
-    public String product(Model model) {
+    public String product(Model model,Map<String,Object> map) {
         getCommonItem(model);
-
+        Page<CpGoods> goodsPage = cpGoodsService.page(1L,8L, MapUtil.buildHashMap().put("orderByDesc", "stickDeadline").build());
+        model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
         return "duohui/chanpin/product";
     }
 
-    private void getCommonItem(Model model){
+    public void getCommonItem(Model model){
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
@@ -119,5 +118,13 @@ public class CpIndexController {
             List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentId", industryDictionary.getId())));
             model.addAttribute("industryDlist",industryDlist);
         }
+
+        //热卖推荐
+        Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, MapUtil.getMap("orderByDesc", "stickDeadline"));
+        model.addAttribute("hotGoodsList",cpGoodsService.parse(stickGoodsPage.getRecords()));
+
+        //搜索排行
+        Page<CpGoods> searchGoodsPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
+        model.addAttribute("searchGoodsList",searchGoodsPage.getRecords());
     }
 }

@@ -14,6 +14,7 @@ import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -144,6 +145,13 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             return SysResult.success();
         }
         return SysResult.fail();
+    }
+
+    @Override
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    public boolean update(Wrapper<T> updateWrapper) {
+        return super.update(updateWrapper);
     }
 
     //自定义更新规则

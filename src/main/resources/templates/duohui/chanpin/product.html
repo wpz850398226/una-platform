@@ -145,7 +145,7 @@ int();//初始化隐藏多余标签
 
       <div class=" product-r gsmc">
         <ul>
-          <li th:each="goods:${goodsListMap[goodsStatusDic.code]}">
+          <li th:each="goods:${goodsList}">
             <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
           </li>
         </ul>

@@ -259,7 +259,7 @@
       <div class="wr-fcs-panel clear clearfix">
         <dl class="wr-price-panel mt20">
           <dt class="wr-metatit">价格</dt>
-          <dd><em class="wr-yen">￥</em> <span class="wr-price">480</span></dd>
+          <dd><em class="wr-yen">￥</em> <span class="wr-price">[[${record.taxInclusiveMarketPrice}]]</span></dd>
         </dl>
         <dl class="wr-price-panel clear clearfix">
           <dt class="wr-metatit" style="line-height:50px;">促销价</dt>
@@ -268,12 +268,12 @@
       </div>
       <dl class="wr-price-panel clear clearfix mt10">
         <dt class="wr-metatit">运费</dt>
-        <dd><em class="wr-yen">￥10 （订单满288免运费）</em> </dd>
+        <dd><em class="wr-yen">￥[[${record.freightPrice}]] （订单满[[${record.freeFreightPrice}]]免运费）</em> </dd>
       </dl>
       <div class="clear clearfix" style="height:10px;"></div>
       <ul class="xiaoliang">
         <li>
-          <div class="wr-indcon"><span class="wr-label">总销量</span><span class="wr-count">16</span></div>
+          <div class="wr-indcon"><span class="wr-label">总销量</span><span class="wr-count">[[${record.sales}]]</span></div>
         </li>
         <li>
           <div class="wr-indcon"><span class="wr-label">月销量</span><span class="wr-count">16</span></div>
@@ -287,7 +287,16 @@
         <div class="ui-sx bian1">
           <div class="subNavBox">
             <ul class="navContent" style="display: block;">
-              <li>
+              <li th:each="specification:${record.specificationList}">
+                <div class="title">[[${specification.name}]]</div>
+                <div class="item">
+                  <a class="hover" href="javascript:;"  onClick="changeAtt(this);" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}">
+                    <input style="display:none" type="radio" checked />
+                    [[${attribute}]] <i>已选中</i>
+                  </a>
+                </div>
+              </li>
+              <!--<li>
                 <div class="title">颜色</div>
                 <div class="item"> <a class="hover" href="javascript:;"  onClick="changeAtt(this);" >
                   <input style="display:none" id="spec_value_15787" type="radio" checked />
@@ -302,16 +311,15 @@
                   <img src="images/cxmeng_39.jpg}" width="40" height="40"> <i>已选中</i> </a><a href="javascript:;"  onClick="changeAtt(this);" >
                   <input style="display:none" id="spec_value_15787" type="radio" checked />
                   <img th:src="@{/duohui/chanpin/images/cxmeng_19.jpg}" width="40" height="40"><i>已选中</i></a> </div>
-              </li>
+              </li>-->
               <li>
                 <div class="title1">购买数量</div>
                 <div class="item1">
-                  <script language="javascript" type="text/javascript">  function goods_cut(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  if(Num>1)Num=Num-1;  num_val.value=Num;}  function goods_add(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  Num=Num+1;  num_val.value=Num;} </script>
                   <span class="ui-number fl mr10">
                   <button type="button" class="decrease" onClick="goods_cut();changePrice();"></button>
                   <input type="number" class="num" id="buyNumber" onBlur="changePrice();" value="1" min="1" max="99" style=" text-align:center"/>
                   <button type="button" class="increase" onClick="goods_add();changePrice();"></button>
-                  </span>件<em class="ml10">库存27件</em> </div>
+                  </span>件<em class="ml10">库存[[${record.inventory}]]件</em> </div>
               </li>
             </ul>
           </div>
@@ -321,7 +329,22 @@
       <!--下面的js就是单选框的效果-->
       <script type="text/javascript">
 
-			  function click_search (){
+        function goods_cut(){
+          var num_val=document.getElementById('buyNumber');
+          var new_num=num_val.value;
+          var Num = parseInt(new_num);
+          if(Num>1)Num=Num-1;
+          num_val.value=Num;
+        }
+        function goods_add(){
+          var num_val=document.getElementById('buyNumber');
+          var new_num=num_val.value;
+          var Num = parseInt(new_num);
+          Num=Num+1;
+          num_val.value=Num;
+        }
+
+        function click_search (){
 				  var search_ka = document.getElementById("search_ka");
 				  if (search_ka.className == "s-buy open ui-section-box"){
 					  search_ka.className = "s-buy ui-section-box";
@@ -388,11 +411,7 @@ changePrice();
             </div>
             <div class=" pro-nr-list clear clearfix">
               <ul>
-                <li title="瓦伦丁啤酒">商品名称：瓦伦丁啤酒</li>
-                <li title="1080069">商品编号：1080069</li>
-                <li title="12.56kg">商品毛重：12.56kg</li>
-                <li title="德国">商品产地：德国</li>
-                <li title="黑啤">分类：黑啤</li>
+                <li th:title="${param.value}" th:each="param:${record.goodsParam}">[[${param.key}]]：[[${param.value}]]</li>
               </ul>
             </div>
             <div class="wr-tit-new "><i class="wr-tit-new-icon"></i>
@@ -403,11 +422,7 @@ changePrice();
           <DIV class="tagContent " id=tagContent1>
             <div class=" pro-nr-list clear clearfix">
               <ul>
-                <li title="瓦伦丁啤酒">商品名称：瓦伦丁啤酒</li>
-                <li title="1080069">商品编号：1080069</li>
-                <li title="12.56kg">商品毛重：12.56kg</li>
-                <li title="德国">商品产地：德国</li>
-                <li title="黑啤">分类：黑啤</li>
+                <li th:title="${param.value}" th:each="param:${record.goodsParam}">[[${param.key}]]：[[${param.value}]]</li>
               </ul>
             </div>
           </DIV>
@@ -502,17 +517,11 @@ changePrice();
     var buyNumber = $("#buyNumber").val();
       $.ajax({
           type: 'post',
-          contentType: "application/json",
-          url: "/api/cp/cart",
+          url: "/api/cp/cart/save",
           dataType: 'json',
-          data: {"goodsAttributeId":goodsId},
+          data: {"goodsAttributeId":goodsId,"amount":buyNumber},
           success: function (result) {
-              if(result.isSuccess){
-                  //操作成功时，弹层提示添加成功，并且刷新父页面
-                  layer.msg(result.message)
-              }else{
-                  layer.msg(result.message,function () {})
-              }
+              layer.msg(result.message,function () {})
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
               layer.closeAll('loading');

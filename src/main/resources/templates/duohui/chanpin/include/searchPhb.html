@@ -6,14 +6,9 @@
     </div>
     <div class="paixu mt20">
         <ul>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+            <li th:each="goods:${searchGoodsList}">
+                <a th:href="${'/api/cp/goods/fDetail/'+goods.id}">[[${goods.name}]]</a>
+            </li>
         </ul>
     </div>
 </div>

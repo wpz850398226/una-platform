@@ -109,6 +109,10 @@ public class CpGoods extends BasePojo implements Serializable {
     private Double taxInclusiveMarketPrice;
     //不含税市场价
     private Double taxExclusiveMarketPrice;
+    //运费
+    private Double freightPrice;
+    //免运费下限
+    private Double freeFreightPrice;
     //刷新时间
     private Date refreshTime;
     //置顶截止时间
