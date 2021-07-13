@@ -3,16 +3,21 @@ package cn.kunli.una.controller.duohui.chanpin;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpShop;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,5 +47,20 @@ public class CpShopController extends BaseController<CpShopService, CpShop> {
         model.addAttribute("goodsList",cpGoodsService.parse(goodsList));
 
         return "duohui/dianpu/index";
+    }
+
+    //刷新
+    @PutMapping("/refresh/{id}")
+    @ResponseBody
+    public SysResult refresh(@PathVariable Integer id) {
+        return service.updateRecordById((CpShop) new CpGoods().setRefreshTime(new Date()).setId(id));
+    }
+
+    //置顶
+    @PutMapping("/stick/{id}")
+    @ResponseBody
+    public SysResult stick(@PathVariable Integer id) {
+        CpShop byId = service.getById(id);
+        return service.updateRecordById((CpShop) new CpGoods().setStickDeadline(TimeUtil.getNextDay(byId.getStickDeadline(),1)).setId(id));
     }
 }

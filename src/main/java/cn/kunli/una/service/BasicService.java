@@ -362,7 +362,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     }
                 }
             }
-        }else{
+        }
+
+        if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             map.put("orderByAsc","sortOrder");
         }
 
@@ -468,11 +470,11 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                                     //实体中该字段值为空的
                                     SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
                                     if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
+                                    Map<String, Object> map = entity.getMap();
+                                    if(map==null)map = new HashMap<>();
+                                    map.put(sysField.getDisplayCode(), displayValue);
+                                    entity.setMap(map);
                                 }
-                                Map<String, Object> map = entity.getMap();
-                                if(map==null)map = new HashMap<>();
-                                map.put(sysField.getDisplayCode(), displayValue);
-                                entity.setMap(map);
                             }
                         }
                     }

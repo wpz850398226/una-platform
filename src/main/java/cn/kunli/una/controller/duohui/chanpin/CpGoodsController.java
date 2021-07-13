@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.TimeUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
 
 /**
  * 账号(CpGoods)表控制层
@@ -49,16 +52,15 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
     @PutMapping("/refresh/{id}")
     @ResponseBody
     public SysResult refresh(@PathVariable Integer id) {
-
-        return SysResult.fail("修改失败，id为空");
+        return service.updateRecordById((CpGoods) new CpGoods().setRefreshTime(new Date()).setId(id));
     }
 
     //置顶
     @PutMapping("/stick/{id}")
     @ResponseBody
     public SysResult stick(@PathVariable Integer id) {
-
-        return SysResult.fail("修改失败，id为空");
+        CpGoods byId = service.getById(id);
+        return service.updateRecordById((CpGoods) new CpGoods().setStickDeadline(TimeUtil.getNextDay(byId.getStickDeadline(),1)).setId(id));
     }
 
 

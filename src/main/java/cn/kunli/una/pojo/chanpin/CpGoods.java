@@ -83,8 +83,8 @@ public class CpGoods extends BasePojo implements Serializable {
     private Integer isShowInventory;
     //是否启用规格
     private Integer isSpecification;
-    //减库存方式
-    private Integer isReductionType;
+    //是否减库存
+    private Integer isInventoryReduce;
     //是否支持货到付款
     private Integer isPayOnDelivery;
     //是否正品保证
@@ -135,8 +135,5 @@ public class CpGoods extends BasePojo implements Serializable {
     //商品规格属性列表
     @TableField(exist = false)
     private List<CpGoodsAttribute> goodsAttributeList;
-    //参数json字符串
-    @TableField(exist = false)
-    private String goodsParamStr;
 
 }
