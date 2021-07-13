@@ -2,6 +2,7 @@ package cn.kunli.una.pojo.chanpin;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
@@ -27,4 +28,7 @@ public class CpCart extends BasePojo implements Serializable {
     private Integer goodsAttributeId;
     //数量
     private Integer amount;
+
+    @TableField(exist = false)
+    private CpGoodsAttribute cpGoodsAttribute;
 }

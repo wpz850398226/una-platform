@@ -2,6 +2,7 @@ package cn.kunli.una.pojo.chanpin;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
@@ -53,4 +54,12 @@ public class CpGoodsAttribute extends BasePojo implements Serializable {
     private Integer points;
     //生效标记：0无效；1有效
     private Integer isEffect;
+
+
+    //商品名称
+    @TableField(exist = false)
+    private String goodsName;
+    //店铺名称
+    @TableField(exist = false)
+    private String shopName;
 }
