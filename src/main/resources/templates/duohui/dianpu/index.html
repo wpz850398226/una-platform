@@ -85,7 +85,7 @@ myNav[i].parentNode.parentNode.previousElementSibling.className="on";
     <div class="nav clear clearfix mt20">
       <div class="w1200 clearfix">
         <ul class="menu " id="menu"> <li class="on" ><a  href="index.html"> 首页 </a></li>
-        <li ><a  href="about.html"> 公司介绍</a> </li>
+        <li ><a  href="/duo"> 公司介绍</a> </li>
         <li><a href="javascript:void(0)"> 产品展示</a>
 
         <ul class="submenu">
@@ -123,8 +123,8 @@ $(function () {
 </script>
 <div class="callbacks_container">
   <ul class="rslides callbacks callbacks1" id="slider">
-    <li class="" ><a ><img th:src="@{/duohui/dianpu/images/banner.jpg}" alt=""></a></li>
-    <li class="" ><a ><img th:src="@{/duohui/dianpu/images/banner.jpg}" alt=""></a></li>
+    <li class="" th:each="imageUrl : ${#strings.arraySplit(record.map.bannerFileUrl, ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
+<!--    <li class="" ><a ><img th:src="@{/duohui/dianpu/images/banner.jpg}" alt=""></a></li>-->
   </ul>
 </div>
 <div class="clear clearfix hui">

@@ -3,12 +3,14 @@ package cn.kunli.una.controller.duohui.chanpin;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpShop;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,11 +42,18 @@ public class CpShopController extends BaseController<CpShopService, CpShop> {
      */
     @RequestMapping("/fDetail/{id}")
     public String fDetail(Model model, @PathVariable Integer id) {
-        CpShop record = service.parse(ListUtil.getList(service.getById(id))).get(0);
-        model.addAttribute("record",record);
+        CpShop record = new CpShop();
+        if(id==0){
+            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+            //查询自己的店铺
+            record = service.parse(service.selectList(MapUtil.getMap("creatorId",loginUser.getId()))).get(0);
+        }else{
+            record = service.parse(ListUtil.getList(service.getById(id))).get(0);
+        }
 
-        List<CpGoods> goodsList = cpGoodsService.selectList(MapUtil.getMap("shopId", record.getId()));
-        model.addAttribute("goodsList",cpGoodsService.parse(goodsList));
+        model.addAttribute("record",record);
+        /*List<CpGoods> goodsList = cpGoodsService.selectList(MapUtil.getMap("shopId", record.getId()));
+        model.addAttribute("goodsList",cpGoodsService.parse(goodsList));*/
 
         return "duohui/dianpu/index";
     }
