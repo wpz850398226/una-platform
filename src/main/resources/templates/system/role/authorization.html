@@ -46,10 +46,7 @@
                 <div class="layui-card">
                     <div class="layui-collapse" lay-accordion="">
                         <div th:each="entity,iterStat:${entityList}" th:if="${iterStat.index%2==1}" class="layui-colla-item">
-                            <h2 class="layui-colla-title">
-                                [[${entity.name}]]
-                                <!--<span class="layui-badge layui-bg-orange" style="float: right">&nbsp;&nbsp;</span>-->
-                            </h2>
+                            <h2 class="layui-colla-title">[[${entity.name}]]</h2>
                             <div class="layui-colla-content">
                                 <table class="layui-table" lay-skin="line" style="margin: 0">
                                     <thead>
@@ -116,20 +113,26 @@
             data:{roleId:'[[${sample.id}]]'},
             success:function(result){
                 $.each(result,function (index,record) {
-                    switch (record.scope) {
-                        case 0:
+                    var scopeDcode = record.scopeDcode;
+                    var scopeNum = 0;
+                    switch (scopeDcode) {
+                        case 'permission_scope_none':
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-black\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 1:
+                        case 'permission_scope_person':
+                            scopeNum = 1;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-green\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 2:
+                        case 'permission_scope_department':
+                            scopeNum = 2;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-blue\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 3:
+                        case 'permission_scope_company':
+                            scopeNum = 3;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-orange\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 4:
+                        case 'permission_scope_all':
+                            scopeNum = 4;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
                     }
@@ -138,7 +141,7 @@
                         ,theme: '#1E9FFF' //主题色
                         ,min: 0
                         ,max: 4
-                        ,value: record.scope //初始值
+                        ,value: scopeNum //初始值
                         ,input: true //输入框
                         ,showstep: true //开启间隔点
                         ,setTips: function(value){ //自定义提示文本
@@ -147,13 +150,13 @@
                                     return '无权限';
                                     break;
                                 case 1:
-                                    return '个人';
+                                    return '个人级';
                                     break;
                                 case 2:
-                                    return '部门';
+                                    return '部门级';
                                     break;
                                 case 3:
-                                    return '公司';
+                                    return '公司级';
                                     break;
                                 case 4:
                                     return '全部';
@@ -178,8 +181,8 @@
             $("#submit").attr("disabled",true);
             //ajax保存数据
             $.ajax({
-                type: 'post',
-                url: '/api/sys/role/saveAuthorization',
+                type: 'put',
+                url: '/api/sys/rolePermission/batchUpdate',
                 dataType: 'json',
                 data: data.field,
                 success: function (result) {

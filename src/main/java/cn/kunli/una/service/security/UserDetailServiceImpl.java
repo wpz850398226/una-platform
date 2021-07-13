@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysPermissionService;
 import cn.kunli.una.utils.common.MapUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -37,9 +38,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
         SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username",username));
         if(sysAccount ==null){
             throw new AuthenticationCredentialsNotFoundException("用户名不存在");
-        }else if(sysAccount.getStatusDcode().equals("locked")){
+        }else if(StringUtils.isBlank(sysAccount.getStatusDcode())){
+            throw new LockedException("用户状态为空");
+        }else if(sysAccount.getStatusDcode().equals("account_status_unverified")){
+            throw new LockedException("用户未认证，无法登陆");
+        }else if(sysAccount.getStatusDcode().equals("account_status_locked")){
             throw new LockedException("用户被锁定，无法登陆");
-        }else if(sysAccount.getStatusDcode().equals("disabled")){
+        }else if(sysAccount.getStatusDcode().equals("account_status_disabled")){
             throw new DisabledException("用户已作废");
         }
 

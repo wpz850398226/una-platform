@@ -65,8 +65,6 @@ public class SysEntity extends BasePojo implements Serializable {
     @TableField(exist = false)
     private List<SysSort> sortList;
     @TableField(exist = false)
-    private String parentFieldName;
-    @TableField(exist = false)
     private List<SysButton> buttonList;
     @TableField(exist = false)
     private List<SysPermission> permissionList;

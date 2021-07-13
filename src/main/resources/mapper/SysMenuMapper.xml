@@ -21,7 +21,7 @@
         <where>
             <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
             <if test="record.keyword != null and record.keyword !=''">
-                and (CONCAT_WS('|',record.name,record.link_url,sfct.name)) like '%${record.keyword}%'
+                and (CONCAT_WS('|',record.name,record.path,sfct.name)) like '%${record.keyword}%'
             </if>
             <if test="record.level != null">
                 and record.level = #{record.level}
@@ -47,7 +47,7 @@
         SELECT DISTINCT smnu.id
         ,smnu.name
         ,smnu.type
-        ,smnu.link_url
+        ,smnu.path
         ,smnu.sort_order
         ,smnu.level
         ,smnu.parent_id

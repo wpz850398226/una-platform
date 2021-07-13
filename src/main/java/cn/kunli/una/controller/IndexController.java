@@ -31,6 +31,7 @@ public class IndexController {
     @RequestMapping("/index")
     public String index(Model model) {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+
         List<SysMenu> sysMenuList = sysMenuService.selectTreeBySelective((SysMenu) new SysMenu().setId(loginUser.getId()));
         SysConfiguration sysConfiguration = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("sysMenuList", sysMenuList);

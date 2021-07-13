@@ -39,6 +39,8 @@ public class SysMenu extends BasePojo implements Serializable {
     private String code;
     //所属权限id
     private Integer permissionId;
+    //所属权限编码
+    private String permissionCode;
     //图标字典id
     private String iconDcode;
     //图标图片id
@@ -53,23 +55,10 @@ public class SysMenu extends BasePojo implements Serializable {
     List<SysMenu> children = new ArrayList<>();
     @TableField(exist = false)
     private SysMenu parentMenu;
-    @TableField(exist = false)
-    private String parentName;
-    @TableField(exist = false)
-    private String permissionName;
-    @TableField(exist = false)
-    private String permissionCode;
-    @TableField(exist = false)
-    private String iconDname;
+
     @TableField(exist = false)
     private String iconFurl;
     @TableField(exist = false)
     private String packageName;
-    @TableField(exist = false)
-    private String activitName;
-    @TableField(exist = false)
-    private String versionName;
-    @TableField(exist = false)
-    private String appCode;
 
 }

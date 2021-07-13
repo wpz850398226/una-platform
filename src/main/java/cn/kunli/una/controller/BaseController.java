@@ -155,7 +155,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		T ascendRecord = (T) service.getById(id);
 		if(ascendRecord!=null){
 			Integer sortOrder = ascendRecord.getSortOrder();
-			if(sortOrder!=null&&sortOrder>1){
+			if(sortOrder!=null&&sortOrder>0){
 				Map<String, Object> paramMap = MapUtil.getMap("sortOrder", sortOrder - 1);
 				//获取当前类对应实体类对象
 				SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));

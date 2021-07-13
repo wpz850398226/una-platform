@@ -1,7 +1,9 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysMenuMapper;
+import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysMenu;
+import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,6 +19,8 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
 
     @Autowired
     private SysMenuService thisProxy;
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     @Override
     public BasicService getThisProxy() {
@@ -107,6 +111,14 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");
         }
 
+        if(obj.getPermissionId()!=null){
+            SysPermission sysPermission = sysPermissionService.getById(obj.getPermissionId());
+            if(sysPermission!=null&&sysPermission.getEntityId()!=null){
+                SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
+                String typeDcode = sysPermission.getTypeDcode();
+                obj.setPermissionCode(sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1));
+            }
+        }
 
         super.initialize(obj);
 

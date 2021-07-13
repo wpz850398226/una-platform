@@ -355,9 +355,17 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     for (SysSort sysSort : sortList) {
                         String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
                         if(sysSort.getSortord()){
-                            map.put("orderByAsc",assignmentCode);
+                            if(map.containsKey("orderByAsc")){
+                                map.put("orderByAsc",map.get("orderByAsc")+","+assignmentCode);
+                            }else{
+                                map.put("orderByAsc",assignmentCode);
+                            }
                         }else{
-                            map.put("orderByDesc",assignmentCode);
+                            if(map.containsKey("orderByDesc")){
+                                map.put("orderByDesc",map.get("orderByDesc")+","+assignmentCode);
+                            }else{
+                                map.put("orderByDesc",assignmentCode);
+                            }
                         }
                     }
                 }
@@ -470,11 +478,11 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                                     //实体中该字段值为空的
                                     SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
                                     if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
-                                    Map<String, Object> map = entity.getMap();
-                                    if(map==null)map = new HashMap<>();
-                                    map.put(sysField.getDisplayCode(), displayValue);
-                                    entity.setMap(map);
                                 }
+                                Map<String, Object> map = entity.getMap();
+                                if(map==null)map = new HashMap<>();
+                                map.put(sysField.getDisplayCode(), displayValue);
+                                entity.setMap(map);
                             }
                         }
                     }
