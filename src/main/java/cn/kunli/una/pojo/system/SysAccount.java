@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,6 +55,14 @@ public class SysAccount extends BasePojo implements Serializable {
     private Integer superiorAccountId;
     //密码
     private Integer shopId;
+    //企业类型
+    private String companyTypeDcode;
+    //企业名称
+    private String companyName;
+    //地区
+    private Integer regionId;
+    //会员截止日期
+    private Date memeberDeadline;
 
 
 
@@ -64,4 +73,7 @@ public class SysAccount extends BasePojo implements Serializable {
     private List<SysRole> roleList;
     @TableField(exist = false)
     private SysUser sysUser;
+    @TableField(exist = false)
+    private Boolean isAudit;    //是否审核通过
+
 }

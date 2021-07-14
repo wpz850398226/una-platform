@@ -69,10 +69,15 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             if (StringUtils.isBlank(obj.getPassword())) {
                 obj.setPassword(new BCryptPasswordEncoder().encode("123456"));
             }
-            obj.setPageSize(10);
             //如果新增账户账号为空，自动填充手机号
-            if (obj.getUsername() == null || obj.getUsername().equals(""))
+            if (obj.getUsername() == null || obj.getUsername().equals("")){
                 obj.setUsername(obj.getSysUser().getMobile());
+            }
+            //如果账号来源是自行注册，则状态为未审核
+            if(StringUtils.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
+                obj.setStatusDcode("account_status_toAudit");
+            }
+
         } else {
             //如果id不为空，修改数据
             if (obj.getRemark() != null && obj.getRemark().equals("提交认证")) {
@@ -85,6 +90,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         if (StringUtils.isNotBlank(obj.getUsername())) obj.setUsername(obj.getUsername().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getPassword())) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
+        if(StringUtils.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
         /*if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0){
             obj.setRoleIds(StringUtils.join(obj.getRoleIdArray(), ","));
         }*/
