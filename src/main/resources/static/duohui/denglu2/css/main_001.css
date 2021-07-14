@@ -1,0 +1,379 @@
+@charset "gb2312";
+/* CSS Document */
+
+.huiyuan{width:220px;float:right;background:#fff; position:absolute; z-index:-1px; min-height:375px;}
+.user-login-detail {
+	background: #f9f9f9;
+	height: 138px
+}
+.user-info-name {
+	color: #333;
+	text-align: center;
+	padding: 14px 0 10px;
+	font-size: 14px
+}
+.user-info-bd {
+	width: 100%
+}
+.user-info-bd .uib-wrab {
+	width: 50%;
+	padding: 18px 0;
+	text-align: center;
+	float: left
+}
+.user-info-bd .uib-wrab .uib-amount {
+	font-size: 16px;
+	line-height: 34px;
+	font-weight: 700;
+	display: block;
+	color: #ff5400
+}
+.user-info-bd .uib-wrab .uib-tit {
+	font-size: 12px;
+	line-height: 18px;
+	display: block;
+	color: #333;
+	margin-top: 4px
+}.user-info-hd {
+	width: 100%
+}
+.user-info-hd .uih-wrap {
+	width: 100%;
+	text-align: center
+}
+.user-info-hd .uih-wrap .uih-btn {
+	vertical-align: middle;
+	text-align: center;
+	cursor: pointer;
+	padding: 0;
+	border: 1px solid #ff5400;
+	_margin-bottom: 1px;
+	color: #fff;
+	float: left;
+	width: 63px;
+	line-height: 24px
+}
+.user-info-hd .uih-wrap .uih-log {
+	background: #ff5400;
+	margin: 0 18px 0 17px
+}
+.user-info-hd .uih-wrap .uih-reg {
+	background: #fff;
+	color: #ff5400;
+	margin: 0 17px 0 18px
+}
+
+#title1{margin-top:5px;height:35px;background:url(../images/title_line.gif) bottom repeat-x;}
+#title1 ul li{float:left; width:50%;}
+#title1 ul li a{font-size:14px;margin:0 10px;line-height:33px;}
+.title1_cur{border-bottom:2px solid #ff5400;}
+.user-info-svr {
+	height: 132px;
+	background: #fff;
+	padding: 20px 0 10px;
+	width: 100%;
+	border-bottom: 1px solid #eee
+}
+.user-info-svr a {
+	text-align: center;
+	float: left;
+	width: 33.33%;
+	height: 66px;
+	cursor: pointer;
+	-webkit-transition: all ease .5s;
+	-moz-transition: all ease .5s;
+	transition: all ease .5s
+}
+.user-info-svr a i {
+	margin-bottom: 8px;
+	display: inline-block
+}
+.user-info-svr a em {
+	display: block;
+	font-style: normal;
+	line-height: 21px;
+	font-size: 12px;
+	color: #333
+}
+.user-info-svr a:hover {
+	-webkit-transform: translateY(-3px);
+	-moz-transform: translateY(-3px);
+	transform: translateY(-3px)
+}
+.user-info-svr a:hover em {
+	color: #ff5400
+}
+.user-info-svr .iconfont {
+	font-size: 18px;
+	color: #ff5400
+}
+.scroll_ul {
+	height: 150px;
+	
+}
+.scroll_ul li {
+	width: 240px; margin-left:20px;
+	height: 150px; background:url(../images/scroll_ul.jpg) no-repeat;
+	float: left
+}
+.scroll_ul li a {
+	display: block;
+	padding: 20px;
+	height: 110px;
+	font-size: 14px;
+	color: #696969;
+	position: relative
+}
+.scroll_ul li a .t {
+	font-size: 16px;
+	color: #ff5400
+}
+.scroll_ul li a .txt {
+	position: relative;
+	z-index: 11
+}
+.scroll_ul li a img {
+	right: 10px; width:120px; height:80px; top:60px;
+	
+	position: absolute;-webkit-transition: all ease .5s;
+	-moz-transition: all ease .5s;
+	transition: all ease .5s
+}
+.scroll_ul li:hover a img{right: 30px;}
+.wzgg em{ font-size:14px; font-weight:bold; color:#ff5400;}
+.wzgg ul li{ line-height:24px; margin-top:6px; }
+.tuijian-title{ background:url(../images/1_27.jpg) top center no-repeat;}
+.tuijian-title1{ background:url(../images/1_24.jpg) top center no-repeat;}
+.tuijian-title a ,.tuijian-title1 a{ color:#fff; text-align:center; font-size:14px;  margin-left:260px; line-height:32px;}
+
+.tjhy-title{ display:block; width:100%; padding-bottom:30px; padding-top:10px; border-bottom:1px solid #dddddd;}
+.tjhy-title h2{  border-bottom:1px solid #ff5400;padding-bottom:12px;}
+.tjhy-title h2 a{ color:#ff5400;}
+
+/*滚动*/
+
+
+.fz_line{border-top:3px solid #81d358;}
+
+.bdb_item{ position:relative; width:1200px; overflow:hidden;}
+.bdb_item .time-item{ color:#fff;}
+.bdb_item .seckilling{     width: 600px;height: 60px;line-height: 60px; background: #673621;-webkit-transform: skew(-45deg);-moz-transform: skew(-45deg); -ms-transform: skew(-45deg);transform: skew(-45deg); position: absolute; right: -45px; top: 0; color: #fff; display: block;}
+.bdb_item .time-item{display: block;overflow: hidden; font-size: 26px;text-align: center;-webkit-transform: skew(45deg);   -moz-transform: skew(45deg);  -ms-transform: skew(45deg); transform: skew(45deg); float:left; margin-left:120px;}
+.bdb_item .time-item strong{background:#000;color:#fff;line-height:50px;font-size:50px;font-family:Arial; width:70px; display: inline-block; text-align:center; margin:5px 5px;border-radius:5px;box-shadow:1px 1px 3px rgba(0,0,0,0.2);}
+.footer{ background:#f7f7f7; padding-top:50px; }
+.list dl dt{ font-size:16px; font-weight:500; color:#282828; margin-bottom:15px;}
+.list dl div{ width:100%; height:1px; background:#e2e2e2; margin:10px 0;}
+.footer .list:nth-child(1) dl dd{ width:33%;}
+.list dl dd{ line-height:24px; width:50%; float:left;}
+.list dl dd a{ color:#646464; font-size:14px;}
+.footerdibu{ width:700px; margin:0 auto; }
+.footerdibu div{ width:455px; margin:0 auto;}
+.footerdibu div a{ margin:0 10px;  color:#646464; line-height:30px; }
+.footerdibu p{ text-align:center; color:#646464; display:block;line-height:30px;}
+
+.nrxxym{ text-align:center; width:100%; display:block; border-bottom:1px solid #ccc;}
+
+
+/*登录页面*/ 
+.weizhi{ height:30px; line-height:30px;}
+.weizhi em{ background:url(../images/location.png) center no-repeat;*background:none;/*For IE7 & IE6*/_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/location.png',sizingMethod='crop'); display:block; width:20px; height:25px; margin-top:2px;color:#666;}
+.weizhi p a{margin:0 10px; line-height:30px;color:#666; display:inline-block ;}
+.dldl a:hover{ color:#900;}
+/*登录页面*/
+
+.wlsc{padding:50px;}
+.addwlsc{ line-height:36px;}
+.addwlsc li{ clear:both; padding:10px 0;}
+.xinxi{ text-align:right; display:block; float:left; width:150px;line-height:40px;}
+.xinxi2{padding-top:8px; float:left}
+.pl{ padding-left:6px;}
+.input,.addwlsc li label,.xinxi2{ font-size:14px;}
+.input img{ float:left; margin:0 5px;}
+.wlsczhu{margin:6px 0 0 10px;line-height:21px;padding:2px 10px 0 25px;border:1px solid #b3d4f2;background:#e9f3ff;}
+.wlsc_tan{ background:#f7f7f7; line-height:30px;}
+.wlsc_cuo{ background:#fdeef4; border:1px solid #f19dbd;line-height:30px;}
+.wlsc_dui{ border:0; height:20px;}
+
+.addwlsc .text1{  border:1px solid #cccccc; line-height:30px; height:36px; width:314px; outline:none;}
+.addwlsc .text1:hover{  border:1px solid #1844a7; outline:none;}
+.addwlsc .text2{  border:1px solid #cccccc; line-height:30px; height:36px; width:100px; outline:none;}
+.addwlsc .text2:hover{  border:1px solid #1844a7; outline:none;}
+.xinxi .hong{ color:#ff0000;}
+.addwlsc .aa{ background:url(../images/one4.jpg) 95% center no-repeat;}
+.addwlsc .bb{ background:url(../images/one5.jpg) 95% center no-repeat;}
+.login_main{ background:url(../images/login_bg.jpg) center top no-repeat; height:568px;}
+.beijing{ background:#FFF; width:390px;}
+.beijing span{ font-size:18px; line-height:40px;}
+.xinxi5{ display:block; float:left; width:36px; height:36px; border:1px solid #ccc; border-right:0;    margin-top:8px;}
+.xinxi5 .biaoti{ background:url(../images/pwd-icons-new.png) scroll  no-repeat 0 0 ; height:34px; display:block}
+.xinxi5 .mima{ background:url(../images/pwd-icons-new.png) scroll no-repeat -49px 0;height:34px;display:block}
+.xinxi5 .yanzhengma{ background:url(../images/pwd-icons-new.png) scroll no-repeat -132px 0;height:34px;display:block}
+.input:hover .biaoti{ background:url(../images/pwd-icons-new.png) scroll  no-repeat 0 -49px; height:34px; display:block}
+.input:hover .mima{ background:url(../images/pwd-icons-new.png) scroll  no-repeat -49px -49px; height:34px; display:block}
+.input:hover .yanzhengma{ background:url(../images/pwd-icons-new.png) scroll  no-repeat -132px -49px; height:34px; display:block}
+
+/*找回密码的样式*/	
+/*注册页面的样式*/
+.box .gac { text-align: center; }
+.box{ min-height:400px;}
+		.box .gtform { font-size: 14px; width:460px; margin:0 auto; }
+		.box .gtform li{ display:block; height:60px; line-height:60px; margin-bottom:5px;}
+		.box .gtform label, .box .gtform em { vertical-align:middle; }
+		.box .gtform label.p0 { padding-top: 10px; }
+		.box .gtform label { padding-top: 1px; text-align: right; font-weight: normal; width:120px; display:inline-block;}	
+		.box .tb { font-size: 16px; display:block; height:30px;}
+		.box .tb > a { float: left; text-decoration: none; display: inline-block; padding:0 30px; color: #444; }
+		.box .tb > a:hover { color:#1844a7; }
+		.box .tb > a.act { border-bottom: 2px solid #1844a7; }
+			.box .gtform label.aa{ display: inline-block; vertical-align: middle; height: auto;width: auto;}		
+		.box input.it{ width: 228px; line-height: 1em; padding:6px; border: 1px solid #ccc; border-radius:3px;}
+		.box select.it { width: 80px; line-height: 1em; padding: 6px; border: 1px solid #ccc; display:inline-block; margin-right:4px; border-radius:3px; }
+		.box select.it:last-child { margin-right:0;}
+		.box .ccg { padding: 10px; border: 0; color: #fff; background: #666; cursor: pointer; }
+		.box .btn { width: 250px; font-size: 16px; padding: 10px 0; border: 0; color: #fff; background: #1844a7; border-radius:5px; }
+		.box .btn1 { width: 250px; font-size: 16px; padding: 10px 0; border: 0; color: #fff; background: #ccc; border-radius:5px; }
+		.box #qust { padding: 10px 0 0 0; }
+		.box #qust img { vertical-align: middle; }
+		.g_vm { vertical-align: middle; margin-top:24px; }
+		.btn { cursor: pointer; border-radius: 2px; }
+		.ml5{ margin-left:5px;}
+		.send{width: 113px;
+    height: 36px;
+    float: right; margin:15px 0 0 0;
+    line-height: 36px;
+    background: url(../images/sj_btn_bg.gif) no-repeat;
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;}
+		.send .huoqu{ background:none; border:0; outline:none; }
+	
+	
+/*注册页面的样式*/	
+/*找回密码的样式*/	
+.box .zhmm { background:url(../images/mod_sub_nav.png) no-repeat; width:695px; margin:0 auto; height:34px; font-size: 16px; }
+.box .zhmm > a { float: left; text-decoration: none; display: inline-block; color: #444; line-height:34px;width:221px; padding-left: 88px;}
+.box .zhmm > a.act1 { background:url(../images/sub_nav_1.png) no-repeat;line-height:34px; width:241px; }
+.box .zhmm > a.act2 { background:url(../images/sub_nav_2.png) no-repeat;line-height:34px; width:241px; }
+.box .zhmm > a.act3 { background:url(../images/sub_nav_3.png) no-repeat;line-height:34px; width:241px; }
+/*找回密码的样式*/	
+
+/*免费发布的样式*/	
+
+	.box .gtform1 { font-size: 14px; width:700px; margin:0 auto; }
+		.box .gtform1 li{ display:block; height:60px; line-height:60px; margin-bottom:10px;}
+		.box .gtform1 label, .box .gtform1 em {vertical-align:middle; }
+		.box .gtform1 label.p0 { padding-top: 10px; }
+		.box .gtform1 label { padding-top: 1px; font-weight: normal; width:100px; display:inline-block;}	
+		.box input.it1{ width: 508px; line-height: 1em; padding:6px; border: 1px solid #ccc; border-radius:3px;}
+		.box select.file { width: 100px; line-height: 1em; padding: 6px; border: 1px solid #ccc; float:left; display:inline-block; margin-right:4px; border-radius:3px; }
+		.sctp{     width: 96px;
+    height: 90px;
+    cursor: pointer; background:url(../images/icons_edit.png )  -106px 0 no-repeat; float:left;}
+	.sctp:hover{  background:url(../images/icons_edit.png )  -233px 0 no-repeat;}
+	.sctp input.file{ opacity:0; width: 96px;
+    height: 90px;
+    cursor: pointer;}
+	.guanbi{background:#F00; border-radius:50%; width:20px; height:20px; display:inline-block; line-height:20px; text-align:center; color:#FFF; margin-top:80px;}
+	.guanbi：hover{ color:#CCC;}
+/*找回密码的样式*/	
+.sousuo{ margin-top:30px;}
+.sousuo .soukuang{ border:2px solid #1844a7; border-right:0; height:39px; width:450px; line-height:39px; color:#555; font-size:14px; padding-left:15px;margin-top:1px; background:#fff; }
+.sousuo .sousuo{ width:90px; height:39px; margin-right:27px; border:0; line-height:39px; text-align:center; background:#1844a7;  color:#fff; font-size:16px;}
+
+
+.diqu ul li{ width:33%; float:left; display:inline-block; line-height:36px; }
+.diqu ul li a{ text-align:left; padding-left:20px;} 
+.diqu ul li:hover{ background:#e6e6e6;}
+.diqu ul li:hover a{ color:#1844a7;}
+
+.mffbfl ul li{ float: left; display:inline-block; width:28%; margin:0 2%; padding-left:15px; line-height:40px;}
+.mffbfl ul li:hover { background:#1844a7; }
+.mffbfl ul li:hover a{color:#fff;}
+
+
+.breadcrumbs{ height:36px; line-height:36px;font-size:14px; border-bottom:1px solid #ddd;}
+.breadcrumbs em{ background:url(../images/location.png) center no-repeat;*background:none;/*For IE7 & IE6*/_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/location.png',sizingMethod='crop'); display:block; width:20px; height:25px; margin-top:2px;color:#666;}
+.breadcrumbs p a{margin:0 10px; line-height:36px;color:#666; display:inline-block ; font-size:14px;}
+
+#content-box {
+	float: left;
+	width: 1198px;
+	margin-top: 23px;
+	border: solid 1px #eee
+}
+.content-letter {
+	float: left;
+	border-bottom: solid 1px #eee
+}
+.content-letter-panel {
+	float: left;
+	width: 40px;
+	height: 100%;
+	color: #999;
+	font-size: 18px;
+	font-weight: 700;
+	background-color: #f5f5f5;
+	text-align: center
+}
+.content-province {
+	float: left;
+	position: relative;
+	z-index: 1;
+	width: 1158px
+}
+.content-province-triangle {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 7px;
+	height: 10px;
+	margin-top: -5px; /*background:url(../images/changecity_triangle.png) no-repeat;*/
+	background-size: 100% 100%;
+	background-repeat: no-repeat
+}
+.content-province-triangle-HD {
+/*	background: url(../images/changecity_triangle@2x.png)!important*/
+}
+.content-province:hover {
+	background: #d9e5ff;
+}
+.content-province:hover a, .content-province:hover .content-province-title {
+	color: #1844a7;
+}
+.content-province-title {
+	float: left;
+	width: 94px;
+	height: 100%;
+	line-height: 46px;
+	padding-left: 10px;
+
+	color: #333;
+	font-size: 16px
+}
+.content-cities {
+	float: left;
+	width: 1046px;		border-left-style: solid;
+	border-width: 1px;
+	border-color: #eee;
+	overflow: hidden
+}
+.content-city {
+	display: inline-block;
+line-height:46px;
+	color: #333;
+	font-size: 12px;
+	margin: 0 10px
+}
+.content-letter-panle-hover {
+	color: #fff;
+	background-color: #d9e5ff
+}
+.content-province-hover {
+	background-color: #fefefe
+}
+.content-province-triangle-hover {
+	display: block
+}
+
+
