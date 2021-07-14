@@ -127,6 +127,31 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     }
 
     /**
+     * 条件删除
+     *
+     * @param id
+     * @return
+     */
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    public boolean deleteBySelective(Map<String,Object> map) {
+        /*String className = entityClass.getSimpleName();
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        //获取当前类对应实体类对象
+        if(sysEntity!=null) {
+            //获取父字段字段类对象
+            SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
+            String tableName = StringUtil.upperCharToUnderLine(className);
+            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
+            commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
+        }*/
+
+        return super.remove(wrapperUtil.mapToWrapper(map));
+    }
+
+
+
+    /**
      * 更新数据,只操作record中的非空属性
      *
      * @param record

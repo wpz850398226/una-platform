@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.flow;
 import cn.kunli.una.pojo.BasePojo;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -24,6 +25,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@TableName(autoResultMap = true)
 public class FlowLine extends BasePojo implements Serializable {
     private static final long serialVersionUID = -56496290891072647L;
     //条件

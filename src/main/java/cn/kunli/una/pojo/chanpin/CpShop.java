@@ -57,4 +57,10 @@ public class CpShop extends BasePojo implements Serializable {
     private Date refreshTime;
     //置顶截止时间
     private Date stickDeadline;
+    //关于我们图片
+    private Integer aboutUsFileId;
+    //关于我们描述
+    private String aboutUsDescription;
+    //关于我们内容
+    private String aboutUsContent;
 }

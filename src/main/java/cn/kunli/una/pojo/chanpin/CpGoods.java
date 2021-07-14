@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.chanpin;
 import cn.kunli.una.pojo.BasePojo;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -25,6 +26,7 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@TableName(autoResultMap = true)
 public class CpGoods extends BasePojo implements Serializable {
     private static final long serialVersionUID = -52941713558499123L;
     //编号

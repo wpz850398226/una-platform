@@ -60,6 +60,33 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     }
 
     @Override
+    public SysResult updateRecordById(CpGoods entity) {
+        SysResult sysResult = super.updateRecordById(entity);
+        if(sysResult.getIsSuccess()){
+            if(CollectionUtils.isNotEmpty(entity.getSpecificationList())){
+                //删除原有规格
+                boolean deleteResult = cpSpecificationService.deleteBySelective(MapUtil.getMap("goodsId", entity.getId()));
+                //保存规格
+                for (CpSpecification cpSpecification : entity.getSpecificationList()) {
+                    cpSpecification.setGoodsId(entity.getId());
+                    cpSpecificationService.saveRecord(cpSpecification);
+                }
+            }
+
+            if(CollectionUtils.isNotEmpty(entity.getGoodsAttributeList())){
+                //删除原有规格
+                boolean deleteResult = cpGoodsAttributeService.deleteBySelective(MapUtil.getMap("goodsId", entity.getId()));
+                //保存商品规格属性
+                for (CpGoodsAttribute cpGoodsAttribute : entity.getGoodsAttributeList()) {
+                    cpGoodsAttribute.setGoodsId(entity.getId());
+                    cpGoodsAttributeService.saveRecord(cpGoodsAttribute);
+                }
+            }
+        }
+        return sysResult;
+    }
+
+    @Override
     public CpGoods initialize(CpGoods obj) {
         obj = super.initialize(obj);
         if(obj.getId()==null){
@@ -89,6 +116,8 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         for (CpGoods cpGoods : list) {
             List<CpSpecification> specificationList = cpSpecificationService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setSpecificationList(specificationList);
+            List<CpGoodsAttribute> attributeList = cpGoodsAttributeService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
+            cpGoods.setGoodsAttributeList(attributeList);
         }
         return list;
     }

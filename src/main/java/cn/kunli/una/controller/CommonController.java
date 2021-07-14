@@ -2,21 +2,26 @@ package cn.kunli.una.controller;
 
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.Constant;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.ExcelUtils;
 import cn.kunli.una.utils.common.*;
-import cn.kunli.una.utils.redis.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.util.EntityUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.management.MalformedObjectNameException;
 import javax.servlet.http.HttpServletResponse;
@@ -123,15 +128,23 @@ public class CommonController {
      */
     @RequestMapping("/form/{className}")
     public String form(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> obj) {
-        //判断权限
-        String permissionCode;
-        if (obj.get("batch") != null) {
-            permissionCode = className + ":update";
-        } else {
-            permissionCode = className + ":" + (obj.get("id") != null ? "update" : "create");
+
+        if(MapUtils.isNotEmpty(obj)){
+            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+            for (Map.Entry<String, Object> entry : obj.entrySet()) {
+                Object value = entry.getValue();
+                if(value!=null&&String.valueOf(value).indexOf("$u.")!=-1){
+                    String valueStr = String.valueOf(value);
+                    String fieldStr = valueStr.substring(valueStr.indexOf("$u.") + 3);
+                    System.out.println(fieldStr);
+                    Object fieldValue = EntityUtil.getFieldValue(SysLoginAccountDetails.class,loginUser, fieldStr);
+                    if(fieldValue!=null){
+                        entry.setValue(fieldValue);
+                    }
+                }
+            }
         }
 
-        //if(!SecurityUtils.getSubject().isPermitted(permissionCode))return "error/401";
         SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
         //创建查询实例
         Map<String, Object> map = new MapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();

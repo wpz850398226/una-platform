@@ -52,6 +52,11 @@ public class SysAccount extends BasePojo implements Serializable {
     private String onlineSession;
     //直接上级 账号id
     private Integer superiorAccountId;
+    //密码
+    private Integer shopId;
+
+
+
 
     @TableField(exist = false)
     private String[] roleIdArray;

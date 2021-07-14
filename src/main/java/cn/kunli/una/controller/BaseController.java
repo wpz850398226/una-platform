@@ -77,7 +77,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@PostMapping("")
 	@ResponseBody
-	public SysResult add(@Valid T entity) {
+	public SysResult add(@Valid @RequestBody T entity) {
 		return service.saveRecord(entity);
 	}
 
