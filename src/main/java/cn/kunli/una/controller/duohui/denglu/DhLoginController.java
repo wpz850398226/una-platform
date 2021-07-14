@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DhLoginController {
     @GetMapping("/toLogin")
     public String toLogin() {
-        return "duohui/denglu2/login";
+        return "duohui/denglu/login";
     }
 
     @GetMapping("/toRegister")
     public String toRegister() {
-        return "duohui/denglu2/register";
+        return "duohui/denglu/register";
     }
 }
