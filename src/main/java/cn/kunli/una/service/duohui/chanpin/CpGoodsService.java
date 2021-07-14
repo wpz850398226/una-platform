@@ -118,6 +118,15 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             cpGoods.setSpecificationList(specificationList);
             List<CpGoodsAttribute> attributeList = cpGoodsAttributeService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setGoodsAttributeList(attributeList);
+            if(StringUtils.isNotBlank(cpGoods.getFileId())){
+                String fileUrl = String.valueOf(cpGoods.getMap().get("fileUrl"));
+                if(fileUrl.indexOf(",")!=-1){
+                    cpGoods.setTitleImgUrl(fileUrl.substring(0,fileUrl.indexOf(",")));
+                }else{
+                    cpGoods.setTitleImgUrl(fileUrl);
+                }
+
+            }
         }
         return list;
     }

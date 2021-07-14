@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="menu" class="nav clear clearfix mt20">
+  <script type="text/javascript">
+
+    $(function () {
+      var myNav = document.getElementById("menu").getElementsByTagName("a");
+      for (var i = 0; i < myNav.length; i++) {
+        var links = myNav[i].getAttribute("href");
+        var myURL = document.location.href;
+        if (myURL.indexOf(links) != -1) {
+          myNav[i].parentNode.className = "on";
+        }
+      }
+    });
+  </script>
+    <div class="w1200 clearfix">
+      <ul class="menu " id="menu">
+        <li><a th:href="${'/api/duohui/dianpu/index/'+record.id}"> 首页 </a></li>
+        <li><a th:href="${'/api/duohui/dianpu/about/'+record.id}"> 公司介绍</a> </li>
+        <li><a th:href="${'/api/duohui/dianpu/product/'+record.id}"> 产品展示</a>
+          <!--<ul class="submenu">
+             <li><a href="product.html">在售</a></li>
+             <li><a href="product.html">库存</a></li>
+             <li><a href="product.html">新产品</a></li>
+             <li><a href="product.html">易货产品</a></li>
+           </ul>-->
+        </li>
+        <li><a th:href="${'/api/duohui/dianpu/special/'+record.id}"> 服务项目</a></li>
+        <li><a th:href="${'/api/duohui/dianpu/information/'+record.id}"> 供求信息</a></li>
+        <li><a th:href="${'/api/duohui/dianpu/contact/'+record.id}"> 联系我们</a></li>
+      </ul>
+    </div>
+  </div>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="goodsUnit" class="header">
   <a class="pic" th:href="${'/api/cp/goods/fDetail/'+goods.id}">
-    <img th:src="${#strings.arraySplit(goods.map.fileUrl, ',')[0]}">
+    <img th:src="${goods.titleImgUrl}">
   </a>
   <a class="biaoti" th:href="${'/api/cp/goods/fDetail/'+goods.id}">[[${goods.name}]]</a>
   <em class="diqu">[[${goods.map['thirdryIndustryDname']}]] | [[${goods.map['regionName']}]]</em>

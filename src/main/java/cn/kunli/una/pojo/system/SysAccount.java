@@ -62,7 +62,7 @@ public class SysAccount extends BasePojo implements Serializable {
     //地区
     private Integer regionId;
     //会员截止日期
-    private Date memeberDeadline;
+    private Date memberDeadline;
 
 
 

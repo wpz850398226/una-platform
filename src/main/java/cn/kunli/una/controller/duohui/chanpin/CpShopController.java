@@ -14,10 +14,7 @@ import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -34,29 +31,6 @@ public class CpShopController extends BaseController<CpShopService, CpShop> {
 
     @Autowired
     private CpGoodsService cpGoodsService;
-
-    /**
-     * 打开前端 商品详情
-     * @param model
-     * @return
-     */
-    @RequestMapping("/fDetail/{id}")
-    public String fDetail(Model model, @PathVariable Integer id) {
-        CpShop record = new CpShop();
-        if(id==0){
-            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-            //查询自己的店铺
-            record = service.parse(service.selectList(MapUtil.getMap("creatorId",loginUser.getId()))).get(0);
-        }else{
-            record = service.parse(ListUtil.getList(service.getById(id))).get(0);
-        }
-
-        model.addAttribute("record",record);
-        /*List<CpGoods> goodsList = cpGoodsService.selectList(MapUtil.getMap("shopId", record.getId()));
-        model.addAttribute("goodsList",cpGoodsService.parse(goodsList));*/
-
-        return "duohui/dianpu/index";
-    }
 
     //刷新
     @PutMapping("/refresh/{id}")
