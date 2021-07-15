@@ -145,7 +145,8 @@ function prepareAutoMultipleSelect(selector,sample){
  */
 function autoLoadOption(e){
 	//if(paramValue!=null&&paramValue!="")e.closest("div.form-group").find("img.una_loading").css("display","block");
-	var paramValue = e.attr("data-param_value")
+	if(typeof(e.attr("data-param_value"))=="undefined")return false;
+		var paramValue = e.attr("data-param_value")
 		,url = e.data("url")
 		,paramName = e.data("param_name")
 		,selectedVal = e.data("selected")

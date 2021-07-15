@@ -7,6 +7,7 @@ import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
+import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
@@ -53,6 +54,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private SysDepartmentService sysDepartmentService;
     @Autowired
     private CpGoodsService cpGoodsService;
+    @Autowired
+    private CpShopService cpShopService;
 
     /**
      * 转换存储值为显示值
@@ -91,6 +94,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "fileId"://流程节点 entityId
                 case "FileId"://流程节点 entityId
                     resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("in:id", value)));
+                    break;
+                case "shopId"://店铺 shopId
+                case "ShopId"://店铺 shopId
+                    resultList = cpShopService.selectList(MapUtil.getMap("id", value));
                     break;
             }
         }
