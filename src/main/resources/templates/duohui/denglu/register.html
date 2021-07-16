@@ -33,16 +33,15 @@
 				e.addClass('act');
 				if (e.attr('val') == 'p') {
 					f.find('input[name=t]').val('p');
-					$('li#cname').hide();
 					$('li#pname').show();
-					$("#userType").val("personType");
+					$("#accountType").val("companyType");
 				}
 
 			else{
 					f.find('input[name=t]').val('c');
 					$('li#pname').hide();
-					$('li#cname').show();
-                  $("#userType").val("companyType");
+                  $("#accountType").val("personType");
+                  $("#companyName").val("");
 				}
 
 				return false;
@@ -51,7 +50,7 @@
 		});
 	</script>
   <form id="fMain" method="post" onSubmit="return false;">
-    <input type="hidden" id="userType" value="companyType"/>
+    <input type="hidden" id="accountType" value="companyType"/>
     <div class="gtform">
       <li>
         <label class="fl"></label>
@@ -66,33 +65,36 @@
       <li >
         <label class="fl">验证码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="text" name="vc" size="5" maxlength="5" class="it" style="width:100px;" verifycode="" placeholder="验证码">
-        <img th:src="@{/duohui/denglu/images/captcha.png.png}" verifycode=""></em> </li>
+          <input type="text" id="verification" name="vc" size="5" maxlength="5" class="it" style="width:100px;" verifycode="" placeholder="验证码">
+            <canvas id="canvas" width="100" height="40" onclick="dj()" style="border: 1px solid #ccc;border-radius: 5px;"></canvas>
+        </em>
+      </li>
       <li class="clear clearfix">
         <label class="fl" >手机验证码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="text" name="captcha" maxlength="64"  style="width:210px;" class="it" value="" />
+        <input type="text" id="captcha" name="captcha" maxlength="64"  style="width:210px;" class="it"/>
         <div class="send">
-          <input class="huoqu" type="button" value="获取短信验证码">
+          <input class="huoqu" type="button" value="获取短信验证码" onclick="getPhoneMessage()">
         </div>
         </em> </li>
       <li>
         <label class="fl">登录密码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="password" name="password" maxlength="64" class="it" value="" />
+        <input type="password" id="password" name="password" maxlength="64" class="it"/>
         </em> </li>
       <li>
         <label class="fl">重复输入密码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="password" name="confirmPassword" maxlength="128" value=""  class="it" />
+        <input type="password" id="confirmPassword" maxlength="128" class="it" />
         </em> </li>
-      <li id="cname" style="display: none">
-        <label class="fl">个人类型<i class=" line36  ml5 mr10 red">*</i></label>
+      <li>
+        <label class="fl">行业类型<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
         <label>
           <select class="una-select it" style="color:#444; width:230px;"
                   lay-verify="required"
-                  name="personTypeDcode"
+                  id="industryTypeDcode"
+                  name="industryTypeDcode"
                   lay-search=""
                   data-param_name="parentCode"
                   data-param_value="industry"
@@ -103,21 +105,7 @@
       <li  id="pname">
         <label class="fl">公司名称<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="password" name="companyName" maxlength="128" value=""  class="it" />
-        </em> </li>
-      <li id="pname" >
-        <label class="fl">公司类型<i class=" line36  ml5 mr10 red">*</i></label>
-        <em>
-        <label>
-          <select class="una-select it" style="color:#444; width:230px;"
-                  lay-verify="required"
-                  name="companyTypeDcode"
-                  lay-search=""
-                  data-param_name="parentCode"
-                  data-param_value="industry"
-                  data-option_value_field_title="code"
-                  data-url="/api/sys/dictionary"></select>
-        </label>
+        <input type="text" id="companyName" name="companyName" maxlength="128" class="it" />
         </em> </li>
       <li  id="pname">
         <label class="fl">所在地区：</label>
@@ -136,11 +124,11 @@
                   lay-verify="required"
                   lay-search=""
                   data-param_name="parentId"
-                  data-sub_id="regionArea"
+                  data-sub_id="regionId"
                   data-option_value_field_title="id"
                   data-url="/api/sys/region"></select>
           <select class="una-select it" style="color:#444;"
-                  id="regionArea"
+                  id="regionId"
                   name="regionId"
                   lay-verify="required"
                   lay-search=""
@@ -173,11 +161,55 @@
 <script th:src="@{/una/js/private/una.validation.js}" charset="utf-8"></script>
 <script type="text/javascript">
   var form = $("#fMain");
-
   function register(selector){
-    $(selector).attr("disabled",true);
+    // $(selector).attr("disabled",true);
+    if(!$("#username").val().length>0){
+      layer.msg("请输入手机号",function(){})
+      return false;
+    }else{
+      var result = isPhoneNo($("#username").val());
+      if(!result){
+        layer.msg("请输入正确的手机号",function(){})
+        return false;
+      }
+    }
 
-    if($("#"))
+    if(!$("#captcha").val().length>0){
+      layer.msg("请输入短信验证码",function(){})
+      return false;
+    }
+
+    if(!$("#password").val().length>0){
+      layer.msg("请输入密码",function(){})
+      return false;
+    }else{
+      if(!$("#confirmPassword").val().length>0){
+        layer.msg("请确认密码",function(){})
+        return false;
+      }else{
+        if($("#password").val()!=$("#confirmPassword").val()){
+          layer.msg("密码不一致",function(){})
+          return false;
+        }
+      }
+    }
+
+    if(!$("#industryTypeDcode").val().length>0){
+      layer.msg("请选择行业类型",function(){})
+      return false;
+    }
+
+    var accountType = $("#accountType").val();
+    if(accountType=="companyType"){
+      if(!$("#companyName").val().length>0){
+        layer.msg("请输入公司名称",function(){})
+        return false;
+      }
+      if(!$("#regionId").val().length>0){
+        layer.msg("请选择地区",function(){})
+        return false;
+      }
+    }
 
     $.ajax({
       url: '/api/sys/account/register',
@@ -187,9 +219,8 @@
       success:function(result){
         if(result.isSuccess){
           layer.msg(result.message);
-          localStorage.setItem("token",result.data);
           setTimeout(function () {
-            window.location.href="/api/duohui/chanpin/index";
+            window.location.href="/api/duohui/login/toLogin";
           },'500')
 
         }else{
@@ -203,16 +234,96 @@
     })
   }
 
+  function getPhoneMessage(){
+    var result = sublim();
+    if(result){
+      layer.msg("消息已发送，请注意查看手机")
+    }
+  }
+
   $(document).keydown(function (event) {
     if (event.keyCode == 13) {//回车键对应code值为13
       login($("#loginForm"));
     }
   });
 
-  //点击刷新图片
-  $('.captchaImage').click(function(){
-    $(this).attr("src", "/una/sys/captcha/showCaptcha?sessionName=sysLoginCaptcha&timestamp="+ (new Date()).valueOf());
-  });
+  var show_num = [];
+  draw(show_num);
+  function dj(){
+    draw(show_num);
+  }
+  function sublim(){
+    var val=document.getElementById("verification").value;
+    var num = show_num.join("").toLowerCase();
+    if(val==''){
+      layer.msg("请输入验证码！",function(){})
+      return false;
+    }else if(val == num){
+      $("#verification").val("");
+      draw(show_num);
+      return true;
+    }else{
+      layer.msg('验证码错误！\n你输入的是:  '+val+"\n正确的是:  "+num+'\n请重新输入！',function(){})
+      document.getElementById("verification").value='';
+      draw(show_num);
+      return false;
+    }
+
+
+
+  }
+  function draw(show_num) {
+    var canvas_width=document.getElementById('canvas').clientWidth;
+    var canvas_height=document.getElementById('canvas').clientHeight;
+    var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+    var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+    canvas.width = canvas_width;
+    canvas.height = canvas_height;
+    var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0,q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m";
+    var aCode = sCode.split(",");
+    var aLength = aCode.length;//获取到数组的长度
+
+    for (var i = 0; i <= 3; i++) {
+      var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+      var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+      var txt = aCode[j];//得到随机的一个内容
+      show_num[i] = txt;
+      var x = 10 + i * 20;//文字在canvas上的x坐标
+      var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+      context.font = "bold 23px 微软雅黑";
+
+      context.translate(x, y);
+      context.rotate(deg);
+
+      context.fillStyle = randomColor();
+      context.fillText(txt, 0, 0);
+
+      context.rotate(-deg);
+      context.translate(-x, -y);
+    }
+    for (var i = 0; i <= 5; i++) { //验证码上显示线条
+      context.strokeStyle = randomColor();
+      context.beginPath();
+      context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+      context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+      context.stroke();
+    }
+    for (var i = 0; i <= 30; i++) { //验证码上显示小点
+      context.strokeStyle = randomColor();
+      context.beginPath();
+      var x = Math.random() * canvas_width;
+      var y = Math.random() * canvas_height;
+      context.moveTo(x, y);
+      context.lineTo(x + 1, y + 1);
+      context.stroke();
+    }
+  }
+  function randomColor() {//得到随机的颜色值
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
 
 </script>
 </body>

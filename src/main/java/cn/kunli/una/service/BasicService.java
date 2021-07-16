@@ -320,10 +320,12 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     public T initialize(T obj) {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getId()==null){
-            obj.setCreatorId(loginUser.getId());
-            obj.setCompanyId(loginUser.getCompanyId());
-            obj.setDepartmentId(loginUser.getDepartmentId());
-            obj.setCreatorName(loginUser.getName());
+            if(loginUser!=null){
+                obj.setCreatorId(loginUser.getId());
+                obj.setCompanyId(loginUser.getCompanyId());
+                obj.setDepartmentId(loginUser.getDepartmentId());
+                obj.setCreatorName(loginUser.getName());
+            }
             obj.setCreatorHost(RequestUtil.getIpAddress(request));
 
             //通过反射赋值"顺序"字段

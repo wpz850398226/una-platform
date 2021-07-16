@@ -44,10 +44,7 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     @ResponseBody
     public SysResult register(SysAccount obj) {
         obj.setOriginDcode("account_origin_register");
-        service.saveRecord(obj);
-
-        return SysResult.fail();
-
+        return service.saveRecord(obj);
     }
 
     //审核
@@ -56,7 +53,7 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     public SysResult audit(@PathVariable Integer id,@PathVariable Integer isAudit) {
         if(isAudit==1){//审核通过
             SysAccount sysAccount = service.getById(id);
-            SysCompany sysCompany = (SysCompany)new SysCompany().setTypeDcode(sysAccount.getCompanyTypeDcode()).setName(sysAccount.getCompanyName());
+            SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryDcode(sysAccount.getIndustryTypeDcode()).setName(sysAccount.getCompanyName());
             CpShop cpShop = (CpShop) new CpShop().setName(sysAccount.getName() + "的店铺");
             //创建企业
             sysCompanyService.saveRecord(sysCompany);

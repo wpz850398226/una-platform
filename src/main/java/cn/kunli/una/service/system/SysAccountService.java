@@ -35,21 +35,16 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
     //校验格式
     public SysResult validate(SysAccount obj) {
-        if (obj.getMap() != null && obj.getMap().get("confirmPassword") != null) {
-            if (obj.getPassword() != null && !obj.getPassword().equals("")) {
-                if (!obj.getPassword().trim().equals(obj.getMap().get("confirmPassword").toString().trim())) {
-                    return SysResult.fail("密码不一致，保存失败:" + obj.getPassword());
-                }
-            } else {
-                return SysResult.fail("密码不能为空，保存失败");
+        if (StringUtils.isNotBlank(obj.getUsername())) {
+            List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("username", obj.getUsername().trim()));
+            if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
+                return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
             }
         }
-
-        if (StringUtils.isNotBlank(obj.getUsername())) {
-            List<SysAccount> objList = sysAccountService.selectList(MapUtil.getMap("username", obj.getUsername().trim()));
+        if (StringUtils.isNotBlank(obj.getCompanyName())) {
+            List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("companyName", obj.getCompanyName().trim()));
             if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
-                //通过新文件的名称查询到数据
-                return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
+                return SysResult.fail("公司名称重复，保存失败:" + obj.getCompanyName());
             }
         }
 
@@ -62,28 +57,15 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         super.initialize(obj);
         if (obj.getId() == null) {
             //如果id为空，新增数据
-            if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0) {
-                obj.setRoleId(StringUtils.join(obj.getRoleIdArray(), ","));
-            }
             //默认密码123456
             if (StringUtils.isBlank(obj.getPassword())) {
                 obj.setPassword(new BCryptPasswordEncoder().encode("123456"));
             }
-            //如果新增账户账号为空，自动填充手机号
-            if (obj.getUsername() == null || obj.getUsername().equals("")){
-                obj.setUsername(obj.getSysUser().getMobile());
-            }
-            //如果账号来源是自行注册，则状态为未审核
+            //如果账号来源是自行注册，则状态为呆提交
             if(StringUtils.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
-                obj.setStatusDcode("account_status_toAudit");
+                obj.setStatusDcode("account_status_toSubmit");
             }
 
-        } else {
-            //如果id不为空，修改数据
-            if (obj.getRemark() != null && obj.getRemark().equals("提交认证")) {
-                obj.setStatusDcode("未审核");
-                obj.setRemark(null);
-            }
         }
 
         //格式化账号，姓名（去空格）
@@ -91,19 +73,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getPassword())) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
         if(StringUtils.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
-        /*if (obj.getRoleIdArray() != null && obj.getRoleIdArray().length > 0){
-            obj.setRoleIds(StringUtils.join(obj.getRoleIdArray(), ","));
-        }*/
-
-        /*if(StringUtils.isNotBlank(obj.getRoleId())){
-            List<String> roleNameList = new ArrayList<>();
-            String[] roleIdArray = obj.getRoleId().split(",");
-            for (String roleId : roleIdArray) {
-                SysRole sysRole = sysRoleService.getById(Integer.valueOf(roleId));
-                roleNameList.add(sysRole.getName());
-            }
-            obj.setRoleNames(ListUtil.listToStr(roleNameList));
-        }*/
+        if(StringUtils.isNotBlank(obj.getCompanyName())&&StringUtils.isBlank(obj.getName()))obj.setName(obj.getCompanyName());
 
         return obj;
     }

@@ -56,7 +56,7 @@ public class SysAccount extends BasePojo implements Serializable {
     //密码
     private Integer shopId;
     //企业类型
-    private String companyTypeDcode;
+    private String industryTypeDcode;
     //企业名称
     private String companyName;
     //地区

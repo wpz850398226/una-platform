@@ -101,7 +101,7 @@ token:
   jwtSecret: Ponzio-Una
 
 minio:
-  endpoint: 127.0.0.1
+  endpoint: 42.192.150.206
   port: 9000
   accessKey: admin
   secretKey: wpz1992124*
