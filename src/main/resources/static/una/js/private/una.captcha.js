@@ -24,7 +24,7 @@ function verifyCaptcha(captcha,ele){
 function drawCaptcha(captcha_text) {
 	var canvas_width=document.getElementById('captchaCanvas').clientWidth;
 	var canvas_height=document.getElementById('captchaCanvas').clientHeight;
-	var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+	var canvas = document.getElementById("captchaCanvas");//获取到canvas的对象，演员
 	var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
 	canvas.width = canvas_width;
 	canvas.height = canvas_height;

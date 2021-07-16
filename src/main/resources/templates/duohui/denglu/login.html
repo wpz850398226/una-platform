@@ -50,11 +50,10 @@
                       <div class="fl input">
                        <label class="xinxi5"><b class="yanzhengma">&nbsp;</b></label>
                        <div class="xinxi2 fl">
-                          <input name="" id="pwd" size="30" class="text2" type="password"  >
+                          <input name="" size="30" class="text2" type="text"  id="verification">
                         </div>
                         <div class="xinxi2 fl ml10">
                             <canvas id="captchaCanvas" width="100" height="40" onclick="loadCaptcha()" style="border: 1px solid #ccc;border-radius: 5px;"></canvas>
-                         <!--<img th:src="@{/duohui/denglu/images/imgcode.png}" style="margin:2px 0; height:35px;">-->
                         </div>
                      </div>
                     </li>
@@ -100,9 +99,10 @@
     }*/
 
     function login(selector){
-        $(selector).attr("disabled",true);
+        var result = verifyCaptcha(captcha_text.join(""),$("#verification"));
+        // $(selector).attr("disabled",true);
 
-        if(checkForm(selector)){
+        if(result&&checkForm(selector)){
             $.ajax({
                 url: '/api/sys/login/login',
                 type: "POST",
