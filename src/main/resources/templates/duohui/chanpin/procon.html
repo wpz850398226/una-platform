@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<div th:replace="/duohui/chanpin/include/head :: head"></div>
+<div th:replace="../templates/duohui/chanpin/include/head :: head"></div>
 <body>
 <div class="header ">
-  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/chanpin/include/header :: header"></div>
+  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
   <div class=" navbg clear clearfix">
 
   </div>
@@ -388,12 +388,12 @@ changePrice();
     <div class="clear clearfix" style="height:20px;"></div>
     <div class=" w210 fr ">
 
-    <div th:replace="/duohui/chanpin/include/remaituijian :: remai"></div>
-    <div th:replace="/duohui/chanpin/include/searchPhb :: search"></div>
+    <div th:replace="../templates/duohui/chanpin/include/remaituijian :: remai"></div>
+    <div th:replace="../templates/duohui/chanpin/include/searchPhb :: search"></div>
 
 
     <div class="clear clearfix mt20"></div>
-    <div th:replace="/duohui/chanpin/include/diquliulan :: diqu"></div>
+    <div th:replace="../templates/duohui/chanpin/include/diquliulan :: diqu"></div>
   </div>
 
     <div class="chanpinshuoming W950 fl">
@@ -485,7 +485,7 @@ changePrice();
     </div>
   </div>
 </div>
-<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 <SCRIPT type=text/javascript>
   function selectTag(showContent,selfObj){
     // 操作标签

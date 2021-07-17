@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<div th:replace="/duohui/dianpu/include/head :: head"></div>
+<div th:replace="../templates/duohui/dianpu/include/head :: head"></div>
 <body>
 <div class="header ">
-    <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-    <div th:replace="/duohui/dianpu/include/header :: header"></div>
-    <div th:replace="/duohui/dianpu/include/menu :: menu"></div>
+    <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+    <div th:replace="../templates/duohui/dianpu/include/header :: header"></div>
+    <div th:replace="../templates/duohui/dianpu/include/menu :: menu"></div>
 </div>
 <!-- Slideshow -->
-<div th:replace="/duohui/dianpu/include/slideshow :: slideshow"></div>
+<div th:replace="../templates/duohui/dianpu/include/slideshow :: slideshow"></div>
 
 
 <div class="clear clearfix mt20" style="height:20px;"></div>
@@ -24,7 +24,7 @@
 </div>
 
 
-<div th:replace="/duohui/dianpu/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/dianpu/include/footer :: footer"></div>
 <script type="text/javascript">
     $(".una-editor-show").each(function (){
         var className = $(this).attr("class");

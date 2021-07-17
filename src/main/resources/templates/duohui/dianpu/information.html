@@ -15,12 +15,12 @@
 </head>
 <body>
 <div class="header ">
-    <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-    <div th:replace="/duohui/dianpu/include/header :: header"></div>
-    <div th:replace="/duohui/dianpu/include/menu :: menu"></div>
+    <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+    <div th:replace="../templates/duohui/dianpu/include/header :: header"></div>
+    <div th:replace="../templates/duohui/dianpu/include/menu :: menu"></div>
 </div>
 <!-- Slideshow -->
-<div th:replace="/duohui/dianpu/include/slideshow :: slideshow"></div>
+<div th:replace="../templates/duohui/dianpu/include/slideshow :: slideshow"></div>
 <div class="breadcrumbs clear clearfix mt30">
     <p class="w1200"><em class=" left"></em><span class="ml10">您当前的位置  : <a href="index.html">首页</a>><a href="newslist.html">品质保障</a></span></p>
   </div>
@@ -199,6 +199,6 @@ $(this).find("div").hide();
 
 
 
-<div th:replace="/duohui/dianpu/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/dianpu/include/footer :: footer"></div>
 </body>
 </html>

@@ -1,23 +1,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<div th:replace="/duohui/guanwang/include/head :: head"></div>
+<div th:replace="../templates/duohui/guanwang/include/head :: head"></div>
 <body>
   <div id="wrapper">
-    <div th:replace="/duohui/guanwang/include/headerTop :: header_top"></div>
-    <div th:replace="/duohui/guanwang/include/header :: header"></div>
+    <div th:replace="../templates/duohui/guanwang/include/headerTop :: header_top"></div>
+    <div th:replace="../templates/duohui/guanwang/include/header :: header"></div>
     <div class="banner" th:style="'background:url(/duohui/guanwang/images/banner-ny.jpg)'"></div>
-    <div th:replace="/duohui/guanwang/include/breadcrumbs :: breadcrumbs"></div>
+    <div th:replace="../templates/duohui/guanwang/include/breadcrumbs :: breadcrumbs"></div>
     <div class="main-ny" >
       <div class="w1200">
-        <div th:replace="/duohui/guanwang/include/innerMenu :: inner_menu"></div>
+        <div th:replace="../templates/duohui/guanwang/include/innerMenu :: inner_menu"></div>
         <div class="right w890 mt10">
           <h3 class="title"><a class="heise" href="#">[[${record.name }]]</a></h3>
           <div th:if="${record.value != null}" class="una-editor-show nr clearBoth line30" th:value="${record.value.content }"></div>
         </div>
       </div>
     </div>
-    <div th:replace="/duohui/guanwang/include/footer :: footer"></div>
+    <div th:replace="../templates/duohui/guanwang/include/footer :: footer"></div>
   </div>
-  <div th:replace="/duohui/guanwang/include/script :: script"></div>
+  <div th:replace="../templates/duohui/guanwang/include/script :: script"></div>
 </body>
 </html>

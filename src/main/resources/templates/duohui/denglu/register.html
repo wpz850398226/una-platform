@@ -15,9 +15,9 @@
 </head>
 <body>
 <div class="header ">
-  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/denglu/include/header :: header"></div>
-  <div th:replace="/duohui/denglu/include/menu :: menu"></div>
+  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/denglu/include/header :: header"></div>
+  <div th:replace="../templates/duohui/denglu/include/menu :: menu"></div>
 </div>
 
 <!--注册内容-->
@@ -153,7 +153,7 @@
     </div>
   </form>
 </div>
-<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 <script th:src="@{/layui/layui.all.js}" charset="utf-8"></script>
 <script th:src="@{/xadmin/js/xadmin.js}" type="text/javascript"></script>
 <script th:src="@{/xadmin/js/jquery.min.js}" type="text/javascript"></script>

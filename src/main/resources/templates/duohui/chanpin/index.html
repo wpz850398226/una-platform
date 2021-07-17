@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<!--<div th:replace="/duohui/guanwang/include/head :: head"></div>-->
-<div th:replace="/duohui/chanpin/include/head :: head"></div>
+<!--<div th:replace="../templates/duohui/guanwang/include/head :: head"></div>-->
+<div th:replace="../templates/duohui/chanpin/include/head :: head"></div>
 <body>
 <div class="header ">
-  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/chanpin/include/header :: header"></div>
-  <div th:replace="/duohui/chanpin/include/navbg :: navbg"></div>
+  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
+  <div th:replace="../templates/duohui/chanpin/include/navbg :: navbg"></div>
 </div>
 
 <div class="w1200">
-  <div th:replace="/duohui/chanpin/include/selectBrand :: selectBrand"></div>
-  <div th:replace="/duohui/chanpin/include/denglu :: denglu"></div>
+  <div th:replace="../templates/duohui/chanpin/include/selectBrand :: selectBrand"></div>
+  <div th:replace="../templates/duohui/chanpin/include/denglu :: denglu"></div>
 </div>
 
 <!-- Slideshow -->
-<div th:replace="/duohui/chanpin/include/slideshow :: slideshow"></div>
+<div th:replace="../templates/duohui/chanpin/include/slideshow :: slideshow"></div>
 <div class=" clear clearfix mt20"></div>
-<div th:replace="/duohui/chanpin/include/huibg :: huibg"></div>
+<div th:replace="../templates/duohui/chanpin/include/huibg :: huibg"></div>
 
 <!--盖楼-->
 <div class="clear">
@@ -43,7 +43,7 @@
       <div class="fr product-r">
         <ul>
           <li th:each="goods:${goodsListMap[goodsStatusDic.code]}">
-            <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
+            <div th:replace="../templates/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
           </li>
         </ul>
       </div>
@@ -54,13 +54,13 @@
 <!--盖楼-->
 
 <div class=" clear clearfix mt20"></div>
-<div th:replace="/duohui/chanpin/include/bottomAd :: bottomAd"></div>
+<div th:replace="../templates/duohui/chanpin/include/bottomAd :: bottomAd"></div>
 <div class=" clear clearfix mt20"></div>
-<div th:replace="/duohui/chanpin/include/cooperator :: cooperator"></div>
+<div th:replace="../templates/duohui/chanpin/include/cooperator :: cooperator"></div>
 <div class=" clear clearfix mt20"></div>
 
-<div th:replace="/duohui/chanpin/include/outlink :: outlink"></div>
-<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/outlink :: outlink"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 
 <script type="text/javascript"><!--分类-->
 $(document).ready(function () {

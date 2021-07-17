@@ -17,8 +17,8 @@
 </head>
 <body>
 <div class="header ">
-  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/chanpin/include/header :: header"></div>
+  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
   <div class=" navbg clear clearfix"></div>
 </div>
 <div class="huibg">
@@ -122,13 +122,13 @@ int();//初始化隐藏多余标签
 </div>
 <div class=" clear clearfix w1150 " style="padding:20px 0;  margin:0 auto;">
   <div class=" w210 fr ">
-    <div th:replace="/duohui/chanpin/include/remaituijian :: remai"></div>
+    <div th:replace="../templates/duohui/chanpin/include/remaituijian :: remai"></div>
 
-    <div th:replace="/duohui/chanpin/include/searchPhb :: search"></div>
+    <div th:replace="../templates/duohui/chanpin/include/searchPhb :: search"></div>
 
 
     <div class="clear clearfix mt20"></div>
-    <div th:replace="/duohui/chanpin/include/diquliulan :: diqu"></div>
+    <div th:replace="../templates/duohui/chanpin/include/diquliulan :: diqu"></div>
   </div>
   <div class=" W920 fl product-nr" style="padding:0;">
     <div class="list_left">
@@ -146,7 +146,7 @@ int();//初始化隐藏多余标签
       <div class=" product-r gsmc">
         <ul>
           <li th:each="goods:${goodsList}">
-            <div th:replace="/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
+            <div th:replace="../templates/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
           </li>
         </ul>
       </div>
@@ -160,6 +160,6 @@ int();//初始化隐藏多余标签
 </div>
 
 
-<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 </body>
 </html>

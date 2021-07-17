@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<div th:replace="/duohui/guanwang/include/head :: head"></div>
+<div th:replace="../templates/duohui/guanwang/include/head :: head"></div>
 <body>
 <div id="wrapper"  >
-  <div th:replace="/duohui/guanwang/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/guanwang/include/header :: header"></div>
+  <div th:replace="../templates/duohui/guanwang/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/guanwang/include/header :: header"></div>
 
   <div id="pz_m_1" class=" section">
     <script type="text/javascript" th:src="@{/duohui/guanwang/js/jquery-1.js}"></script>
@@ -119,8 +119,8 @@ $(function () {
     </div>
   </div>
   <div class="clearBoth clearfix" style="height:60px;"></div>
-  <div th:replace="/duohui/guanwang/include/footer :: footer"></div>
+  <div th:replace="../templates/duohui/guanwang/include/footer :: footer"></div>
 </div>
-<div th:replace="/duohui/guanwang/include/script :: script"></div>
+<div th:replace="../templates/duohui/guanwang/include/script :: script"></div>
 </body>
 </html>

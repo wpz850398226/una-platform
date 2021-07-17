@@ -15,9 +15,9 @@
 </head>
 <body>
 <div class="header ">
-  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/chanpin/include/header :: header"></div>
-  <div th:replace="/duohui/denglu/include/menu :: menu"></div>
+  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
+  <div th:replace="../templates/duohui/denglu/include/menu :: menu"></div>
 </div>
 
 <!--注册内容-->
@@ -61,7 +61,7 @@
      <a href="#">选择版本</a>
   </div>
 </div>
-<div th:replace="/duohui/denglu/include/header :: header"></div>
+<div th:replace="../templates/duohui/denglu/include/header :: header"></div>
 <div class="xuanfu">
   <div class="xf_top">
     <div class="xf_top_k rel" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin=1102425626&site=qq&menu=yes','_blank')"> <img th:src="@{/duohui/denglu/images/xftb3.png}" height="54" width="54" class="xftb db auto abs trans_fast">

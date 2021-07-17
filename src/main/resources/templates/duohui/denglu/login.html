@@ -18,9 +18,9 @@
 </head>
 <body>
 <div class="header ">
-  <div th:replace="/duohui/chanpin/include/headerTop :: header_top"></div>
-  <div th:replace="/duohui/chanpin/include/header :: header"></div>
-  <div th:replace="/duohui/denglu/include/menu :: menu"></div>
+  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
+  <div th:replace="../templates/duohui/denglu/include/menu :: menu"></div>
 </div>
 
 <!--登录内容-->
@@ -83,7 +83,7 @@
 </div>
 
 
-<div th:replace="/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 <script type="text/javascript">
     var form = $("#loginForm");
     loadCaptcha();  //加载验证码
