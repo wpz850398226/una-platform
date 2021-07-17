@@ -75,11 +75,18 @@ public class CpIndexController {
 
                 //查询置顶商铺
                 List<CpShop> shopList = new ArrayList<>();
-                Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
+                Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
                 shopList = stickShopPage.getRecords();
                 if(shopList.size()<=goodsStatusDlist.size()){
-                    Page<CpShop> refreshShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
-                    shopList.addAll(refreshShopPage.getRecords());
+                    Page<CpShop> refreshShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
+                    if(refreshShopPage.getTotal()>0){
+                        List<CpShop> records = refreshShopPage.getRecords();
+                        if(shopList.size()==0){
+                            shopList = records;
+                        }else{
+                            shopList.addAll(records);
+                        }
+                    }
                 }
 
                 model.addAttribute("recommendShopList",cpShopService.parse(shopList));

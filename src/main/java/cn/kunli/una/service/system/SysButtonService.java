@@ -1,10 +1,14 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysButtonMapper;
+import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysButton;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysPermission;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.MapUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,19 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
     }
     @Autowired
     private SysPermissionService sysPermissionService;
+
+    @Override
+    public SysResult validate(SysButton obj) {
+        SysResult validate = super.validate(obj);
+        if(!validate.getIsSuccess())return validate;
+        if(StringUtils.isNotBlank(obj.getEvent())){
+            List<SysButton> objList = getThisProxy().selectList(MapUtil.getMap("event", obj.getEvent().trim()));
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
+                return SysResult.fail("事件名重复，保存失败:" + obj.getEvent());
+            }
+        }
+        return SysResult.success();
+    }
 
     @Override
     public List<SysButton> parse(List<SysButton> list) {

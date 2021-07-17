@@ -59,8 +59,14 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
     @PutMapping("/stick/{id}")
     @ResponseBody
     public SysResult stick(@PathVariable Integer id) {
-        CpGoods byId = service.getById(id);
-        return service.updateRecordById((CpGoods) new CpGoods().setStickDeadline(TimeUtil.getNextDay(byId.getStickDeadline(),1)).setId(id));
+        CpGoods cpGoods = service.getById(id);
+        Date stickDeadline;
+        if(cpGoods.getStickDeadline()==null||TimeUtil.compareDate(new Date(),cpGoods.getStickDeadline())){
+            stickDeadline = TimeUtil.getNextDay(new Date(),1);
+        }else{
+            stickDeadline = TimeUtil.getNextDay(cpGoods.getStickDeadline(),1);
+        }
+        return service.updateRecordById((CpGoods) new CpGoods().setStickDeadline(stickDeadline).setId(id));
     }
 
 

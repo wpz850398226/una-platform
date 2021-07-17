@@ -24,20 +24,19 @@
   <div class="clear w1200 product mt20" th:each="goodsStatusDic,status : ${goodsStatusDlist}">
     <h2>
       <span class="fr">
-        <a href="#">小分类</a><a>|</a>
-        <a href="#">小分类</a><a>|</a>
-        <a href="#">小分类</a><a>|</a>
-        <a href="#">小分类</a><a>|</a>
-        <a href="#">小分类</a>
+        <a href="/api/duohui/chanpin/product" th:if="${status.index<8}" th:each="industry,status:${industryDlist}">[[${industry.name}]]  &nbsp;&nbsp;|</a>
       </span>
       <em class="mr10">[[${status.index+1}]]F</em>
       <a href="#">[[${goodsStatusDic.name}]]</a>
     </h2>
     <div class="clear product-nr clearfix">
       <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="${recommendShopList.size()>status.index?recommendShopList[status.index].map['titleFileUrl']:'/api/duohui/chanpin/images/tu3.png'}">
+        <div class=" product-l">
+          <a href="#">
+            <img th:src="${recommendShopList.size()>status.index?recommendShopList[status.index].map['titleFileUrl']:'/api/duohui/chanpin/images/tu3.png'}">
           <h3>推荐商家</h3>
-          <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
+          <p>主营产品：[[${recommendShopList.size()>status.index?#strings.abbreviate(recommendShopList[status.index].introduction,30):''}]]</p>
+<!--          <p>主营产品：[[${recommendShopList.size()>status.index?#strings.abbreviate(recommendShopList[status.index].introduction,20):''}]]</p>-->
           </a> </div>
       </div>
       <div class="fr product-r">

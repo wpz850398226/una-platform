@@ -29,21 +29,24 @@ import java.util.List;
 @RequestMapping("/cp/shop")
 public class CpShopController extends BaseController<CpShopService, CpShop> {
 
-    @Autowired
-    private CpGoodsService cpGoodsService;
-
     //刷新
     @PutMapping("/refresh/{id}")
     @ResponseBody
     public SysResult refresh(@PathVariable Integer id) {
-        return service.updateRecordById((CpShop) new CpGoods().setRefreshTime(new Date()).setId(id));
+        return service.updateRecordById((CpShop) new CpShop().setRefreshTime(new Date()).setId(id));
     }
 
     //置顶
     @PutMapping("/stick/{id}")
     @ResponseBody
     public SysResult stick(@PathVariable Integer id) {
-        CpShop byId = service.getById(id);
-        return service.updateRecordById((CpShop) new CpGoods().setStickDeadline(TimeUtil.getNextDay(byId.getStickDeadline(),1)).setId(id));
+        CpShop cpShop = service.getById(id);
+        Date stickDeadline;
+        if(cpShop.getStickDeadline()==null||TimeUtil.compareDate(new Date(),cpShop.getStickDeadline())){
+            stickDeadline = TimeUtil.getNextDay(new Date(),1);
+        }else{
+            stickDeadline = TimeUtil.getNextDay(cpShop.getStickDeadline(),1);
+        }
+        return service.updateRecordById((CpShop) new CpShop().setStickDeadline(stickDeadline).setId(id));
     }
 }

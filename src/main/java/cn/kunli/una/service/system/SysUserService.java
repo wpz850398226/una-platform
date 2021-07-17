@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.system.SysUser;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
     public SysResult validate(SysUser obj) {
         if (StringUtils.isNotBlank(obj.getMobile())) {
             List<SysUser> objList = thisProxy.list(getWrapper(MapUtil.getMap("mobile",obj.getMobile())));
-            if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("手机号码重复，保存失败:" + obj.getMobile());
             }
@@ -40,7 +41,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
 
         if (StringUtils.isNotBlank(obj.getIdNumber())) {
             List<SysUser> objList = thisProxy.list(getWrapper(MapUtil.getMap("idNumber",obj.getIdNumber())));
-            if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("证件号重复，保存失败:" + obj.getIdNumber());
             }
@@ -49,7 +50,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
 
         if (StringUtils.isNotBlank(obj.getEmail())) {
             List<SysUser> objList = thisProxy.list(getWrapper(MapUtil.getMap("email",obj.getEmail())));
-            if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("邮箱重复，保存失败:" + obj.getEmail());
             }

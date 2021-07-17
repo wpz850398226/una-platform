@@ -3,11 +3,14 @@ package cn.kunli.una.service.duohui.chanpin;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
+import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.system.SysDictionary;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     private CpSpecificationService cpSpecificationService;
     @Autowired
     private CpGoodsAttributeService cpGoodsAttributeService;
+    @Autowired
+    private CpShopService cpShopService;
 
     @Override
     public BasicService getThisProxy() {
@@ -91,6 +96,12 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         obj = super.initialize(obj);
         if(obj.getId()==null){
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
+            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+            if(loginUser.getShopId()!=null){
+                CpShop cpShop = cpShopService.getById(loginUser.getShopId());
+                obj.setRegionId(cpShop.getRegionId());
+            }
+
         }
         if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));

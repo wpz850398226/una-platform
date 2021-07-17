@@ -8,6 +8,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,8 +26,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class SysAccountService extends BasicService<SysAccountMapper, SysAccount> {
-    @Autowired
-    private SysRoleService sysRoleService;
     @Override
     public BasicService getThisProxy() {
         return sysAccountService;
@@ -37,13 +36,13 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     public SysResult validate(SysAccount obj) {
         if (StringUtils.isNotBlank(obj.getUsername())) {
             List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("username", obj.getUsername().trim()));
-            if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
             }
         }
         if (StringUtils.isNotBlank(obj.getCompanyName())) {
             List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("companyName", obj.getCompanyName().trim()));
-            if (objList.size() > 0 && !objList.get(0).getId().equals(obj.getId())) {
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("公司名称重复，保存失败:" + obj.getCompanyName());
             }
         }

@@ -597,6 +597,82 @@
                     });
                     layer.full(index);
                     break;
+                case 'stickGoods':
+                    layer.confirm('您确定要增加1天置顶时间吗？', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            type: 'PUT',
+                            dataType: 'json',
+                            url: "/api/cp/goods/stick/"+data.id,
+                            success:function(result){
+                                layer.msg(result.message,function(){
+                                    if(result.isSuccess)table.reload("unaDataTable");
+                                })
+                            },
+                            error: function(XMLHttpRequest) {
+                                console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+                            }
+                        })
+                    })
+                    break;
+                case 'refreshGoods':
+                    layer.confirm('您确定要刷新商品吗？', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            type: 'PUT',
+                            dataType: 'json',
+                            url: "/api/cp/goods/refresh/"+data.id,
+                            success:function(result){
+                                layer.msg(result.message,function(){
+                                    if(result.isSuccess)table.reload("unaDataTable");
+                                })
+                            },
+                            error: function(XMLHttpRequest) {
+                                console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+                            }
+                        })
+                    })
+                    break;
+                case 'stickShop':
+                    layer.confirm('您确定要增加1天置顶时间吗？', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            type: 'PUT',
+                            dataType: 'json',
+                            url: "/api/cp/shop/stick/"+data.id,
+                            success:function(result){
+                                layer.msg(result.message,function(){
+                                    if(result.isSuccess)table.reload("unaDataTable");
+                                })
+                            },
+                            error: function(XMLHttpRequest) {
+                                console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+                            }
+                        })
+                    })
+                    break;
+                case 'refreshShop':
+                    layer.confirm('您确定要刷新店铺吗？', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            type: 'PUT',
+                            dataType: 'json',
+                            url: "/api/cp/shop/refresh/"+data.id,
+                            success:function(result){
+                                layer.msg(result.message,function(){
+                                    if(result.isSuccess)table.reload("unaDataTable");
+                                })
+                            },
+                            error: function(XMLHttpRequest) {
+                                console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+                            }
+                        })
+                    })
+                    break;
             };
         });
 

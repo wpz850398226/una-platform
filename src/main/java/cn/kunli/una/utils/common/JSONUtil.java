@@ -1,6 +1,7 @@
 package cn.kunli.una.utils.common;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -127,7 +128,7 @@ public class JSONUtil {
      */
     public static <T> List<Map<String, Object>> beansToMaps(List<T> objList) {
         List<Map<String, Object>> list = Collections.emptyList();
-        if (objList != null && objList.size() > 0) {
+        if (objList != null && CollectionUtils.isNotEmpty(objList)) {
             list = new ArrayList<>(objList.size());
             Map<String, Object> map;
             T bean;
