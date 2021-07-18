@@ -49,6 +49,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
             obj.setRootId(0);
         } else {
             obj.setRootId(parentDictionary.getRootId());
+            obj.setParentCode(parentDictionary.getCode());
         }
 
         super.initialize(obj);

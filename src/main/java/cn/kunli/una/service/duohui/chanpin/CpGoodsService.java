@@ -96,12 +96,13 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         obj = super.initialize(obj);
         if(obj.getId()==null){
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
-            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-            if(loginUser.getShopId()!=null){
-                CpShop cpShop = cpShopService.getById(loginUser.getShopId());
-                obj.setRegionId(cpShop.getRegionId());
+            if(obj.getAreaRegionId()==null){
+                SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+                if(loginUser.getShopId()!=null){
+                    CpShop cpShop = cpShopService.getById(loginUser.getShopId());
+                    obj.setAreaRegionId(cpShop.getRegionId());
+                }
             }
-
         }
         if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));

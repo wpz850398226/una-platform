@@ -57,8 +57,12 @@ public class CpGoods extends BasePojo implements Serializable {
     private String description;
     //内容
     private String content;
+    //所属省份id
+    private Integer provinceRegionId;
+    //所属城市id
+    private Integer cityRegionId;
     //所属区域id
-    private Integer regionId;
+    private Integer areaRegionId;
     //是否置顶
     private Integer isStick;
     //是否热门
