@@ -4,9 +4,7 @@ import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.system.SysEntity;
-import cn.kunli.una.pojo.system.SysField;
-import cn.kunli.una.pojo.system.SysSort;
+import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.*;
@@ -76,6 +74,10 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     protected SysAccountService sysAccountService;
     @Autowired
     protected SysDictionaryService sysDictionaryService;
+    @Autowired
+    protected SysRolePermissionService sysRolePermissionService;
+    @Autowired
+    protected SysPermissionService sysPermissionService;
     @Autowired
     protected CommonMapper commonMapper;
 
@@ -221,7 +223,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
-        return super.getOne(wrapperUtil.mapToWrapper(format(map)));
+        return super.getOne(wrapperUtil.mapToWrapper(map));
     }
 
     /**
@@ -354,8 +356,11 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 obj.setSortOrder(num);
             }
         }else{
-            obj.setModifierId(loginUser.getId());
-            obj.setModifierName(loginUser.getName());
+            if(loginUser!=null){
+                obj.setModifierId(loginUser.getId());
+                obj.setModifierName(loginUser.getName());
+            }
+
             obj.setModifierHost(RequestUtil.getIpAddress(request));
         }
 
@@ -376,7 +381,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
+                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build()));
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     for (SysSort sysSort : sortList) {
@@ -408,60 +413,46 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             map.remove("rootTreeIds");
         }
 
-        //查询条件处理
-        //如果高级查询语句不为空，则判断高级查询条件是否为空
-        /*if(map.get("advancedQuery")==null&&ListUtil.isNotNull(map.getUtilQueryList())) {
-            //格式化高级查询条件，转为查询语句，并将语句赋值给查询对象
-            map.put("advancedQuery",QueryUtil.queryListToQueryStr(map.getUtilQueryList()));
-        }*/
 
-		/*try {
-			Subject subject = SecurityUtils.getSubject();
-			if(subject!=null){
-				Object principal = subject.getPrincipal();
-				SysAccount activeUser = (SysAccount)principal;
-				List<SysRolePermission> rolePermissionList = new ArrayList<>();
-				List<SysRole> roleList = sysRoleService.selectBySelective((SysRole) new SysRole().setIds(activeUser.getRoleIds()));
-				//遍历用户的角色，通过角色与实体名称查询所有角色权限信息
-				for(SysRole sysRole:roleList) {
-					rolePermissionList.addAll(sysRolePermissionService.selectBySelective(new SysRolePermission().setRoleId(sysRole.getId()).setPermissionTypeDcode("function_type_retrieve").setEntityId(sysEntity.getId())));
-				}
-				//保存最大范围的权限的id
-				Integer scope = 0;
-				//如果有该权限
-				if(ListUtil.isNotNull(rolePermissionList)) {
-					//取最大范围权限
-					for(SysRolePermission sysRolePermission:rolePermissionList) {
-						if(sysRolePermission.getScope()>scope) scope = sysRolePermission.getScope();
-					}
-				}
-
-				switch (scope) {
-					case 4:
-						//查询全部
-						break;
-					case 3:
-						//查询公司范围
-						obj.setCompanyId(sysCompanyUtil.getSubCompanyIdsByRootCompanyId(activeUser.getCompanyId()));
-						break;
-					case 2:
-						//查询部门范围
-						obj.setDepartmentId(activeUser.getDepartmentId());
-						break;
-					case 1:
-						//查询个人范围
-						obj.setCreatorId(activeUser.getId());
-						break;
-
-					default:
-						//无权限
-						obj.setCreatorId("0");
-						break;
-				}
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-		}*/
+//        SysPermission sysPermission = sysPermissionService.getOne(sysPermissionService.getWrapper(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build()));
+//        if(sysPermission!=null&&loginUser!=null){
+//            Integer scopeCode = 0;
+//            List<SysRolePermission> rolePermissionList = sysRolePermissionService.list(sysRolePermissionService.getWrapper(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build()));
+//            if(CollectionUtils.isNotEmpty(rolePermissionList)){
+//                for (SysRolePermission sysRolePermission : rolePermissionList) {
+//                    if(StringUtils.isNotBlank(sysRolePermission.getScopeDcode())){
+//                        String scopeDcode = sysRolePermission.getScopeDcode();
+//                        Integer scope = Integer.valueOf(scopeDcode.substring(scopeDcode.lastIndexOf("_")+1));
+//                        if(scope>scopeCode)scopeCode = scope;
+//                    }
+//                }
+//            }
+//
+//            if(scopeCode>=0){
+//                //有查询权限
+//                switch (scopeCode) {
+//                    case 100:
+//                        //查询全部
+//                        break;
+//                    case 50:
+//                        //查询公司范围
+//                        map.put("companyId",loginUser.getCompanyId());
+//                        break;
+//                    case 10:
+//                        //查询部门范围
+//                        map.put("departmentId",loginUser.getDepartmentId());
+//                        break;
+//                    case 1:
+//                        //查询个人范围
+//                        map.put("creatorId",loginUser.getId());
+//                        break;
+//                    default:
+//                        //无权限
+//                        map.put("creatorId","-1");
+//                        break;
+//                }
+//            }
+//        }
 
         return map;
     }

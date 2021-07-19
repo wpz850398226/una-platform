@@ -49,8 +49,6 @@ public class CpGoodsAttribute extends BasePojo implements Serializable {
     private Integer fileId;
     //积分
     private Integer points;
-    //生效标记：0无效；1有效
-    private Integer isEffect;
 
 
     //商品名称

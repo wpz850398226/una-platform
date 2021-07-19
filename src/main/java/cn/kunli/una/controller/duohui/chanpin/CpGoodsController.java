@@ -2,11 +2,16 @@ package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.chanpin.CpGoods;
+import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
+import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.vo.SysResult;
+import cn.kunli.una.service.duohui.chanpin.CpGoodsAttributeService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.TimeUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 账号(CpGoods)表控制层
@@ -29,6 +37,8 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
 
     @Autowired
     private CpIndexController cpIndexController;
+    @Autowired
+    private CpGoodsAttributeService cpGoodsAttributeService;
 
     /**
      * 打开前端 商品详情
@@ -37,11 +47,25 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
      */
     @RequestMapping("/fDetail/{id}")
     public String fDetail(Model model, @PathVariable Integer id) {
+        //增加点击量
         UpdateWrapper updateWrapper = new UpdateWrapper();
         updateWrapper.setEntity(new CpGoods().setId(id));
         updateWrapper.setSql("view_amount = view_amount + 1");
         service.update(updateWrapper);
+
+        //查询商品
         CpGoods record = service.parse(ListUtil.getList(service.getById(id))).get(0);
+        //查询默认规格属性
+        Map<String,Object> map = MapUtil.getMap("goodsId",record.getId());
+        List<CpSpecification> specificationList = record.getSpecificationList();
+        if(CollectionUtils.isNotEmpty(specificationList)){
+            for (CpSpecification cpSpecification : specificationList) {
+                String attributeNames = cpSpecification.getAttributeNames();
+                map.put("in:name",attributeNames.substring(0,attributeNames.indexOf(",")));
+            }
+        }
+        CpGoodsAttribute cpGoodsAttribute = cpGoodsAttributeService.selectOne(map);
+        record.setCheckedGoodsAttribute(cpGoodsAttribute);
         model.addAttribute("record",record);
         cpIndexController.getCommonItem(model);
 

@@ -144,5 +144,8 @@ public class CpGoods extends BasePojo implements Serializable {
     //标题图片
     @TableField(exist = false)
     private String titleImgUrl;
+    //选中的规格属性
+    @TableField(exist = false)
+    private CpGoodsAttribute checkedGoodsAttribute;
 
 }

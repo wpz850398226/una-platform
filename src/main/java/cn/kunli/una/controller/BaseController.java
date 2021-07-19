@@ -4,6 +4,8 @@ package cn.kunli.una.controller;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysField;
+import cn.kunli.una.pojo.system.SysPermission;
+import cn.kunli.una.pojo.system.SysRolePermission;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -20,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,6 +66,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	protected SysRolePermissionService sysRolePermissionService;
 	@Autowired
 	protected SysDataService sysDataService;
+	@Autowired
+	protected SysPermissionService sysPermissionService;
 
 	// 当前Service上泛型的字节码对象
 	protected Class<T> entityClass;
@@ -200,6 +205,51 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@GetMapping("/page")
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> map) {
+		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+		if(loginUser.getRoleId().indexOf("100000")==-1){
+			//如果不是超级管理员，查询权限范围
+			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
+			SysPermission sysPermission = sysPermissionService.getOne(sysPermissionService.getWrapper(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build()));
+			if(sysPermission!=null&&loginUser!=null){
+				Integer scopeCode = 0;
+				List<SysRolePermission> rolePermissionList = sysRolePermissionService.list(sysRolePermissionService.getWrapper(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build()));
+				if(CollectionUtils.isNotEmpty(rolePermissionList)){
+					for (SysRolePermission sysRolePermission : rolePermissionList) {
+						if(StringUtils.isNotBlank(sysRolePermission.getScopeDcode())){
+							String scopeDcode = sysRolePermission.getScopeDcode();
+							Integer scope = Integer.valueOf(scopeDcode.substring(scopeDcode.lastIndexOf("_")+1));
+							if(scope>scopeCode)scopeCode = scope;
+						}
+					}
+				}
+
+				if(scopeCode>=0){
+					//有查询权限
+					switch (scopeCode) {
+						case 100:
+							//查询全部
+							break;
+						case 50:
+							//查询公司范围
+							map.put("companyId",loginUser.getCompanyId());
+							break;
+						case 10:
+							//查询部门范围
+							map.put("departmentId",loginUser.getDepartmentId());
+							break;
+						case 1:
+							//查询个人范围
+							map.put("creatorId",loginUser.getId());
+							break;
+						default:
+							//无权限
+							map.put("creatorId","-1");
+							break;
+					}
+				}
+			}
+		}
+
 		Long pageNum = 1L;
 		Long pageSize = 10L;
 		if(map.get("pageNum")!=null){

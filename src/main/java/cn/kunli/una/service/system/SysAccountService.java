@@ -53,6 +53,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         super.initialize(obj);
         if (obj.getId() == null) {
             //如果id为空，新增数据
+            if(StringUtils.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
             //默认密码123456
             if (StringUtils.isBlank(obj.getPassword())) {
                 obj.setPassword(new BCryptPasswordEncoder().encode("123456"));
@@ -68,7 +69,6 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         if (StringUtils.isNotBlank(obj.getUsername())) obj.setUsername(obj.getUsername().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getPassword())) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
-        if(StringUtils.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
 
         return obj;
     }

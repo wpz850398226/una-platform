@@ -45,7 +45,7 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                             .put("entityId", sysEntity.getId()).build());
             if(permission!=null){
                 List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", permission.getId())
-                                .put("ne:scope_dcode", "permission_scope_none").build());
+                                .put("ne:scope_dcode", "permission_scope_0").build());
 
                 if(CollectionUtils.isNotEmpty(rolePermissionList)){
                     StringBuffer stringBuffer = new StringBuffer();

@@ -46,7 +46,8 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
         obj.setOriginDcode("account_origin_register");
         SysResult sysResult = service.saveRecord(obj);
         if(sysResult.getIsSuccess()){
-            service.updateRecordById((SysAccount) new SysAccount().setCreatorId(obj.getId()).setId(obj.getId()));
+            service.updateRecordById((SysAccount) new SysAccount().setModifierId(obj.getId()).setModifierName(obj.getName())
+                    .setCreatorId(obj.getId()).setCreatorName(obj.getName()).setId(obj.getId()));
         }
         return sysResult;
     }

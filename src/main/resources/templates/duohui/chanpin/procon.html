@@ -193,7 +193,7 @@
       <!--放大镜代码开始-->
       <div id=preview>
         <div class=jqzoom id=spec-n1 onClick="window.open('http:///')">
-          <IMG height=500 th:src="${#strings.arraySplit(record.map.fileUrl, ',')[0]}" jqimg="images/img04.jpg}" width=500> </div>
+          <IMG height=500 th:src="${record.titleImgUrl}" jqimg="images/img04.jpg}" width=500> </div>
         <div id=spec-n5>
           <div class=control id=spec-left> <img th:src="@{/duohui/chanpin/images/disabled-prev.png}" /> </div>
           <div id=spec-list>
@@ -290,28 +290,12 @@
               <li th:each="specification:${record.specificationList}">
                 <div class="title">[[${specification.name}]]</div>
                 <div class="item">
-                  <a class="hover" href="javascript:;"  onClick="changeAtt(this);" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}">
+                  <a th:class="${#strings.containsIgnoreCase(goodsAttributeName,attribute)?'hover':''}" href="javascript:;"  onClick="changeAtt(this);" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}">
                     <input style="display:none" type="radio" checked />
                     [[${attribute}]] <i>已选中</i>
                   </a>
                 </div>
               </li>
-              <!--<li>
-                <div class="title">颜色</div>
-                <div class="item"> <a class="hover" href="javascript:;"  onClick="changeAtt(this);" >
-                  <input style="display:none" id="spec_value_15787" type="radio" checked />
-                  黄色 <i>已选中</i> </a><a href="javascript:;"  onClick="changeAtt(this);" >
-                  <input style="display:none" id="spec_value_15787" type="radio" checked />
-                  红色 <i>已选中</i></a> </div>
-              </li>
-              <li>
-                <div class="title">图片</div>
-                <div class="item"> <a class="hover" href="javascript:;"  onClick="changeAtt(this);" >
-                  <input style="display:none" id="spec_value_15787" type="radio" checked />
-                  <img th:src="@{/duohui/chanpin/images/cxmeng_39.jpg}" width="40" height="40"> <i>已选中</i> </a><a href="javascript:;"  onClick="changeAtt(this);" >
-                  <input style="display:none" id="spec_value_15787" type="radio" checked />
-                  <img th:src="@{/duohui/chanpin/images/cxmeng_19.jpg}" width="40" height="40"><i>已选中</i></a> </div>
-              </li>-->
               <li>
                 <div class="title1">购买数量</div>
                 <div class="item1">

@@ -116,22 +116,22 @@
                     var scopeDcode = record.scopeDcode;
                     var scopeNum = 0;
                     switch (scopeDcode) {
-                        case 'permission_scope_none':
+                        case 'permission_scope_0':
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-black\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 'permission_scope_person':
+                        case 'permission_scope_1':
                             scopeNum = 1;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-green\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 'permission_scope_department':
+                        case 'permission_scope_10':
                             scopeNum = 2;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-blue\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 'permission_scope_company':
+                        case 'permission_scope_50':
                             scopeNum = 3;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge layui-bg-orange\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
-                        case 'permission_scope_all':
+                        case 'permission_scope_100':
                             scopeNum = 4;
                             $("#"+record.permissionId).closest(".layui-colla-content").prev().append("<span class=\"layui-badge\" style=\"float: right;margin-left: 5px\">&nbsp;&nbsp;</span>");
                             break;
