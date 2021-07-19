@@ -1,19 +1,24 @@
 package cn.kunli.una.service.duohui.chanpin;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
 import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.system.SysDictionary;
+import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +40,8 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     private CpGoodsAttributeService cpGoodsAttributeService;
     @Autowired
     private CpShopService cpShopService;
+    @Autowired
+    private SysRegionService sysRegionService;
 
     @Override
     public BasicService getThisProxy() {
@@ -65,6 +72,9 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     }
 
     @Override
+    @SneakyThrows
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(CpGoods entity) {
         SysResult sysResult = super.updateRecordById(entity);
         if(sysResult.getIsSuccess()){
@@ -104,16 +114,25 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
             }
         }
+        //赋值地区
+        if(obj.getAreaRegionId()!=null){
+            if(obj.getCityRegionId()==null){
+                SysRegion areaRegion = sysRegionService.getById(obj.getAreaRegionId());
+                obj.setCityRegionId(areaRegion.getParentId());
+                if (obj.getProvinceRegionId() == null) {
+                    SysRegion cityRegion = sysRegionService.getById(areaRegion.getParentId());
+                    obj.setProvinceRegionId(cityRegion.getParentId());
+                }
+            }
+        }
+        //赋值行业类型
         if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
-            SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
-            if(thirdryIndustryDic!=null){
-                SysDictionary secondryIndustryDic = sysDictionaryService.getById(thirdryIndustryDic.getParentId());
-                if(secondryIndustryDic!=null){
-                    obj.setSecondryIndustryDcode(secondryIndustryDic.getCode());
-                    SysDictionary primaryIndustryDic = sysDictionaryService.getById(secondryIndustryDic.getParentId());
-                    if(primaryIndustryDic!=null){
-                        obj.setPrimaryIndustryDcode(primaryIndustryDic.getCode());
-                    }
+            if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
+                SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
+                obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
+                if(StringUtils.isBlank(obj.getPrimaryIndustryDcode())){
+                    SysDictionary secondryIndustryDic = sysDictionaryService.getById(thirdryIndustryDic.getParentId());
+                    obj.setPrimaryIndustryDcode(secondryIndustryDic.getParentCode());
                 }
 
             }

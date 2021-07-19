@@ -40,8 +40,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new AuthenticationCredentialsNotFoundException("用户名不存在");
         }else if(StringUtils.isBlank(sysAccount.getStatusDcode())){
             throw new LockedException("用户状态为空");
-        }else if(sysAccount.getStatusDcode().equals("account_status_unverified")){
-            throw new LockedException("用户未认证，无法登陆");
         }else if(sysAccount.getStatusDcode().equals("account_status_locked")){
             throw new LockedException("用户被锁定，无法登陆");
         }else if(sysAccount.getStatusDcode().equals("account_status_disabled")){

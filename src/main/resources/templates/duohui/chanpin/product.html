@@ -31,8 +31,9 @@
                     <div class="fenlist clear clearfix">
                         <dl>
                             <dt> 一级行业：</dt>
-                            <dd class="on" name="primaryIndustryDcode" value="all"><a href="#" onclick="search(this)">全部</a></dd>
-                            <dd class="" th:each="industry:${primaryIndustryDlist}" name="primaryIndustryDcode" th:value="${industry.code}"><a href="#" onclick="searchGoods(this)">[[${industry.name}]]</a></dd>
+                            <dd th:class="${param['primaryIndustryDcode']!=null?'':'on'}" name="primaryIndustryDcode" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['primaryIndustryDcode']) == #strings.trim(industry['code'])?'on':''}" th:each="industry:${primaryIndustryDlist}" name="primaryIndustryDcode" th:value="${industry['code']}">
+                                <a href="#" onclick="searchGoods(this)">[[${industry.name}]]</a></dd>
                         </dl>
                     </div>
                 </li>
@@ -40,8 +41,9 @@
                   <div class="fenlist clear clearfix">
                     <dl>
                       <dt> 二级行业：</dt>
-                      <dd class="on" name="secondryIndustryDcode" value="all"><a href="#">全部</a></dd>
-                      <dd th:each="industry:${secondryIndustryDlist}" name="secondryIndustryDcode" th:value="${industry.code}"><a href="#" onclick="searchGoods(this)">[[${industry.name}]]</a></dd>
+                      <dd th:class="${param['secondryIndustryDcode']!=null?'':'on'}" name="secondryIndustryDcode" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+                      <dd th:class="${#strings.trim(param['secondryIndustryDcode']) == #strings.trim(industry['code'])?'on':''}" th:each="industry:${secondryIndustryDlist}" name="secondryIndustryDcode" th:value="${industry.code}">
+                          <a href="#" onclick="searchGoods(this)">[[${industry.name}]]</a></dd>
                     </dl>
                   </div>
                 </li>
@@ -49,8 +51,9 @@
                 <div class="fenlist clear clearfix">
                   <dl>
                     <dt> 三级行业：</dt>
-                    <dd class="on" name="thirdryIndustryDcode" value="all"><a href="#">全部</a></dd>
-                    <dd th:each="industry:${thirdryIndustryDlist}" name="thirdryIndustryDcode" th:value="${industry.code}"><a href="#" onclick="searchGoods(this)">[[${industry.name}]]</a></dd>
+                    <dd th:class="${param['thirdryIndustryDcode']!=null?'':'on'}" name="thirdryIndustryDcode" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+                    <dd th:class="${#strings.trim(param['thirdryIndustryDcode']) == #strings.trim(industry['code'])?'on':''}" th:each="industry:${thirdryIndustryDlist}" name="thirdryIndustryDcode" th:value="${industry.code}">
+                        <a href="#" onclick="searchGoods(this)">[[${industry.name}]]</a></dd>
                   </dl>
                 </div>
               </li>
@@ -58,8 +61,9 @@
                     <div class="fenlist clear clearfix">
                         <dl>
                             <dt> 产品状态：</dt>
-                            <dd class="on" name="goodsStatusDcode" value="all"><a href="#">全部</a></dd>
-                            <dd class="" th:each="goodsStatus:${goodsStatusDlist}" name="goodsStatusDcode" th:value="${goodsStatus.code}"><a href="#" onclick="searchGoods(this)">[[${goodsStatus.name}]]</a></dd>
+                            <dd th:class="${param['goodsStatusDcode']!=null?'':'on'}" name="goodsStatusDcode" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['goodsStatusDcode']) == #strings.trim(goodsStatus['code'])?'on':''}" class="" th:each="goodsStatus:${goodsStatusDlist}" name="goodsStatusDcode" th:value="${goodsStatus.code}">
+                                <a href="#" onclick="searchGoods(this)">[[${goodsStatus.name}]]</a></dd>
                         </dl>
                     </div>
                 </li>
@@ -68,8 +72,9 @@
                         <dl id="box">
                             <dt> 地区：</dt>
                             <div style="width:970px; float:left;">
-                                <dd class="on" name="provinceRegionId" value="all"><a href="#">全部</a></dd>
-                                <dd class="" th:each="region:${sysRegionList}" name="provinceRegionId" th:value="${region.id}"><a href="#" onclick="searchGoods(this)">[[${region.name}]]</a></dd>
+                                <dd th:class="${param['provinceRegionId']!=null?'':'on'}" name="provinceRegionId" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+                                <dd th:class="${#strings.trim(param['provinceRegionId']) == #strings.trim(region['id'])?'on':''}" class="" th:each="region:${sysRegionList}" name="provinceRegionId" th:value="${region.id}">
+                                    <a href="#" onclick="searchGoods(this)">[[${region.name}]]</a></dd>
                             </div>
                         </dl>
                         <p id="tog"
@@ -131,7 +136,7 @@
                 </div>
             </div>
             <div class="page clear clearfix">
-                <a>首页</a><a>上一页</a><a class="on">1</a><a href="">2</a><a href="">下一页</a><a href="">尾页</a>
+                <a>首页</a><a>上一页</a><a th:class="${param['primaryIndustryDcode']!=null?'':'on'}">1</a><a href="">2</a><a href="">下一页</a><a href="">尾页</a>
             </div>
         </div>
     </div>
@@ -146,15 +151,17 @@ function searchGoods(e){
     $(e).parent().parent().find("dd.on").removeClass("on");
     $(e).parent().addClass("on");
 
-    var param = {};
+    var param = "";
     $("#searchUl").find("dd.on").each(function(){
         dd = $(this);
         var name = dd.attr("name");
         var value = dd.attr("value");
-        param.put(name,value);
+        if(value!="all")param = param + name +"="+value+"&"
     })
-    console.log(param)
-
+    if(param.length>0){
+        param = "?"+param;
+    }
+    window.location.href="/api/duohui/chanpin/product"+param;
 }
 
 </script>

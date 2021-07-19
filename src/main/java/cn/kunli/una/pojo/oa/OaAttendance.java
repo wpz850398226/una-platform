@@ -34,7 +34,7 @@ public class OaAttendance extends BasePojo implements Serializable {
     //事由
     private String reason;
     //外勤照片
-    private String fileId;
+    private String fileIds;
     //打卡时间
     private Date signTime;
     //所属日期

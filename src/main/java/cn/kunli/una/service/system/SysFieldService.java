@@ -93,7 +93,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     break;
                 case "fileId"://流程节点 entityId
                 case "FileId"://流程节点 entityId
-                    resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("in:id", value)));
+                    resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("id", value)));
                     break;
                 case "shopId"://店铺 shopId
                 case "ShopId"://店铺 shopId
@@ -112,6 +112,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "goodsId"://商品 goodsId
                     resultList = cpGoodsService.selectList(MapUtil.getMap("id",value));
                     break;
+                case "fileIds"://流程节点 entityId
+                case "FileIds"://流程节点 entityId
+                    resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("in:id", value)));
             }
         }
 

@@ -44,31 +44,36 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     @ResponseBody
     public SysResult register(SysAccount obj) {
         obj.setOriginDcode("account_origin_register");
-        return service.saveRecord(obj);
+        SysResult sysResult = service.saveRecord(obj);
+        if(sysResult.getIsSuccess()){
+            service.updateRecordById((SysAccount) new SysAccount().setCreatorId(obj.getId()).setId(obj.getId()));
+        }
+        return sysResult;
     }
 
     //审核
     @PutMapping("/audit/{id}/{isAudit}")
     @ResponseBody
     public SysResult audit(@PathVariable Integer id,@PathVariable Integer isAudit) {
+        SysAccount targetAccount = (SysAccount) new SysAccount().setId(id);
         if(isAudit==1){//审核通过
             SysAccount sysAccount = service.getById(id);
-            SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryDcode(sysAccount.getIndustryTypeDcode()).setName(sysAccount.getCompanyName());
             CpShop cpShop = (CpShop) new CpShop().setName(sysAccount.getName() + "的店铺");
-            //创建企业
-            sysCompanyService.saveRecord(sysCompany);
             //创建店铺
             cpShopService.saveRecord(cpShop);
-            //修改账号信息
-            service.updateRecordById((SysAccount) new SysAccount().setRoleId("100002")  //免费企业会员
-                    .setStatusDcode("account_status_normal")
-                    .setShopId(cpShop.getId())
-                    .setCompanyId(sysCompany.getCompanyId())
-                    .setId(id));
+            targetAccount.setRoleId("100003").setStatusDcode("account_status_auditSuccess").setShopId(cpShop.getId());//免费会员
+
+            //创建企业
+            if(sysAccount.getTypeDcode().equals("account_type_company")){
+                SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryDcode(sysAccount.getIndustryTypeDcode()).setName(sysAccount.getName());
+                sysCompanyService.saveRecord(sysCompany);
+                targetAccount.setCompanyId(sysCompany.getId());
+            }
+        }else{
+            targetAccount.setStatusDcode("account_status_auditFail");
         }
-
-
-        return SysResult.fail();
+        //修改账号信息
+        return service.updateRecordById(targetAccount);
 
     }
 

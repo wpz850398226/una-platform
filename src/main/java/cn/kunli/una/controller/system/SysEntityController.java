@@ -4,7 +4,9 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.service.system.SysEntityService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -19,8 +21,9 @@ import java.util.Map;
 public class SysEntityController extends BaseController<SysEntityService, SysEntity> {
 
     @Override
-    public List<SysEntity> list(Map<String, Object> params) {
-        List<SysEntity> entityList = super.list(params);
+    @GetMapping("/list")
+    public List<SysEntity> list(@RequestParam Map<String, Object> map) {
+        List<SysEntity> entityList = super.list(map);
         if(entityList!=null){
             for (SysEntity sysEntity : entityList) {
                 sysEntity.setName(sysEntity.getName()+"-"+sysEntity.getMap().get("platformDname"));

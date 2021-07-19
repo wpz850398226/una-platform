@@ -42,7 +42,7 @@ public class SysMessage extends BasePojo implements Serializable {
 
     private String templateCode;        //模板编号
     //文件保存地址
-    private String fileId;
+    private String fileIds;
 
 
     //是否已推送

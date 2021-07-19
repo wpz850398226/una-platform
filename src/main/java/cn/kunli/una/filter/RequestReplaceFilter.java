@@ -1,6 +1,5 @@
 package cn.kunli.una.filter;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
@@ -15,7 +14,6 @@ import java.io.IOException;
  * @author: YuanTianQi
  * @create: 2020-07-21 13:03
  */
-@Component
 public class RequestReplaceFilter extends OncePerRequestFilter {
 
     @Override

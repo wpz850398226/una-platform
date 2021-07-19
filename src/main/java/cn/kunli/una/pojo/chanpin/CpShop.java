@@ -44,7 +44,7 @@ public class CpShop extends BasePojo implements Serializable {
     //微信二维码图片
     private Integer wechatFileId;
     //图片
-    private String bannerFileId;
+    private String bannerFileIds;
     //是否置顶
     private Integer isStick;
     //是否热门

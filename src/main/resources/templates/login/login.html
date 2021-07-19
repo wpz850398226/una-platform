@@ -80,6 +80,7 @@
                         //登录失败，刷新验证码
                         form.find("input[name=captcha]").val("");
                         form.find(".captchaImage").click();
+                        $(selector).attr("disabled",false);
                         layer.msg(result.message,function () {})
                     }
 

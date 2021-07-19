@@ -33,17 +33,14 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
 
     //校验格式
+    @Override
     public SysResult validate(SysAccount obj) {
+        SysResult validate = super.validate(obj);
+        if(!validate.getIsSuccess())return validate;
         if (StringUtils.isNotBlank(obj.getUsername())) {
             List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("username", obj.getUsername().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
-            }
-        }
-        if (StringUtils.isNotBlank(obj.getCompanyName())) {
-            List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("companyName", obj.getCompanyName().trim()));
-            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
-                return SysResult.fail("公司名称重复，保存失败:" + obj.getCompanyName());
             }
         }
 
@@ -60,9 +57,9 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             if (StringUtils.isBlank(obj.getPassword())) {
                 obj.setPassword(new BCryptPasswordEncoder().encode("123456"));
             }
-            //如果账号来源是自行注册，则状态为呆提交
+            //如果账号来源是自行注册，则状态为待提交
             if(StringUtils.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
-                obj.setStatusDcode("account_status_toSubmit");
+                obj.setStatusDcode("account_status_toSubmit").setRoleId("100002");//未认证会员角色
             }
 
         }
@@ -72,7 +69,6 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getPassword())) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
         if(StringUtils.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
-        if(StringUtils.isNotBlank(obj.getCompanyName())&&StringUtils.isBlank(obj.getName()))obj.setName(obj.getCompanyName());
 
         return obj;
     }

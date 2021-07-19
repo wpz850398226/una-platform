@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -103,31 +104,24 @@ public class CpIndexController {
      * @return
      */
     @RequestMapping("/product")
-    public String product(Model model,Map<String,Object> map) {
+    public String product(Model model,@RequestParam Map<String,Object> map) {
+        model.addAttribute("param", map);
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
 
         //行业字典
-        SysDictionary industryDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code", "industry"));
-        if(industryDictionary!=null){
-            List<SysDictionary> primaryIndustryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentId", industryDictionary.getId())));
-            List<SysDictionary> secondryIndustryDlist = new ArrayList<>();
-            List<SysDictionary> thirdryIndustryDlist = new ArrayList<>();
-            for (SysDictionary primaryIndustry : primaryIndustryDlist) {
-                if(CollectionUtils.isNotEmpty(primaryIndustry.getChildren())){
-                    secondryIndustryDlist.addAll(primaryIndustry.getChildren());
-                    for (SysDictionary secondryIndustry : primaryIndustry.getChildren()) {
-                        if(CollectionUtils.isNotEmpty(secondryIndustry.getChildren())){
-                            thirdryIndustryDlist.addAll(secondryIndustry.getChildren());
-                        }
-                    }
-                }
+        List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry"));
+        model.addAttribute("primaryIndustryDlist",primaryIndustryDlist);
 
-            }
-            model.addAttribute("primaryIndustryDlist",primaryIndustryDlist);
+        if(map.containsKey("primaryIndustryDcode")){
+            List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
             model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
+        }
+
+        if(map.containsKey("secondryIndustryDcode")){
+            List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
             model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
         }
 
@@ -140,7 +134,22 @@ public class CpIndexController {
         model.addAttribute("searchGoodsList",searchGoodsPage.getRecords());
 
         //搜索结果
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L,8L, MapUtil.buildHashMap().put("orderByDesc", "stickDeadline").build());
+        Long pageNum = 1L;
+        Long pageSize = 16L;
+        if(map==null){
+            map = new HashMap<>();
+        }else{
+            if(map.containsKey("pageNum")){
+                pageNum = Long.valueOf(map.get("pageNum").toString());
+                map.remove("pageNum");
+            }
+            if(map.containsKey("pageSize")){
+                pageSize = Long.valueOf(map.get("pageSize").toString());
+                map.remove("pageSize");
+            }
+        }
+        map.put("orderByDesc", "stickDeadline");
+        Page<CpGoods> goodsPage = cpGoodsService.page(pageNum,pageSize, map);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
         //商品状态

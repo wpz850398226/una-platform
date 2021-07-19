@@ -192,7 +192,7 @@ function autoLoadOption(e){
 	//如果参数值为all，则查询参数为空
 	if(paramValue!='all'&&paramValue!=null&&paramValue!="")paramJson = eval('({' + param + '})');
 
-	console.log(paramJson)
+	// console.log(paramJson)
 		$.ajax({
 			type: 'GET',
 			url: url,

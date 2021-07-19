@@ -177,13 +177,12 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					T descT = entityClass.newInstance();
 					descT.setId(descendRecord.getId()).setSortOrder(sortOrder);
 					//降序
-					service.updateById(descT);
+					service.updateRecordById(descT);
 				}
 				//升序
 				T ascT = entityClass.newInstance();
 				ascT.setId(ascendRecord.getId()).setSortOrder(sortOrder - 1);
-				boolean ascendResult = service.updateById(ascT);
-				if(ascendResult)return SysResult.success();
+				return service.updateRecordById(ascT);
 			}
 			return SysResult.fail("顺序为空或无法提升");
 		}

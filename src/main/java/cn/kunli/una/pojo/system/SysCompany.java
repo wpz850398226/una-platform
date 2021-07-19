@@ -67,7 +67,7 @@ public class SysCompany extends BasePojo implements Serializable {
     //坐标
     private String coord;
     //附件
-    private String fileId;
+    private String fileIds;
 
     @TableField(exist = false)
     private String legalPersonName;        //法人姓名

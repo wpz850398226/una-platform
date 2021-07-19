@@ -43,7 +43,9 @@ public class SysAccount extends BasePojo implements Serializable {
     //密码
     private String password;
     //头像照片id（前端异步加载）
-    private Integer iconId;
+    private Integer iconFileId;
+    //证件文件ids
+    private String certificateFileIds;
     //是否允许多点登录
     private Boolean isMultipointLogin;
     //角色ids
@@ -57,8 +59,6 @@ public class SysAccount extends BasePojo implements Serializable {
     private Integer shopId;
     //企业类型
     private String industryTypeDcode;
-    //企业名称
-    private String companyName;
     //地区
     private Integer regionId;
     //会员截止日期

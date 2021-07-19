@@ -33,14 +33,16 @@
 				e.addClass('act');
 				if (e.attr('val') == 'p') {
 					f.find('input[name=t]').val('p');
-					$('li#pname').show();
-					$("#accountType").val("companyType");
+					$('.cname').hide();
+					$('.pname').show();
+					$("#accountType").val("account_type_company");
 				}
 
 			else{
 					f.find('input[name=t]').val('c');
-					$('li#pname').hide();
-                  $("#accountType").val("personType");
+                    $('.cname').show();
+					$('.pname').hide();
+                  $("#accountType").val("account_type_person");
                   $("#companyName").val("");
 				}
 
@@ -50,12 +52,18 @@
 		});
 	</script>
   <form id="fMain" method="post" onSubmit="return false;">
-    <input type="hidden" id="accountType" value="companyType"/>
+    <input type="hidden" name="typeDcode" id="accountType" value="account_type_company"/>
     <div class="gtform">
       <li>
         <label class="fl"></label>
         <em style="display:inline-block;">
         <p class="tb"> <a href="#" val="p" class="act">企业会员</a> <a href="#" val="c">个人会员</a></p>
+        </em> </li>
+      <li>
+        <label class="fl pname">公司名称<i class=" line36  ml5 mr10 red">*</i></label>
+        <label class="fl cname" style="display: none">昵称<i class=" line36  ml5 mr10 red">*</i></label>
+        <em>
+          <input type="text" id="name" name="name" maxlength="128" class="it" />
         </em> </li>
       <li  class="clear clearfix">
         <label class="fl" >手机号码<i class=" line36  ml5 mr10 red">*</i></label>
@@ -87,7 +95,7 @@
         <em>
         <input type="password" id="confirmPassword" maxlength="128" class="it" />
         </em> </li>
-      <li>
+      <!--<li>
         <label class="fl">行业类型<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
         <label>
@@ -101,13 +109,38 @@
                   data-option_value_field_title="code"
                   data-url="/api/sys/dictionary"></select>
         </label>
-        </em> </li>
-      <li  id="pname">
-        <label class="fl">公司名称<i class=" line36  ml5 mr10 red">*</i></label>
+        </em> </li>-->
+      <li>
+        <label class="fl">行业类型：</label>
         <em>
-        <input type="text" id="companyName" name="companyName" maxlength="128" class="it" />
+          <label class="aa">
+            <select class="una-select una-select-linkage it" style="color:#444;"
+                    lay-verify="required"
+                    lay-search=""
+                    data-param_name="parentCode"
+                    data-param_value="industry"
+                    data-sub_id="secondryIndustry"
+                    data-option_value_field_title="code"
+                    data-url="/api/sys/dictionary"></select>
+            <select class="una-select una-select-linkage it" style="color:#444;"
+                    id="secondryIndustry"
+                    lay-verify="required"
+                    lay-search=""
+                    data-param_name="parentCode"
+                    data-sub_id="thirdryIndustry"
+                    data-option_value_field_title="code"
+                    data-url="/api/sys/dictionary"></select>
+            <select class="una-select it" style="color:#444;"
+                    id="thirdryIndustry"
+                    name="industryTypeDcode"
+                    lay-verify="required"
+                    lay-search=""
+                    data-param_name="parentCode"
+                    data-option_value_field_title="code"
+                    data-url="/api/sys/dictionary"></select>
+          </label>
         </em> </li>
-      <li  id="pname">
+      <li>
         <label class="fl">所在地区：</label>
         <em>
         <label class="aa">
@@ -165,6 +198,11 @@
   loadCaptcha();  //加载验证码
   function register(selector){
     // $(selector).attr("disabled",true);
+    if(!$("#name").val().length>0){
+      layer.msg("请输入名称",function(){})
+      return false;
+    }
+
     if(!$("#username").val().length>0){
       layer.msg("请输入手机号",function(){})
       return false;
@@ -196,21 +234,14 @@
       }
     }
 
-    if(!$("#industryTypeDcode").val().length>0){
+    if(!$("#thirdryIndustry").val().length>0){
       layer.msg("请选择行业类型",function(){})
       return false;
     }
 
-    var accountType = $("#accountType").val();
-    if(accountType=="companyType"){
-      if(!$("#companyName").val().length>0){
-        layer.msg("请输入公司名称",function(){})
-        return false;
-      }
-      if(!$("#regionId").val().length>0){
-        layer.msg("请选择地区",function(){})
-        return false;
-      }
+    if(!$("#regionId").val().length>0){
+      layer.msg("请选择地区",function(){})
+      return false;
     }
 
     $.ajax({
