@@ -2,16 +2,14 @@ package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpShop;
-import cn.kunli.una.pojo.system.SysConfiguration;
-import cn.kunli.una.pojo.system.SysData;
-import cn.kunli.una.pojo.system.SysDictionary;
-import cn.kunli.una.pojo.system.SysRegion;
+import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.TimeUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
@@ -40,6 +38,8 @@ public class CpIndexController {
     private CpShopService cpShopService;
     @Autowired
     private SysRegionService sysRegionService;
+    @Autowired
+    private SysAnnouncementService sysAnnouncementService;
 
     /**
      * 打开主页
@@ -94,6 +94,13 @@ public class CpIndexController {
             model.addAttribute("coopShopList",cpShopService.parse(coopShopPage.getRecords()));
 
         }
+
+        //查询公告
+        String strOfDate = TimeUtil.getStrOfDate(new Date(), "yyyy-MM-dd");
+        Page<SysAnnouncement> sysAnnouncementPage = sysAnnouncementService.page(1L, 4L, MapUtil.buildHashMap()
+                .put(":platformDcode", "platform_type_chanpin").put("le:startTime",strOfDate)
+                .put("ge:endTime",strOfDate).build());
+        model.addAttribute("sysAnnouncementList",sysAnnouncementPage.getRecords());
 
         return "duohui/chanpin/index";
     }
@@ -161,6 +168,18 @@ public class CpIndexController {
         model.addAttribute("sysRegionList",sysRegionList);
 
         return "duohui/chanpin/product";
+    }
+
+    /**
+     * 打开新闻页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/newsview")
+    public String newsview(Model model,@RequestParam Map<String,Object> map) {
+
+
+        return "duohui/chanpin/newsview";
     }
 
     public void getCommonItem(Model model){

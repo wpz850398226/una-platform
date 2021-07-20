@@ -66,10 +66,7 @@
             <div class="clear"></div>
             <div class="clear clearfix wzgg"> <em>[网站公告]</em>
                 <ul>
-                    <li> <a href="#">网站公告网站公告</a></li>
-                    <li> <a href="#">网站公告</a></li>
-                    <li> <a href="#">网站公告</a></li>
-                    <li> <a href="#">网站公告</a></li>
+                    <li th:each="announ:${sysAnnouncementList}"> <a href="/api/duohui/chanpin/newsview">[[${announ.name}]]</a></li>
                 </ul>
             </div>
         </div>

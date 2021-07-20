@@ -16,5 +16,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/sys/dictionary")
 public class SysDictionaryController extends BaseController<SysDictionaryService, SysDictionary> {
-
 }

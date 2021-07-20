@@ -1,15 +1,19 @@
 package cn.kunli.una.service.system;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysDictionaryMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
-import cn.kunli.una.pojo.system.SysMenu;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +30,29 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
         return sysDictionaryService;
     }
 
-
+    /**
+     * 更新数据,只操作record中的非空属性
+     *
+     * @param record
+     * @return
+     */
+    @Override
+    @SneakyThrows
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    public SysResult updateRecordById(SysDictionary entity) {
+        SysResult sysResult = super.updateRecordById(entity);
+        if(sysResult.getIsSuccess()){
+            if(StringUtils.isNotBlank(entity.getCode())){
+                //修改子字典的父类编码
+                UpdateWrapper updateWrapper = new UpdateWrapper();
+                updateWrapper.setEntity(new SysDictionary().setParentId(entity.getId()));
+                updateWrapper.setSql("parent_code = '"+entity.getCode()+"'");
+                sysDictionaryService.update(updateWrapper);
+            }
+        }
+        return sysResult;
+    }
 
     /**
      * 通过code模糊查询字典记录
