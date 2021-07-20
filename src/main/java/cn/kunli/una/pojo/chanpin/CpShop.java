@@ -63,4 +63,6 @@ public class CpShop extends BasePojo implements Serializable {
     private String aboutUsDescription;
     //关于我们内容
     private String aboutUsContent;
+    //是否有门面
+    private Boolean isFacade;
 }

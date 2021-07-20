@@ -111,69 +111,6 @@
         });
     </script>
 <div class=" clear clearfix ">
-  <!--<div class="prodcateStyle_3  mt30">
-    <ul class="oneBgSet w1200">
-      <li class="oneSet"> <a href="" target="_self">一级分类<i class="fa fa-angle-down"></i></a>
-        <div class="subCateUl">
-          <ul class="twoBgSet">
-            <li> <a class="twoSet" href="" target="_self">二级分类</a><i class="fa fa-angle-right"></i>
-              <ul class="subCateUl2 threeBgSet">
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-              </ul>
-            </li>
-            <li> <a class="twoSet" href="" target="_self">二级分类</a><i class="fa fa-angle-right"></i>
-              <ul class="subCateUl2 threeBgSet">
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-              </ul>
-            </li>
-            <li> <a class="twoSet" href="" target="_self">二级分类</a><i class="fa fa-angle-right"></i>
-              <ul class="subCateUl2 threeBgSet">
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </li>
-      <li class="oneSet"><a href="" target="_self">一级分类</a></li>
-      <li class="oneSet"> <a href="" target="_self">一级分类<i class="fa fa-angle-down"></i></a>
-        <div class="subCateUl">
-          <ul class="twoBgSet">
-            <li> <a class="twoSet" href="" target="_self">二级分类</a><i class="fa fa-angle-right"></i>
-              <ul class="subCateUl2 threeBgSet">
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </li>
-      <li class="oneSet"> <a href="" target="_self">一级分类<i class="fa fa-angle-down"></i></a>
-        <div class="subCateUl">
-          <ul class="twoBgSet">
-            <li> <a class="twoSet" href="" target="_self">二级分类</a><i class="fa fa-angle-right"></i>
-              <ul class="subCateUl2 threeBgSet">
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-                <li class="threeSet"><a href="" target="_self">三级分类</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </div>-->
   <script>
 		window.resizeTimeoutprodKind_style_03_1484741726227=setTimeout(function(){
 			diyAutoHeight($('#prodKind_style_03_1484741726227'));
@@ -192,7 +129,7 @@
 
       <!--放大镜代码开始-->
       <div id=preview>
-        <div class=jqzoom id=spec-n1 onClick="window.open('http:///')">
+        <div class=jqzoom id=spec-n1 onclick="window.open('http:///')">
           <IMG height=500 th:src="${record.titleImgUrl}" jqimg="images/img04.jpg}" width=500> </div>
         <div id=spec-n5>
           <div class=control id=spec-left> <img th:src="@{/duohui/chanpin/images/disabled-prev.png}" /> </div>
@@ -259,11 +196,11 @@
       <div class="wr-fcs-panel clear clearfix">
         <dl class="wr-price-panel mt20">
           <dt class="wr-metatit">价格</dt>
-          <dd><em class="wr-yen">￥</em> <span class="wr-price">[[${record.taxInclusiveMarketPrice}]]</span></dd>
+          <dd><em class="wr-yen">￥</em> <span class="wr-price">[[${record.checkedGoodsAttribute.taxInclusiveMarketPrice}]]</span></dd>
         </dl>
         <dl class="wr-price-panel clear clearfix">
           <dt class="wr-metatit" style="line-height:50px;">促销价</dt>
-          <dd><em class="wr-yen1">￥</em> <span class="wr-price1">[[${record.sellingPrice}]]</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
+          <dd><em class="wr-yen1">￥</em> <span class="wr-price1">[[${record.checkedGoodsAttribute.sellingPrice}]]</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
         </dl>
       </div>
       <dl class="wr-price-panel clear clearfix mt10">
@@ -286,11 +223,12 @@
       <section id="search_ka">
         <div class="ui-sx bian1">
           <div class="subNavBox">
-            <ul class="navContent" style="display: block;">
+            <ul id="goodsAttribute" class="navContent" style="display: block;">
               <li th:each="specification:${record.specificationList}">
                 <div class="title">[[${specification.name}]]</div>
                 <div class="item">
-                  <a th:class="${#strings.containsIgnoreCase(goodsAttributeName,attribute)?'hover':''}" href="javascript:;"  onClick="changeAtt(this);" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}">
+                  <a th:class="${#strings.containsIgnoreCase(record.checkedGoodsAttribute.name,attribute)?'hover':''}" href="javascript:;"
+                     onclick="changeAtt(this)" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}" th:value="${attribute}">
                     <input style="display:none" type="radio" checked />
                     [[${attribute}]] <i>已选中</i>
                   </a>
@@ -300,9 +238,9 @@
                 <div class="title1">购买数量</div>
                 <div class="item1">
                   <span class="ui-number fl mr10">
-                  <button type="button" class="decrease" onClick="goods_cut();changePrice();"></button>
+                  <button type="button" class="decrease" onclick="goods_cut();changePrice();"></button>
                   <input type="number" class="num" id="buyNumber" onBlur="changePrice();" value="1" min="1" max="99" style=" text-align:center"/>
-                  <button type="button" class="increase" onClick="goods_add();changePrice();"></button>
+                  <button type="button" class="increase" onclick="goods_add();changePrice();"></button>
                   </span>件<em class="ml10">库存[[${record.inventory}]]件</em> </div>
               </li>
             </ul>
@@ -310,63 +248,9 @@
         </div>
       </section>
 
-      <!--下面的js就是单选框的效果-->
-      <script type="text/javascript">
-
-        function goods_cut(){
-          var num_val=document.getElementById('buyNumber');
-          var new_num=num_val.value;
-          var Num = parseInt(new_num);
-          if(Num>1)Num=Num-1;
-          num_val.value=Num;
-        }
-        function goods_add(){
-          var num_val=document.getElementById('buyNumber');
-          var new_num=num_val.value;
-          var Num = parseInt(new_num);
-          Num=Num+1;
-          num_val.value=Num;
-        }
-
-        function click_search (){
-				  var search_ka = document.getElementById("search_ka");
-				  if (search_ka.className == "s-buy open ui-section-box"){
-					  search_ka.className = "s-buy ui-section-box";
-					  }else {
-						  search_ka.className = "s-buy open ui-section-box";
-						  }
-				  }
-function changeAtt(t) {
-t.lastChild.checked='checked';
-for (var i = 0; i<t.parentNode.childNodes.length;i++) {
-        if (t.parentNode.childNodes[i].className == 'hover') {
-            t.parentNode.childNodes[i].className = '';
-			t.childNodes[0].checked="checked";
-		}
-    }
-t.className = "hover";
-changePrice();
-}
-function changeAtt1(t) {
-t.lastChild.checked='checked';
-for (var i = 0; i<t.parentNode.childNodes.length;i++) {
-        if (t.className == 'hover') {
-            t.className = '';
-			t.childNodes[0].checked = false;
-		}
-		else{
-			t.className="hover";
-			t.childNodes[0].checked = true;
-		}
-
-
-}
-changePrice();
-}
-</script>
       <div class="probuy">
-        <input type="button" value="立即购买" class="" th:onclick="'javascript:bugNow('+${record.id}+');'">
-        <input type="button" value="加入购物车" class="addcartBtn" th:onclick="'javascript:addCart('+${record.id}+');'">
+        <input type="button" value="立即购买" class="" th:onclick="bugNow([[${record.checkedGoodsAttribute.id}]])">
+        <input type="button" value="加入购物车" class="addcartBtn" th:onclick="addCart([[${record.checkedGoodsAttribute.id}]])">
       </div>
     </div>
     <div class="clear clearfix" style="height:20px;"></div>
@@ -383,10 +267,10 @@ changePrice();
     <div class="chanpinshuoming W950 fl">
       <DIV id=con2>
         <UL id=tags>
-          <LI class="selectTag"><A onClick="selectTag('tagContent0',this)" href="javascript:void(0)">商品详细</A></LI>
-          <LI><A onClick="selectTag('tagContent1',this)" href="javascript:void(0)">购物流程</A></LI>
-          <LI><A onClick="selectTag('tagContent2',this)" href="javascript:void(0)">全部评论（55+）</A></LI>
-          <LI><A onClick="selectTag('tagContent3',this)" href="javascript:void(0)">关于我们及售后</A></LI>
+          <LI class="selectTag"><A onclick="selectTag('tagContent0',this)" href="javascript:void(0)">商品详细</A></LI>
+          <LI><A onclick="selectTag('tagContent1',this)" href="javascript:void(0)">购物流程</A></LI>
+          <LI><A onclick="selectTag('tagContent2',this)" href="javascript:void(0)">全部评论（55+）</A></LI>
+          <LI><A onclick="selectTag('tagContent3',this)" href="javascript:void(0)">关于我们及售后</A></LI>
         </UL>
         <DIV id=tagContent>
           <DIV class="tagContent selectTag" id=tagContent0>
@@ -395,18 +279,19 @@ changePrice();
             </div>
             <div class=" pro-nr-list clear clearfix">
               <ul>
-                <li th:title="${param.value}" th:each="param:${record.goodsParam}">[[${param.key}]]：[[${param.value}]]</li>
+                <li th:title="${paramMap.value}" th:each="paramMap:${record.goodsParam}">[[${paramMap.key}]]：[[${paramMap.value}]]</li>
               </ul>
             </div>
             <div class="wr-tit-new "><i class="wr-tit-new-icon"></i>
               <p class="wr-title">产品展示<i class="wr-title-en">DETAIL</i></p>
             </div>
-            <div class=" pro-nr-list clear clearfix"> <img th:src="@{/duohui/chanpin/images/img01.jpg}"> </div>
+            <div class="una-editor-show pro-nr-list clear clearfix" th:value="${record.content }"></div>
+<!--            <div class=" pro-nr-list clear clearfix"> <img th:src="@{/duohui/chanpin/images/img01.jpg}"> </div>-->
           </DIV>
           <DIV class="tagContent " id=tagContent1>
             <div class=" pro-nr-list clear clearfix">
               <ul>
-                <li th:title="${param.value}" th:each="param:${record.goodsParam}">[[${param.key}]]：[[${param.value}]]</li>
+                <li th:title="${paramMap.value}" th:each="paramMap:${record.goodsParam}">[[${paramMap.key}]]：[[${paramMap.value}]]</li>
               </ul>
             </div>
           </DIV>
@@ -471,6 +356,49 @@ changePrice();
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 <SCRIPT type=text/javascript>
+  function changeAtt(t) {
+    t.lastChild.checked='checked';
+    for (var i = 0; i<t.parentNode.childNodes.length;i++) {
+      if (t.parentNode.childNodes[i].className == 'hover') {
+        t.parentNode.childNodes[i].className = '';
+        t.childNodes[0].checked="checked";
+      }
+    }
+    t.className = "hover";
+
+    var attributeName = "";
+    $("#goodsAttribute").find("a.hover").each(function(){
+      attributeName = attributeName +","+ $(this).attr("value");
+    })
+    if(attributeName.length>0){
+      attributeName = attributeName.substr(1);
+      attributeName = "?attributeName="+attributeName;
+    }
+
+    window.location.href=window.location.pathname+attributeName;
+  }
+
+  function goods_cut(){
+    var num_val=document.getElementById('buyNumber');
+    var new_num=num_val.value;
+    var Num = parseInt(new_num);
+    if(Num>1)Num=Num-1;
+    num_val.value=Num;
+  }
+  function goods_add(){
+    var num_val=document.getElementById('buyNumber');
+    var new_num=num_val.value;
+    var Num = parseInt(new_num);
+    Num=Num+1;
+    num_val.value=Num;
+  }
+
+  $(".una-editor-show").each(function (){
+    var className = $(this).attr("class");
+    var newClassName = $.trim(className.replace("una-editor-show",""));
+    $(this).after('<div class="'+newClassName+'">'+$(this).attr("value")+'</div>').remove()
+  })
+
   function selectTag(showContent,selfObj){
     // 操作标签
     var tag = document.getElementById("tags").getElementsByTagName("li");
@@ -489,25 +417,28 @@ changePrice();
   }
 
   //立即购买
-  function bugNow(goodsId){
+  function bugNow(attributeId){
       var buyNumber = $("#buyNumber").val();
       layer.msg("立即购买")
 
   }
 
   //加入购物车
-  function addCart(goodsId){
-    console.log(goodsId);
+  function addCart(attributeId){
+    console.log(attributeId);
     var buyNumber = $("#buyNumber").val();
       $.ajax({
           type: 'post',
           url: "/api/cp/cart/save",
           dataType: 'json',
-          data: {"goodsAttributeId":goodsId,"amount":buyNumber},
+          data: {"goodsAttributeId":attributeId,"amount":buyNumber},
           success: function (result) {
               layer.msg(result.message,function () {})
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if(XMLHttpRequest.responseURL.length>0){
+              window.location.href=XMLHttpRequest.responseURL;
+            }
               layer.closeAll('loading');
               console.log(XMLHttpRequest.status);
               console.log(XMLHttpRequest.readyState);

@@ -158,6 +158,8 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
 
             }
+            CpShop cpShop = cpShopService.getById(cpGoods.getShopId());
+            cpGoods.setIsOpenShop(cpShop.getIsFacade());
         }
         return list;
     }

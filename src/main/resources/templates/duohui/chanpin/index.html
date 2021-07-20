@@ -194,6 +194,14 @@ function gopage1(n)
   document.getElementById("m"+n).className="title1_cur";
   document.getElementById("c"+n).style.display='';
 }
+//打开店铺
+function openShop(id,isOpenShop){
+  if(isOpenShop==true){
+    window.location.href="/api/duohui/dianpu/index/"+id;
+  }else{
+    layer.msg("未开通店铺",function(){})
+  }
+}
 </script>
 </body>
 </html>

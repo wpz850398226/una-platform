@@ -2,14 +2,10 @@ package cn.kunli.una.controller.duohui.dianpu;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpShop;
-import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpShopService;
-import cn.kunli.una.service.system.SysConfigurationService;
-import cn.kunli.una.service.system.SysMenuService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/duohui/dianpu")
@@ -33,13 +32,19 @@ public class DpIndexController {
      * @return
      */
     @GetMapping("/index/{id}")
-    public String index(Model model,@PathVariable Integer id) {
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
+    public String index(HttpServletResponse resp, Model model, @PathVariable Integer id) throws IOException {
         CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
-        model.addAttribute("record",record);
-        model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
+        if(record.getIsFacade()){
+            Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
 
-        return "duohui/dianpu/index";
+            model.addAttribute("record",record);
+            model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
+
+            return "duohui/dianpu/index";
+        }else{
+            resp.sendRedirect("/api/duohui/chanpin/index");
+            return null;
+        }
     }
 
     /**

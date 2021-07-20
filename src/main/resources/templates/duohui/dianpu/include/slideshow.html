@@ -19,7 +19,7 @@
         });
     </script>
     <ul class="rslides callbacks callbacks1" id="slider">
-        <li class="" th:each="imageUrl : ${#strings.arraySplit(record.map.bannerFileUrl, ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
+        <li class="" th:each="imageUrl : ${#strings.arraySplit(record.map.bannerFileUrls, ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
     </ul>
 </div>
 </html>

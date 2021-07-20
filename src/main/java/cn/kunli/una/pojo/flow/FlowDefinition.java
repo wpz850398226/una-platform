@@ -27,6 +27,8 @@ public class FlowDefinition extends BasePojo implements Serializable {
     private String code;
     //版本号
     private Integer version;
+    //回调函数地址
+    private String callbackUrl;
 
 
 

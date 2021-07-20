@@ -147,5 +147,8 @@ public class CpGoods extends BasePojo implements Serializable {
     //选中的规格属性
     @TableField(exist = false)
     private CpGoodsAttribute checkedGoodsAttribute;
+    //是否开通店铺
+    @TableField(exist = false)
+    private Boolean isOpenShop;
 
 }
