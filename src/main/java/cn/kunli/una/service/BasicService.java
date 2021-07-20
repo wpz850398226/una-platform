@@ -374,7 +374,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     public Map<String,Object> format(Map<String,Object> map) {
 
-        if(MapUtils.isEmpty(map))return map;
+//        if(MapUtils.isEmpty(map))return map;
+        if(map==null)map=new HashMap<>();
         SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
 
         //如果没有指定排序条件，则启用系统设置的排序方式

@@ -7,13 +7,11 @@
   <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
   <div th:replace="../templates/duohui/chanpin/include/navbg :: navbg"></div>
 </div>
-<div class="clear clearfix mt10"></div>
-<div class="clear clearfix w1150"> <a href="#0"><img th:src="@{/duohui/chanpin/images/1_39.jpg}" width="1150"></a> </div>
 <div class="clear clearfix mt20"></div>
 <div class=" clear clearfix w1150 " style="padding:20px 0;  margin:0 auto;">
   <div class=" w210 fr ">
 
-    <div class="baibg clear clearfix newslei bor">
+    <!--<div class="baibg clear clearfix newslei bor">
         <dl>
           <dt>按分类浏览</dt>
           <dd><a class="no" href="#">公司动态</a></dd>
@@ -22,97 +20,18 @@
           <dd><a href="#">政策法规</a></dd>
         </dl>
       </div>
+       <div class="clear clearfix mt20"></div>-->
+      <div th:replace="../templates/duohui/chanpin/include/remaituijian :: remai"></div>
+        <div th:replace="../templates/duohui/chanpin/include/searchPhb :: search"></div>
        <div class="clear clearfix mt20"></div>
-  <div th:replace="../templates/duohui/chanpin/include/searchPhb :: search"></div>
-       <div class="clear clearfix mt20"></div>
-      <!--<div class=" clear clearfix  newslei">
-       <div class="tjhy-title">
-            <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">同类行业资讯</a></h2>
-          </div>
-        <div class="paixu mt20">
-          <ul>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-            <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          </ul>
-        </div>
-      </div>-->
   </div>
   <div class=" W920 fl bor">
-     <h2 style=" text-align:center; color:#000; font-size:24px; line-height:50px;"><span>标题展示位置</span><img class="ml10" th:src="@{/duohui/chanpin/images/v.gif}"></h2>
+     <h2 style=" text-align:center; color:#000; font-size:24px; line-height:50px;"><span>[[${record.name}]]</span><img class="ml10" th:src="@{/duohui/chanpin/images/v.gif}"></h2>
  <div style="text-align:center; margin:0 auto;  display:block; line-height:60px;">
-来源：作者：时间：浏览：次
+来源：[[${record.issuer}]]：时间：[[${record.startTime}]]
     </div>
-
-
     <div class="clear line-height  border-top ">
-    <div class="page">
-
-     1.只有PC版，没有电脑版
-
-      2.企业会员
-      工程类企业会员  施工类企业会员  劳务类企业会员  材料类企业会员  其它类别企业会员
-
-      3.个人会员
-      工程类个人会员  施工类个人会员  劳务类个人会员  材料类企业会员  其它类别企业会员
-
-      4.免费会员
-      可以免费发布供求信息,但是提交信息的时候需要添加
-      （会员类型   个人会员    企业会员
-      联系人    手机号码    手机验证码）
-
-      5.发布信息
-      工程类、施工类、劳务类、材料类、其他
-      （工程类――工程队伍、工程机械、工程劳务、其他
-      施工类――安装类、施工类、预算类、设计类、造价类、其他
-      劳务类――个人劳务
-      材料类――钢筋、水泥、混凝土等
-      其他）
-      工程队伍、工程机械、工程劳务、安装类、施工类、预算类、设计类、造价类、个人劳
-
-      务 钢筋、水泥、混凝土、其他
-
-      7. 精品项目代理
-      1、工程造价2、售楼代理3、金融平台4、项目合作5、项目管理
-      6、招投标代理7、材料设备供应商8、总包单项选择
-      （根据需要增加删减）
-      以上八个项目均为平台筛选出的精品项目信息。
-
-      8、 资料文件下载
-      1、设置不同资料分类：合同大全、施工方案、建筑图纸、资质文件等
-      2、不同文件有区域划分，适应当地政策法规
-      3、显示资料标题、资料图片、下载次数、更新时间
-      4、权限设置：单次购买查看，年费会员查看
-
-      9、 其他项目
-      1、广告位管理：页面布局广告栏，可收取商户广告费用
-      2、项目版块优推布局：网站有工程类、施工类等及各小类的版块规划和优推，年费会员
-
-      优先展示；
-      3、新闻发布管理系统：公司动态、行业新闻、平台信息、政策法规
-      4、网站策划页面：首页、二级页、内页、登陆页面等设计规划
-      5、网站量子统计：网站访客等统计分析查看
-      6、友情链接管理：可链接到各行业网站
-      7、在线QQ：浮动的在线QQ窗口，便于随时交流
-      8、域名注册及备案服务：赠送一年域名、空间使用并向管局提交备案信息，使网站更加
-
-      诚信合法
-
-
-      10、 后期服务
-      1、免费培训服务：网站建设完毕后，为甲方网站负责人员提供技术培训，使其能够熟练
-
-      掌握网站后台各项操作
-      2、网站后期维护：网站建设完毕，甲方付清尾款后，为甲方提供90个工作日的免费运营
-
-      期细节调整服务
-      3、源代码：网站建设完毕后，可向甲方提供网站源代码，确保甲方拥有网站所有权
-      4、免费咨询服务：网站建设完毕后，为甲方提供互联网咨询指导服务
+    <div class="page una-editor-show" th:value="${record.content}">
 
       </div>
          <div class="clear clearfix mt20"></div>
@@ -129,5 +48,6 @@
   </div>
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/script :: script"></div>
 </body>
 </html>

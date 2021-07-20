@@ -3,12 +3,12 @@
 <div th:fragment="navbg" class="navbg clear clearfix">
   <nav  id="menu" class="menu"> <em class="fl"><img th:src="@{/duohui/chanpin/images/lanmu.jpg}" class="mr10">行业分类</em>
     <ul>
-      <li><a href="index.html"> 首页 </a></li>
-      <li><a href="engineering.html"> 最新供应</a> </li>
-      <li><a href="team.html"> 最新需求</a></li>
+      <li><a href="/api/duohui/chanpin/index"> 首页 </a></li>
+      <li><a href="/api/duohui/chanpin/product?statusDcode=dh_goodsStatus_new"> 最新供应</a> </li>
+      <li><a href="/api/duohui/gongqiu/product"> 最新需求</a></li>
       <li><a href="special.html"> 最新入驻企业</a></li>
       <li><a href="service.html"> 帮助中心 </a></li>
-      <li><a href="equipment.html">联系我们</a></li>
+      <li><a href="/api/duohui/guanwang/index">联系我们</a></li>
     </ul>
   </nav>
 </div>

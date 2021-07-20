@@ -1,28 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <script th:fragment="script">
-    $(function(){
-        var myNav = document.getElementById("menu").getElementsByTagName("a");
-        for(var i=0;i<myNav.length;i++){
-            var links = myNav[i].getAttribute("href");
-            var myURL = document.location.href;
-            if(myURL.indexOf(links) != -1){
-
-                myNav[i].className="on";
-                myNav[i].parentNode.parentNode.previousElementSibling.className="on";
-
-            }
-        }
-    });
-
     $(".una-editor-show").each(function (){
         var className = $(this).attr("class");
         var newClassName = $.trim(className.replace("una-editor-show",""));
         $(this).after('<div class="'+newClassName+'">'+$(this).attr("value")+'</div>').remove()
     })
 
-    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
-        new WOW().init();
-    }
 </script>
 </html>

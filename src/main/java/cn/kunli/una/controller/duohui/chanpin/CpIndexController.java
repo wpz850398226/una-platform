@@ -16,6 +16,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -175,9 +176,11 @@ public class CpIndexController {
      * @param model
      * @return
      */
-    @RequestMapping("/newsview")
-    public String newsview(Model model,@RequestParam Map<String,Object> map) {
-
+    @RequestMapping("/newsview/{id}")
+    public String newsview(Model model,@PathVariable Integer id) {
+        getCommonItem(model);
+        SysAnnouncement announcement = sysAnnouncementService.getById(id);
+        model.addAttribute("record",announcement);
 
         return "duohui/chanpin/newsview";
     }

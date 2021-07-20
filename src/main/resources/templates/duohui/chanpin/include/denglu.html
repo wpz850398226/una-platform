@@ -8,7 +8,7 @@
                         <div class="uib-wrab"> <em class="uib-amount" id="purchaseRequire">7722</em> <span class="uib-tit">新增采购需求</span> </div>
                         <div class="uib-wrab"> <em class="uib-amount" id="supplerInfo">16035</em> <span class="uib-tit">新增供应信息</span> </div>
                     </div>
-                    <div class="user-info-hd js-login-unfinish">
+                    <div class="user-info-hd js-login-unfinish" th:if="${activeUser==null}">
                         <div class="uih-wrap">
                             <a class="uih-btn uih-log js-login" target="_blank" rel="nofollow" href="/api/duohui/login/toLogin">登录</a>
                             <a class="uih-btn uih-reg js-register" target="_blank" rel="nofollow" href="/api/duohui/login/toRegister">注册</a> </div>
@@ -66,7 +66,7 @@
             <div class="clear"></div>
             <div class="clear clearfix wzgg"> <em>[网站公告]</em>
                 <ul>
-                    <li th:each="announ:${sysAnnouncementList}"> <a href="/api/duohui/chanpin/newsview">[[${announ.name}]]</a></li>
+                    <li th:each="announ:${sysAnnouncementList}"> <a th:href="${'/api/duohui/chanpin/newsview/'+announ.id}">[[${announ.name}]]</a></li>
                 </ul>
             </div>
         </div>

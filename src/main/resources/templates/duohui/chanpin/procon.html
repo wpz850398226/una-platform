@@ -355,6 +355,7 @@
   </div>
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/script :: script"></div>
 <SCRIPT type=text/javascript>
   function changeAtt(t) {
     t.lastChild.checked='checked';
@@ -393,11 +394,11 @@
     num_val.value=Num;
   }
 
-  $(".una-editor-show").each(function (){
+  /*$(".una-editor-show").each(function (){
     var className = $(this).attr("class");
     var newClassName = $.trim(className.replace("una-editor-show",""));
     $(this).after('<div class="'+newClassName+'">'+$(this).attr("value")+'</div>').remove()
-  })
+  })*/
 
   function selectTag(showContent,selfObj){
     // 操作标签

@@ -49,8 +49,8 @@
                     <div class="fenlist clear clearfix">
                         <dl>
                             <dt> 产品状态：</dt>
-                            <dd th:class="${param['goodsStatusDcode']!=null?'':'on'}" name="goodsStatusDcode" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
-                            <dd th:class="${#strings.trim(param['goodsStatusDcode']) == #strings.trim(goodsStatus['code'])?'on':''}" class="" th:each="goodsStatus:${goodsStatusDlist}" name="goodsStatusDcode" th:value="${goodsStatus.code}">
+                            <dd th:class="${param['statusDcode']!=null?'':'on'}" name="statusDcode" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['statusDcode']) == #strings.trim(goodsStatus['code'])?'on':''}" class="" th:each="goodsStatus:${goodsStatusDlist}" name="statusDcode" th:value="${goodsStatus.code}">
                                 <a href="#" onclick="searchGoods(this)">[[${goodsStatus.name}]]</a></dd>
                         </dl>
                     </div>
