@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="selectBrand" class="nav_bom fl" id="selectBrand">
+    <div class="cat_show lanmu-list" id="seleAttr" >
+        <dl th:each="primaryIndustry:${industryDlist}">
+            <dd class="biao"><a href="/api/duohui/chanpin/product">[[${primaryIndustry.name}]]</a></dd>
+            <div class="show_more" style="display: none;">
+                <div class="show_more_l" th:each="secondryIndustry:${primaryIndustry.children}">
+                    <div class="title"> <a href="/api/duohui/chanpin/product">[[${secondryIndustry.name}]]</a></div>
+                    <div class="content">
+                        <a href="/api/duohui/chanpin/product" th:each="thirdryIndustry:${secondryIndustry.children}">[[${thirdryIndustry.name}]]</a>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </dl>
+        <style>
+            .listmore{display:block;text-align:center;height:40px;width:160px;border-top:0; margin-top:20px; font-weight:600;}
+        </style>
+        <a class="listmore" style="display:none;" href="javascript:;">查看更多 ↓</a> </div>
+</div>
+</html>

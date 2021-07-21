@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="header" class="header">
+  <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
+    <h1 class="logo fl"><a href="/api/duohui/gongqiu/index" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
+    <div class="fr fabu"><a class="" href="/api/sys/login/toLogin">发布供求信息</a></div>
+    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
+    <div class="sousuo fr mr30  ml10" >
+      <form>
+        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
+        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
+      </form>
+    </div>
+  </div>
+</div>
+</html>

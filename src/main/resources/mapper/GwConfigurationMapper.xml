@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.GwConfigurationMapper">
 
-    <resultMap type="cn.kunli.una.pojo.duohui.guanwang.GwConfiguration" id="BaseResultMap">
+    <resultMap type="cn.kunli.una.pojo.guanwang.GwConfiguration" id="BaseResultMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
     </resultMap>
 

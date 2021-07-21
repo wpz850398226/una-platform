@@ -91,8 +91,19 @@ public class CpIndexController {
 
             model.addAttribute("recommendShopList",cpShopService.parse(shopList));
 
+            //合作企业
             Page<CpShop> coopShopPage = cpShopService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
-            model.addAttribute("coopShopList",cpShopService.parse(coopShopPage.getRecords()));
+            List<CpShop> parse = cpShopService.parse(coopShopPage.getRecords());
+            List<CpShop> coopShopList = new ArrayList<>();
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            coopShopList.addAll(parse);
+            model.addAttribute("coopShopList",coopShopList);
 
         }
 
@@ -203,7 +214,7 @@ public class CpIndexController {
         model.addAttribute("hotGoodsList",cpGoodsService.parse(stickGoodsPage.getRecords()));
 
         //搜索排行
-        Page<CpGoods> searchGoodsPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
-        model.addAttribute("searchGoodsList",searchGoodsPage.getRecords());
+        Page<CpGoods> searchPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
+        model.addAttribute("searchGoodsList",searchPage.getRecords());
     }
 }

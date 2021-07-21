@@ -1,7 +1,7 @@
 package cn.kunli.una.controller.duohui.guanwang;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
+import cn.kunli.una.pojo.guanwang.GwMenu;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,7 @@
 package cn.kunli.una.service.duohui.guanwang;
 
 import cn.kunli.una.mapper.GwConfigurationMapper;
-import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
+import cn.kunli.una.pojo.guanwang.GwConfiguration;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

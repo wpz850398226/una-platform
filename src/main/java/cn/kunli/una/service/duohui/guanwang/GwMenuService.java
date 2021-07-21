@@ -1,7 +1,7 @@
 package cn.kunli.una.service.duohui.guanwang;
 
 import cn.kunli.una.mapper.GwMenuMapper;
-import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
+import cn.kunli.una.pojo.guanwang.GwMenu;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;

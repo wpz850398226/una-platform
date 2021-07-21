@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.duohui.guanwang.GwMenu;
+import cn.kunli.una.pojo.guanwang.GwMenu;
 
 /**
  * 菜单(GwMenu)表数据库访问层

@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.duohui.guanwang.GwConfiguration;
+import cn.kunli.una.pojo.guanwang.GwConfiguration;
 
 /**
  * 配置(GwConfiguration)表数据库访问层

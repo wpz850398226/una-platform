@@ -1,4 +1,4 @@
-package cn.kunli.una.pojo.duohui.guanwang;
+package cn.kunli.una.pojo.guanwang;
 
 import cn.kunli.una.pojo.BasePojo;
 import com.fasterxml.jackson.annotation.JsonInclude;
