@@ -1,11 +1,9 @@
 package cn.kunli.una.controller.system;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysRolePermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysRolePermissionService;
-import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Controller;
@@ -47,11 +45,23 @@ public class SysRolePermissionController extends BaseController<SysRolePermissio
         if(MapUtils.isNotEmpty(obj.getMap())){
             for (Map.Entry<String, Object> entry : obj.getMap().entrySet()) {
                 String id = entry.getKey();
-                Object value = entry.getValue();
-                SysDictionary sysDictionary = sysDictionaryService.selectOne(MapUtil.buildHashMap().put("remark", value).put("parentCode", "permission_scope").build());
-                if(sysDictionary!=null){
-                    service.updateRecordById((SysRolePermission) new SysRolePermission().setScopeDcode(sysDictionary.getCode()).setId(Integer.valueOf(id)));
+                String value = entry.getValue().toString();
+                String code = "";
+                switch(value){
+                    case "2":
+                        code = "permission_scope_10";
+                        break;
+                    case "3":
+                        code = "permission_scope_50";
+                        break;
+                    case "4":
+                        code = "permission_scope_100";
+                        break;
+                    default:
+                        code = "permission_scope_"+value;
+                        break;
                 }
+                service.updateRecordById((SysRolePermission) new SysRolePermission().setScopeDcode(code).setId(Integer.valueOf(id)));
             }
         }
         return SysResult.success();
