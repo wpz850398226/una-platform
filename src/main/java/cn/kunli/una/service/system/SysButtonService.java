@@ -1,9 +1,9 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysButtonMapper;
-import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysButton;
 import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -43,6 +43,27 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
             }
         }
         return SysResult.success();
+    }
+
+    /**
+     * 保存实例格式化
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public SysButton initialize(SysButton obj) {
+        super.initialize(obj);
+        if(obj.getPermissionId()!=null){
+            SysPermission sysPermission = sysPermissionService.getById(obj.getPermissionId());
+            if(sysPermission!=null&&sysPermission.getEntityId()!=null){
+                SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
+                String typeDcode = sysPermission.getTypeDcode();
+                obj.setPermissionCode(sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1));
+            }
+        }
+
+        return obj;
     }
 
     @Override

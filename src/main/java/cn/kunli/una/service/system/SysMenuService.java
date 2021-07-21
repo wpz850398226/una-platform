@@ -27,22 +27,6 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         return thisProxy;
     }
 
-    @Override
-    public List<SysMenu> parse(List<SysMenu> list) {
-        if(CollectionUtils.isEmpty(list))return list;
-        list = super.parse(list);
-        for (SysMenu record : list) {
-            if(record.getLevel()<2){
-                List<SysMenu> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
-                if(CollectionUtils.isNotEmpty(subList)){
-                    this.parse(subList);
-                }
-                record.setChildren(subList);
-            }
-        }
-        return list;
-    }
-
     //通过用户id查询所有菜单，并按层级排序
     public List<SysMenu> selectTreeBySelective(SysMenu obj) {
         List<SysMenu> menuList = new ArrayList<>();
@@ -100,7 +84,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
      */
     @Override
     public SysMenu initialize(SysMenu obj) {
-
+        super.initialize(obj);
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
@@ -116,12 +100,26 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             if(sysPermission!=null&&sysPermission.getEntityId()!=null){
                 SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
                 String typeDcode = sysPermission.getTypeDcode();
-                obj.setPermissionCode(sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1));
+                obj.setCode(sysEntity.getCode()).setPermissionCode(sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1));
             }
         }
 
-        super.initialize(obj);
-
         return obj;
+    }
+
+    @Override
+    public List<SysMenu> parse(List<SysMenu> list) {
+        if(CollectionUtils.isEmpty(list))return list;
+        list = super.parse(list);
+        for (SysMenu record : list) {
+            if(record.getLevel()<2){
+                List<SysMenu> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
+                if(CollectionUtils.isNotEmpty(subList)){
+                    this.parse(subList);
+                }
+                record.setChildren(subList);
+            }
+        }
+        return list;
     }
 }

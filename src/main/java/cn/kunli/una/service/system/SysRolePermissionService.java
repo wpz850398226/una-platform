@@ -1,5 +1,6 @@
 package cn.kunli.una.service.system;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysRolePermissionMapper;
 import cn.kunli.una.pojo.system.SysRolePermission;
 import cn.kunli.una.service.BasicService;
@@ -23,11 +24,11 @@ public class SysRolePermissionService extends BasicService<SysRolePermissionMapp
         return thisProxy;
     }
 
+    @MyCacheEvict(value = "list")
     public Integer insertByPermissionId(Integer permissionId) {
         return mapper.insertByPermissionId(permissionId);
     }
 
-    public Integer insertByRoleId(Integer roleId) {
-        return mapper.insertByRoleId(roleId);
-    }
+    @MyCacheEvict(value = "list")
+    public Integer insertByRoleId(Integer roleId) { return mapper.insertByRoleId(roleId); }
 }

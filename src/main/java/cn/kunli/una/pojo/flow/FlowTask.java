@@ -41,7 +41,7 @@ public class FlowTask extends BasePojo implements Serializable {
     private Integer nodeId;
     //候选人id
     private String candidateAccountId;
-    //候选人id
+    //节点类型编码
     private String nodeTypeDcode;
     //节点关联的实体id
     private Integer nodeEntityId;

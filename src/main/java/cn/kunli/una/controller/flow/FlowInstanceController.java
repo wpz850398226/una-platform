@@ -10,7 +10,6 @@ import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 流程实例(FlowInstance)表控制层
@@ -68,41 +65,6 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                     for (FlowNode flowNode : subsequentNodeList) {
                         SysResult activateResult = flowTaskService.activate(flowNode.getId(), entity.getId());
                         if(!activateResult.getIsSuccess())return activateResult;
-                        /*if(activateResult.getIsSuccess()){
-                            FlowTask flowTask = flowTaskService.getById(String.valueOf(activateResult.getData()));
-                            //判断，如果激活的任务候选人包含当前办理人，则立即办理
-                            if(StringUtil.containSubString(flowTask.getCandidateAccountId(),String.valueOf(entity.getCreatorId()),null)){
-                                Map<String, Object> dataMap = MapUtil.getMap("instanceId", entity.getId());
-                                FlowNode taskNode = flowNodeService.getById(flowTask.getNodeId());
-                                switch(taskNode.getTypeDcode()){
-                                    case "flow_nudeType_audit": //审批类型
-                                        dataMap.put("isImmediate", 1);
-                                        dataMap.put("nodeTypeDcode", "flow_nudeType_audit");
-                                        List<FlowTask> flowTaskList = flowTaskService.selectList(MapUtil.buildHashMap().put("instanceId", entity.getId())
-                                                .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build());
-                                        if(CollectionUtils.isNotEmpty(flowTaskList)){
-                                            List<Map> mapList = new ArrayList<>();
-                                            for (FlowTask task : flowTaskList) {
-                                                FlowNode finishedTaskNode = flowNodeService.getById(task.getNodeId());
-                                                Map<String, Object> finishedMap = MapUtil.buildHashMap().put("entityId", finishedTaskNode.getEntityId()).put("recordId", task.getRecordId()).build();
-                                                mapList.add(finishedMap);
-                                            }
-                                            dataMap.put("finishedTaskList",mapList);
-                                        }
-                                        break;
-                                    case "flow_nudeType_submit":    //提交类型
-                                        dataMap.put("isImmediate", 1);
-                                        dataMap.put("entityId", taskNode.getEntityId());
-                                        dataMap.put("nodeTypeDcode", "flow_nudeType_submit");
-                                        break;
-                                    default:
-                                        dataMap.put("isImmediate", 0);
-                                        break;
-                                }
-
-                                saveResult.setData(dataMap);
-                            }
-                        }*/
                     }
                 }
             }
