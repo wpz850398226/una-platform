@@ -72,6 +72,10 @@ public class GqIndexController {
         }
         model.addAttribute("gqInformationListMap",gqInformationListMap);
 
+        //精品推荐
+        Page<GqInformation> jingpinPage = gqInformationService.page(1L, 8L, MapUtil.getMap("originTypeDcode", "dh_originType_platform"));
+        model.addAttribute("jingpinList",gqInformationService.parse(jingpinPage.getRecords()));
+
 
         //合作企业
         Page<CpShop> coopShopPage = cpShopService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());

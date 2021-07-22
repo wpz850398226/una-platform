@@ -39,8 +39,6 @@ public class SysMenu extends BasePojo implements Serializable {
     private String code;
     //所属权限id
     private Integer permissionId;
-    //所属权限编码
-    private String permissionCode;
     //图标字典id
     private String iconDcode;
     //图标图片id

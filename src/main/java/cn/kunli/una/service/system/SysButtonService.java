@@ -45,27 +45,6 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
         return SysResult.success();
     }
 
-    /**
-     * 保存实例格式化
-     *
-     * @param obj
-     * @return
-     */
-    @Override
-    public SysButton initialize(SysButton obj) {
-        super.initialize(obj);
-        if(obj.getPermissionId()!=null){
-            SysPermission sysPermission = sysPermissionService.getById(obj.getPermissionId());
-            if(sysPermission!=null&&sysPermission.getEntityId()!=null){
-                SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
-                String typeDcode = sysPermission.getTypeDcode();
-                obj.setPermissionCode(sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1));
-            }
-        }
-
-        return obj;
-    }
-
     @Override
     public List<SysButton> parse(List<SysButton> list) {
         list = super.parse(list);

@@ -26,8 +26,6 @@ public class SysButton extends BasePojo implements Serializable {
     private Integer entityId;
     //所属权限id
     private Integer permissionId;
-    //所属权限编码
-    private String permissionCode;
     //位置（table,form
     private String positionDcode;
     //事件名称

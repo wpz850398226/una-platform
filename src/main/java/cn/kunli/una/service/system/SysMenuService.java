@@ -95,15 +95,6 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");
         }
 
-        if(obj.getPermissionId()!=null){
-            SysPermission sysPermission = sysPermissionService.getById(obj.getPermissionId());
-            if(sysPermission!=null&&sysPermission.getEntityId()!=null){
-                SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
-                String typeDcode = sysPermission.getTypeDcode();
-                obj.setCode(sysEntity.getCode()).setPermissionCode(sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1));
-            }
-        }
-
         return obj;
     }
 
