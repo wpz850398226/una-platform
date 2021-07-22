@@ -16,7 +16,7 @@ public class TokenUtil {
 	 * @return
 	 */
 	public static boolean verify(String token,String url){
-		String text = url + TimeUtil.getDayBegin();
+		String text = url + DateUtil.getDayBegin();
 		if(DigestUtils.md5Hex(text).equals(token)){
 			return true;
 		}

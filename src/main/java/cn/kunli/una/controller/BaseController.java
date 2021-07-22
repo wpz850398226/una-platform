@@ -12,6 +12,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.BaseUtil;
 import cn.kunli.una.utils.common.*;
+import cn.kunli.una.utils.common.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -435,11 +436,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	}
 
-
-	@GetMapping("/export")
+	@SneakyThrows
+	@RequestMapping("/export")
 	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> map) {
 		//获取数据
-		List<T> objList = service.selectList(map);
+		List<T> objList = service.parse(service.selectList(map));
 		//查询对应实体类
 		SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
 		//查询可以导出的实体字段
@@ -451,7 +452,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			title[j+1]=fieldList.get(j).getName();
 		}
 		//excel文件名
-		String fileName = sysEntity.getName()+"信息表"+ TimeUtil.getStrOfTime(new Date()) +".xls";
+		String fileName = sysEntity.getName()+"信息表"+ DateUtil.getStrOfTime(new Date()) +".xls";
 		//sheet名
 		String sheetName = sysEntity.getName()+"信息表";
 
@@ -459,33 +460,41 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		for (int i = 0; i < objList.size(); i++) {
 			T theData = objList.get(i);
 			content[i][0] = i+1+"";
+			//遍历需要导出的字段
 			for(int j = 0; j < fieldList.size(); j++) {
-				char[] chars=fieldList.get(j).getDisplayCode().toCharArray();
-				chars[0]-=32;
-				String methodName = "get"+String.valueOf(chars);
-				try {
-					Method m = entityClass.getMethod(methodName);
-					Object o = m.invoke(theData);
-					if(o!=null) {//如果数据不为空
+				SysField sysField = fieldList.get(j);
+				String displayModeDcode = sysField.getDisplayModeDcode();
+				Object value;
+				if(sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
+					//赋值编码与取值编码相同
+					value = EntityUtil.getFieldValue(theData.getClass(), theData, sysField.getAssignmentCode());
 
-						if(fieldList.get(j).getDisplayModeDcode()!=null&&fieldList.get(j).getDisplayModeDcode().equals("cd7f6c3db0864b9788e7b063ef68df98")) {
-							//展示类型为时间类型
-							String oStr = o.toString();
+				}else{
+					//赋值编码与取值编码不同，从map中取值
+					value = theData.getMap().get(sysField.getDisplayCode());
+				}
+
+				if(value!=null){
+					//如果取值不为空，判断展示方式
+					switch(displayModeDcode){
+						case "field_display_whether":	//判断 类型
+							if(value.equals(true)){
+								value = "是";
+							}else{
+								value = "否";
+							}
+							break;
+						case "field_display_time":	//判断 类型
 							SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-							Date date = sdf.parse(oStr);
-							//Date date = new Date(oStr);
-							String formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-							content[i][j+1] = formatDate;
-						}else {
-							content[i][j+1] = o.toString();
-						}
-					}else {
-						content[i][j+1] = "";
+							Date date = sdf.parse(String.valueOf(value));
+							value = DateUtil.getStrOfDate(date);
+							break;
+						default:
+							break;
 					}
-
-				} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				} catch (ParseException e) {
-					e.printStackTrace();
+					content[i][j+1] = String.valueOf(value);
+				}else {
+					content[i][j+1] = "/";
 				}
 
 			}

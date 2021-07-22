@@ -87,10 +87,10 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">功能</label>
                     <div class="layui-input-block">
-                        <input type="checkbox" th:checked="${record['isEffect'] eq 0?'false':'true'}" name="isEffect" value="1" title="展示">
-                        <input type="checkbox" th:checked="${record['isSort'] eq 1?'true':'false'}" name="isSort" value="1" title="排序">
-                        <input type="checkbox" th:checked="${record['isImport'] eq 1?'true':'false'}" name="isImport" value="1" title="导入">
-                        <input type="checkbox" th:checked="${record['isExport'] eq 1?'true':'false'}" name="isExport" value="1" title="导出">
+                        <input type="checkbox" th:checked="${record['isEffect']==null?'true':record['isEffect']}" name="isEffect" value="1" title="展示">
+                        <input type="checkbox" th:checked="${record['isSort']}" name="isSort" value="1" title="排序">
+                        <input type="checkbox" th:checked="${record['isImport']}" name="isImport" value="1" title="导入">
+                        <input type="checkbox" th:checked="${record['isExport']}" name="isExport" value="1" title="导出">
                     </div>
                 </div>
 
@@ -138,7 +138,7 @@
                     <label class="layui-form-label">是否必填</label>
                     <div class="layui-input-inline">
                         <input type="checkbox"
-                               th:checked="${record['isRequired'] eq 1?'true':'false'}"
+                               th:checked="${record['isRequired']}"
                                name="isRequired"
                                value="1"
                                title="是">
@@ -149,7 +149,7 @@
                     <label class="layui-form-label">表单是否加载</label>
                     <div class="layui-input-inline">
                         <input type="checkbox"
-                               th:checked="${record['isUpdate'] eq 0?'false':'true'}"
+                               th:checked="${record['isUpdate']==null?'true':record['isUpdate']}"
                                name="isUpdate"
                                value="1"
                                title="是">
@@ -160,7 +160,7 @@
                     <label class="layui-form-label">批量修改</label>
                     <div class="layui-input-inline">
                         <input type="checkbox"
-                               th:checked="${record['isBatchUpdate'] eq 1?'true':'false'}"
+                               th:checked="${record['isBatchUpdate']}"
                                name="isBatchUpdate"
                                value="1"
                                title="是">

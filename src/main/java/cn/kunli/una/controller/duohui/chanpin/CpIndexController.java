@@ -9,7 +9,7 @@ import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
@@ -112,7 +112,7 @@ public class CpIndexController {
         }
 
         //查询公告
-        String strOfDate = TimeUtil.getStrOfDate(new Date(), "yyyy-MM-dd");
+        String strOfDate = DateUtil.getStrOfDate(new Date(), "yyyy-MM-dd");
         Page<SysAnnouncement> sysAnnouncementPage = sysAnnouncementService.page(1L, 4L, MapUtil.buildHashMap()
                 .put(":platformDcode", "platform_type_chanpin").put("le:startTime",strOfDate)
                 .put("ge:endTime",strOfDate).build());

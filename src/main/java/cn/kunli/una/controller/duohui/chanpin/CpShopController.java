@@ -1,23 +1,17 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpShop;
-import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpShopService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.TimeUtil;
-import cn.kunli.una.utils.common.UserUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.kunli.una.utils.common.DateUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 商城-店铺类(CpShop)表控制层
@@ -42,10 +36,10 @@ public class CpShopController extends BaseController<CpShopService, CpShop> {
     public SysResult stick(@PathVariable Integer id) {
         CpShop cpShop = service.getById(id);
         Date stickDeadline;
-        if(cpShop.getStickDeadline()==null||TimeUtil.compareDate(new Date(),cpShop.getStickDeadline())){
-            stickDeadline = TimeUtil.getNextDay(new Date(),1);
+        if(cpShop.getStickDeadline()==null||DateUtil.compareDate(new Date(),cpShop.getStickDeadline())){
+            stickDeadline = DateUtil.getNextDay(new Date(),1);
         }else{
-            stickDeadline = TimeUtil.getNextDay(cpShop.getStickDeadline(),1);
+            stickDeadline = DateUtil.getNextDay(cpShop.getStickDeadline(),1);
         }
         return service.updateRecordById((CpShop) new CpShop().setStickDeadline(stickDeadline).setId(id));
     }

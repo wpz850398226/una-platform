@@ -5,7 +5,7 @@ import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.utils.common.HttpUtil;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.service.SpringContextUtil;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +101,7 @@ public class WechatUtil {
 		//用户名
 		String MsgPerson=name;
 		//时间
-		String MsgTime= TimeUtil.getStrOfTime(new Date());
+		String MsgTime= DateUtil.getStrOfTime(new Date());
 
 		if(status){
 			//审核通过
@@ -173,7 +173,7 @@ public class WechatUtil {
 		//openid
 		String OpenID=openid;
 		//信息title
-		String MsgTitle="注册时间："+TimeUtil.getStrOfTime(new Date());
+		String MsgTitle="注册时间："+DateUtil.getStrOfTime(new Date());
 		//信息审核人
 		String MsgPerson="系统管理员";
 		//信息审核进度

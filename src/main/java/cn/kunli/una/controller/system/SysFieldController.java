@@ -54,25 +54,4 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
         return "system/field/form";
     }
 
-    /*获取展示值*/
-	/*@RequestMapping("/getDisplayValue")
-	@ResponseBody
-	public SysResult getDisplayValue(@RequestParam Map<String,String> map) {
-
-		Map<String,Map<String,Object>> resultMap = new HashMap();
-		for (Map.Entry<String, String> integerMapEntry : map.entrySet()) {
-			String value = integerMapEntry.getValue();
-			Map<String,String> codeValueMap = JSONUtil.stringToBean(value, Map.class);
-			Map<String, Object> codeValueResult = new HashMap<>();
-			for (Map.Entry<String, String> entry : codeValueMap.entrySet()) {
-				SysResult displayValue = service.getDisplayValue(entry.getKey(), String.valueOf(entry.getValue()),null);
-				if(displayValue.getCode()==200){
-					codeValueResult.put(entry.getKey(),displayValue.getData());
-					resultMap.put(integerMapEntry.getKey(),codeValueResult);
-				}
-			}
-		}
-		return new SysResult().success(resultMap);
-	}*/
-
 }

@@ -1,6 +1,6 @@
 package cn.kunli.una.redis;
 
-import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.common.DateUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -19,7 +19,7 @@ public class TestJedis {
         jedis.set("test","test");
         jedis.expire("test", 20);*/
 
-        long time = TimeUtil.getNextSecond(new Date(), 1800).getTime();
+        long time = DateUtil.getNextSecond(new Date(), 1800).getTime();
         System.out.println(time);
     }
 }

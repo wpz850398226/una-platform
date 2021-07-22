@@ -9,7 +9,7 @@ import cn.kunli.una.pojo.system.SysRolePermission;
 import cn.kunli.una.service.oa.OaAttendanceService;
 import cn.kunli.una.service.system.SysPermissionService;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.common.DateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -57,7 +57,7 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                     //查询拥有这些角色的所有账号
                     List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+roleIds+"',',',',|'),',') =1"));
                     //生成考勤记录
-                    OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(TimeUtil.getDayBegin()).setCreatorId(100000);
+                    OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(DateUtil.getDayBegin()).setCreatorId(100000);
                     for (SysAccount sysAccount : accountList) {
                         service.saveRecord((OaAttendance) oaAttendance.setAccountId(sysAccount.getId()).setId(null).setCompanyId(sysAccount.getCompanyId()).setDepartmentId(sysAccount.getDepartmentId()));
                     }

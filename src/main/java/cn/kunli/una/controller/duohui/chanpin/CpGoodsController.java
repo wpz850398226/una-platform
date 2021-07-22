@@ -9,7 +9,7 @@ import cn.kunli.una.service.duohui.chanpin.CpGoodsAttributeService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.TimeUtil;
+import cn.kunli.una.utils.common.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -97,10 +97,10 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
     public SysResult stick(@PathVariable Integer id) {
         CpGoods cpGoods = service.getById(id);
         Date stickDeadline;
-        if(cpGoods.getStickDeadline()==null||TimeUtil.compareDate(new Date(),cpGoods.getStickDeadline())){
-            stickDeadline = TimeUtil.getNextDay(new Date(),1);
+        if(cpGoods.getStickDeadline()==null||DateUtil.compareDate(new Date(),cpGoods.getStickDeadline())){
+            stickDeadline = DateUtil.getNextDay(new Date(),1);
         }else{
-            stickDeadline = TimeUtil.getNextDay(cpGoods.getStickDeadline(),1);
+            stickDeadline = DateUtil.getNextDay(cpGoods.getStickDeadline(),1);
         }
         return service.updateRecordById((CpGoods) new CpGoods().setStickDeadline(stickDeadline).setId(id));
     }
