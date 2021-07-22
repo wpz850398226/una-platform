@@ -20,8 +20,8 @@
 
 <!--盖楼-->
 <div class="clear">
-  <div class="clear w1200 product mt20">
-    <h2><em class="mr10">2F</em><a href="#">设备业</a></h2>
+  <div class="clear w1200 product mt20" th:each="primaryIndustry,status:${industryDlist}">
+    <h2><em class="mr10">[[${status.index+1}]]F</em><a href="#">[[${primaryIndustry.name}]]</a></h2>
     <div class="clear product-nr clearfix">
       <div class="fl  w340 ">
         <div class=" product-l"> <a href="#">
@@ -31,52 +31,12 @@
         </div>
       </div>
       <div class="fr w840 product-r">
-        <div class=" huibgg clear clearfix ">
+        <div class=" huibgg clear clearfix " th:each="secondryIndustry,status:${primaryIndustry.children}" th:if="${status.index<4}">
           <div class="tjhy-title1 clear clearfix">
-            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
+            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">[[${secondryIndustry.name}]]</a></h3>
           </div>
           <dl>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-          </dl>
-        </div>
-         <div class=" huibgg clear clearfix ">
-          <div class="tjhy-title1 clear clearfix">
-            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
-          </div>
-          <dl>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-          </dl>
-        </div>
-         <div class=" huibgg clear clearfix ">
-          <div class="tjhy-title1 clear clearfix">
-            <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
-          </div>
-          <dl>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-          </dl>
-        </div>
-        <div class=" huibgg clear clearfix ">
-          <div class="tjhy-title1 clear clearfix">
-             <h3 ><span class="fr mr10"><a class="more" href="">更多</a></span><a class="mr30 title"  href="#">分类</a></h3>
-          </div>
-          <dl>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
-            <dd><span class="fr mr10">2019-9-9</span><em class="fr"> [急]</em><a href="#">滚动式真空包装机</a></dd>
+            <dd th:each="information:${gqInformationListMap[secondryIndustry.code]}"><span class="fr mr10">[[${#dates.format(information.createTime, 'yyyy-MM-dd')}]]</span><em class="fr"> [急]</em><a th:href="${'/api/gq/information/fDetail/'+information.id}">[[${information.name}]]</a></dd>
           </dl>
         </div>
       </div>

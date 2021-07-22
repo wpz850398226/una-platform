@@ -1,7 +1,7 @@
 package cn.kunli.una.service.duohui.chanpin;
 
-import cn.kunli.una.pojo.chanpin.CpOrderDetail;
-import cn.kunli.una.mapper.CpOrderDetailMapper;
+import cn.kunli.una.pojo.chanpin.CpOrderItem;
+import cn.kunli.una.mapper.CpOrderItemMapper;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
  * @since 2021-06-23 23:40:03
  */
 @Service
-public class CpOrderDetailService extends BasicService<CpOrderDetailMapper, CpOrderDetail> {
+public class CpOrderItemService extends BasicService<CpOrderItemMapper, CpOrderItem> {
     @Autowired
-    private CpOrderDetailService thisProxy;
+    private CpOrderItemService thisProxy;
 
     @Override
     public BasicService getThisProxy() {

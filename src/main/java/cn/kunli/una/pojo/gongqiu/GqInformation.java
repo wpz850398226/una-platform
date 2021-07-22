@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.gongqiu;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 供求信息(GqInformation)实体类
@@ -40,8 +39,8 @@ public class GqInformation extends BasePojo implements Serializable {
     private String thirdryIndustryDcode;
     //类型编码
     private String typeDcode;
-    //状态编码
-    private String statusDcode;
+    //来源类型编码
+    private String originTypeDcode;
     //认证类型编码
     private String certifyDcode;
     //关键字

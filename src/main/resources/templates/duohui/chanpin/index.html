@@ -24,7 +24,7 @@
   <div class="clear w1200 product mt20" th:each="goodsStatusDic,status : ${goodsStatusDlist}">
     <h2>
       <span class="fr">
-        <a href="/api/duohui/chanpin/product" th:if="${status.index<8}" th:each="industry,status:${industryDlist}">[[${industry.name}]]  &nbsp;&nbsp;|</a>
+        <a href="/api/duohui/chanpin/list" th:if="${status.index<8}" th:each="industry,status:${industryDlist}">[[${industry.name}]]  &nbsp;&nbsp;|</a>
       </span>
       <em class="mr10">[[${status.index+1}]]F</em>
       <a href="#">[[${goodsStatusDic.name}]]</a>

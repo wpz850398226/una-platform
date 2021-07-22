@@ -3,12 +3,12 @@
 <div th:fragment="selectBrand" class="nav_bom fl" id="selectBrand">
     <div class="cat_show lanmu-list" id="seleAttr" >
         <dl th:each="primaryIndustry:${industryDlist}">
-            <dd class="biao"><a href="/api/duohui/chanpin/product">[[${primaryIndustry.name}]]</a></dd>
+            <dd class="biao"><a href="/api/duohui/gongqiu/list">[[${primaryIndustry.name}]]</a></dd>
             <div class="show_more" style="display: none;">
                 <div class="show_more_l" th:each="secondryIndustry:${primaryIndustry.children}">
-                    <div class="title"> <a href="/api/duohui/chanpin/product">[[${secondryIndustry.name}]]</a></div>
+                    <div class="title"> <a href="/api/duohui/gongqiu/list">[[${secondryIndustry.name}]]</a></div>
                     <div class="content">
-                        <a href="/api/duohui/chanpin/product" th:each="thirdryIndustry:${secondryIndustry.children}">[[${thirdryIndustry.name}]]</a>
+                        <a href="/api/duohui/gongqiu/list" th:each="thirdryIndustry:${secondryIndustry.children}">[[${thirdryIndustry.name}]]</a>
                     </div>
                 </div>
             </div>

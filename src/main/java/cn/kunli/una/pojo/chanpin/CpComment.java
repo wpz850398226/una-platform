@@ -1,17 +1,13 @@
 package cn.kunli.una.pojo.chanpin;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
-import javax.persistence.Transient;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * 商城-评论(CpComment)实体类
@@ -28,10 +24,10 @@ public class CpComment extends BasePojo implements Serializable {
     private static final long serialVersionUID = 389744770616016716L;
     //内容
     private String content;
-    //所属商品
-    private Integer goodsId;
+    //所属订单项
+    private Integer orderItemId;
     //banner图片
     private String fileIds;
     //评分
-    private Integer score;
+    private String score;
 }

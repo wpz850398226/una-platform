@@ -1,9 +1,14 @@
 package cn.kunli.una.controller.duohui.gongqiu;
 
+import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.gongqiu.GqInformation;
 import cn.kunli.una.service.system.GqInformationService;
-import cn.kunli.una.controller.BaseController;
+import cn.kunli.una.utils.common.ListUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -15,4 +20,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/gq/information")
 public class GqInformationController extends BaseController<GqInformationService, GqInformation> {
+
+    @Autowired
+    private GqIndexController gqIndexController;
+
+    /**
+     * 打开前端 商品详情
+     * @param model
+     * @return
+     */
+    @RequestMapping("/fDetail/{id}")
+    public String fDetail(Model model, @PathVariable Integer id, String attributeName) {
+        //增加点击量
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.setEntity(new GqInformation().setId(id));
+        updateWrapper.setSql("view_amount = view_amount + 1");
+        service.update(updateWrapper);
+
+        //查询商品
+        GqInformation record = service.parse(ListUtil.getList(service.getById(id))).get(0);
+
+        model.addAttribute("record",record);
+        gqIndexController.getCommonItem(model);
+
+        return "duohui/gongqiu/gongqiucon";
+    }
+
 }

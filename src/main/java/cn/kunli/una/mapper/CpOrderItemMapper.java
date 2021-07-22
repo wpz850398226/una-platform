@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 
-import cn.kunli.una.pojo.chanpin.CpOrderDetail;
+import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.handler.BasicMapper;
 
 /**
@@ -9,5 +9,5 @@ import cn.kunli.una.handler.BasicMapper;
  * @author Ponzio
  * @since 2021-06-23 23:40:03
  */
-public interface CpOrderDetailMapper extends BasicMapper<CpOrderDetail> {
+public interface CpOrderItemMapper extends BasicMapper<CpOrderItem> {
 }

@@ -50,6 +50,10 @@ public class CpIndexController {
     @RequestMapping("/index")
     public String index(Model model) {
         getCommonItem(model);
+        //行业字典
+        List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
+        model.addAttribute("industryDlist",industryDlist);
+        //首页信息
         SysData record = sysDataService.getById(100017);
         record = sysDataService.parse(ListUtil.getList(record)).get(0);
         //热门商铺
@@ -122,13 +126,10 @@ public class CpIndexController {
      * @param model
      * @return
      */
-    @RequestMapping("/product")
-    public String product(Model model,@RequestParam Map<String,Object> map) {
+    @RequestMapping("/list")
+    public String list(Model model,@RequestParam Map<String,Object> map) {
         model.addAttribute("param", map);
-        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
-        model.addAttribute("systemName", systemTitle);
-        model.addAttribute("activeUser", loginUser);
+        getCommonItem(model);
 
         //行业字典
         List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry"));
@@ -143,14 +144,6 @@ public class CpIndexController {
             List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
             model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
         }
-
-        //热卖推荐
-        Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, MapUtil.getMap("orderByDesc", "stickDeadline"));
-        model.addAttribute("hotGoodsList",cpGoodsService.parse(stickGoodsPage.getRecords()));
-
-        //搜索排行
-        Page<CpGoods> searchGoodsPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
-        model.addAttribute("searchGoodsList",searchGoodsPage.getRecords());
 
         //搜索结果
         Long pageNum = 1L;
@@ -201,13 +194,6 @@ public class CpIndexController {
         SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
-
-        //行业字典
-        SysDictionary industryDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code", "industry"));
-        if(industryDictionary!=null){
-            List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentId", industryDictionary.getId())));
-            model.addAttribute("industryDlist",industryDlist);
-        }
 
         //热卖推荐
         Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, MapUtil.getMap("orderByDesc", "stickDeadline"));
