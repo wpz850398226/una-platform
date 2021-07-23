@@ -66,17 +66,27 @@
                     </div>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">所属权限</label>
+                    <div class="layui-input-inline">
+                        <select class="una-select una-switch-hide" name="permissionId" lay-search=""
+                                data-param_name="entityId"
+                                th:data-param_value="${record['entityId']}"
+                                th:data-selected="${record['permissionId']}"
+                                data-url="/api/sys/permission"></select>
+                    </div>
+                </div>
+                <!--<div class="layui-inline">
                     <label class="layui-form-label">sql代码</label>
                     <div class="layui-input-inline">
                         <input type="text" name="dqlName" autocomplete="off" placeholder="请输入sql代码" class="layui-input" th:value="${record['dqlName']}">
                     </div>
-                </div>
-                <div class="layui-inline">
+                </div>-->
+                <!--<div class="layui-inline">
                     <label class="layui-form-label">顺序</label>
                     <div class="layui-input-inline">
                         <input type="text" name="sortOrder" autocomplete="off" placeholder="请输入顺序" class="layui-input" th:value="${record['sortOrder']}">
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
@@ -88,7 +98,7 @@
                     <label class="layui-form-label">功能</label>
                     <div class="layui-input-block">
                         <input type="checkbox" th:checked="${record['isEffect']==null?'true':record['isEffect']}" name="isEffect" value="1" title="展示">
-                        <input type="checkbox" th:checked="${record['isSort']}" name="isSort" value="1" title="排序">
+                        <!--<input type="checkbox" th:checked="${record['isSort']}" name="isSort" value="1" title="排序">-->
                         <input type="checkbox" th:checked="${record['isImport']}" name="isImport" value="1" title="导入">
                         <input type="checkbox" th:checked="${record['isExport']}" name="isExport" value="1" title="导出">
                     </div>
@@ -146,7 +156,7 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">表单是否加载</label>
+                    <label class="layui-form-label">是否加载</label>
                     <div class="layui-input-inline">
                         <input type="checkbox"
                                th:checked="${record['isUpdate']==null?'true':record['isUpdate']}"

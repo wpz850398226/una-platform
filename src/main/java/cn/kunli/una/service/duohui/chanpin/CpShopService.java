@@ -32,6 +32,8 @@ public class CpShopService extends BasicService<CpShopMapper, CpShop> {
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
             obj.setRefreshTime(new Date());
             obj.setStickDeadline(new Date());
+        }else{
+            if(obj.getIsAudit()==null)obj.setIsAudit(false);    //如果修改，默认改为未审核
         }
         return obj;
     }

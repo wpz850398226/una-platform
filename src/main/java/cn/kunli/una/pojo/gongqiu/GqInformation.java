@@ -58,13 +58,13 @@ public class GqInformation extends BasePojo implements Serializable {
     //所属区域id
     private Integer areaRegionId;
     //是否置顶
-    private Integer isStick;
+    private Boolean isStick;
     //是否热门
-    private Integer isHot;
+    private Boolean isHot;
     //是否上架
-    private Integer isAdded;
+    private Boolean isAdded;
     //是否已审核
-    private Integer isAudit;
+    private Boolean isAudit;
     //浏览次数
     private Integer viewAmount;
     //收藏数量
@@ -74,12 +74,14 @@ public class GqInformation extends BasePojo implements Serializable {
     //上架时间
     private Date addedTime;
     //是否可开发票
-    private Integer isInvoice;
+    private Boolean isInvoice;
     //销售价，标价
     private Double sellingPrice;
     //刷新时间
     private Date refreshTime;
     //置顶截止时间
     private Date stickDeadline;
+    //联系方式
+    private String mobile;
 
 }

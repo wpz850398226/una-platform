@@ -70,7 +70,8 @@ public class CpIndexController {
             //按商品状态查询商品列表
             Map<String,Object> goodsListMap = new HashMap<>();
             for (SysDictionary sysDictionary : goodsStatusDlist) {
-                Page<CpGoods> goodsPage = cpGoodsService.page(1L,4L, MapUtil.getMap("statusDcode", sysDictionary.getCode()));
+                Page<CpGoods> goodsPage = cpGoodsService.page(1L,4L, MapUtil.buildHashMap()
+                        .put("statusDcode", sysDictionary.getCode()).put("isAdded",true).put("isAudit",true).build());
                 goodsListMap.put(sysDictionary.getCode(),cpGoodsService.parse(goodsPage.getRecords()));
             }
             //商品状态字典

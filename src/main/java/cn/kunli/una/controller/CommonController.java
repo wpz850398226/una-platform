@@ -53,6 +53,8 @@ public class CommonController {
     private SysQueryService sysQueryService;
     @Autowired
     private SysFilterService sysFilterService;
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     /**
      * 跳转通用管理页
@@ -128,9 +130,10 @@ public class CommonController {
      */
     @RequestMapping("/form/{className}")
     public String form(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> obj) {
+        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+        List<String> permissionCodeList = loginUser.getPermissionCodeList();
 
         if(MapUtils.isNotEmpty(obj)){
-            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
             for (Map.Entry<String, Object> entry : obj.entrySet()) {
                 Object value = entry.getValue();
                 if(value!=null&&String.valueOf(value).indexOf("$u.")!=-1){
@@ -152,10 +155,20 @@ public class CommonController {
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
         List<SysField> sysFieldList = sysFieldService.parse(sysFieldService.selectList(map));
+        //分组后的字段返回值
         List<List<SysField>> sysFieldListList = new ArrayList<>();
 
-
+        //字段分组
         for (SysField sysField : sysFieldList) {
+            //判断字段权限
+            if(sysField.getPermissionId()!=null){
+                SysPermission sysPermission = sysPermissionService.getById(sysField.getPermissionId());
+                if(sysPermission!=null&&sysPermission.getEntityId()!=null){
+                    String typeDcode = sysPermission.getTypeDcode();
+                    String permissionCode = className+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1);
+                    if(!permissionCodeList.contains(permissionCode))continue;
+                }
+            }
             if(StringUtils.isNotBlank(sysField.getGroupName())){
                 List<SysField> subFieldList  = new ArrayList<>();
                 subFieldList.add(sysField);
@@ -168,6 +181,7 @@ public class CommonController {
             }
         }
 
+        //特殊初值
         switch (className) {
             case "SysDictionary":
                 if (obj.get("parentId") != null) {
@@ -196,7 +210,6 @@ public class CommonController {
         }
 
         model.addAttribute("sample", obj);
-//        model.addAttribute("sysFieldList", sysFieldList);
         model.addAttribute("sysFieldListList", sysFieldListList);
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("activeUser", UserUtil.getLoginAccount());

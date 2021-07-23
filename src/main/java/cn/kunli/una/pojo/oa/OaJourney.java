@@ -35,7 +35,7 @@ public class OaJourney extends BasePojo implements Serializable {
     //交通费
     private Double transportExpense;
     //是否住宿
-    private Integer isAccommodation;
+    private Boolean isAccommodation;
     //住宿费
     private Double accommodationExpense;
 

@@ -1,11 +1,12 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysAccountMapper;
+import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.system.SysAccount;
-import cn.kunli.una.pojo.system.SysRole;
+import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.service.duohui.chanpin.CpShopService;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +30,38 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     public BasicService getThisProxy() {
         return sysAccountService;
     }
+    @Autowired
+    private CpShopService cpShopService;
+    @Autowired
+    private SysCompanyService sysCompanyService;
 
+    @Override
+    public SysResult updateRecordById(SysAccount entity) {
+        if(entity.getIsAudit()!=null&&entity.getIsAudit()){
+            //审核通过
+            CpShop cpShop = (CpShop) new CpShop().setName(entity.getName() + "的店铺");
+            //创建店铺
+            SysResult shopResult = cpShopService.saveRecord(cpShop);
+            if(shopResult.getIsSuccess()){
+                entity.setShopId(cpShop.getId());
+            }else{
+                entity.setRemark(entity.getRemark()+"|"+shopResult.getMessage());
+            }
+
+            //创建企业
+            SysAccount sysAccount = sysAccountService.getById(entity.getId());
+            if(sysAccount.getTypeDcode().equals("account_type_company")){
+                SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryDcode(sysAccount.getIndustryTypeDcode()).setName(entity.getName());
+                SysResult companyResult = sysCompanyService.saveRecord(sysCompany);
+                if(companyResult.getIsSuccess()){
+                    entity.setCompanyId(sysCompany.getId());
+                }else{
+                    entity.setRemark(entity.getRemark()+"|"+companyResult.getMessage());
+                }
+            }
+        }
+        return super.updateRecordById(entity);
+    }
 
     //校验格式
     @Override
@@ -62,7 +93,14 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             if(StringUtils.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
                 obj.setStatusDcode("account_status_toSubmit").setRoleId("100002");//未认证会员角色
             }
-
+        }else{
+            if(obj.getIsAudit()!=null){
+                if(obj.getIsAudit()){
+                    obj.setRoleId("100003").setStatusDcode("account_status_auditSuccess");//免费会员
+                }else{
+                    obj.setStatusDcode("account_status_auditFail");
+                }
+            }
         }
 
         //格式化账号，姓名（去空格）

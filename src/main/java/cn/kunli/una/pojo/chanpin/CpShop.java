@@ -46,11 +46,11 @@ public class CpShop extends BasePojo implements Serializable {
     //图片
     private String bannerFileIds;
     //是否置顶
-    private Integer isStick;
+    private Boolean isStick;
     //是否热门
-    private Integer isHot;
+    private Boolean isHot;
     //是否已审核
-    private Integer isAudit;
+    private Boolean isAudit;
     //关注数量
     private Integer concernAmount;
     //刷新时间

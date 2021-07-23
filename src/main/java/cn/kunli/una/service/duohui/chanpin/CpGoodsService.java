@@ -6,8 +6,6 @@ import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
 import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
-import cn.kunli.una.pojo.system.SysDictionary;
-import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -106,16 +104,20 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         obj = super.initialize(obj);
         if(obj.getId()==null){
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
-            if(obj.getAreaRegionId()==null){
-                SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-                if(loginUser.getShopId()!=null){
+            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+            if(loginUser.getShopId()!=null){
+                obj.setShopId(loginUser.getShopId());
+                if(obj.getAreaRegionId()==null){
                     CpShop cpShop = cpShopService.getById(loginUser.getShopId());
                     obj.setAreaRegionId(cpShop.getRegionId());
                 }
             }
+
+        }else{
+            if(obj.getIsAudit()==null)obj.setIsAudit(false);    //如果修改，默认改为未审核
         }
         //赋值地区
-        if(obj.getAreaRegionId()!=null){
+        /*if(obj.getAreaRegionId()!=null){
             if(obj.getCityRegionId()==null){
                 SysRegion areaRegion = sysRegionService.getById(obj.getAreaRegionId());
                 obj.setCityRegionId(areaRegion.getParentId());
@@ -124,9 +126,9 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                     obj.setProvinceRegionId(cityRegion.getParentId());
                 }
             }
-        }
+        }*/
         //赋值行业类型
-        if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
+        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
                 SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
                 obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
@@ -136,7 +138,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
 
             }
-        }
+        }*/
 
         return obj;
     }

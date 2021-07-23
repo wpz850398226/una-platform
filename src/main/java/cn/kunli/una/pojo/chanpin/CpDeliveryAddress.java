@@ -30,5 +30,5 @@ public class CpDeliveryAddress extends BasePojo implements Serializable {
     //详细地址
     private String address;
     //是否默认
-    private Integer isDefault;
+    private Boolean isDefault;
 }

@@ -9,101 +9,7 @@
 
 <div class="huibg">
     <div class="clear clearfix mt10"></div>
-    <div class="clear clearfix w1150"><a href="#0"><img th:src="@{/duohui/gongqiu/images/1_39.jpg}" width="1150"></a>
-    </div>
-    <!--<div class="clear clearfix mt20"></div>
-    <div class="weizhi w1150">
-      <p><em class="fl"></em><span class="ml10">您当前的位置 : : <a href="index.html">首页</a>><a href="newslist.html">品质保障</a></span></p>
-    </div>-->
-    <div class=" clear clearfix w1150  bor " style=" margin:0 auto;">
-        <div class="fenleisousuo clear clearfix">
-            <ul>
-                <li>
-                    <div class="fenlist clear clearfix">
-                        <dl>
-
-                            <dt> 选择分类：</dt>
-                            <dd class="on"><a href="#">全部</a></dd>
-                            <dd><a href="#">钢筋</a></dd>
-                            <dd><a href="#">水泥</a></dd>
-                            <dd><a href="#">混凝土</a></dd>
-                            <dd><a href="#">其他</a></dd>
-                        </dl>
-                    </div>
-                </li>
-                <li>
-                    <div class="fenlist clear clearfix">
-                        <dl>
-                            <dt> 认证情况：</dt>
-                            <dd class="on"><a href="#">全部</a></dd>
-                            <dd><a href="#">电话核实</a></dd>
-                            <dd><a href="#">手机认证</a></dd>
-                            <dd><a href="#">实名认证</a></dd>
-                            <dd><a href="#">企业认证</a></dd>
-                            <dd><a href="#">现场认证</a></dd>
-                        </dl>
-                    </div>
-                </li>
-
-                <li>
-                    <div class="fenlist clear clearfix">
-                        <dl id="box">
-                            <dt> 地区：</dt>
-                            <div style="width:970px; float:left;">
-                                <dd class="on"><a href="#">全部</a></dd>
-                                <dd class=""><a href="#">北京</a></dd>
-                                <dd class=""><a href="#">上海</a></dd>
-                                <dd class=""><a href="#">天津</a></dd>
-                                <dd class=""><a href="#">广州</a></dd>
-                                <dd class=""><a href="#">河北</a></dd>
-                                <dd class=""><a href="#">河南</a></dd>
-                                <dd class=""><a href="#">江苏</a></dd>
-                                <dd class=""><a href="#">北京</a></dd>
-                                <dd class=""><a href="#">上海</a></dd>
-                                <dd class=""><a href="#">天津</a></dd>
-                                <dd class=""><a href="#">广州</a></dd>
-                                <dd class=""><a href="#">河北</a></dd>
-                                <dd class=""><a href="#">河南</a></dd>
-                                <dd class=""><a href="#">江苏</a></dd>
-                                <dd class=""><a href="#">北京</a></dd>
-                                <dd class=""><a href="#">上海</a></dd>
-                                <dd class=""><a href="#">天津</a></dd>
-                                <dd class=""><a href="#">广州</a></dd>
-                                <dd class=""><a href="#">河北</a></dd>
-                                <dd class=""><a href="#">河南</a></dd>
-                                <dd class=""><a href="#">江苏</a></dd>
-
-                            </div>
-                        </dl>
-                        <p id="tog"
-                           style="cursor:pointer; line-height:45px; height:45px; font-size:14px; color:#ff5400; font-weight:600;">
-                            展开</p>
-                        <script>
-                            var len = $("#box dd").length;
-
-                            function int() {
-                                for (i = 8; i < len; i++) {
-                                    $("#box dd").eq(i).addClass("hid");
-                                }
-                            }
-
-                            $("#tog").click(function () {
-                                var t = $(this).text();
-                                if (t == "展开") {
-                                    $("#box .hid").addClass("show");
-                                    $(this).text("收缩");
-                                } else {
-                                    $("#box .hid").removeClass("show");
-                                    $(this).text("展开");
-                                }
-                            });
-                            int();//初始化隐藏多余标签
-                        </script>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
+        <div class="clear clearfix w1150"><a href="#0"><img th:src="@{/duohui/gongqiu/images/1_85.jpg}" width="1150"></a><!--高度130以内-->
     </div>
     <div class=" clear clearfix w1150 " style="padding:20px 0;  margin:0 auto;">
         <div class=" w210 fr ">
@@ -118,14 +24,14 @@
                 <span>[[${record.name}]]</span><img class="ml10" th:src="@{/duohui/gongqiu/images/v.gif}"></h2>
             <div style="text-align:center; margin:0 auto;  display:block; line-height:60px;"><em class="ml10 yanzhensj">[[${record['map']['certifyDname']}]]</em>
                 <em class="ml10">[[${record.viewAmount}]]次浏览</em>
-              <em class="ml10">信息ID：352667</em>
+              <em class="ml10">信息编号：[[${record.code}]]</em>
               <em class="ml10">时间：[[${#dates.format(record.createTime, 'yyyy-MM-dd')}]]</em>
             </div>
             <div class="clear line-height  border-top">
                 <div class="gongchengpage sjbiaozhi renzhengbiaozhi una-editor-show" th:value="${record.description}"></div>
                 <div class="clear clearfix mt20"></div>
-                <div class="border-top clear clearfix sjhaoma"><span>联系方式</span> <i class="ml23">***********</i><em
-                        class="fr btn1">点击查看完整号码</em></div>
+                <div class="border-top clear clearfix sjhaoma" th:if="${activeUser==null}"><span>联系方式</span> <i class="ml23">***********</i><em class="fr btn1">点击查看完整号码</em></div>
+                <div class="border-top clear clearfix sjhaoma" th:if="${activeUser!=null}"><span>联系方式</span> <i class="ml23">[[${record.mobile}]]</i></div>
                 <div class="box1"></div>
                 <div class="hint">
                     <div class="hint-in1">
@@ -143,8 +49,16 @@
                     $(document).ready(function ($) {
 
                         $(".btn1").click(function (event) {
-                            $(".hint").css({"display": "block"});
-                            $(".box1").css({"display": "block"});
+                            var index = layer.open({
+                                type: 2,
+                                title: '登录',
+                                maxmin: true,
+                                shadeClose: true, //点击遮罩关闭层
+                                area : ['800px' , '520px'],
+                                content: '/api/duohui/login/toLogin'
+                            });
+                            // $(".hint").css({"display": "block"});
+                            // $(".box1").css({"display": "block"});
                         });
 
                         $(".hint-in3").click(function (event) {
@@ -195,9 +109,11 @@
                     });
                 </script>
                 <div class="clear clearfix mt20"></div>
-                <div class="clear clearfix border-top fencang"><span class="fr bdsharebuttonbox"> <a data-cmd="more"
-                                                                                                     class="mr10  bds_more">分享</a><a
-                        href="#" class="btn1 shoucang ml23">收藏</a> </span>
+                <div class="clear clearfix border-top fencang">
+                    <span class="fr bdsharebuttonbox">
+                        <a data-cmd="more" class="mr10  bds_more">分享</a>
+                        <a href="#" class="btn1 shoucang ml23">收藏</a>
+                    </span>
                     <style>
                         .fencang .bds_more {
                             background: url(../../../static/duohui/gongqiu/images/fx.png) center left no-repeat;
@@ -232,5 +148,17 @@
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 <div th:replace="../templates/duohui/chanpin/include/script :: script"></div>
+<script>
+    function openLogin(){
+        var index = layer.open({
+            type: 2,
+            title: '登录',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['800px' , '520px'],
+            content: '/api/duohui/login/toLogin'
+        });
+    }
+</script>
 </body>
 </html>

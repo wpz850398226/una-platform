@@ -2,7 +2,7 @@ package cn.kunli.una.controller.duohui.gongqiu;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.gongqiu.GqInformation;
-import cn.kunli.una.service.system.GqInformationService;
+import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
 import cn.kunli.una.utils.common.ListUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

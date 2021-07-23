@@ -24,11 +24,11 @@ import java.util.Date;
 public class OaAttendance extends BasePojo implements Serializable {
     private static final long serialVersionUID = 120156716659503245L;
     //是否上班，0否，1是
-    private Integer isOnDuty;
+    private Boolean isOnDuty;
     //是否外勤，0否，1是
-    private Integer isOutside;
+    private Boolean isOutside;
     //是否请假，0否，1是
-    private Integer isVacate;
+    private Boolean isVacate;
     //坐标
     private String coord;
     //事由

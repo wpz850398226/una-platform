@@ -9,7 +9,7 @@ import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpShopService;
-import cn.kunli.una.service.system.GqInformationService;
+import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysRegionService;
@@ -64,7 +64,8 @@ public class GqIndexController {
             for (SysDictionary primaryIndustry : industryDlist) {
                 if(CollectionUtils.isNotEmpty(primaryIndustry.getChildren())){
                     for (SysDictionary secondryIndustry : primaryIndustry.getChildren()) {
-                        Page<GqInformation> informationPage = gqInformationService.page(1L, 5L, MapUtil.getMap("secondryIndustryDcode", secondryIndustry.getCode()));
+                        Page<GqInformation> informationPage = gqInformationService.page(1L, 5L, MapUtil.buildHashMap()
+                                .put("secondryIndustryDcode", secondryIndustry.getCode()).put("isAdded",true).put("isAudit",true).build());
                         gqInformationListMap.put(secondryIndustry.getCode(),informationPage.getRecords());
                     }
                 }
@@ -73,8 +74,8 @@ public class GqIndexController {
         model.addAttribute("gqInformationListMap",gqInformationListMap);
 
         //精品推荐
-        Page<GqInformation> jingpinPage = gqInformationService.page(1L, 8L, MapUtil.getMap("originTypeDcode", "dh_originType_platform"));
-        model.addAttribute("jingpinList",gqInformationService.parse(jingpinPage.getRecords()));
+        Page<GqInformation> hotPage = gqInformationService.page(1L, 8L, MapUtil.getMap("isHot", true));
+        model.addAttribute("hotList",gqInformationService.parse(hotPage.getRecords()));
 
 
         //合作企业

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * (SysAccount)表控制层
  *
@@ -53,7 +55,7 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     }
 
     //审核
-    @PutMapping("/audit/{id}/{isAudit}")
+    /*@PutMapping("/audit/{id}/{isAudit}")
     @ResponseBody
     public SysResult audit(@PathVariable Integer id,@PathVariable Integer isAudit) {
         SysAccount targetAccount = (SysAccount) new SysAccount().setId(id);
@@ -70,12 +72,10 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
                 sysCompanyService.saveRecord(sysCompany);
                 targetAccount.setCompanyId(sysCompany.getId());
             }
-        }else{
-            targetAccount.setStatusDcode("account_status_auditFail");
         }
         //修改账号信息
         return service.updateRecordById(targetAccount);
 
-    }
+    }*/
 
 }

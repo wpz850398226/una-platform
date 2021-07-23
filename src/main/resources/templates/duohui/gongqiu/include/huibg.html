@@ -41,21 +41,22 @@
                     <img th:src="@{/duohui/gongqiu/images/chanpin.jpg}" alt="热门商铺排行榜" > </a> </li>
             </ul>
         </div>
-        <div class="w1200 "> <a href=""><img th:src="@{/duohui/gongqiu/images/1_39.jpg}" height="96" width="1200"></a> </div>
+        <div class="w1200 "> <a href=""><img th:src="@{/duohui/gongqiu/images/1_85.jpg}" height="96" width="1200"></a> </div>
         <div class=" w1200 clear clearfix">
             <div class="tuijian fl">
                 <h2><em class="fr "><a href="#">查看全部></a></em><a href="#">精品推荐</a></h2>
                 <ul class="mt20">
-                    <li class="clear clearfix" th:each="info,status:${jingpinList}" th:if="${status.index%2==0}"><a class="mr10 fl" href="#">[[${info.name}]]<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+                    <li class="clear clearfix" th:each="info,status:${hotList}" th:if="${status.index%2==0}">
+                        <a class="mr10 fl" th:href="${'/api/gq/information/fDetail/'+info.id}">[[${info.name}]]
+                        <img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
                 </ul>
             </div>
             <div class="tuijian fr">
-                <!--<h2><em  class="fr "><a href="#">查看全部></a></em><a href="#">最新推荐</a></h2>-->
+                <h2><em  class="fr "><a href="#">查看全部></a></em><a href="#"></a></h2>
                 <ul class="mt20">
-                    <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
-                    <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
-                    <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
-                    <li class="clear clearfix"><a class="mr10 fl" href="#">精品推荐标<img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
+                    <li class="clear clearfix" th:each="info,status:${hotList}" th:if="${status.index%2==1}">
+                        <a class="mr10 fl" th:href="${'/api/gq/information/fDetail/'+info.id}">[[${info.name}]]
+                            <img class="ml10" th:src="@{/duohui/gongqiu/images/youzhi.png}"></a><em class=" fl ml150" >采购<b>2</b>台</em><em class="fr">采购<b>2</b>台</em></li>
                 </ul>
             </div>
         </div>

@@ -64,13 +64,13 @@ public class CpGoods extends BasePojo implements Serializable {
     //所属区域id
     private Integer areaRegionId;
     //是否置顶
-    private Integer isStick;
+    private Boolean isStick;
     //是否热门
-    private Integer isHot;
+    private Boolean isHot;
     //是否上架
-    private Integer isAdded;
+    private Boolean isAdded;
     //是否已审核
-    private Integer isAudit;
+    private Boolean isAudit;
     //浏览次数
     private Integer viewAmount;
     //收藏数量
@@ -86,21 +86,21 @@ public class CpGoods extends BasePojo implements Serializable {
     //库存
     private Integer inventory;
     //是否显示库存
-    private Integer isShowInventory;
+    private Boolean isShowInventory;
     //是否启用规格
-    private Integer isSpecification;
+    private Boolean isSpecification;
     //是否减库存
-    private Integer isInventoryReduce;
+    private Boolean isInventoryReduce;
     //是否支持货到付款
-    private Integer isPayOnDelivery;
+    private Boolean isPayOnDelivery;
     //是否正品保证
-    private Integer isAuthenticGuaranteed;
+    private Boolean isAuthenticGuaranteed;
     //是否支持7天无理由退换
-    private Integer isExchangeInSeven;
+    private Boolean isExchangeInSeven;
     //是否可开发票
-    private Integer isInvoice;
+    private Boolean isInvoice;
     //是否可保修
-    private Integer isRepair;
+    private Boolean isRepair;
     //销售价，标价
     private Double sellingPrice;
     //成本价

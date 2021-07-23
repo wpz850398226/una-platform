@@ -1,4 +1,4 @@
-package cn.kunli.una.service.system;
+package cn.kunli.una.service.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpComment;
 import cn.kunli.una.mapper.CpCommentMapper;
