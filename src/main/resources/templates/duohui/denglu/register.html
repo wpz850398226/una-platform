@@ -110,7 +110,7 @@
                   data-url="/api/sys/dictionary"></select>
         </label>
         </em> </li>-->
-      <li>
+      <!--<li>
         <label class="fl">行业类型：</label>
         <em>
           <label class="aa">
@@ -169,7 +169,7 @@
                   data-option_value_field_title="id"
                   data-url="/api/sys/region"></select>
         </label>
-        </em> </li>
+        </em> </li>-->
       <li>
         <label class="fl"></label>
         <em>
@@ -234,7 +234,7 @@
       }
     }
 
-    if(!$("#thirdryIndustry").val().length>0){
+    /*if(!$("#thirdryIndustry").val().length>0){
       layer.msg("请选择行业类型",function(){})
       return false;
     }
@@ -242,7 +242,7 @@
     if(!$("#regionId").val().length>0){
       layer.msg("请选择地区",function(){})
       return false;
-    }
+    }*/
 
     $.ajax({
       url: '/api/sys/account/register',

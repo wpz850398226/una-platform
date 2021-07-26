@@ -214,6 +214,15 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             if(obj.getOptionValueFieldCode()!=null&&obj.getOptionValueFieldCode().equals(""))obj.setOptionValueFieldCode("id");
         }
 
+        if(obj.getPermissionId()!=null){
+            SysPermission sysPermission = sysPermissionService.getById(obj.getPermissionId());
+            if(sysPermission!=null&&sysPermission.getEntityId()!=null){
+                String typeDcode = sysPermission.getTypeDcode();
+                SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
+                String permissionCode = sysEntity.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1);
+                obj.setPermissionCode(permissionCode);
+            }
+        }
 
         return obj;
     }

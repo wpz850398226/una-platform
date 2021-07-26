@@ -36,6 +36,8 @@ public class SysField extends BasePojo implements Serializable {
     private Integer entityId;
     //所属权限id
     private Integer permissionId;
+    //所属权限编码
+    private String permissionCode;
     //字段注释
     private String annotation;
     //赋值方式

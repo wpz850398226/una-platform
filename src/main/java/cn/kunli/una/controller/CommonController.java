@@ -161,13 +161,8 @@ public class CommonController {
         //字段分组
         for (SysField sysField : sysFieldList) {
             //判断字段权限
-            if(sysField.getPermissionId()!=null){
-                SysPermission sysPermission = sysPermissionService.getById(sysField.getPermissionId());
-                if(sysPermission!=null&&sysPermission.getEntityId()!=null){
-                    String typeDcode = sysPermission.getTypeDcode();
-                    String permissionCode = className+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1);
-                    if(!permissionCodeList.contains(permissionCode))continue;
-                }
+            if(StringUtils.isNotBlank(sysField.getPermissionCode())){
+                if(!permissionCodeList.contains(sysField.getPermissionCode()))continue;
             }
             if(StringUtils.isNotBlank(sysField.getGroupName())){
                 List<SysField> subFieldList  = new ArrayList<>();
