@@ -162,6 +162,14 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             }
             CpShop cpShop = cpShopService.getById(cpGoods.getShopId());
             cpGoods.setIsOpenShop(cpShop.getIsFacade());
+            if(StringUtils.isNotBlank(cpGoods.getPrimaryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getSecondryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getThirdryIndustryDcode())){
+                String[] industryCode = new String[]{cpGoods.getPrimaryIndustryDcode(),cpGoods.getSecondryIndustryDcode(),cpGoods.getThirdryIndustryDcode()};
+                cpGoods.setIndustryDcode(industryCode);
+            }
+            if(cpGoods.getProvinceRegionId()!=null&&cpGoods.getCityRegionId()!=null&&cpGoods.getAreaRegionId()!=null){
+                String[] areas = new String[]{cpGoods.getProvinceRegionId().toString(),cpGoods.getCityRegionId().toString(),cpGoods.getAreaRegionId().toString()};
+                cpGoods.setAreas(areas);
+            }
         }
         return list;
     }

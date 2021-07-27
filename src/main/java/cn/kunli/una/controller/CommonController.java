@@ -187,17 +187,7 @@ public class CommonController {
                 obj.put("type", "选项");
 
                 break;
-            case "SysMenu":
-                if (obj.get("parentId") != null) {
-                    Integer parentId = Integer.valueOf(obj.get("parentId").toString());
-                    SysMenu sysMenu = sysMenuService.getById(parentId);
-                    obj.put("level", sysMenu.getLevel() + 1);
-                }
             case "SysConfiguration":
-                if (obj.get("moduleDcode") != null) {
-                    obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
-                }
-            case "SysImgConfig":
                 if (obj.get("moduleDcode") != null) {
                     obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
                 }

@@ -31,15 +31,9 @@ public class SysRelation extends BasePojo implements Serializable {
     @TableField(exist = false)
     private String relatedFieldCode;
     @TableField(exist = false)
-    private String relatedFieldName;
-    @TableField(exist = false)
     private String parentDataFieldCode;
     @TableField(exist = false)
-    private String parentDataFieldName;
-    @TableField(exist = false)
     private String parentEntityName;                //父实体名称
-    @TableField(exist = false)
-    private String subEntityName;                    //子实体名称
     @TableField(exist = false)
     private String parentEntityPath;            //父实体url前缀
 

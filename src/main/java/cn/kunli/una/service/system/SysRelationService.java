@@ -29,7 +29,9 @@ public class SysRelationService extends BasicService<SysRelationMapper, SysRelat
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
         for (SysRelation sysRelation : list) {
-            if(sysRelation.getRelatedFieldId()!=null)sysRelation.setRelatedFieldCode(sysFieldService.getById(sysRelation.getRelatedFieldId()).getAssignmentCode());
+            if(sysRelation.getRelatedFieldId()!=null){
+                sysRelation.setRelatedFieldCode(sysFieldService.getById(sysRelation.getRelatedFieldId()).getAssignmentCode());
+            }
 
             if(sysRelation.getParentEntityId()!=null){
                 SysEntity parentEntity = sysEntityService.getById(sysRelation.getParentEntityId());

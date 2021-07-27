@@ -1,9 +1,7 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysMenuMapper;
-import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysMenu;
-import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -93,6 +91,10 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");
+        }
+        if(obj.getParentId()!=null){
+            SysMenu sysMenu = thisProxy.getById(obj.getParentId());
+            obj.setLevel(sysMenu.getLevel()+1);
         }
 
         return obj;
