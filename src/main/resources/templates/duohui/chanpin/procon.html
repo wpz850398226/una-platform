@@ -196,11 +196,11 @@
       <div class="wr-fcs-panel clear clearfix">
         <dl class="wr-price-panel mt20">
           <dt class="wr-metatit">价格</dt>
-          <dd><em class="wr-yen">￥</em> <span class="wr-price">[[${record.checkedGoodsAttribute.taxInclusiveMarketPrice}]]</span></dd>
+          <dd><em class="wr-yen">￥</em> <span class="wr-price">[[${record.checkedModel.taxInclusiveMarketPrice}]]</span></dd>
         </dl>
         <dl class="wr-price-panel clear clearfix">
           <dt class="wr-metatit" style="line-height:50px;">促销价</dt>
-          <dd><em class="wr-yen1">￥</em> <span class="wr-price1">[[${record.checkedGoodsAttribute.sellingPrice}]]</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
+          <dd><em class="wr-yen1">￥</em> <span class="wr-price1">[[${record.checkedModel.sellingPrice}]]</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
         </dl>
       </div>
       <dl class="wr-price-panel clear clearfix mt10">
@@ -223,11 +223,11 @@
       <section id="search_ka">
         <div class="ui-sx bian1">
           <div class="subNavBox">
-            <ul id="goodsAttribute" class="navContent" style="display: block;">
+            <ul id="cpModel" class="navContent" style="display: block;">
               <li th:each="specification:${record.specificationList}">
                 <div class="title">[[${specification.name}]]</div>
                 <div class="item">
-                  <a th:class="${#strings.containsIgnoreCase(record.checkedGoodsAttribute.name,attribute)?'hover':''}" href="javascript:;"
+                  <a th:class="${#strings.containsIgnoreCase(record.checkedModel.name,attribute)?'hover':''}" href="javascript:;"
                      onclick="changeAtt(this)" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}" th:value="${attribute}">
                     <input style="display:none" type="radio" checked />
                     [[${attribute}]] <i>已选中</i>
@@ -249,8 +249,8 @@
       </section>
 
       <div class="probuy">
-        <input type="button" value="立即购买" class="" th:onclick="bugNow([[${record.checkedGoodsAttribute.id}]])">
-        <input type="button" value="加入购物车" class="addcartBtn" th:onclick="addCart([[${record.checkedGoodsAttribute.id}]])">
+        <input type="button" value="立即购买" class="" th:onclick="bugNow([[${record.checkedModel.id}]])">
+        <input type="button" value="加入购物车" class="addcartBtn" th:onclick="addCart([[${record.checkedModel.id}]])">
       </div>
     </div>
     <div class="clear clearfix" style="height:20px;"></div>
@@ -368,7 +368,7 @@
     t.className = "hover";
 
     var attributeName = "";
-    $("#goodsAttribute").find("a.hover").each(function(){
+    $("#cpModel").find("a.hover").each(function(){
       attributeName = attributeName +","+ $(this).attr("value");
     })
     if(attributeName.length>0){
@@ -432,7 +432,7 @@
           type: 'post',
           url: "/api/cp/cart/save",
           dataType: 'json',
-          data: {"goodsAttributeId":attributeId,"amount":buyNumber},
+          data: {"modelId":attributeId,"amount":buyNumber},
           success: function (result) {
               layer.msg(result.message,function () {})
           },

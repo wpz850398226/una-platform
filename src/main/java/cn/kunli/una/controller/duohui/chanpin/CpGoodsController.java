@@ -2,10 +2,10 @@ package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
+import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.duohui.chanpin.CpGoodsAttributeService;
+import cn.kunli.una.service.duohui.chanpin.CpModelService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
@@ -38,7 +38,7 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
     @Autowired
     private CpIndexController cpIndexController;
     @Autowired
-    private CpGoodsAttributeService cpGoodsAttributeService;
+    private CpModelService cpModelService;
 
     /**
      * 打开前端 商品详情
@@ -56,7 +56,7 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
         //查询商品
         CpGoods record = service.parse(ListUtil.getList(service.getById(id))).get(0);
         //查询规格
-        CpGoodsAttribute cpGoodsAttribute;
+        CpModel cpModel;
         if(StringUtils.isBlank(attributeName)){
             //查询默认规格属性
             List<CpSpecification> specificationList = record.getSpecificationList();
@@ -67,16 +67,16 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
                     attributeNameList.add(attributeNames.substring(0,attributeNames.indexOf(",")));
                 }
             }
-            cpGoodsAttribute = cpGoodsAttributeService.selectOne(
+            cpModel = cpModelService.selectOne(
                     MapUtil.buildHashMap().put("goodsId",record.getId()).put("name",ListUtil.listToStr(attributeNameList)).build());
         }else{
             //查询指定规格
-            cpGoodsAttribute = cpGoodsAttributeService.selectOne(
+            cpModel = cpModelService.selectOne(
                     MapUtil.buildHashMap().put("goodsId",record.getId()).put("name",attributeName).build());
         }
 
-        if(cpGoodsAttribute!=null){
-            record.setCheckedGoodsAttribute(cpGoodsAttribute);
+        if(cpModel !=null){
+            record.setCheckedModel(cpModel);
         }
         model.addAttribute("record",record);
         cpIndexController.getCommonItem(model);

@@ -3,7 +3,7 @@ package cn.kunli.una.service.duohui.chanpin;
 import cn.kunli.una.pojo.chanpin.CpCart;
 import cn.kunli.una.mapper.CpCartMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
+import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.ListUtil;
@@ -25,7 +25,7 @@ public class CpCartService extends BasicService<CpCartMapper, CpCart> {
     @Autowired
     private CpCartService thisProxy;
     @Autowired
-    private CpGoodsAttributeService cpGoodsAttributeService;
+    private CpModelService cpModelService;
     @Autowired
     private CpGoodsService cpGoodsService;
     @Autowired
@@ -40,26 +40,26 @@ public class CpCartService extends BasicService<CpCartMapper, CpCart> {
     public List<CpCart> parse(List<CpCart> list) {
         list = super.parse(list);
         for (CpCart cpCart : list) {
-            if(cpCart.getGoodsAttributeId()!=null){
-                CpGoodsAttribute cpGoodsAttribute = cpGoodsAttributeService.getById(cpCart.getGoodsAttributeId());
-                cpGoodsAttribute = cpGoodsAttributeService.parse(ListUtil.getList(cpGoodsAttribute)).get(0);
+            if(cpCart.getModelId()!=null){
+                CpModel cpModel = cpModelService.getById(cpCart.getModelId());
+                cpModel = cpModelService.parse(ListUtil.getList(cpModel)).get(0);
 
-                if(cpGoodsAttribute.getGoodsId()!=null){
-                    CpGoods cpGoods = cpGoodsService.getById(cpGoodsAttribute.getGoodsId());
+                if(cpModel.getGoodsId()!=null){
+                    CpGoods cpGoods = cpGoodsService.getById(cpModel.getGoodsId());
                     if(cpGoods!=null){
                         Map<String, Object> map = cpCart.getMap();
                         if(map==null)map = new HashMap<>();
-                        map.put("goodsAttributeName", cpGoods.getName()+"("+cpGoodsAttribute.getName()+")");
+                        map.put("modelName", cpGoods.getName()+"("+ cpModel.getName()+")");
                         cpCart.setMap(map);
 
-                        cpGoodsAttribute.setGoodsName(cpGoods.getName());
+                        cpModel.setGoodsName(cpGoods.getName());
                         CpShop cpShop = cpShopService.getById(cpGoods.getShopId());
                         if(cpShop!=null){
-                            cpGoodsAttribute.setShopName(cpShop.getName());
+                            cpModel.setShopName(cpShop.getName());
                         }
                     }
                 }
-                cpCart.setCpGoodsAttribute(cpGoodsAttribute);
+                cpCart.setCpModel(cpModel);
             }
         }
 

@@ -140,13 +140,13 @@ public class CpGoods extends BasePojo implements Serializable {
     private List<CpSpecification> specificationList;
     //商品规格属性列表
     @TableField(exist = false)
-    private List<CpGoodsAttribute> goodsAttributeList;
+    private List<CpModel> modelList;
     //标题图片
     @TableField(exist = false)
     private String titleImgUrl;
     //选中的规格属性
     @TableField(exist = false)
-    private CpGoodsAttribute checkedGoodsAttribute;
+    private CpModel checkedModel;
     //是否开通店铺
     @TableField(exist = false)
     private Boolean isOpenShop;

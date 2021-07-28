@@ -1,7 +1,6 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpCart;
-import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpCartService;
 import cn.kunli.una.controller.BaseController;
@@ -10,7 +9,6 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ public class CpCartController extends BaseController<CpCartService, CpCart> {
         Map<String,Integer> map = new HashMap<>();
 
         for (CpCart cpCart : cpCartList) {
-            String shopName = cpCart.getCpGoodsAttribute().getShopName();
+            String shopName = cpCart.getCpModel().getShopName();
             if(map.containsKey(shopName)){
                 Integer index = map.get(shopName);
                 recordList.get(index).add(cpCart);

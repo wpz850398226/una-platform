@@ -3,7 +3,7 @@ package cn.kunli.una.service.duohui.chanpin;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpGoodsAttribute;
+import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
@@ -35,7 +35,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     @Autowired
     private CpSpecificationService cpSpecificationService;
     @Autowired
-    private CpGoodsAttributeService cpGoodsAttributeService;
+    private CpModelService cpModelService;
     @Autowired
     private CpShopService cpShopService;
     @Autowired
@@ -58,11 +58,11 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
             }
 
-            if(CollectionUtils.isNotEmpty(entity.getGoodsAttributeList())){
+            if(CollectionUtils.isNotEmpty(entity.getModelList())){
                 //保存商品规格属性
-                for (CpGoodsAttribute cpGoodsAttribute : entity.getGoodsAttributeList()) {
-                    cpGoodsAttribute.setGoodsId(entity.getId());
-                    cpGoodsAttributeService.saveRecord(cpGoodsAttribute);
+                for (CpModel cpModel : entity.getModelList()) {
+                    cpModel.setGoodsId(entity.getId());
+                    cpModelService.saveRecord(cpModel);
                 }
             }
         }
@@ -86,13 +86,13 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
             }
 
-            if(CollectionUtils.isNotEmpty(entity.getGoodsAttributeList())){
+            if(CollectionUtils.isNotEmpty(entity.getModelList())){
                 //删除原有规格
-                boolean deleteResult = cpGoodsAttributeService.deleteBySelective(MapUtil.getMap("goodsId", entity.getId()));
+                boolean deleteResult = cpModelService.deleteBySelective(MapUtil.getMap("goodsId", entity.getId()));
                 //保存商品规格属性
-                for (CpGoodsAttribute cpGoodsAttribute : entity.getGoodsAttributeList()) {
-                    cpGoodsAttribute.setGoodsId(entity.getId());
-                    cpGoodsAttributeService.saveRecord(cpGoodsAttribute);
+                for (CpModel cpModel : entity.getModelList()) {
+                    cpModel.setGoodsId(entity.getId());
+                    cpModelService.saveRecord(cpModel);
                 }
             }
         }
@@ -149,8 +149,8 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         for (CpGoods cpGoods : list) {
             List<CpSpecification> specificationList = cpSpecificationService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setSpecificationList(specificationList);
-            List<CpGoodsAttribute> attributeList = cpGoodsAttributeService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
-            cpGoods.setGoodsAttributeList(attributeList);
+            List<CpModel> attributeList = cpModelService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
+            cpGoods.setModelList(attributeList);
             if(StringUtils.isNotBlank(cpGoods.getFileId())){
                 String fileUrl = String.valueOf(cpGoods.getMap().get("fileUrl"));
                 if(fileUrl.indexOf(",")!=-1){

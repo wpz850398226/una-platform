@@ -43,7 +43,7 @@
         <div class="biankuang">
             <table width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0">
                 <tr class="mt20" style="height:42px; color:#666; font:14px/42px '微软雅黑'; ">
-                    <td colspan="5" align="left" ><input class="ml10 mr10"  type="checkbox" name="items[]" value="6">[[${cartList[0].cpGoodsAttribute.shopName}]]</td>
+                    <td colspan="5" align="left" ><input class="ml10 mr10"  type="checkbox" name="items[]" value="6">[[${cartList[0].cpModel.shopName}]]</td>
                 </tr>
             </table>
             <table width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0" th:each="cart:${cartList}">
@@ -51,11 +51,11 @@
                   <td width="40%" align="center" valign="middle" ><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
                       <tr>
                         <td width="20" align="left" valign="top"><input  type="checkbox" name="items[]" value="6"></td>
-                        <td width="120" align="left" valign="top"><a href="#"><img th:src="${cart.cpGoodsAttribute['map']['fileUrl']}" width="110" height="75" class="pic"/></a></td>
-                        <td align="left" valign="top" class=" ft14 jms" ><a href="#">[[${cart.cpGoodsAttribute.goodsName+'('+cart.cpGoodsAttribute.name+')'}]]</a></td>
+                        <td width="120" align="left" valign="top"><a href="#"><img th:src="${cart.cpModel['map']['fileUrl']}" width="110" height="75" class="pic"/></a></td>
+                        <td align="left" valign="top" class=" ft14 jms" ><a href="#">[[${cart.cpModel.goodsName+'('+cart.cpModel.name+')'}]]</a></td>
                       </tr>
                     </table></td>
-                  <td width="15%" align="center">[[${cart.cpGoodsAttribute.sellingPrice}]] 元</td>
+                  <td width="15%" align="center">[[${cart.cpModel.sellingPrice}]] 元</td>
                   <td width="20%" align="center" style="position:relative; bottom:0;"><div class="item1">
                       <script language="javascript" type="text/javascript">  function goods_cut(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  if(Num>1)Num=Num-1;  num_val.value=Num;}  function goods_add(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  Num=Num+1;  num_val.value=Num;} </script>
                       <span class="ui-number fl mr10">

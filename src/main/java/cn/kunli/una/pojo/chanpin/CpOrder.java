@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.chanpin;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 商城-订单类(CpOrder)实体类
@@ -33,13 +32,15 @@ public class CpOrder extends BasePojo implements Serializable {
     //配送时间
     private Date deliveryTime;
     //配送方式
-    private String deliveryType;
+    private String deliveryTypeDcode;
     //配送费，快递费
     private Double deliveryCost;
     //配送费支付方式
     private String deliveryPaymentTypeDcode;
     //快递单号
     private String expressNumber;
+    //是否开发票
+    private Boolean isInvoice;
     //发票抬头
     private String invoiceName;
     //订单状态
@@ -50,6 +51,12 @@ public class CpOrder extends BasePojo implements Serializable {
     private Integer orderIntegral;
     //支付总金额
     private Double paymentAmount;
-    //商品总数量
-    private Integer goodsAmount;
+    //商品id
+    private Integer goodsId;
+    //商品型号id
+    private Integer modelId;
+    //成交单价
+    private Double transactionPrice;
+    //成交量
+    private Integer volume;
 }

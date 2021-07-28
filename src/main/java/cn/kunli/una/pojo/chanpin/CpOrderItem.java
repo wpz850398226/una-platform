@@ -25,7 +25,7 @@ public class CpOrderItem extends BasePojo implements Serializable {
     //订单id
     private Integer orderId;
     //商品规格编号
-    private Integer goodsAttributeId;
+    private Integer modelId;
     //成交单价
     private Double transactionPrice;
     //成交量

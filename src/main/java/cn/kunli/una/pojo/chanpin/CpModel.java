@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * 商城-商品规格表(CpGoodsAttribute)实体类
+ * 商城-商品规格表(CpModel)实体类
  *
  * @author Ponzio
  * @since 2021-06-23 23:40:00
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class CpGoodsAttribute extends BasePojo implements Serializable {
+public class CpModel extends BasePojo implements Serializable {
     private static final long serialVersionUID = 340194362530078834L;
     //编号
     private String code;
