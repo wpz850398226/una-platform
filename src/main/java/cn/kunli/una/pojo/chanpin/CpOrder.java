@@ -39,10 +39,6 @@ public class CpOrder extends BasePojo implements Serializable {
     private String deliveryPaymentTypeDcode;
     //快递单号
     private String expressNumber;
-    //是否开发票
-    private Boolean isInvoice;
-    //发票抬头
-    private String invoiceName;
     //订单状态
     private String statusDcode;
     //订单总金额
@@ -52,11 +48,11 @@ public class CpOrder extends BasePojo implements Serializable {
     //支付总金额
     private Double paymentAmount;
     //商品id
-    private Integer goodsId;
-    //商品型号id
-    private Integer modelId;
-    //成交单价
-    private Double transactionPrice;
+    private Integer shopId;
     //成交量
     private Integer volume;
+    //是否开发票
+    private Boolean isInvoice;
+    //发票抬头
+    private String invoiceName;
 }

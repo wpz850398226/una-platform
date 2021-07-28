@@ -5,10 +5,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 作者 : Ponzio
@@ -109,6 +106,17 @@ public class ListUtil {
             Object[] array = list.toArray();
             String str = StringUtils.join(array, ",");
             return str;
+        }else {
+            return null;
+        }
+    }
+
+    //字符串集合转字符串逗号分隔
+    public static List<String> strToList(String str){
+        if(StringUtils.isNotBlank(str)){
+            String[] array = str.split(",");
+            List<String> list = Arrays.asList(array);
+            return list;
         }else {
             return null;
         }

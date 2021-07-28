@@ -86,6 +86,7 @@
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 <script type="text/javascript">
     var form = $("#loginForm");
+    var uri = "[[${originUri}]]";
     loadCaptcha();  //加载验证码
     var token = localStorage.getItem("token");
     /*if(token != null && token.trim().length != 0){
@@ -113,7 +114,7 @@
                         layer.msg(result.message);
                         localStorage.setItem("token",result.data);
                         setTimeout(function () {
-                            window.location.href="/api/duohui/chanpin/index";
+                            window.location.href=uri;
                         },'500')
 
                     }else{

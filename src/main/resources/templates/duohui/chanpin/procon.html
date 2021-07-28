@@ -195,11 +195,11 @@
 
       <div class="wr-fcs-panel clear clearfix">
         <dl class="wr-price-panel mt20">
-          <dt class="wr-metatit">价格</dt>
+          <dt class="wr-metatit">含税市场价</dt>
           <dd><em class="wr-yen">￥</em> <span class="wr-price">[[${record.checkedModel.taxInclusiveMarketPrice}]]</span></dd>
         </dl>
         <dl class="wr-price-panel clear clearfix">
-          <dt class="wr-metatit" style="line-height:50px;">促销价</dt>
+          <dt class="wr-metatit" style="line-height:50px;">销售价</dt>
           <dd><em class="wr-yen1">￥</em> <span class="wr-price1">[[${record.checkedModel.sellingPrice}]]</span> <em class="wr-promo-type "><s></s>限时秒杀</em> &nbsp;&nbsp;</dd>
         </dl>
       </div>
@@ -227,7 +227,7 @@
               <li th:each="specification:${record.specificationList}">
                 <div class="title">[[${specification.name}]]</div>
                 <div class="item">
-                  <a th:class="${#strings.containsIgnoreCase(record.checkedModel.name,attribute)?'hover':''}" href="javascript:;"
+                  <a th:class="${#lists.contains(record.checkedModel.nameList,attribute)?'hover':''}" href="javascript:;"
                      onclick="changeAtt(this)" th:each="attribute : ${#strings.arraySplit(specification.attributeNames, ',')}" th:value="${attribute}">
                     <input style="display:none" type="radio" checked />
                     [[${attribute}]] <i>已选中</i>
@@ -418,21 +418,22 @@
   }
 
   //立即购买
-  function bugNow(attributeId){
+  function bugNow(modelId){
       var buyNumber = $("#buyNumber").val();
-      layer.msg("立即购买")
+      layer.msg(modelId)
+    window.location.href="/api/cp/order/zhifu?modelId="+modelId
 
   }
 
   //加入购物车
-  function addCart(attributeId){
-    console.log(attributeId);
+  function addCart(modelId){
+    console.log(modelId);
     var buyNumber = $("#buyNumber").val();
       $.ajax({
           type: 'post',
           url: "/api/cp/cart/save",
           dataType: 'json',
-          data: {"modelId":attributeId,"amount":buyNumber},
+          data: {"modelId":modelId,"amount":buyNumber},
           success: function (result) {
               layer.msg(result.message,function () {})
           },

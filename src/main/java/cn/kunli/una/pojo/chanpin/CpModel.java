@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 商城-商品规格表(CpModel)实体类
@@ -57,4 +58,7 @@ public class CpModel extends BasePojo implements Serializable {
     //店铺名称
     @TableField(exist = false)
     private String shopName;
+    //型号名称集合
+    @TableField(exist = false)
+    private List<String> nameList;
 }

@@ -24,10 +24,12 @@ public class CpOrderItem extends BasePojo implements Serializable {
     private static final long serialVersionUID = 711995724247659262L;
     //订单id
     private Integer orderId;
+    //商品id
+    private Integer goodsId;
     //商品规格编号
     private Integer modelId;
     //成交单价
-    private Double transactionPrice;
+    private Double price;
     //成交量
-    private Integer transactionAmount;
+    private Integer volume;
 }

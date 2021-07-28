@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +78,7 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
         }
 
         if(cpModel !=null){
+            cpModel.setNameList(ListUtil.strToList(cpModel.getName()));
             record.setCheckedModel(cpModel);
         }
         model.addAttribute("record",record);
