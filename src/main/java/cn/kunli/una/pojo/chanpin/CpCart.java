@@ -23,6 +23,8 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CpCart extends BasePojo implements Serializable {
     private static final long serialVersionUID = 423186745884095629L;
+    //商品id
+    private Integer goodsId;
     //商品型号id
     private Integer modelId;
     //数量
