@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.system;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +41,15 @@ public class SysButton extends BasePojo implements Serializable {
     private String label;
     //警示语
     private String warning;
+    //表单实体id
+    private Integer formEntityId;
+    //表单携带参数字段id
+    private Integer formFieldId;
+
+
+
+    @TableField(exist = false)
+    private String formFieldCode;
 
 
 }

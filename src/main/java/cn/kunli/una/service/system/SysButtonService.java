@@ -3,7 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysButtonMapper;
 import cn.kunli.una.pojo.system.SysButton;
 import cn.kunli.una.pojo.system.SysEntity;
-import cn.kunli.una.pojo.system.SysMenu;
+import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -62,6 +62,11 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
                     sysButton.setMap(map);
                 }
 
+            }
+
+            if(sysButton.getFormFieldId()!=null){
+                SysField formField = sysFieldService.getById(sysButton.getFormFieldId());
+                if(formField!=null)sysButton.setFormFieldCode(formField.getAssignmentCode());
             }
         }
 

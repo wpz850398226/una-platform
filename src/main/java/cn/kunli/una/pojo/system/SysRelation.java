@@ -17,21 +17,31 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class SysRelation extends BasePojo implements Serializable {
 
-    private Integer parentEntityId;   //树结构实体id
+    //树结构实体id
+    private Integer parentEntityId;
 
-    private Integer entityId;   //数据所属实体id
+    //数据所属实体id
+    private Integer entityId;
 
+    //关联关系的字段id
     private Integer relatedFieldId;
 
+    //树结构查询条件 字段id
     private Integer parentDataFieldId;
 
+    //树结构查询条件 值
     private String parentDataValue;
+
+    //继承字段id
+    private Integer extendFieldId;
 
 
     @TableField(exist = false)
     private String relatedFieldCode;
     @TableField(exist = false)
     private String parentDataFieldCode;
+    @TableField(exist = false)
+    private String extendFieldCode;
     @TableField(exist = false)
     private String parentEntityName;                //父实体名称
     @TableField(exist = false)

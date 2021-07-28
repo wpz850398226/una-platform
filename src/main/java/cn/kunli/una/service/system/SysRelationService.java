@@ -42,6 +42,11 @@ public class SysRelationService extends BasicService<SysRelationMapper, SysRelat
                 SysField parentDataField = sysFieldService.getById(sysRelation.getParentDataFieldId());
                 if(parentDataField!=null)sysRelation.setParentDataFieldCode(parentDataField.getAssignmentCode());
             }
+
+            if(sysRelation.getExtendFieldId()!=null){
+                SysField extendField = sysFieldService.getById(sysRelation.getExtendFieldId());
+                if(extendField!=null)sysRelation.setExtendFieldCode(extendField.getAssignmentCode());
+            }
         }
         return list;
     }
