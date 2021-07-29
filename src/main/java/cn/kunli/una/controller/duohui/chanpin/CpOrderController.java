@@ -1,11 +1,14 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.controller.BaseController;
+import cn.kunli.una.pojo.chanpin.CpDelivery;
 import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpOrder;
 import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.pojo.system.SysConfiguration;
+import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.service.duohui.chanpin.CpDeliveryService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
 import cn.kunli.una.service.duohui.chanpin.CpOrderService;
 import cn.kunli.una.utils.common.ListUtil;
@@ -33,6 +36,8 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
 
     @Autowired
     private CpModelService cpModelService;
+    @Autowired
+    private CpDeliveryService cpDeliveryService;
 
     /**
      * 打开前端 商品详情
@@ -41,6 +46,7 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
      */
     @RequestMapping("/zhifu")
     public String fDetail(Model model, String jsonStr) {
+        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         List<Map> paramMapList = JSONArray.parseArray(jsonStr, Map.class);
         Map<String, List<Map>> mapListMap = new LinkedHashMap<>();
         //店铺总价
@@ -72,11 +78,23 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
             }
         }
 
+        //收货地址
+        List<CpDelivery> deliveryList = cpDeliveryService.parse(cpDeliveryService.selectList(MapUtil.getMap("creatorId", loginUser.getId())));
+
+        //送货方式
+        List<SysDictionary> deliveryTypeList = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_deliveryType"));
+        //付款方式
+        List<SysDictionary> paymentTypeList = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_paymentType"));
+
+
+
 
         model.addAttribute("mapListMap",mapListMap);
         model.addAttribute("shopTotalMap",shopTotalMap);
         model.addAttribute("orderTotal",orderTotal);
-        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+        model.addAttribute("deliveryList",deliveryList);
+        model.addAttribute("deliveryTypeList",deliveryTypeList);
+        model.addAttribute("paymentTypeList",paymentTypeList);
         SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);

@@ -117,8 +117,9 @@
     //计算订单总价
     function calculateOrderTotal(){
         var orderTotal = 0;
-        $("span.modelTotal").each(function(){
-            orderTotal = orderTotal + parseInt($(this).text());
+        $(".modelCheck:checked").each(function(){
+            var modelTotal = $(this).closest("tr.yangshi").find("span.modelTotal:first").text();
+            orderTotal = orderTotal + parseInt(modelTotal);
         })
 
         $("span#total").text(orderTotal);
@@ -154,6 +155,11 @@
         }else{
             $(this).closest("div.biankuang").find(".modelCheck").prop("checked",false);
         }
+        calculateOrderTotal();
+    })
+
+    $(".modelCheck").change(function(){
+        calculateOrderTotal();
     })
 
     //结算
