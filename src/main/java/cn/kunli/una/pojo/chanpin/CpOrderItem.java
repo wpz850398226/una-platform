@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.chanpin;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,4 +33,8 @@ public class CpOrderItem extends BasePojo implements Serializable {
     private Double price;
     //成交量
     private Integer volume;
+
+    //商品型号
+    @TableField(exist = false)
+    private CpModel cpModel;
 }

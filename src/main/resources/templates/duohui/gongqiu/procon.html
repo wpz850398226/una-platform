@@ -250,7 +250,7 @@
 
       <!--放大镜代码开始-->
       <div id=preview>
-        <div class=jqzoom id=spec-n1 onClick="window.open('http:///')"><IMG height=500
+        <div class=jqzoom id=spec-n1 onclick="window.open('http:///')"><IMG height=500
                                                                             th:src="@{/duohui/gongqiu/images/img04.jpg}" jqimg="images/img04.jpg}" width=500> </div>
         <div id=spec-n5>
           <div class=control id=spec-left> <img th:src="@{/duohui/gongqiu/images/disabled-prev.png}" /> </div>
@@ -359,17 +359,17 @@
             <ul class="navContent" style="display: block;">
               <li>
                 <div class="title">颜色</div>
-                <div class="item"> <a class="hover" href="javascript:;"  onClick="changeAtt(this);" >
+                <div class="item"> <a class="hover" href="javascript:;"  onclick="changeAtt(this);" >
                   <input style="display:none" id="spec_value_15787" type="radio" checked />
-                  黄色 <i>已选中</i> </a><a href="javascript:;"  onClick="changeAtt(this);" >
+                  黄色 <i>已选中</i> </a><a href="javascript:;"  onclick="changeAtt(this);" >
                   <input style="display:none" id="spec_value_15787" type="radio" checked />
                   红色 <i>已选中</i></a> </div>
               </li>
               <li>
                 <div class="title">图片</div>
-                <div class="item"> <a class="hover" href="javascript:;"  onClick="changeAtt(this);" >
+                <div class="item"> <a class="hover" href="javascript:;"  onclick="changeAtt(this);" >
                   <input style="display:none" id="spec_value_15787" type="radio" checked />
-                  <img th:src="@{/duohui/gongqiu/images/cxmeng_39.jpg}" width="40" height="40"> <i>已选中</i> </a><a href="javascript:;"  onClick="changeAtt(this);" >
+                  <img th:src="@{/duohui/gongqiu/images/cxmeng_39.jpg}" width="40" height="40"> <i>已选中</i> </a><a href="javascript:;"  onclick="changeAtt(this);" >
                   <input style="display:none" id="spec_value_15787" type="radio" checked />
                   <img th:src="@{/duohui/gongqiu/images/cxmeng_19.jpg}" width="40" height="40"><i>已选中</i></a> </div>
               </li>
@@ -378,9 +378,9 @@
                 <div class="item1">
                   <script language="javascript" type="text/javascript">  function goods_cut(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  if(Num>1)Num=Num-1;  num_val.value=Num;}  function goods_add(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  Num=Num+1;  num_val.value=Num;} </script>
                   <span class="ui-number fl mr10">
-                  <button type="button" class="decrease" onClick="goods_cut();changePrice();"></button>
+                  <button type="button" class="decrease" onclick="goods_cut();changePrice();"></button>
                   <input type="number" class="num" id="number" onBlur="changePrice();" name="number" value="1" min="1" max="99" style=" text-align:center"/>
-                  <button type="button" class="increase" onClick="goods_add();changePrice();"></button>
+                  <button type="button" class="increase" onclick="goods_add();changePrice();"></button>
                   </span>件<em class="ml10">库存27件</em> </div>
               </li>
             </ul>
@@ -461,10 +461,10 @@ changePrice();
     <div class="chanpinshuoming W950 fl">
       <DIV id=con2>
         <UL id=tags>
-          <LI class="selectTag"><A onClick="selectTag('tagContent0',this)" href="javascript:void(0)">商品详细</A></LI>
-          <LI><A onClick="selectTag('tagContent1',this)" href="javascript:void(0)">购物流程</A></LI>
-          <LI><A onClick="selectTag('tagContent2',this)" href="javascript:void(0)">全部评论（55+）</A></LI>
-          <LI><A onClick="selectTag('tagContent3',this)" href="javascript:void(0)">关于我们及售后</A></LI>
+          <LI class="selectTag"><A onclick="selectTag('tagContent0',this)" href="javascript:void(0)">商品详细</A></LI>
+          <LI><A onclick="selectTag('tagContent1',this)" href="javascript:void(0)">购物流程</A></LI>
+          <LI><A onclick="selectTag('tagContent2',this)" href="javascript:void(0)">全部评论（55+）</A></LI>
+          <LI><A onclick="selectTag('tagContent3',this)" href="javascript:void(0)">关于我们及售后</A></LI>
         </UL>
         <DIV id=tagContent>
           <DIV class="tagContent selectTag" id=tagContent0>

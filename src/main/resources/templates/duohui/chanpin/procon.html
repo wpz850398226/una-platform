@@ -420,9 +420,9 @@
   //立即购买
   function bugNow(modelId){
       var buyNumber = $("#buyNumber").val();
-      layer.msg(modelId)
-    window.location.href="/api/cp/order/zhifu?modelId="+modelId
-
+    // window.location.href="/api/cp/order/zhifu/"+modelId+"/"+buyNumber;
+    var json = [{"modelId":modelId,"num":buyNumber}];
+    window.location.href="/api/cp/order/zhifu?jsonStr="+encodeURI(JSON.stringify(json))
   }
 
   //加入购物车

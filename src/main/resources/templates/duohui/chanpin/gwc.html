@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head>
-<meta charset="utf-8"/>
-<title>多汇供应链管理有限公司</title>
-<meta name="keywords" th:content="${systemName}">
-<meta name="description" th:content="${systemName}">
-<link th:href="@{/duohui/chanpin/css/base1.css}" rel="stylesheet" type="text/css">
-<link th:href="@{/duohui/chanpin/css/gwc.css}" rel="stylesheet" type="text/css">
-<link th:href="@{/duohui/chanpin/css/main_001.css}" rel="stylesheet" type="text/css">
-<script th:src="@{/duohui/chanpin/js/jquery-1.js}" type="text/javascript"></script>
-<script th:src="@{/duohui/chanpin/js/public.js}" type="text/javascript"></script>
-<script type="text/javascript">        var _curWeb = "news";</script>
-<!--下面是大图，上面是导航-->
-</head>
+<div th:replace="../templates/duohui/chanpin/include/head :: head"></div>
 <body>
 <div class="header ">
   <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
@@ -39,57 +27,146 @@
         <div class="biankuang">
             <table width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0">
                 <tr class="mt20" style="height:42px; color:#666; font:14px/42px '微软雅黑'; ">
-                    <td colspan="5" align="left" ><input class="ml10 mr10"  type="checkbox" name="items[]" value="6">[[${cartList[0].cpModel.shopName}]]</td>
+                    <td colspan="5" align="left" >
+                        <input class="ml10 mr10 shopCheck"  type="checkbox" name="items[]" value="6">
+                        [[${cartList[0].cpModel.shopName}]]
+                    </td>
                 </tr>
             </table>
             <table width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0" th:each="cart:${cartList}">
                 <tr class="yangshi" >
                   <td width="40%" align="center" valign="middle" ><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td width="20" align="left" valign="top"><input  type="checkbox" name="items[]" value="6"></td>
+                        <td width="20" align="left" valign="top"><input class="modelCheck" type="checkbox" name="items[]" th:value="${cart.cpModel.id}"></td>
                         <td width="120" align="left" valign="top"><a href="#"><img th:src="${cart.cpModel['map']['fileUrl']}" width="110" height="75" class="pic"/></a></td>
-                        <td align="left" valign="top" class=" ft14 jms" ><a href="#">[[${cart.cpModel.goodsName+'('+cart.cpModel.name+')'}]]</a></td>
+                        <td align="left" valign="top" class=" ft14 jms" ><a href="#" class="goodsModelName">[[${cart.cpModel.goodsName+'('+cart.cpModel.name+')'}]]</a></td>
                       </tr>
                     </table></td>
                   <td width="15%" align="center">[[${cart.cpModel.sellingPrice}]] 元</td>
                   <td width="20%" align="center" style="position:relative; bottom:0;"><div class="item1">
-                      <script language="javascript" type="text/javascript">  function goods_cut(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  if(Num>1)Num=Num-1;  num_val.value=Num;}  function goods_add(){var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  Num=Num+1;  num_val.value=Num;} </script>
                       <span class="ui-number fl mr10">
-                      <button type="button" class="decrease" onClick="goods_cut();changePrice();"></button>
-                      <input type="number" class="num" id="number" onBlur="changePrice();" name="number" value="1" min="1" max="99" style=" text-align:center"/>
-                      <button type="button" class="increase" onClick="goods_add();changePrice();"></button>
+                          <input type="hidden" class="sellingPrice" th:value="${cart.cpModel.sellingPrice}">
+                          <button type="button" class="decrease" onclick="goodsCut(this)"></button>
+                          <input type="number" class="num" onblur="calculateModelTotal(this)" name="number" value="1" min="1" max="99" style=" text-align:center"/>
+                          <button type="button" class="increase" onclick="goodsAdd(this)"></button>
                       </span>件<em class="ml10">库存27件</em> </div></td>
-                  <td width="20%" align="center"><span id="total_2263" name="total_2263" >188 元</span></td>
-                  <td width="5%" align="center"><a href="#"><strong style="color:#CCC;  font:16px/32px '微软雅黑';">X</strong></a></td>
+                  <td width="20%" align="center"><span class="modelTotal" name="total_2263"></span>元</td>
+                  <td width="5%" align="center"><a href="javascript:void(0)" th:onclick="removeModel([[${cart.id}]],this)"><strong style="color:#CCC;  font:16px/32px '微软雅黑';">X</strong></a></td>
                 </tr>
             </table>
         </div>
       </td>
     </tr>
 
-
-
-
-
-
     <tr>
       <td colspan="5" align="center" style="background-color:#a1938b; color:#432818; line-height:1px;"></td>
     </tr>
     <tr>
-      <td colspan="5" class="ft14" align="center"><div align="right" style=" font-size:18px; font-weight:900; line-height:55px; color:#d50000;">总计金额（不含运费）： ￥<span id="total" name="total" >188</span>元</div></td>
+      <td colspan="5" class="ft14" align="center">
+          <div align="right" style=" font-size:18px; font-weight:900; line-height:55px; color:#d50000;">
+          总计金额（不含运费）： ￥<span id="total" name="total" ></span>元</div></td>
     </tr>
     <tr>
       <td colspan="5" align="center"  style="line-height:120px;"><div align="right">
           <input type="button"  style="background-color:#ff4500; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px; height:35px;cursor:pointer;" name="button2" id="button2" value="继续购物" />
-          <input type="submit"  style=" margin-left:10px; background-color:#cb0100; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px;height:35px;cursor:pointer; "  name="button" id="button" value="结算" />
+          <input type="button"  style=" margin-left:10px; background-color:#cb0100; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px;height:35px;cursor:pointer; " name="button" id="button" onclick="zhifu()" value="结算" />
         </div></td>
     </tr>
-
-
-
 
   </table>
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<script>
+    $(function(){
+        $("input[type='number'].num").each(function(){
+            calculateModelTotal($(this))
+        })
+    })
+
+    //减数量
+    function goodsCut(e){
+        var numNode = $(e).closest("td").find(".num:first");
+        var num = parseInt(numNode.val());
+        if(num>1){
+            numNode.val(num-1);
+        }
+        calculateModelTotal(e)
+    }
+
+    //加数量
+    function goodsAdd(e){
+        var numNode = $(e).closest("td").find(".num:first");
+        var num = parseInt(numNode.val());
+        numNode.val(num+1);
+        calculateModelTotal(e)
+    }
+
+    //计算商品型号总价
+    function calculateModelTotal(e){
+        var numNode = $(e).closest("td").find(".num:first");
+        var sellingPriceNode = $(e).closest("td").find(".sellingPrice:first");
+
+        var num = parseInt(numNode.val());
+        var price = parseInt(sellingPriceNode.val());
+        var total = num*price;
+
+        $(e).closest("tr.yangshi").find("span.modelTotal:first").text(total);
+        calculateOrderTotal();
+    }
+
+    //计算订单总价
+    function calculateOrderTotal(){
+        var orderTotal = 0;
+        $("span.modelTotal").each(function(){
+            orderTotal = orderTotal + parseInt($(this).text());
+        })
+
+        $("span#total").text(orderTotal);
+    }
+
+    //移除商品
+    function removeModel(cartId,e){
+        layer.confirm('您确定将购物车移除该商品吗？', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+
+            $(e).closest("table").remove();
+            calculateOrderTotal();
+            console.log(cartId)
+            // $.ajax({
+            //     type: 'DELETE',
+            //     dataType: 'json',
+            //     url: "/api/cp/cart/"+cartId,
+            //     success:function(result){
+            //         layer.msg(result.message)
+            //     },
+            //     error: function(XMLHttpRequest) {
+            //         console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+            //     }
+            // })
+        })
+    }
+
+    //店铺全选
+    $(".shopCheck").change(function(){
+        if($(this).is(':checked')){
+            $(this).closest("div.biankuang").find(".modelCheck").prop("checked",true);
+        }else{
+            $(this).closest("div.biankuang").find(".modelCheck").prop("checked",false);
+        }
+    })
+
+    //结算
+    function zhifu(){
+        var mapArray = [];
+        $(".modelCheck:checked").each(function(){
+            var modelId = $(this).val();
+            var num = $(this).closest("tr.yangshi").find(".num:first").val();
+            var map = {"modelId":modelId,"num":num};
+            mapArray.push(map);
+        })
+        window.location.href="/api/cp/order/zhifu?jsonStr="+encodeURI(JSON.stringify(mapArray))
+    }
+</script>
 </body>
 </html>
