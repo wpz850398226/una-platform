@@ -102,6 +102,7 @@ function prepareAutoMultipleSelect(selector,sample){
 	if(paramValue!='all')paramJson = eval('({' + param + '})');
 
 	if(paramValue!=null&&paramValue!=""){
+		console.log("paramValue="+paramValue)
 		$.ajax({
 			type: 'POST',
 			url: url,
@@ -155,6 +156,8 @@ function autoLoadOption(e){
 		,oldOptionNum = e.find("option.una-dynamic").length
 		,param=""
 		,paramJson = {};
+
+		if(paramName.length>0&&paramValue.length<1)return false;
 
 	if(url!=null&&url.indexOf("list")==-1)url = url +"/list";
 	if(optionNameFieldCode==null)optionNameFieldCode="title";
@@ -247,7 +250,7 @@ $("select.una-select-linkage").change(function(){
 		}else{
 			newParamValue = value;
 		}
-		console.log(subIdArray[i])
+		// console.log(subIdArray[i])
 		$("#"+subIdArray[i]).attr("data-param_value",newParamValue);
 		autoLoadOption($("#"+subIdArray[i]));
 	}

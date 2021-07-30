@@ -11,214 +11,229 @@
 <div class="clear clearfix w1150"><a href="#0"><img th:src="@{/duohui/chanpin/images/1_39.jpg}" width="1150"></a></div>
 <div class=" clear clearfix w1150 " style="padding:20px 0;  margin:0 auto;">
 
+    <form method="post" id="submitForm" onsubmit="return false;">
 
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td height="34" bgcolor="#f2f2f2" class="tt">收货人地址</td>
-        </tr>
-    </table>
-    <table width="96%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#dcdcdc"
-           style="margin-top:15px; margin-left:20px; margin-bottom:15px;">
-        <tr>
-            <td width="5%" height="28" align="center" bgcolor="#ffffff" class="ft14">选择</td>
-            <td width="10%" bgcolor="#ffffff" class="ft14">收货 人</td>
-            <td width="24%" bgcolor="#ffffff" class="ft14">联系电话</td>
-            <td width="61%" bgcolor="#ffffff" class="ft14">地址</td>
-        </tr>
-        <tr>
-            <td height="35" align="center" bgcolor="#FFFFFF" class="ft14">
-                <input name="lianxi" type="radio" id="lianxi" value="" onclick="openinputshr()"/>
-            </td>
-            <td align="left" valign="middle" bgcolor="#FFFFFF" class="ft14">张三</td>
-            <td align="left" valign="middle" bgcolor="#FFFFFF" class="ft14">15932175641</td>
-            <td align="left" valign="middle" bgcolor="#FFFFFF" class="ft14">河北省石家庄市</td>
-        </tr>
-    </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td height="34" bgcolor="#f2f2f2" class="tt">收货人地址</td>
+            </tr>
+        </table>
+        <table width="96%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#dcdcdc"
+               style="margin-top:15px; margin-left:20px; margin-bottom:15px;">
+            <tr>
+                <td width="5%" height="28" align="center" bgcolor="#ffffff" class="ft14">选择</td>
+                <td width="10%" bgcolor="#ffffff" class="ft14">收货 人</td>
+                <td width="24%" bgcolor="#ffffff" class="ft14">联系电话</td>
+                <td width="61%" bgcolor="#ffffff" class="ft14">地址</td>
+            </tr>
+            <tr th:each="delivery:${deliveryList}">
+                <td height="35" align="center" bgcolor="#FFFFFF" class="ft14">
+                    <input name="deliveryId" type="radio" th:value="${delivery.id}"/>
+                </td>
+                <td align="left" valign="middle" bgcolor="#FFFFFF" class="ft14">[[${delivery.name}]]</td>
+                <td align="left" valign="middle" bgcolor="#FFFFFF" class="ft14">[[${delivery.phone}]]</td>
+                <td align="left" valign="middle" bgcolor="#FFFFFF" class="ft14">[[${delivery.address}]]</td>
+            </tr>
+        </table>
+        <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style=" margin-top:15px; margin-bottom:15px;">
+            <tr>
+                <td width="13%" height="35" align="right" class="ft14"> 添加新收货地址：</td>
+                <td width="87%" align="left"><input class="" type="checkbox" name="isNewDelivery" id="isNewDelivery" value="1"></td>
+            </tr>
+        </table>
+        <table class="addNewDelivery" width="96%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style=" margin-top:15px; margin-bottom:15px;display: none">
+            <tr>
+                <td width="13%" height="35" align="right" class="ft14"><span class=" red">*</span> 收货人：</td>
+                <td width="87%" align="left"><input type="text" id="uname" name="delivery.name" maxlength="20" class="yledit"/></td>
+            </tr>
+            <tr>
+                <td width="13%" height="35" align="right" class="ft14"><span class=" red">*</span> 所在区域：</td>
+                <td align="left" valign="middle">
+                    <select class="una-select una-select-linkage fl v6Input" style="color:#444; width:150px;"
+                            lay-verify="required"
+                            lay-search=""
+                            data-param_name="level"
+                            data-param_value="2"
+                            data-sub_id="regionCity"
+                            data-option_value_field_title="id"
+                            data-url="/api/sys/region"></select>
+                    <select class="una-select una-select-linkage fl ml10 v6Input" style="color:#444; width:150px;"
+                            id="regionCity"
+                            lay-verify="required"
+                            lay-search=""
+                            data-param_name="parentId"
+                            data-sub_id="regionId"
+                            data-option_value_field_title="id"
+                            data-url="/api/sys/region"></select>
+                    <select class="una-select fl ml10 v6Input" style="color:#444; width:150px;"
+                            id="regionId"
+                            name="delivery.regionId"
+                            lay-verify="required"
+                            lay-search=""
+                            data-param_name="parentId"
+                            data-option_value_field_title="id"
+                            data-url="/api/sys/region"></select>
+                    <span class="redfont"></span></td>
+            </tr>
+            <tr>
+                <td height="35" align="right" class="ft14"><span class=" red">*</span> 详细地址：</td>
+                <td align="left"><input name="delivery.address" type="text" class="yledit" id="address" size="60" maxlength="50">
+                </td>
+            </tr>
+            <tr>
+                <td height="35" align="right" class="ft14"><span class=" red">*</span> 手机号码：</td>
+                <td align="left"><input type="text" class="yledit" id="mobile" name="delivery.phone" maxlength="11">
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td height="26" bgcolor="#EEEEEE" class="tt">送货方式</td>
+            </tr>
+        </table>
+        <table width="96%" border="0" style="margin-left:20px; " cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+            <tr th:each="deliveryType:${deliveryTypeList}">
+                <td height="40" class="ft14" align="left">
+                    <input type="radio" name="deliveryTypeDcode" th:value="${deliveryType.code}"/>
+                    [[${deliveryType.name}]]
+                </td>
+                <td align="left">&nbsp;</td>
+            </tr>
+        </table>
 
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td height="34" bgcolor="#f2f2f2" class="tt">添加新的联系人</td>
-        </tr>
-    </table>
-    <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF"
-           style=" margin-top:15px; margin-bottom:15px;">
-
-        <tr>
-            <td width="13%" height="35" align="right" class="ft14"><span class=" red">*</span> 收货人：</td>
-            <td width="87%" align="left"><input type="text" id="uname" name="uname" maxlength="20" class="yledit"/></td>
-        </tr>
-        <tr>
-            <td width="13%" height="35" align="right" class="ft14"><span class=" red">*</span> 所在区域：</td>
-            <td align="left" valign="middle"><select name="region" class="fl v6Input" val=""
-                                                     style="color:#444; width:150px;">
-                <option value="" style="color:#888;">请选择</option>
-                <option value="01">北京</option>
-                <option value="02">天津</option>
-                <option value="03">上海</option>
-                <option value="04">重庆</option>
-                <option value="05">河北</option>
-                <option value="06">河南</option>
-                <option value="07">江苏</option>
-                <option value="08">浙江</option>
-                <option value="09">辽宁</option>
-                <option value="0a">黑龙江</option>
-                <option value="0b">吉林</option>
-                <option value="0c">山西</option>
-            </select>
-                <select name="region" class="fl ml10 v6Input" val="" style="color:#444; width:150px;">
-                    <option value="" style="color:#888;">请选择</option>
-                    <option value="01">北京</option>
-                    <option value="02">天津</option>
-                    <option value="03">上海</option>
-                    <option value="04">重庆</option>
-                    <option value="05">河北</option>
-                    <option value="06">河南</option>
-                    <option value="07">江苏</option>
-                    <option value="08">浙江</option>
-                    <option value="09">辽宁</option>
-                    <option value="0a">黑龙江</option>
-                    <option value="0b">吉林</option>
-                    <option value="0c">山西</option>
-                </select>
-                <select name="region" class="fl ml10 v6Input" val="" style="color:#444;  width:150px;">
-                    <option value="" style="color:#888;">请选择</option>
-                    <option value="01">北京</option>
-                    <option value="02">天津</option>
-                    <option value="03">上海</option>
-                    <option value="04">重庆</option>
-                    <option value="05">河北</option>
-                    <option value="06">河南</option>
-                    <option value="07">江苏</option>
-                    <option value="08">浙江</option>
-                    <option value="09">辽宁</option>
-                    <option value="0a">黑龙江</option>
-                    <option value="0b">吉林</option>
-                    <option value="0c">山西</option>
-                </select>
-                <span class="redfont"></span></td>
-        </tr>
-        <tr>
-            <td height="35" align="right" class="ft14"><span class=" red">*</span> 详细地址：</td>
-            <td align="left"><input name="address" type="text" class="yledit" id="address" size="60" maxlength="50">
-            </td>
-        </tr>
-        <tr>
-            <td height="35" align="right" class="ft14"><span class=" red">*</span> 手机号码：</td>
-            <td align="left"><input type="text" class="yledit" id="mobile" name="mobile" maxlength="11">
-            </td>
-        </tr>
-
-    </table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td height="26" bgcolor="#EEEEEE" class="tt">送货方式</td>
-        </tr>
-    </table>
-    <table width="96%" border="0" style="margin-left:20px; " cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-        <tr th:each="deliveryType:${deliveryTypeList}">
-            <td height="40" class="ft14" align="left"><input type="radio" name="yz" value="快递"/>
-                [[${deliveryType.name}]]
-            </td>
-            <td align="left">&nbsp;</td>
-        </tr>
-    </table>
-
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td height="26" bgcolor="#EEEEEE" class="tt">付款方式</td>
-        </tr>
-    </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td height="26" bgcolor="#EEEEEE" class="tt">付款方式</td>
+            </tr>
+        </table>
 
 
-    <table width="96%" border="0" align="center" style="margin-left:20px; " cellpadding="0" cellspacing="0"
-           bgcolor="#FFFFFF">
+        <table width="96%" border="0" align="center" style="margin-left:20px; " cellpadding="0" cellspacing="0"
+               bgcolor="#FFFFFF">
 
-        <tr th:each="paymentType:${paymentTypeList}">
-            <td width="141" height="26" class="ft14 f14" align="left"><input type="radio" value="2" name="fkfangsi"/>
-                <b>[[${paymentType.name}]]</b></td>
-            <td width="1049" align="left">[[${paymentType.remark}]]</td>
-        </tr>
-    </table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td height="26" bgcolor="#EEEEEE" class="tt">商品清单</td>
-        </tr>
-    </table>
+            <tr th:each="paymentType:${paymentTypeList}">
+                <td width="141" height="26" class="ft14 f14" align="left">
+                    <input type="radio" th:value="${paymentType.code}" name="paymentTypeDcode"/>
+                    <b>[[${paymentType.name}]]</b>
+                </td>
+                <td width="1049" align="left">[[${paymentType.remark}]]</td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td height="26" bgcolor="#EEEEEE" class="tt">商品清单</td>
+            </tr>
+        </table>
 
 
-    <table class="gouwuche" width="100%" border="0" align="center" cellpadding="0" cellspacing="0"
-           style="margin-top:15px; margin-bottom:15px;">
-        <tr style="height:42px; background-color:#f2f2f2; color:#666; font:14px/42px '微软雅黑'; ">
-            <td width="40%" align="center" style="border:1px solid #dcdcdc; border-right:none;">商品</td>
-            <td width="15%" align="center" style="border:1px solid #dcdcdc; border-right:none;">单价</td>
-            <td width="20%" align="center" style="border:1px solid #dcdcdc; border-right:none;">数量</td>
-            <td width="20%" align="center" style="border:1px solid #dcdcdc; border-right:none;">合计</td>
-        </tr>
+        <table class="gouwuche" width="100%" border="0" align="center" cellpadding="0" cellspacing="0"
+               style="margin-top:15px; margin-bottom:15px;">
+            <tr style="height:42px; background-color:#f2f2f2; color:#666; font:14px/42px '微软雅黑'; ">
+                <td width="40%" align="center" style="border:1px solid #dcdcdc; border-right:none;">商品</td>
+                <td width="15%" align="center" style="border:1px solid #dcdcdc; border-right:none;">单价</td>
+                <td width="20%" align="center" style="border:1px solid #dcdcdc; border-right:none;">数量</td>
+                <td width="20%" align="center" style="border:1px solid #dcdcdc; border-right:none;">合计</td>
+            </tr>
 
-        <tr th:each="entry:${mapListMap}" class="mt20" style="height:42px; color:#666; font:14px/42px '微软雅黑'; ">
-            <td colspan="5" align="left">
-                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-                    <tr style="height:10px; background-color:#fff; color:#666; font:14px/42px '微软雅黑'; ">
-                        <td colspan="5" align="left"></td>
-                    </tr>
-                    <tr class="mt20" style="height:42px; color:#666; font:14px/42px '微软雅黑'; ">
-                        <td colspan="5" align="left">[[${entry.key}]]</td>
-                    </tr>
-                </table>
-                <div class="biankuang">
-                    <table th:each="map:${entry.value}" width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0">
-                        <tr class="yangshi">
-                            <td width="40%" align="center" valign="middle">
-                                <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td width="120" align="left" valign="top">
-                                            <a href="#">
-                                                <img th:src="${map['cpModel']['map']['fileUrl']}" width="110" height="75" class="pic"/>
-                                            </a>
-                                        </td>
-                                        <td align="left" valign="top" class=" ft14 jms"><a href="#">[[${map['cpModel']['goodsName']}]]</a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td width="15%" align="center">[[${map['cpModel']['sellingPrice']}]] 元</td>
-                            <td width="20%" align="center" style="position:relative; bottom:0;">
-                                <div class="item1">
-                                   <span>  [[${map['volume']}]] </span>件
-                                </div>
-                            </td>
-                            <td width="20%" align="center"><span class="red">[[${map['totalAmount']}]] 元</span></td>
+            <tr th:each="entry,orderStatus:${mapListMap}" class="mt20" style="height:42px; color:#666; font:14px/42px '微软雅黑'; ">
+                <td colspan="5" align="left">
+                    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr style="height:10px; background-color:#fff; color:#666; font:14px/42px '微软雅黑'; ">
+                            <td colspan="5" align="left"></td>
+                        </tr>
+                        <tr class="mt20" style="height:42px; color:#666; font:14px/42px '微软雅黑'; ">
+                            <td colspan="5" align="left">[[${entry.key}]]</td>
                         </tr>
                     </table>
-                    <table width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0">
-                        <td colspan="5" align="right" style="padding-right:30px;">店铺合计(含运费)<span class="red">￥[[${shopTotalMap[entry.key]}]]</span></td>
-                    </table>
-                </div>
-            </td>
-        </tr>
+                    <div class="biankuang">
+                        <table th:each="map,status:${entry.value}" width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0">
+                            <tr class="yangshi">
+                                <td width="40%" align="center" valign="middle">
+                                    <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="120" align="left" valign="top">
+                                                <a href="#">
+                                                    <img th:src="${map['cpModel']['map']['fileUrl']}" width="110" height="75" class="pic"/>
+                                                </a>
+                                            </td>
+                                            <td align="left" valign="top" class=" ft14 jms">
+                                                <input type="hidden" th:value="${map['cpModel']['id']}" th:name="${'modelIdList['+status.index+']'}">
+                                                <a href="#">[[${map['cpModel']['goodsName']}]]</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td width="15%" align="center">[[${map['cpModel']['sellingPrice']}]] 元</td>
+                                <td width="20%" align="center" style="position:relative; bottom:0;">
+                                    <div class="item1">
+                                        <input type="hidden" th:name="${'volumeList['+status.index+']'}" th:value="${map['volume']}">
+                                       <span>  [[${map['volume']}]] </span>件
+                                    </div>
+                                </td>
+                                <td width="20%" align="center"><span class="red">[[${map['totalAmount']}]] 元</span></td>
+                            </tr>
+                        </table>
+                        <table width="100%" border="0" style=" border-bottom:1px solid #ccc;" align="center" cellpadding="0" cellspacing="0">
+                            <td colspan="5" align="right" style="padding-right:30px;">店铺合计(含运费)<span class="red">￥[[${shopTotalMap[entry.key]}]]</span></td>
+                        </table>
+                    </div>
+                </td>
+            </tr>
 
-        <tr>
-            <td colspan="5" align="center" style="background-color:#a1938b; color:#432818; line-height:1px;"></td>
-        </tr>
-        <tr>
-            <td colspan="5" class="ft14" align="center">
-                <div align="right" style=" font-size:18px; font-weight:900; line-height:55px; color:#d50000;">
-                    总计金额（不含运费）： ￥<span id="total" name="total">[[${orderTotal}]]</span>元
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5" align="center" style="line-height:120px;">
-                <div align="right">
-                    <input type="button" style="background-color:#ff4500; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px; height:35px;cursor:pointer;" name="button2" id="button2" value="继续购物"/>
-                    <input type="submit" style=" margin-left:10px; background-color:#cb0100; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px;height:35px;cursor:pointer; " name="button" id="button" value="确认订单"/>
-                </div>
-            </td>
-        </tr>
-
-
-    </table>
+            <tr>
+                <td colspan="5" align="center" style="background-color:#a1938b; color:#432818; line-height:1px;"></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="ft14" align="center">
+                    <div align="right" style=" font-size:18px; font-weight:900; line-height:55px; color:#d50000;">
+                        总计金额（不含运费）： ￥<span id="total" name="total">[[${orderTotal}]]</span>元
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" align="center" style="line-height:120px;">
+                    <div align="right">
+                        <input type="button" style="background-color:#ff4500; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px; height:35px;cursor:pointer;" name="button2" id="button2" value="继续购物"/>
+                        <input type="submit" style=" margin-left:10px; background-color:#cb0100; font:14px/35px '微软雅黑'; color:#ffffff; border:0; width:132px;height:35px;cursor:pointer; " value="提交订单" onclick="submitOrder()"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<script th:src="@{/xadmin/js/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/una/js/private/una.common.js}" charset="utf-8"></script>
+<script>
+    $("#isNewDelivery").change(function(){
+        if($(this).is(':checked')){
+            $(".addNewDelivery").css("display","block");
+        }else{
+            $(".addNewDelivery").css("display","none");
+        }
+
+    })
+
+    function submitOrder(){
+        var form = $("#submitForm");
+        $.ajax({
+            url: '/api/cp/order/save',
+            type: "POST",
+            data: form.serialize(),
+            dataType: 'json',
+            success:function(result){
+                if(result.isSuccess){
+                    layer.msg(result.message);
+                }else{
+                    //登录失败，刷新验证码
+                    form.find("input[name=captcha]").val("");
+                    form.find(".captchaImage").click();
+                    layer.msg(result.message,function () {})
+                }
+
+            }
+        })
+    }
+</script>
 </body>
 </html>

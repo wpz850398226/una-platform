@@ -108,41 +108,27 @@
                                           th:id="${record['id']}"></textarea>
                             </div>
 
-                            <div th:case="地区三级联动"  class="layui-input-inline">
+                            <div th:case="field_assignment_gangedRegion"  class="layui-input-inline">
                                 <select class="una-select una-select-linkage" lay-search=""
-                                        th:id="${record['id']}_province"
-                                        th:name="${record['assignmentCode']}"
-                                        th:data-sub_id="${record.selectSubIds}"
-                                        th:data-param_name="${record['optionParamName']}"
-                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                    record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                        th:data-url="${record['optionEntityPath']}">
+                                        th:data-sub_id="${record['id']+'_city'}"
+                                        data-param_name="level"
+                                        data-param_value="2"
+                                        data-option_value_field_title="id"
+                                        data-url="/api/sys/region">
                                 </select>
                                 <select class="una-select una-select-linkage" lay-search=""
-                                        th:lay-verify="${record.formatCheckTypeDcode}"
-                                        th:id="${record['id']}"
-                                        th:name="${record['assignmentCode']}"
-                                        th:data-sub_id="${record.selectSubIds}"
-                                        th:data-param_name="${record['optionParamName']}"
-                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                    record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                        th:data-url="${record['optionEntityPath']}">
+                                        th:id="${record['id']+'_city'}"
+                                        th:data-sub_id="${record['id']}"
+                                        data-param_name="parentId"
+                                        data-option_value_field_title="id"
+                                        data-url="/api/sys/region">
                                 </select>
-                                <select class="una-select una-select-linkage" lay-search=""
-                                        th:lay-verify="${record.formatCheckTypeDcode}"
+                                <select class="una-select" lay-search=""
                                         th:id="${record['id']}"
                                         th:name="${record['assignmentCode']}"
-                                        th:data-sub_id="${record.selectSubIds}"
-                                        th:data-param_name="${record['optionParamName']}"
-                                        th:data-param_value="${record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$s')?sample[#strings.substringAfter(record['optionParamValue'],'.')]:
-                                    record['optionParamValue']!=null && #strings.contains(record['optionParamValue'],'$u')?activeUser[#strings.substringAfter(record['optionParamValue'],'.')]:record['optionParamValue']}"
-                                        th:data-option_name_field_title="${record['optionNameFieldCode']}"
-                                        th:data-option_value_field_title="${record['optionValueFieldCode']}"
-                                        th:data-url="${record['optionEntityPath']}">
+                                        data-param_name="parentId"
+                                        data-option_value_field_title="id"
+                                        data-url="/api/sys/region">
                                 </select>
                             </div>
 

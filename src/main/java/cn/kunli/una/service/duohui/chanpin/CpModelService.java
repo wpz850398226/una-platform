@@ -34,6 +34,18 @@ public class CpModelService extends BasicService<CpModelMapper, CpModel> {
 
 
     @Override
+    public CpModel initialize(CpModel obj) {
+        obj = super.initialize(obj);
+
+        if(obj.getGoodsId()!=null){
+            CpGoods cpGoods = cpGoodsService.getById(obj.getGoodsId());
+            obj.setShopId(cpGoods.getShopId());
+        }
+
+        return obj;
+    }
+
+    @Override
     public List<CpModel> parse(List<CpModel> list) {
         list = super.parse(list);
 
