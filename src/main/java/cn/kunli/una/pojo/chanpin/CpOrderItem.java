@@ -34,7 +34,7 @@ public class CpOrderItem extends BasePojo implements Serializable {
     //成交量
     private Integer volume;
 
-    //商品型号
+    //商品型号示意图
     @TableField(exist = false)
-    private CpModel cpModel;
+    private String modelFileUrl;
 }

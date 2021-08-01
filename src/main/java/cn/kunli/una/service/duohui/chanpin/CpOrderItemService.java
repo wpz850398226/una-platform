@@ -6,8 +6,11 @@ import cn.kunli.una.pojo.chanpin.CpOrder;
 import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.utils.common.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 商城-订单明细表(CpOrderDetail)表服务类
@@ -68,7 +71,24 @@ public class CpOrderItemService extends BasicService<CpOrderItemMapper, CpOrderI
             }
         }
 
-
         return obj;
+    }
+
+    @Override
+    public List<CpOrderItem> parse(List<CpOrderItem> list) {
+        list = super.parse(list);
+
+        for (CpOrderItem cpOrderItem : list) {
+            if(cpOrderItem.getModelId()!=null){
+                CpModel cpModel = cpModelService.getById(cpOrderItem.getModelId());
+                if(cpModel.getFileId()!=null){
+                    cpModel = cpModelService.parse(ListUtil.getList(cpModel)).get(0);
+                    cpOrderItem.setModelFileUrl(String.valueOf(cpModel.getMap().get("fileUrl")));
+                }
+            }
+        }
+
+
+        return list;
     }
 }

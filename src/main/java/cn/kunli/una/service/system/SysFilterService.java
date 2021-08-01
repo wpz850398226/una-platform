@@ -28,7 +28,7 @@ public class SysFilterService extends BasicService<SysFilterMapper, SysFilter> {
 
         for (SysFilter sysFilter : list) {
             SysField sysField = sysFieldService.getById(sysFilter.getFieldId());
-            sysFilter.setFieldCode(sysField.getAssignmentCode());
+            if(sysField!=null)sysFilter.setFieldCode(sysField.getAssignmentCode());
         }
 
         return list;
