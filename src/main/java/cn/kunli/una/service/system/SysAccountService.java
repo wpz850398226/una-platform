@@ -39,14 +39,6 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     public SysResult updateRecordById(SysAccount entity) {
         if(entity.getIsAudit()!=null&&entity.getIsAudit()){
             //审核通过
-            CpShop cpShop = (CpShop) new CpShop().setName(entity.getName() + "的店铺");
-            //创建店铺
-            SysResult shopResult = cpShopService.saveRecord(cpShop);
-            if(shopResult.getIsSuccess()){
-                entity.setShopId(cpShop.getId());
-            }else{
-                entity.setRemark(entity.getRemark()+"|"+shopResult.getMessage());
-            }
 
             //创建企业
             SysAccount sysAccount = sysAccountService.getById(entity.getId());
@@ -58,6 +50,14 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
                 }else{
                     entity.setRemark(entity.getRemark()+"|"+companyResult.getMessage());
                 }
+            }
+            CpShop cpShop = (CpShop) new CpShop().setName(entity.getName() + "的店铺").setCreatorId(entity.getId()).setCompanyId(entity.getCompanyId());
+            //创建店铺
+            SysResult shopResult = cpShopService.saveRecord(cpShop);
+            if(shopResult.getIsSuccess()){
+                entity.setShopId(cpShop.getId());
+            }else{
+                entity.setRemark(entity.getRemark()+"|"+shopResult.getMessage());
             }
         }
         return super.updateRecordById(entity);
