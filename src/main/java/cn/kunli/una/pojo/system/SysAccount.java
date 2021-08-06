@@ -57,7 +57,7 @@ public class SysAccount extends BasePojo implements Serializable {
     private Integer superiorAccountId;
     //店铺id
     private Integer shopId;
-    //企业类型
+    //行业类型
     private String industryTypeDcode;
     //坐标
     private String coord;

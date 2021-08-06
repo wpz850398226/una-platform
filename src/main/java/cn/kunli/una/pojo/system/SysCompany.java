@@ -36,8 +36,12 @@ public class SysCompany extends BasePojo implements Serializable {
     private String acreage;
     //主要职责
     private String mainResponsibility;
-    //行业id们
-    private String industryDcode;
+    //所属一级行业编码
+    private String primaryIndustryDcode;
+    //所属二级行业编码
+    private String secondryIndustryDcode;
+    //所属三级行业编码
+    private String thirdryIndustryDcode;
     //注册资本
     private String registeredCapital;
     //注册日期
@@ -68,6 +72,8 @@ public class SysCompany extends BasePojo implements Serializable {
     private String coord;
     //附件
     private String fileIds;
+    //标题图片
+    private Integer titleFileId;
 
     @TableField(exist = false)
     private String legalPersonName;        //法人姓名

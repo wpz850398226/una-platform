@@ -6,6 +6,7 @@ import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpShop;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
+import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -128,7 +129,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             }
         }*/
         //赋值行业类型
-        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
+        if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
                 SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
                 obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
@@ -138,7 +139,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
 
             }
-        }*/
+        }
 
         return obj;
     }
