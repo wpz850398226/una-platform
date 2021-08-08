@@ -1,12 +1,12 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysAccountMapper;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,10 +30,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     public BasicService getThisProxy() {
         return sysAccountService;
     }
-    @Autowired
-    private CpShopService cpShopService;
-    @Autowired
-    private SysCompanyService sysCompanyService;
+
 
     @Override
     public SysResult updateRecordById(SysAccount entity) {
@@ -44,21 +41,14 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             SysAccount sysAccount = sysAccountService.getById(entity.getId());
             if(sysAccount.getTypeDcode().equals("account_type_company")){
 
-                SysCompany sysCompany = (SysCompany)new SysCompany().setThirdryIndustryDcode(sysAccount.getIndustryTypeDcode()).setName(entity.getName());
+                SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryTypeDcodes(sysAccount.getIndustryTypeDcodes())
+                        .setCoord(sysAccount.getCoord()).setTypeDcode(sysAccount.getTypeDcode()).setName(entity.getName());
                 SysResult companyResult = sysCompanyService.saveRecord(sysCompany);
                 if(companyResult.getIsSuccess()){
                     entity.setCompanyId(sysCompany.getId());
                 }else{
                     entity.setRemark(entity.getRemark()+"|"+companyResult.getMessage());
                 }
-            }
-            CpShop cpShop = (CpShop) new CpShop().setName(entity.getName() + "的店铺").setCreatorId(entity.getId()).setCompanyId(entity.getCompanyId());
-            //创建店铺
-            SysResult shopResult = cpShopService.saveRecord(cpShop);
-            if(shopResult.getIsSuccess()){
-                entity.setShopId(cpShop.getId());
-            }else{
-                entity.setRemark(entity.getRemark()+"|"+shopResult.getMessage());
             }
         }
         return super.updateRecordById(entity);
@@ -70,7 +60,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
         if (StringUtils.isNotBlank(obj.getUsername())) {
-            List<SysAccount> objList = getThisProxy().selectList(MapUtil.getMap("username", obj.getUsername().trim()));
+            List<SysAccount> objList = sysAccountService.selectList(MapUtil.getMap("username", obj.getUsername().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
             }
@@ -102,12 +92,16 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
                     obj.setStatusDcode("account_status_auditFail");
                 }
             }
+
+            if(obj.getIsSubmit()!=null&&obj.getIsSubmit()){
+                obj.setStatusDcode("account_status_toAudit");
+            }
         }
 
         //格式化账号，姓名（去空格）
         if (StringUtils.isNotBlank(obj.getUsername())) obj.setUsername(obj.getUsername().replace(" ", ""));
         if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
-        if (StringUtils.isNotBlank(obj.getPassword())) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
+        if (StringUtils.isNotBlank(obj.getPassword())&&obj.getPassword().length()>=4&&!obj.getPassword().substring(0,4).equals("$2a$")) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
 
         return obj;
     }

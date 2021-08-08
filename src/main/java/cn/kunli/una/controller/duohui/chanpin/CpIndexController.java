@@ -1,11 +1,11 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
@@ -36,7 +36,7 @@ public class CpIndexController {
     @Autowired
     private SysDataService sysDataService;
     @Autowired
-    private CpShopService cpShopService;
+    private SysCompanyService sysCompanyService;
     @Autowired
     private SysRegionService sysRegionService;
     @Autowired
@@ -59,7 +59,7 @@ public class CpIndexController {
         //热门商铺
         if(record.getValue().get("rmsp")!=null){
             String rmsp = String.valueOf(record.getValue().get("rmsp"));
-            List<CpShop> list = cpShopService.parse(cpShopService.selectList(MapUtil.getMap("in:code", rmsp)));
+            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:code", rmsp)));
             model.addAttribute("hotShopList",list);
         }
 
@@ -79,27 +79,27 @@ public class CpIndexController {
             model.addAttribute("goodsListMap",goodsListMap);
 
             //查询置顶商铺
-            List<CpShop> shopList = new ArrayList<>();
-            Page<CpShop> stickShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
-            shopList = stickShopPage.getRecords();
-            if(shopList.size()<=goodsStatusDlist.size()){
-                Page<CpShop> refreshShopPage = cpShopService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
+            List<SysCompany> companyList = new ArrayList<>();
+            Page<SysCompany> stickShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
+            companyList = stickShopPage.getRecords();
+            if(companyList.size()<=goodsStatusDlist.size()){
+                Page<SysCompany> refreshShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
                 if(refreshShopPage.getTotal()>0){
-                    List<CpShop> records = refreshShopPage.getRecords();
-                    if(shopList.size()==0){
-                        shopList = records;
+                    List<SysCompany> records = refreshShopPage.getRecords();
+                    if(companyList.size()==0){
+                        companyList = records;
                     }else{
-                        shopList.addAll(records);
+                        companyList.addAll(records);
                     }
                 }
             }
 
-            model.addAttribute("recommendShopList",cpShopService.parse(shopList));
+            model.addAttribute("recommendShopList",sysCompanyService.parse(companyList));
 
             //合作企业
-            Page<CpShop> coopShopPage = cpShopService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
-            List<CpShop> parse = cpShopService.parse(coopShopPage.getRecords());
-            List<CpShop> coopShopList = new ArrayList<>();
+            Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
+            List<SysCompany> parse = sysCompanyService.parse(coopShopPage.getRecords());
+            List<SysCompany> coopShopList = new ArrayList<>();
             coopShopList.addAll(parse);
             coopShopList.addAll(parse);
             coopShopList.addAll(parse);

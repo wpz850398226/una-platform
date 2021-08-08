@@ -55,14 +55,12 @@ public class SysAccount extends BasePojo implements Serializable {
     private String onlineSession;
     //直接上级 账号id
     private Integer superiorAccountId;
-    //店铺id
-    private Integer shopId;
     //行业类型
-    private String industryTypeDcode;
+    private String industryTypeDcodes;
     //坐标
     private String coord;
-    //地区
-    private Integer regionId;
+    //所属地区
+    private String regionIds;
     //会员截止日期
     private Date memberDeadline;
 
@@ -77,5 +75,7 @@ public class SysAccount extends BasePojo implements Serializable {
     private SysUser sysUser;
     @TableField(exist = false)
     private Boolean isAudit;    //是否审核通过
+    @TableField(exist = false)
+    private Boolean isSubmit;    //是否提交审核
 
 }

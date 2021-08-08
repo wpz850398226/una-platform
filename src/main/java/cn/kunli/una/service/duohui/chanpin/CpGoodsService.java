@@ -4,12 +4,14 @@ import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.chanpin.CpSpecification;
+import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
@@ -37,8 +39,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     private CpSpecificationService cpSpecificationService;
     @Autowired
     private CpModelService cpModelService;
-    @Autowired
-    private CpShopService cpShopService;
+
     @Autowired
     private SysRegionService sysRegionService;
 
@@ -106,11 +107,11 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         if(obj.getId()==null){
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
             SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-            if(loginUser.getShopId()!=null){
-                obj.setShopId(loginUser.getShopId());
-                if(obj.getAreaRegionId()==null){
-                    CpShop cpShop = cpShopService.getById(loginUser.getShopId());
-                    obj.setAreaRegionId(cpShop.getRegionId());
+            if(loginUser.getCompanyId()!=null){
+                obj.setCompanyId(loginUser.getCompanyId());
+                if(obj.getRegionIds()==null){
+                    SysCompany sysCompany = sysCompanyService.getById(loginUser.getCompanyId());
+                    obj.setRegionIds(sysCompany.getRegionIds());
                 }
             }
 
@@ -129,7 +130,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             }
         }*/
         //赋值行业类型
-        if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
+        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
                 SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
                 obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
@@ -139,7 +140,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
 
             }
-        }
+        }*/
 
         return obj;
     }
@@ -161,16 +162,16 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                 }
 
             }
-            CpShop cpShop = cpShopService.getById(cpGoods.getShopId());
-            cpGoods.setIsOpenShop(cpShop.getIsFacade());
-            if(StringUtils.isNotBlank(cpGoods.getPrimaryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getSecondryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getThirdryIndustryDcode())){
+            SysCompany sysCompany = sysCompanyService.getById(cpGoods.getCompanyId());
+            cpGoods.setIsOpenShop(sysCompany.getIsFacade());
+            /*if(StringUtils.isNotBlank(cpGoods.getPrimaryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getSecondryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getThirdryIndustryDcode())){
                 String[] industryCode = new String[]{cpGoods.getPrimaryIndustryDcode(),cpGoods.getSecondryIndustryDcode(),cpGoods.getThirdryIndustryDcode()};
                 cpGoods.setIndustryDcode(industryCode);
-            }
-            if(cpGoods.getProvinceRegionId()!=null&&cpGoods.getCityRegionId()!=null&&cpGoods.getAreaRegionId()!=null){
+            }*/
+            /*if(cpGoods.getProvinceRegionId()!=null&&cpGoods.getCityRegionId()!=null&&cpGoods.getAreaRegionId()!=null){
                 String[] areas = new String[]{cpGoods.getProvinceRegionId().toString(),cpGoods.getCityRegionId().toString(),cpGoods.getAreaRegionId().toString()};
                 cpGoods.setAreas(areas);
-            }
+            }*/
         }
         return list;
     }

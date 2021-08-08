@@ -1,11 +1,11 @@
 package cn.kunli.una.controller.duohui.qiye;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.ListUtil;
@@ -22,8 +22,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/duohui/qiye")
 public class QyIndexController {
-    @Autowired
-    private SysCompanyService sysCompanyService;
+
     @Autowired
     SysConfigurationService sysConfigurationService;
     @Autowired
@@ -33,11 +32,11 @@ public class QyIndexController {
     @Autowired
     private SysDataService sysDataService;
     @Autowired
-    private CpShopService cpShopService;
-    @Autowired
     private SysRegionService sysRegionService;
     @Autowired
     private SysAnnouncementService sysAnnouncementService;
+    @Autowired
+    private SysCompanyService sysCompanyService;
 
     /**
      * 打开主体框架
@@ -56,7 +55,7 @@ public class QyIndexController {
         //热门商铺
         if(record.getValue().get("rmsp")!=null){
             String rmsp = String.valueOf(record.getValue().get("rmsp"));
-            List<CpShop> list = cpShopService.parse(cpShopService.selectList(MapUtil.getMap("in:code", rmsp)));
+            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:code", rmsp)));
             model.addAttribute("hotShopList",list);
         }
 
@@ -70,22 +69,22 @@ public class QyIndexController {
         model.addAttribute("sysAnnouncementList",sysAnnouncementPage.getRecords());
 
         //查询置顶商铺
-        List<CpShop> shopList = new ArrayList<>();
-        Page<CpShop> stickShopPage = cpShopService.page(1L,6L, MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
-        shopList = stickShopPage.getRecords();
-        if(shopList.size()<=6){
-            Page<CpShop> refreshShopPage = cpShopService.page(1L,6L, MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
+        List<SysCompany> companyList = new ArrayList<>();
+        Page<SysCompany> stickShopPage = sysCompanyService.page(1L,6L, MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
+        companyList = stickShopPage.getRecords();
+        if(companyList.size()<=6){
+            Page<SysCompany> refreshShopPage = sysCompanyService.page(1L,6L, MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
             if(refreshShopPage.getTotal()>0){
-                List<CpShop> records = refreshShopPage.getRecords();
-                if(shopList.size()==0){
-                    shopList = records;
+                List<SysCompany> records = refreshShopPage.getRecords();
+                if(companyList.size()==0){
+                    companyList = records;
                 }else{
-                    shopList.addAll(records);
+                    companyList.addAll(records);
                 }
             }
         }
 
-        model.addAttribute("recommendShopList",cpShopService.parse(shopList));
+        model.addAttribute("recommendShopList",sysCompanyService.parse(companyList));
 
         Map<String,List<SysCompany>> companyListMap = new HashMap<>();
         for (int i = 0; i < industryDlist.size(); i++) {

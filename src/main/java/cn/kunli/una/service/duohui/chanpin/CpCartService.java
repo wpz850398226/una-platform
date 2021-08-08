@@ -4,6 +4,7 @@ import cn.kunli.una.mapper.CpCartMapper;
 import cn.kunli.una.pojo.chanpin.CpCart;
 import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.service.BasicService;
+import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.utils.common.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,6 @@ public class CpCartService extends BasicService<CpCartMapper, CpCart> {
     private CpCartService thisProxy;
     @Autowired
     private CpModelService cpModelService;
-    @Autowired
-    private CpGoodsService cpGoodsService;
-    @Autowired
-    private CpShopService cpShopService;
 
     @Override
     public BasicService getThisProxy() {

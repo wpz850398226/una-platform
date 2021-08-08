@@ -9,6 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.UUID;
+
 /**
  * (SysCompany)表服务实现类
  *
@@ -28,8 +31,16 @@ public class SysCompanyService extends BasicService<SysCompanyMapper, SysCompany
     //格式化实体类
     public SysCompany initialize(SysCompany obj) {
         super.initialize(obj);
+
+        if(obj.getId()==null){
+            obj.setCode(UUID.randomUUID().toString().replace("-",""));
+            obj.setRefreshTime(new Date());
+            obj.setStickDeadline(new Date());
+        }else{
+            if(obj.getIsAudit()==null)obj.setIsAudit(false);    //如果修改，默认改为未审核
+        }
         //赋值行业类型
-        if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
+        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
                 SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
                 obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
@@ -39,7 +50,7 @@ public class SysCompanyService extends BasicService<SysCompanyMapper, SysCompany
                 }
 
             }
-        }
+        }*/
 
         return obj;
     }

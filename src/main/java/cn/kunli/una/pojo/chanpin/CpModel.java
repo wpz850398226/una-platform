@@ -26,8 +26,6 @@ public class CpModel extends BasePojo implements Serializable {
     private static final long serialVersionUID = 340194362530078834L;
     //编号
     private String code;
-    //所属店铺
-    private Integer shopId;
     //所属商品
     private Integer goodsId;
     //库存

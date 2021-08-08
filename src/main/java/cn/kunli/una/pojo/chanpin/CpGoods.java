@@ -37,14 +37,8 @@ public class CpGoods extends BasePojo implements Serializable {
     private String unitDcode;
     //已销售量
     private Integer sales;
-    //所属店铺id
-    private Integer shopId;
-    //所属一级行业编码
-    private String primaryIndustryDcode;
-    //所属二级行业编码
-    private String secondryIndustryDcode;
-    //所属三级行业编码
-    private String thirdryIndustryDcode;
+    //行业类型
+    private String industryTypeDcodes;
     //类型id
     private String typeDcode;
     //产品状态id
@@ -57,12 +51,8 @@ public class CpGoods extends BasePojo implements Serializable {
     private String description;
     //内容
     private String content;
-    //所属省份id
-    private Integer provinceRegionId;
-    //所属城市id
-    private Integer cityRegionId;
-    //所属区域id
-    private Integer areaRegionId;
+    //所属地区
+    private String regionIds;
     //是否置顶
     private Boolean isStick;
     //是否热门
@@ -154,7 +144,7 @@ public class CpGoods extends BasePojo implements Serializable {
     @TableField(exist = false)
     private String[] industryDcode;
     //标题图片
-    @TableField(exist = false)
-    private String[] areas;
+    /*@TableField(exist = false)
+    private String[] areas;*/
 
 }

@@ -26,7 +26,7 @@ public class CpDelivery extends BasePojo implements Serializable {
     //收件人电话
     private String phone;
     //地区id
-    private Integer regionId;
+    private String regionIds;
     //详细地址
     private String address;
     //是否默认

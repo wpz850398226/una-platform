@@ -36,12 +36,8 @@ public class SysCompany extends BasePojo implements Serializable {
     private String acreage;
     //主要职责
     private String mainResponsibility;
-    //所属一级行业编码
-    private String primaryIndustryDcode;
-    //所属二级行业编码
-    private String secondryIndustryDcode;
-    //所属三级行业编码
-    private String thirdryIndustryDcode;
+    //行业类型
+    private String industryTypeDcodes;
     //注册资本
     private String registeredCapital;
     //注册日期
@@ -66,14 +62,55 @@ public class SysCompany extends BasePojo implements Serializable {
     private String openingBankName;
     //对公账户
     private String corporateAccount;
-    //所属地址（营业执照为准）
-    private String regionId;
+    //所属地区
+    private String regionIds;
     //坐标
     private String coord;
     //附件
     private String fileIds;
     //标题图片
     private Integer titleFileId;
+
+    //简介
+    private String introduction;
+    //描述
+    private String description;
+    //等级
+    private Integer level;
+    //电话
+    private String phone;
+    //微信
+    private String wechat;
+    //微信二维码图片
+    private Integer wechatFileId;
+    //图片
+    private String bannerFileIds;
+    //是否置顶
+    private Boolean isStick;
+    //是否热门
+    private Boolean isHot;
+    //是否已审核
+    private Boolean isAudit;
+    //关注数量
+    private Integer concernAmount;
+    //刷新时间
+    private Date refreshTime;
+    //置顶截止时间
+    private Date stickDeadline;
+    //关于我们图片
+    private Integer aboutUsFileId;
+    //关于我们描述
+    private String aboutUsDescription;
+    //关于我们内容
+    private String aboutUsContent;
+    //是否有门面
+    private Boolean isFacade;
+
+
+
+
+
+
 
     @TableField(exist = false)
     private String legalPersonName;        //法人姓名

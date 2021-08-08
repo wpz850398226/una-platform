@@ -1,9 +1,11 @@
 package cn.kunli.una.controller.duohui.dianpu;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
+import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
+import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,7 +23,7 @@ import java.io.IOException;
 @RequestMapping("/duohui/dianpu")
 public class DpIndexController {
     @Autowired
-    private CpShopService cpShopService;
+    private SysCompanyService sysCompanyService;
     @Autowired
     private CpGoodsService cpGoodsService;
 
@@ -33,9 +35,9 @@ public class DpIndexController {
      */
     @GetMapping("/index/{id}")
     public String index(HttpServletResponse resp, Model model, @PathVariable Integer id) throws IOException {
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         if(record.getIsFacade()){
-            Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
+            Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("companyId", id));
 
             model.addAttribute("record",record);
             model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
@@ -55,7 +57,7 @@ public class DpIndexController {
      */
     @GetMapping("/about/{id}")
     public String about(Model model,@PathVariable Integer id) {
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         model.addAttribute("record",record);
         return "duohui/dianpu/about";
     }
@@ -68,8 +70,8 @@ public class DpIndexController {
      */
     @GetMapping("/product/{id}")
     public String product(Model model,@PathVariable Integer id) {
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("companyId", id));
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         model.addAttribute("record",record);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
@@ -84,8 +86,8 @@ public class DpIndexController {
      */
     @GetMapping("/information/{id}")
     public String information(Model model,@PathVariable Integer id) {
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("companyId", id));
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         model.addAttribute("record",record);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
@@ -100,8 +102,8 @@ public class DpIndexController {
      */
     @GetMapping("/inforcon/{id}")
     public String inforcon(Model model,@PathVariable Integer id) {
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("companyId", id));
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         model.addAttribute("record",record);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
@@ -116,8 +118,8 @@ public class DpIndexController {
      */
     @GetMapping("/special/{id}")
     public String special(Model model,@PathVariable Integer id) {
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("companyId", id));
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         model.addAttribute("record",record);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
@@ -132,8 +134,8 @@ public class DpIndexController {
      */
     @GetMapping("/contact/{id}")
     public String contact(Model model,@PathVariable Integer id) {
-        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("shopId", id));
-        CpShop record = cpShopService.parse(ListUtil.getList(cpShopService.getById(id))).get(0);
+        Page<CpGoods> goodsPage = cpGoodsService.page(1L, 10L, MapUtil.getMap("companyId", id));
+        SysCompany record = sysCompanyService.parse(ListUtil.getList(sysCompanyService.getById(id))).get(0);
         model.addAttribute("record",record);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 

@@ -79,6 +79,8 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @Autowired
     protected SysPermissionService sysPermissionService;
     @Autowired
+    protected SysCompanyService sysCompanyService;
+    @Autowired
     protected CommonMapper commonMapper;
 
 

@@ -1,12 +1,12 @@
 package cn.kunli.una.controller.system;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
 import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.utils.common.UserUtil;
@@ -28,10 +28,7 @@ import javax.validation.Valid;
 @RequestMapping("/sys/account")
 public class SysAccountController extends BaseController<SysAccountService, SysAccount> {
 
-    @Autowired
-    private SysCompanyService sysCompanyService;
-    @Autowired
-    private CpShopService cpShopService;
+
 
     //token获取用户信息
     @GetMapping("/getInfo")
@@ -61,10 +58,10 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
         SysAccount targetAccount = (SysAccount) new SysAccount().setId(id);
         if(isAudit==1){//审核通过
             SysAccount sysAccount = service.getById(id);
-            CpShop cpShop = (CpShop) new CpShop().setName(sysAccount.getName() + "的店铺");
+            SysCompany sysCompany = (SysCompany) new SysCompany().setName(sysAccount.getName() + "的店铺");
             //创建店铺
-            cpShopService.saveRecord(cpShop);
-            targetAccount.setRoleId("100003").setStatusDcode("account_status_auditSuccess").setShopId(cpShop.getId());//免费会员
+            sysCompanyService.saveRecord(sysCompany);
+            targetAccount.setRoleId("100003").setStatusDcode("account_status_auditSuccess").setCompanyId(sysCompany.getId());//免费会员
 
             //创建企业
             if(sysAccount.getTypeDcode().equals("account_type_company")){

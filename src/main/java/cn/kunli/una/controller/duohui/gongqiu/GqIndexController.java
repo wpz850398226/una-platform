@@ -1,15 +1,17 @@
 package cn.kunli.una.controller.duohui.gongqiu;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.gongqiu.GqInformation;
+import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
 import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
+import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysDictionaryService;
 import cn.kunli.una.service.system.SysRegionService;
@@ -40,7 +42,7 @@ public class GqIndexController {
     @Autowired
     private GqInformationService gqInformationService;
     @Autowired
-    private CpShopService cpShopService;
+    private SysCompanyService sysCompanyService;
     @Autowired
     private SysRegionService sysRegionService;
 
@@ -79,9 +81,9 @@ public class GqIndexController {
 
 
         //合作企业
-        Page<CpShop> coopShopPage = cpShopService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
-        List<CpShop> parse = cpShopService.parse(coopShopPage.getRecords());
-        List<CpShop> coopShopList = new ArrayList<>();
+        Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
+        List<SysCompany> parse = sysCompanyService.parse(coopShopPage.getRecords());
+        List<SysCompany> coopShopList = new ArrayList<>();
         coopShopList.addAll(parse);
         coopShopList.addAll(parse);
         coopShopList.addAll(parse);

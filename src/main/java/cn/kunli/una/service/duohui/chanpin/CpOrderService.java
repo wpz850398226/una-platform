@@ -58,16 +58,15 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
             Map<Integer, CpOrder> shopOrderMap = new LinkedHashMap<>();
             for (int i = 0; i < modelIdList.size(); i++) {
                 CpModel cpModel = cpModelService.getById(modelIdList.get(i));
-                Integer shopId = cpModel.getShopId();
+                Integer companyId = cpModel.getCompanyId();
                 CpOrderItem cpOrderItem = new CpOrderItem().setModelId(modelIdList.get(i)).setVolume(volumeList.get(i));
-                if(shopOrderMap.containsKey(shopId)){
-                    shopOrderMap.get(shopId).getCpOrderItemList().add(cpOrderItem);
+                if(shopOrderMap.containsKey(companyId)){
+                    shopOrderMap.get(companyId).getCpOrderItemList().add(cpOrderItem);
                 }else{
-                    shopOrderMap.put(shopId, new CpOrder().setDeliveryId(entity.getDeliveryId())
-                            .setShopId(shopId)
+                    shopOrderMap.put(companyId, (CpOrder) new CpOrder().setDeliveryId(entity.getDeliveryId())
                             .setDeliveryTypeDcode(entity.getDeliveryTypeDcode())
                             .setPaymentTypeDcode(entity.getPaymentTypeDcode())
-                            .setCpOrderItemList(ListUtil.getList(cpOrderItem)));
+                            .setCpOrderItemList(ListUtil.getList(cpOrderItem)).setCompanyId(companyId));
                 }
             }
 

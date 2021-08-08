@@ -29,14 +29,8 @@ public class GqInformation extends BasePojo implements Serializable {
     private String fullName;
     //已销售量
     private Integer sales;
-    //所属店铺id
-    private Integer shopId;
-    //所属 一级行业
-    private String primaryIndustryDcode;
-    //所属 二级行业
-    private String secondryIndustryDcode;
-    //所属 三级行业
-    private String thirdryIndustryDcode;
+    //行业类型
+    private String industryTypeDcodes;
     //类型编码
     private String typeDcode;
     //来源类型编码
@@ -51,12 +45,8 @@ public class GqInformation extends BasePojo implements Serializable {
     private String description;
     //内容
     private String content;
-    //所属省份id
-    private Integer provinceRegionId;
-    //所属城市id
-    private Integer cityRegionId;
-    //所属区域id
-    private Integer areaRegionId;
+    //所属地区
+    private String regionIds;
     //是否置顶
     private Boolean isStick;
     //是否热门

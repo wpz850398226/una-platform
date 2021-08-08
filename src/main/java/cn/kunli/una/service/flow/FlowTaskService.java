@@ -55,7 +55,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
     public SysResult activate(Integer nodeId, Integer instanceId){
         FlowTask flowTask = new FlowTask().setInstanceId(instanceId).setNodeId(nodeId).setActivateTime(new Date());
         FlowNode flowNode = flowNodeService.getById(nodeId);
-        SysResult sysResult = getThisProxy().saveRecord(flowTask);
+        SysResult sysResult = thisProxy.saveRecord(flowTask);
 
         if(sysResult.getIsSuccess()&&StringUtils.isBlank(flowNode.getCandidateTypeDcode())){
             //如果节点没有候选人类型，则执行
@@ -68,12 +68,12 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             //如果目标节点是结束类型，直接完成任务，并结束
             SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
             flowTask.setAccountId(loginUser.getId()).setOffTime(new Date());
-            getThisProxy().saveRecord(flowTask);
+            thisProxy.saveRecord(flowTask);
             //关闭流程实例
             flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setId(instanceId));
             return SysResult.success("流程结束");
         }else{
-            return getThisProxy().saveRecord(flowTask);
+            return thisProxy.saveRecord(flowTask);
         }*/
 
     }
@@ -183,7 +183,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
         list = super.parse(list);
         for (FlowTask flowTask : list) {
             if(StringUtils.isNotBlank(flowTask.getNodeTypeDcode())&&flowTask.getNodeTypeDcode().equals("flow_nudeType_audit")){
-                List<FlowTask> submitTaskList = getThisProxy().selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
+                List<FlowTask> submitTaskList = thisProxy.selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
                         .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build());
                 flowTask.setSubmitTaskList(submitTaskList);
             }

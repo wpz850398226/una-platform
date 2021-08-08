@@ -37,7 +37,7 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
         if(StringUtils.isNotBlank(obj.getEvent())){
-            List<SysButton> objList = getThisProxy().selectList(MapUtil.getMap("event", obj.getEvent().trim()));
+            List<SysButton> objList = sysButtonService.selectList(MapUtil.getMap("event", obj.getEvent().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("事件名重复，保存失败:" + obj.getEvent());
             }

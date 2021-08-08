@@ -3,7 +3,8 @@ package cn.kunli.una.service.duohui.chanpin;
 import cn.kunli.una.mapper.CpModelMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
+import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,6 @@ public class CpModelService extends BasicService<CpModelMapper, CpModel> {
     private CpModelService thisProxy;
     @Autowired
     private CpGoodsService cpGoodsService;
-    @Autowired
-    private CpShopService cpShopService;
 
     @Override
     public BasicService getThisProxy() {
@@ -39,7 +38,7 @@ public class CpModelService extends BasicService<CpModelMapper, CpModel> {
 
         if(obj.getGoodsId()!=null){
             CpGoods cpGoods = cpGoodsService.getById(obj.getGoodsId());
-            obj.setShopId(cpGoods.getShopId());
+            obj.setCompanyId(cpGoods.getCompanyId());
         }
 
         return obj;
@@ -54,9 +53,9 @@ public class CpModelService extends BasicService<CpModelMapper, CpModel> {
                 CpGoods cpGoods = cpGoodsService.getById(cpModel.getGoodsId());
                 if(cpGoods!=null){
                     cpModel.setGoodsName(cpGoods.getName());
-                    CpShop cpShop = cpShopService.getById(cpGoods.getShopId());
-                    if(cpShop!=null){
-                        cpModel.setShopName(cpShop.getName());
+                    SysCompany sysCompany = sysCompanyService.getById(cpGoods.getCompanyId());
+                    if(sysCompany!=null){
+                        cpModel.setShopName(sysCompany.getName());
                     }
                 }
             }

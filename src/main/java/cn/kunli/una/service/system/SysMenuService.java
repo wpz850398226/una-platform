@@ -1,9 +1,11 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysMenuMapper;
+import cn.kunli.una.pojo.system.SysButton;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.pojo.system.SysPermission;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -74,6 +76,17 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         }
 
         return firstMenuList;
+    }
+
+    @Override
+    public SysResult validate(SysMenu obj) {
+        if(StringUtils.isNotBlank(obj.getName())){
+            List<SysMenu> objList = thisProxy.selectList(MapUtil.getMap("name", obj.getName().trim()));
+            if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
+                return SysResult.fail("名称重复，保存失败:" + obj.getName());
+            }
+        }
+        return SysResult.success();
     }
 
     /**

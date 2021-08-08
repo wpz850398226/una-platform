@@ -1,12 +1,14 @@
 package cn.kunli.una.service.duohui.gongqiu;
 
 import cn.kunli.una.mapper.GqInformationMapper;
-import cn.kunli.una.pojo.chanpin.CpShop;
+
 import cn.kunli.una.pojo.gongqiu.GqInformation;
+import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
+import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -25,8 +27,7 @@ import java.util.UUID;
 public class GqInformationService extends BasicService<GqInformationMapper, GqInformation> {
     @Autowired
     private GqInformationService thisProxy;
-    @Autowired
-    private CpShopService cpShopService;
+
 
     @Override
     public BasicService getThisProxy() {
@@ -40,11 +41,11 @@ public class GqInformationService extends BasicService<GqInformationMapper, GqIn
             obj.setCode(UUID.randomUUID().toString().replace("-",""));
             SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
             obj.setMobile(loginUser.getUsername());
-            if(loginUser.getShopId()!=null){
-                obj.setShopId(loginUser.getShopId());
-                if(obj.getAreaRegionId()==null){
-                    CpShop cpShop = cpShopService.getById(loginUser.getShopId());
-                    obj.setAreaRegionId(cpShop.getRegionId());
+            if(loginUser.getCompanyId()!=null){
+                obj.setCompanyId(loginUser.getCompanyId());
+                if(obj.getRegionIds()==null){
+                    SysCompany sysCompany = sysCompanyService.getById(loginUser.getCompanyId());
+                    obj.setRegionIds(sysCompany.getRegionIds());
                 }
             }
 
@@ -53,7 +54,7 @@ public class GqInformationService extends BasicService<GqInformationMapper, GqIn
         }
 
         //赋值行业类型
-        if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
+        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
             if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
                 SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
                 obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
@@ -63,7 +64,7 @@ public class GqInformationService extends BasicService<GqInformationMapper, GqIn
                 }
 
             }
-        }
+        }*/
         return obj;
     }
 }

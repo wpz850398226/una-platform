@@ -51,8 +51,6 @@ public class CpOrder extends BasePojo implements Serializable {
     private Double paymentAmount;
     //订单积分
     private Integer orderIntegral;
-    //商品id
-    private Integer shopId;
     //成交量
     private Integer volume;
     //是否开发票

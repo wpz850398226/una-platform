@@ -8,7 +8,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
-import cn.kunli.una.service.duohui.chanpin.CpShopService;
+
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
@@ -49,14 +49,11 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private SysRegionService sysRegionService;
     @Autowired
     private SysFileService sysFileService;
-    @Autowired
-    private SysCompanyService sysCompanyService;
+
     @Autowired
     private SysDepartmentService sysDepartmentService;
     @Autowired
     private CpGoodsService cpGoodsService;
-    @Autowired
-    private CpShopService cpShopService;
     @Autowired
     private CpModelService cpModelService;
 
@@ -98,9 +95,12 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "FileId"://流程节点 entityId
                     resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("id", value)));
                     break;
-                case "shopId"://店铺 shopId
-                case "ShopId"://店铺 shopId
-                    resultList = cpShopService.selectList(MapUtil.getMap("id", value));
+                case "companyId"://店铺 companyId
+                case "ShopId"://店铺 companyId
+                    resultList = sysCompanyService.selectList(MapUtil.getMap("id", value));
+                    break;
+                case "Dcodes"://字典编码
+                    resultList = sysDictionaryService.selectList(MapUtil.getMap("in:code", value));
                     break;
             }
         }
@@ -151,6 +151,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "accountId"://账号 accountId
                 case "AccountId"://账号 accountId
                     resultList = sysAccountService.selectList(MapUtil.getMap("id",value));
+                    break;
+                case "regionIds"://地区 regionId
+                case "RegionIds"://地区 regionId
+                    resultList = sysRegionService.selectList(MapUtil.getMap("in:id", value));
                     break;
             }
         }
