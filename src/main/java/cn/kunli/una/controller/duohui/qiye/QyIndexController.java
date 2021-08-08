@@ -17,10 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/duohui/qiye")
@@ -71,6 +68,24 @@ public class QyIndexController {
                 .put(":platformDcode", "platform_type_chanpin").put("le:startTime",strOfDate)
                 .put("ge:endTime",strOfDate).build());
         model.addAttribute("sysAnnouncementList",sysAnnouncementPage.getRecords());
+
+        //查询置顶商铺
+        List<CpShop> shopList = new ArrayList<>();
+        Page<CpShop> stickShopPage = cpShopService.page(1L,6L, MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
+        shopList = stickShopPage.getRecords();
+        if(shopList.size()<=6){
+            Page<CpShop> refreshShopPage = cpShopService.page(1L,6L, MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
+            if(refreshShopPage.getTotal()>0){
+                List<CpShop> records = refreshShopPage.getRecords();
+                if(shopList.size()==0){
+                    shopList = records;
+                }else{
+                    shopList.addAll(records);
+                }
+            }
+        }
+
+        model.addAttribute("recommendShopList",cpShopService.parse(shopList));
 
         Map<String,List<SysCompany>> companyListMap = new HashMap<>();
         for (int i = 0; i < industryDlist.size(); i++) {

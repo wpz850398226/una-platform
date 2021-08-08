@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="goodsUnit">
+<div th:fragment="companyUnit">
   <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a>
-  <a class="biaoti" href="">多汇供应链管理有限公司</a>
+  <a class="biaoti" href="">[[${record.name}]]</a>
   <em class="diqu">
   <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-  行业 | 地区</em>
-  <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
+  [[${record['map']['primaryIndustryDname']+'·'+record['map']['secondryIndustryDname']+'·'+record['map']['thirdryIndustryDname']}]] | [[${record['map']['regionName']}]]</em>
+  <p class="miaoshu">主营业务：[[${#strings.abbreviate(record.introduction,20)}]]</p>
 </div>
 </html>

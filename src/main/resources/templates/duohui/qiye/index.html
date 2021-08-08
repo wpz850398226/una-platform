@@ -24,10 +24,10 @@
   <div class="clear w1200 product mt20" th:each="industry,status : ${industryDlist}">
     <h2>
       <span class="fr">
-        <a href="/api/duohui/chanpin/list" th:if="${status.index<8}" th:each="industry,status:${industryDlist}">[[${industry.name}]]  &nbsp;&nbsp;|</a>
+        <a href="/api/duohui/chanpin/list" th:if="${secondryStatus.index<8}" th:each="secondryIndustry,secondryStatus:${industry.children}">[[${secondryIndustry.name}]]  &nbsp;&nbsp;|</a>
       </span>
       <em class="mr10">[[${status.index+1}]]F</em>
-      <a href="#">[[${goodsStatusDic.name}]]</a>
+      <a href="#">[[${industry.name}]]</a>
     </h2>
     <div class="clear product-nr clearfix">
       <div class="fl w230 ">
@@ -41,8 +41,8 @@
       </div>
       <div class="fr product-r">
         <ul>
-          <li th:each="goods:${companyListMap[goodsStatusDic.code]}">
-            <div th:replace="../templates/duohui/chanpin/include/goodsUnit :: goodsUnit"></div>
+          <li th:each="record:${companyListMap[industry.code]}">
+            <div th:replace="../templates/duohui/qiye/include/companyUnit :: companyUnit"></div>
           </li>
         </ul>
       </div>
