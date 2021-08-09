@@ -140,11 +140,5 @@ public class CpGoods extends BasePojo implements Serializable {
     //是否开通店铺
     @TableField(exist = false)
     private Boolean isOpenShop;
-    //三级合并的行业编码
-    @TableField(exist = false)
-    private String[] industryDcode;
-    //标题图片
-    /*@TableField(exist = false)
-    private String[] areas;*/
 
 }

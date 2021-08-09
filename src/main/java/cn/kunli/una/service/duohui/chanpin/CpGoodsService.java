@@ -109,38 +109,18 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
             if(loginUser.getCompanyId()!=null){
                 obj.setCompanyId(loginUser.getCompanyId());
-                if(obj.getRegionIds()==null){
-                    SysCompany sysCompany = sysCompanyService.getById(loginUser.getCompanyId());
+                SysCompany sysCompany = sysCompanyService.getById(loginUser.getCompanyId());
+                if(StringUtils.isBlank(obj.getRegionIds())){
                     obj.setRegionIds(sysCompany.getRegionIds());
+                }
+                if(StringUtils.isBlank(obj.getIndustryTypeDcodes())){
+                    obj.setIndustryTypeDcodes(sysCompany.getIndustryTypeDcodes());
                 }
             }
 
         }else{
             if(obj.getIsAudit()==null)obj.setIsAudit(false);    //如果修改，默认改为未审核
         }
-        //赋值地区
-        /*if(obj.getAreaRegionId()!=null){
-            if(obj.getCityRegionId()==null){
-                SysRegion areaRegion = sysRegionService.getById(obj.getAreaRegionId());
-                obj.setCityRegionId(areaRegion.getParentId());
-                if (obj.getProvinceRegionId() == null) {
-                    SysRegion cityRegion = sysRegionService.getById(areaRegion.getParentId());
-                    obj.setProvinceRegionId(cityRegion.getParentId());
-                }
-            }
-        }*/
-        //赋值行业类型
-        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
-            if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
-                SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
-                obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
-                if(StringUtils.isBlank(obj.getPrimaryIndustryDcode())){
-                    SysDictionary secondryIndustryDic = sysDictionaryService.getById(thirdryIndustryDic.getParentId());
-                    obj.setPrimaryIndustryDcode(secondryIndustryDic.getParentCode());
-                }
-
-            }
-        }*/
 
         return obj;
     }

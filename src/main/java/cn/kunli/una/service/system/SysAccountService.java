@@ -41,7 +41,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             SysAccount sysAccount = sysAccountService.getById(entity.getId());
             if(sysAccount.getTypeDcode().equals("account_type_company")){
 
-                SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryTypeDcodes(sysAccount.getIndustryTypeDcodes())
+                SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryTypeDcodes(sysAccount.getIndustryTypeDcodes()).setRegionIds(sysAccount.getRegionIds())
                         .setCoord(sysAccount.getCoord()).setTypeDcode(sysAccount.getTypeDcode()).setName(entity.getName());
                 SysResult companyResult = sysCompanyService.saveRecord(sysCompany);
                 if(companyResult.getIsSuccess()){
