@@ -15,7 +15,7 @@
 </div>
 
 <!-- Slideshow -->
-<div th:replace="../templates/duohui/chanpin/include/slideshow :: slideshow"></div>
+<div th:replace="../templates/duohui/chanpin/include/slideshow :: slideshow"></div><!--轮播图，热门商铺-->
 <div class=" clear clearfix mt20"></div>
 <div th:replace="../templates/duohui/chanpin/include/huibg :: huibg"></div>
 
@@ -34,7 +34,7 @@
         <div class=" product-l">
           <a href="#">
             <img th:src="${recommendShopList.size()>status.index?recommendShopList[status.index].map['titleFileUrl']:'/api/duohui/chanpin/images/tu3.png'}">
-          <h3>[[${recommendShopList[status.index].name}]]</h3>
+          <h3 th:if="${recommendShopList.size()>status.index}">[[${recommendShopList[status.index].name}]]</h3>
           <p>主营产品：[[${recommendShopList.size()>status.index?#strings.abbreviate(recommendShopList[status.index].introduction,30):''}]]</p>
 <!--          <p>主营产品：[[${recommendShopList.size()>status.index?#strings.abbreviate(recommendShopList[status.index].introduction,20):''}]]</p>-->
           </a> </div>

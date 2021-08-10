@@ -53,9 +53,9 @@ public class QyIndexController {
         SysData record = sysDataService.getById(100017);
         record = sysDataService.parse(ListUtil.getList(record)).get(0);
         //热门商铺
-        if(record.getValue().get("rmsp")!=null){
-            String rmsp = String.valueOf(record.getValue().get("rmsp"));
-            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:code", rmsp)));
+        if(record.getValue().get("remaiCompanyIds")!=null){
+            String remaiCompanyIds = String.valueOf(record.getValue().get("remaiCompanyIds"));
+            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:id", remaiCompanyIds)));
             model.addAttribute("hotShopList",list);
         }
 

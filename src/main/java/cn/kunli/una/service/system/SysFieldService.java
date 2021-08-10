@@ -159,6 +159,15 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
+        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=10){
+            switch (assignmentCode.substring(length - 10)) {
+                case "companyIds"://公司 companyId
+                case "CompanyIds"://公司 companyId
+                    resultList = sysCompanyService.selectList(MapUtil.getMap("in:id",value));
+                    break;
+            }
+        }
+
         if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)){
             switch (assignmentCode) {
                 case "permissionId"://权限 permissionId

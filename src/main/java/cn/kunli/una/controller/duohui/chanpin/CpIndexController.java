@@ -57,9 +57,9 @@ public class CpIndexController {
         SysData record = sysDataService.getById(100017);
         record = sysDataService.parse(ListUtil.getList(record)).get(0);
         //热门商铺
-        if(record.getValue().get("rmsp")!=null){
-            String rmsp = String.valueOf(record.getValue().get("rmsp"));
-            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:code", rmsp)));
+        if(record.getValue().get("remaiCompanyIds")!=null){
+            String remaiCompanyIds = String.valueOf(record.getValue().get("remaiCompanyIds"));
+            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:id", remaiCompanyIds)));
             model.addAttribute("hotShopList",list);
         }
 
@@ -139,11 +139,20 @@ public class CpIndexController {
         if(map.containsKey("primaryIndustryDcode")){
             List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
             model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
-        }
+            map.put(":industryTypeDcodes",map.get("primaryIndustryDcode")+",");
+            map.remove("primaryIndustryDcode");
 
-        if(map.containsKey("secondryIndustryDcode")){
-            List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
-            model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
+            if(map.containsKey("secondryIndustryDcode")){
+                List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
+                model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
+                map.put(":industryTypeDcodes",map.get(":industryTypeDcodes")+","+map.get("secondryIndustryDcode")+",");
+                map.remove("secondryIndustryDcode");
+
+                if(map.containsKey("thirdryIndustryDcode")){
+                    map.put(":industryTypeDcodes",map.get(":industryTypeDcodes")+","+map.get("thirdryIndustryDcode"));
+                    map.remove("thirdryIndustryDcode");
+                }
+            }
         }
 
         //搜索结果
