@@ -3,6 +3,7 @@ package cn.kunli.una.utils.common;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -79,6 +80,14 @@ public class WrapperUtil<T> {
                     String[] columnArray = ArrayUtil.upperCharToUnderLine(fieldCodeArray);
 
                     switch(key){
+                        case "select":
+                            for (String s : columnArray) {
+                                String carrier = s.substring(s.lastIndexOf("as ") + 1);
+                                String humpCarrier = StringUtil.underLineToUpperChar(carrier);
+                                s.replace(carrier,humpCarrier);
+                            }
+                            queryWrapper.select(columnArray);
+                            break;
                         case "isNull":
                             for (String column : columnArray) {
                                 queryWrapper.isNull(column);

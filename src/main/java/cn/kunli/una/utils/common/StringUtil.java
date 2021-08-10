@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    private static Pattern linePattern = Pattern.compile("_(\\w)");
+
 	//大写转小写+下划线
 	public static String upperCharToUnderLine(String param) {
 		if(param==null ||param.equals("")){
@@ -36,6 +38,17 @@ public class StringUtil {
 		return builder.toString();
 	}
 
+    //小写+下划线转大写
+    public static String underLineToUpperChar (String param) {
+        param = param.toLowerCase();
+        Matcher matcher = linePattern.matcher(param);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
 
 
 

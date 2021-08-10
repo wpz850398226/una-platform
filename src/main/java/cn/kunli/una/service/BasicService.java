@@ -230,7 +230,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
     /**
      * 根据条件构造查询多条
-     * @param queryWrapper
+     * @param map
      * @return
      */
     @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")

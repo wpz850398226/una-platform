@@ -47,25 +47,15 @@ public class MyCacheKeyGenerator implements KeyGenerator {
             return key+sqlSegment;
         }else if(param instanceof HashMap){
             //参数为HashMap，方法来源：selectOne、selectList
-            QueryWrapper wrapper = wrapperUtil.mapToWrapper((HashMap) param);
+            /*QueryWrapper wrapper = wrapperUtil.mapToWrapper((HashMap) param);
 
             String sqlSegment = wrapper.getExpression().getNormal().getSqlSegment();
             Map map = wrapper.getParamNameValuePairs();
             for (Object o : map.keySet()) {
                 String oldChar = "#{ew.paramNameValuePairs."+o.toString()+"}";
                 sqlSegment = sqlSegment.replace(oldChar, map.get(o).toString());
-            }
-            return key+sqlSegment;
-
-//            Map<String,Object> map = (HashMap)param;
-//            StringBuffer sb = new StringBuffer();
-//            sb.append("(");
-//            for (String mapKey : map.keySet()) {
-//                sb.append(",").append(StringUtil.upperCharToUnderLine(mapKey)).append(" = ").append(map.get(mapKey).toString());
-//            }
-//            sb.append(")");
-//            sb.replace(1,2,"");
-//            return key+sb.toString();
+            }*/
+            return key+param.toString();
         }else if(param instanceof BasePojo){
             BasePojo basePojo = (BasePojo)param;
             if(basePojo.getId()!=null){
