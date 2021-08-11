@@ -15,7 +15,7 @@
     <div class=" clear clearfix w1150  bor " style=" margin:10px auto;">
         <div class="fenleisousuo clear clearfix">
             <ul id="searchUl">
-                <li>
+                <li class="industryLi">
                     <div class="fenlist clear clearfix">
                         <dl>
                             <dt> 一级行业：</dt>
@@ -25,7 +25,7 @@
                         </dl>
                     </div>
                 </li>
-                <li th:if="${secondryIndustryDlist!=null}">
+                <li th:if="${secondryIndustryDlist!=null}" class="industryLi">
                   <div class="fenlist clear clearfix">
                     <dl>
                       <dt> 二级行业：</dt>
@@ -35,7 +35,7 @@
                     </dl>
                   </div>
                 </li>
-              <li th:if="${thirdryIndustryDlist!=null}">
+              <li th:if="${thirdryIndustryDlist!=null}" class="industryLi">
                 <div class="fenlist clear clearfix">
                   <dl>
                     <dt> 三级行业：</dt>
@@ -138,6 +138,9 @@
 function searchGoods(e){
     $(e).parent().parent().find("dd.on").removeClass("on");
     $(e).parent().addClass("on");
+    if($(e).parent().attr("value")=="all"&&$(e).closest("li").hasClass("industryLi")){
+        $(e).closest("li").nextAll("li.industryLi").remove();
+    }
 
     var param = "";
     $("#searchUl").find("dd.on").each(function(){

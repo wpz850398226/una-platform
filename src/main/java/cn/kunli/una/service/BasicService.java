@@ -200,10 +200,12 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         return super.getById(id);
     }
 
-    public Page<T> page(Long current, Long size, Map<String,Object> map) {
-        if(current==0)current = 1L;
-        if(size == 0)size = 10L;
-        Page<T> pageObj = new Page<T>().setCurrent(current).setSize(size);
+    public Page<T> page(Object current, Object size, Map<String,Object> map) {
+        if(current==null)current = 1;
+        if(size==null)size = 10;
+        map.remove("pageNum");
+        map.remove("pageSize");
+        Page<T> pageObj = new Page<T>().setCurrent(Long.parseLong(current.toString())).setSize(Long.parseLong(size.toString()));
         return super.page(pageObj,wrapperUtil.mapToWrapper(format(map)));
     }
 

@@ -145,18 +145,18 @@ public class CpIndexController {
             if(map.containsKey("secondryIndustryDcode")){
                 List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
                 model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
-                map.put(":industryTypeDcodes",map.get(":industryTypeDcodes")+","+map.get("secondryIndustryDcode")+",");
+                map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("secondryIndustryDcode")+",");
                 map.remove("secondryIndustryDcode");
 
                 if(map.containsKey("thirdryIndustryDcode")){
-                    map.put(":industryTypeDcodes",map.get(":industryTypeDcodes")+","+map.get("thirdryIndustryDcode"));
+                    map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("thirdryIndustryDcode"));
                     map.remove("thirdryIndustryDcode");
                 }
             }
         }
 
         //搜索结果
-        Long pageNum = 1L;
+        /*Long pageNum = 1L;
         Long pageSize = 16L;
         if(map==null){
             map = new HashMap<>();
@@ -169,9 +169,9 @@ public class CpIndexController {
                 pageSize = Long.valueOf(map.get("pageSize").toString());
                 map.remove("pageSize");
             }
-        }
+        }*/
         map.put("orderByDesc", "stickDeadline");
-        Page<CpGoods> goodsPage = cpGoodsService.page(pageNum,pageSize, map);
+        Page<CpGoods> goodsPage = cpGoodsService.page(map.get("pageNum"),16, map);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
         //商品状态
