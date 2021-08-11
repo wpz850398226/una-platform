@@ -81,6 +81,8 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
                             SysResult orderItemResult = cpOrderItemService.saveRecord(cpOrderItem.setOrderId(cpOrder.getId()));
                             if(!orderItemResult.getIsSuccess())return orderItemResult;
                         }
+                        //删除对应购物车记录
+
                     }else {
                         //订单保存失败
                         return sysResult;

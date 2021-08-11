@@ -429,11 +429,12 @@
   function addCart(modelId){
     console.log(modelId);
     var buyNumber = $("#buyNumber").val();
+    var goodsId = '[[${record.id}]]';
       $.ajax({
           type: 'post',
           url: "/api/cp/cart/save",
           dataType: 'json',
-          data: {"modelId":modelId,"amount":buyNumber},
+          data: {"modelId":modelId,"amount":buyNumber,"goodsId":goodsId},
           success: function (result) {
               layer.msg(result.message,function () {})
           },
