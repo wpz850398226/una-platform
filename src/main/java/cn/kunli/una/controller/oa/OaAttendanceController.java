@@ -2,22 +2,26 @@ package cn.kunli.una.controller.oa;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.oa.OaAttendance;
-import cn.kunli.una.pojo.system.SysAccount;
-import cn.kunli.una.pojo.system.SysEntity;
-import cn.kunli.una.pojo.system.SysPermission;
-import cn.kunli.una.pojo.system.SysRolePermission;
+import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.oa.OaAttendanceService;
 import cn.kunli.una.service.system.SysPermissionService;
-import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.DateUtil;
+import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 办公-考勤(OaAttendance)表控制层
@@ -36,7 +40,8 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
      * 自动生成考勤记录
      */
     @Scheduled(cron = "0 1 0 * * ?")//凌晨12:01
-    @PostMapping("/autoAttendance")
+    @GetMapping("/auto")
+    @ResponseBody
     private void autoAttendance(){
         //查询所有有修改考勤记录权限的人，都需要打卡
         SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
@@ -59,7 +64,9 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                     //生成考勤记录
                     OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(DateUtil.getDayBegin()).setCreatorId(100000);
                     for (SysAccount sysAccount : accountList) {
-                        service.saveRecord((OaAttendance) oaAttendance.setAccountId(sysAccount.getId()).setId(null).setCompanyId(sysAccount.getCompanyId()).setDepartmentId(sysAccount.getDepartmentId()));
+                        oaAttendance.setAccountId(sysAccount.getId()).setCompanyId(sysAccount.getCompanyId()).setDepartmentId(sysAccount.getDepartmentId());
+                        service.saveRecord((OaAttendance)oaAttendance.setIsOnDuty(true).setId(null)); //上班打卡记录
+                        service.saveRecord((OaAttendance)oaAttendance.setIsOnDuty(false).setId(null)); //下班打卡记录
                     }
                 }
             }
@@ -68,4 +75,41 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
 
 
     }
+
+
+    /**
+     * 考勤打卡
+     */
+    @ResponseBody
+    @PutMapping ("/punch")
+    private SysResult punch(String coord){
+        Date punchTime = new Date();
+        String time = DateUtil.getStrOfTime(punchTime);
+
+        //查询配置项 匹配的时间区间
+        SysConfiguration oaAttendanceConfig = sysConfigurationService.selectOne(MapUtil.buildHashMap().put("le:lower", time)
+                .put("gt:upper", time).put(":code", "OaAttendance_").build());
+
+        if(oaAttendanceConfig==null)return SysResult.fail("打卡失败，当前不在打卡时间内");
+
+        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+
+        Map<String, Object> queryMap = MapUtil.buildHashMap().put("accountId", loginUser.getId())
+                .put("attendanceDate", DateUtil.getDayBegin()).put("is_on_duty",0).build();
+        if(oaAttendanceConfig.getValue().equals("上班"))queryMap.put("is_on_duty",1);
+        //查询对应账号的考勤记录
+        OaAttendance oaAttendance = service.selectOne(queryMap);
+        if(oaAttendance==null)return SysResult.fail("打卡失败，未生成当天的考勤记录");
+
+        //查到了对应的考勤记录
+        if(oaAttendanceConfig.getValue().equals("上班")){
+            return SysResult.fail("无需重复打卡");
+        }else{
+            SysResult sysResult = service.updateRecordById(oaAttendance.setCoord(coord).setSignTime(punchTime));
+            return sysResult;
+        }
+
+    }
+
+
 }

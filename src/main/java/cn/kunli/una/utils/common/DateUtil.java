@@ -825,9 +825,19 @@ public class DateUtil {
 	}
 
 	//获取日期的字符串表示
-	public static String getStrOfTime(Date d){
+	public static String getStrOfDateTime(Date d){
 		if(d!=null){
 			SimpleDateFormat s= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String dateStr = s.format(d); //转为字符串
+			return dateStr;
+		}
+		return null;
+	}
+
+	//获取日期的字符串表示
+	public static String getStrOfTime(Date d){
+		if(d!=null){
+			SimpleDateFormat s= new SimpleDateFormat("HH:mm:ss");
 			String dateStr = s.format(d); //转为字符串
 			return dateStr;
 		}

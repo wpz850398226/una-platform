@@ -72,12 +72,6 @@
             <if test="record.companyId != null and record.companyId != ''">
                 and record.company_id = #{record.companyId}
             </if>
-            <if test="record.moduleDcode != null and record.moduleDcode != ''">
-                and record.module_dcode = #{record.moduleDcode}
-            </if>
-            <if test="record.moduleDcode != null and record.moduleDcode != ''">
-                and sysDictionary.code = #{record.moduleDcode}
-            </if>
         </where>
         <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>

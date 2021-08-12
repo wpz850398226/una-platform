@@ -135,7 +135,7 @@
           <div class=control id=spec-left> <img th:src="@{/duohui/chanpin/images/disabled-prev.png}" /> </div>
           <div id=spec-list>
             <ul class=list-h style=" left:30px;">
-              <li th:each="imageUrl : ${#strings.arraySplit(record.map.fileUrl, ',')}"><img th:src="${imageUrl}"> </li>
+              <li th:each="imageUrl : ${#strings.arraySplit(record.map.fileUrls, ',')}"><img th:src="${imageUrl}"> </li>
             </ul>
           </div>
           <div class=control id=spec-right> <img th:src="@{/duohui/chanpin/images/disabled-next.png}" /> </div>

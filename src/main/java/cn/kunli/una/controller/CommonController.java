@@ -187,11 +187,6 @@ public class CommonController {
                 obj.put("type", "选项");
 
                 break;
-            case "SysConfiguration":
-                if (obj.get("moduleDcode") != null) {
-                    obj.put("code", sysDictionaryService.selectOne(MapUtil.getMap("code",obj.get("moduleDcode").toString())).getValue() + "_");
-                }
-                break;
         }
 
         model.addAttribute("sample", obj);

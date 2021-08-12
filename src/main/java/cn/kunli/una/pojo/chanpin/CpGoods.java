@@ -114,7 +114,7 @@ public class CpGoods extends BasePojo implements Serializable {
     //置顶截止时间
     private Date stickDeadline;
     //商品图片
-    private String fileId;
+    private String fileIds;
     //所属组织id
     private Integer companyId;
     //所属部门id

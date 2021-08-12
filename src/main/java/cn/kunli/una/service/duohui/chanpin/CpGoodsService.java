@@ -4,20 +4,18 @@ import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
-
 import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.system.SysCompany;
-import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.system.SysCompanyService;
 import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -58,6 +56,9 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                     cpSpecification.setGoodsId(entity.getId());
                     cpSpecificationService.saveRecord(cpSpecification);
                 }
+            }else{
+                //生成一个默认规格
+                cpSpecificationService.saveRecord((CpSpecification) new CpSpecification().setGoodsId(entity.getId()).setAttributeNames("默认").setName("默认"));
             }
 
             if(CollectionUtils.isNotEmpty(entity.getModelList())){
@@ -66,6 +67,12 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
                     cpModel.setGoodsId(entity.getId());
                     cpModelService.saveRecord(cpModel);
                 }
+            }else{
+                //生成一个默认型号
+                CpModel cpModel = new CpModel().setGoodsId(entity.getId());
+                BeanUtils.copyProperties(entity,cpModel);
+                cpModel.setName("默认");
+                cpModelService.saveRecord(cpModel);
             }
         }
         return sysResult;
@@ -102,6 +109,23 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     }
 
     @Override
+    public SysResult validate(CpGoods obj) {
+        SysResult validate = super.validate(obj);
+        if(!validate.getIsSuccess())return validate;
+
+        if(obj.getId()==null){
+            if(CollectionUtils.isEmpty(obj.getSpecificationList())){
+                return SysResult.fail("保存失败，规格不能为空");
+            }
+            if(CollectionUtils.isEmpty(obj.getModelList())){
+                return SysResult.fail("保存失败，型号不能为空");
+            }
+        }
+
+        return SysResult.success();
+    }
+
+    @Override
     public CpGoods initialize(CpGoods obj) {
         obj = super.initialize(obj);
         if(obj.getId()==null){
@@ -133,25 +157,12 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             cpGoods.setSpecificationList(specificationList);
             List<CpModel> attributeList = cpModelService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setModelList(attributeList);
-            if(StringUtils.isNotBlank(cpGoods.getFileId())){
-                String fileUrl = String.valueOf(cpGoods.getMap().get("fileUrl"));
-                if(fileUrl.indexOf(",")!=-1){
-                    cpGoods.setTitleImgUrl(fileUrl.substring(0,fileUrl.indexOf(",")));
-                }else{
-                    cpGoods.setTitleImgUrl(fileUrl);
-                }
-
+            if(StringUtils.isNotBlank(cpGoods.getFileIds())){
+                String fileUrls = String.valueOf(cpGoods.getMap().get("fileUrls"));
+                cpGoods.setTitleImgUrl(fileUrls.substring(0,fileUrls.indexOf(",")));
             }
             SysCompany sysCompany = sysCompanyService.getById(cpGoods.getCompanyId());
             cpGoods.setIsOpenShop(sysCompany.getIsFacade());
-            /*if(StringUtils.isNotBlank(cpGoods.getPrimaryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getSecondryIndustryDcode())&&StringUtils.isNotBlank(cpGoods.getThirdryIndustryDcode())){
-                String[] industryCode = new String[]{cpGoods.getPrimaryIndustryDcode(),cpGoods.getSecondryIndustryDcode(),cpGoods.getThirdryIndustryDcode()};
-                cpGoods.setIndustryDcode(industryCode);
-            }*/
-            /*if(cpGoods.getProvinceRegionId()!=null&&cpGoods.getCityRegionId()!=null&&cpGoods.getAreaRegionId()!=null){
-                String[] areas = new String[]{cpGoods.getProvinceRegionId().toString(),cpGoods.getCityRegionId().toString(),cpGoods.getAreaRegionId().toString()};
-                cpGoods.setAreas(areas);
-            }*/
         }
         return list;
     }
