@@ -81,12 +81,12 @@ public class WrapperUtil<T> {
 
                     switch(key){
                         case "select":
-                            for (String s : columnArray) {
+                            /*for (String s : columnArray) {
                                 String carrier = s.substring(s.lastIndexOf("as ") + 1);
                                 String humpCarrier = StringUtil.underLineToUpperChar(carrier);
                                 s.replace(carrier,humpCarrier);
-                            }
-                            queryWrapper.select(columnArray);
+                            }*/
+                            queryWrapper.select(fieldCodeArray);
                             break;
                         case "isNull":
                             for (String column : columnArray) {
@@ -102,6 +102,9 @@ public class WrapperUtil<T> {
                             for (String column : columnArray) {
                                 queryWrapper.groupBy(column);
                             }
+                            break;
+                        case "groupBySql":
+                            queryWrapper.groupBy(value.toString());
                             break;
                         case "orderByAsc":
                             for (String column : columnArray) {

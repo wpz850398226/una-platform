@@ -25,6 +25,32 @@ public class DateUtil {
 		System.out.println(getDayNumOnString("2020-09-05 00:00:00","2020-09-06 00:00:00"));
 	}
 
+	// 获取当前日期前第n个月的日期
+	public static Date getTimeBeforeMonths(int i) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.MONTH, -i);
+		Date m = c.getTime();
+		return m;
+	}
+
+	// 获取最近n个月
+	public static String[] getLastMonths(int i) {
+		String[] months = new String[i];
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+
+		for (int num = 0; num < i; num++) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			c.add(Calendar.MONTH, -num);
+			Date m = c.getTime();
+			String month = sdf.format(m);
+			months[i-1-num] = month;
+		}
+		return months;
+	}
+
 	/**
 	 * 方法实现说明  获取某个时间的年月日
 	 *
