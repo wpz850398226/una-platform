@@ -3,15 +3,20 @@
 <div th:fragment="header" class="header">
   <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
     <h1 class="logo fl"><a href="/api/duohui/chanpin/index" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
-    <div class="fr fabu"><a class="" href="/api/sys/login/toLogin">发布产品信息</a></div>
-    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}"><em>石家庄</em><a href="#">[切换城市]</a> </div>
+    <div class="fr fabu">
+      <a class="" th:if="${activeUser!=null}" th:href="${'http://10.10.10.200:8080/una/dashboard?token='+activeUser['token']}">发布产品信息</a>
+      <a class="" th:if="${activeUser==null}" href="/api/duohui/login/toLogin">发布产品信息</a>
+    </div>
+    <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}">
+      <em>[[${sysRegion!=null?sysRegion.name:'未选择'}]]</em>
+      <a href="/api/duohui/login/regionList?targetUrl=/api/duohui/chanpin/index">[切换城市]</a>
+    </div>
     <div class="sousuo fr mr30  ml10" >
-      <form>
-        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
-        <input type="button" class="sousuo fl" value="搜  索" style="margin-top:1px;" />
+      <form action="/api/duohui/chanpin/list">
+        <input name=":name" type="search" class="soukuang fl" placeholder="请输入产品名称" th:value="${param[':name']}"/>
+        <input type="submit" class="sousuo fl" value="搜  索" style="margin-top:1px;"/>
       </form>
     </div>
   </div>
-
 </div>
 </html>

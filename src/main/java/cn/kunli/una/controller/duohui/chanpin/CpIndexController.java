@@ -1,16 +1,15 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-
 import cn.kunli.una.service.system.*;
+import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
 @RequestMapping("/duohui/chanpin")
 public class CpIndexController {
+    @Autowired
+    private RedisUtil<Integer> redisUtil;
     @Autowired
     SysMenuService sysMenuService;
     @Autowired
@@ -48,7 +52,18 @@ public class CpIndexController {
      * @return
      */
     @RequestMapping("/index")
-    public String index(Model model) {
+    public String index(Model model,Integer regionId) {
+        //查询对话所属地区
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        String requestedSessionId = request.getRequestedSessionId();
+        if(regionId!=null){
+            redisUtil.set("regionId:"+request.getRequestedSessionId(),regionId,3600*12);
+        }
+        boolean b = redisUtil.hasKey("regionId:" + requestedSessionId);
+        if(b){
+            regionId = redisUtil.get("regionId:" + requestedSessionId);
+        }
         getCommonItem(model);
         //行业字典
         List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
@@ -69,9 +84,11 @@ public class CpIndexController {
         if(CollectionUtils.isNotEmpty(goodsStatusDlist)){
             //按商品状态查询商品列表
             Map<String,Object> goodsListMap = new HashMap<>();
+            Map<String, Object> goodsParamMap = MapUtil.buildHashMap().put("isAdded", true).put("isAudit", true).build();
+            if(regionId!=null)goodsParamMap.put(":regionIds",regionId+",");
             for (SysDictionary sysDictionary : goodsStatusDlist) {
-                Page<CpGoods> goodsPage = cpGoodsService.page(1L,4L, MapUtil.buildHashMap()
-                        .put("statusDcode", sysDictionary.getCode()).put("isAdded",true).put("isAudit",true).build());
+                goodsParamMap.put("statusDcode", sysDictionary.getCode());
+                Page<CpGoods> goodsPage = cpGoodsService.page(1L,4L, goodsParamMap);
                 goodsListMap.put(sysDictionary.getCode(),cpGoodsService.parse(goodsPage.getRecords()));
             }
             //商品状态字典
@@ -98,16 +115,7 @@ public class CpIndexController {
 
             //合作企业
             Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
-            List<SysCompany> parse = sysCompanyService.parse(coopShopPage.getRecords());
-            List<SysCompany> coopShopList = new ArrayList<>();
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
-            coopShopList.addAll(parse);
+            List<SysCompany> coopShopList = sysCompanyService.parse(coopShopPage.getRecords());
             model.addAttribute("coopShopList",coopShopList);
 
         }
@@ -130,6 +138,7 @@ public class CpIndexController {
     @RequestMapping("/list")
     public String list(Model model,@RequestParam Map<String,Object> map) {
         model.addAttribute("param", map);
+
         getCommonItem(model);
 
         //行业字典
@@ -155,21 +164,6 @@ public class CpIndexController {
             }
         }
 
-        //搜索结果
-        /*Long pageNum = 1L;
-        Long pageSize = 16L;
-        if(map==null){
-            map = new HashMap<>();
-        }else{
-            if(map.containsKey("pageNum")){
-                pageNum = Long.valueOf(map.get("pageNum").toString());
-                map.remove("pageNum");
-            }
-            if(map.containsKey("pageSize")){
-                pageSize = Long.valueOf(map.get("pageSize").toString());
-                map.remove("pageSize");
-            }
-        }*/
         map.put("orderByDesc", "stickDeadline");
         Page<CpGoods> goodsPage = cpGoodsService.page(map.get("pageNum"),16, map);
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
@@ -204,6 +198,17 @@ public class CpIndexController {
         SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
+
+        //查询对话所属地区
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        String requestedSessionId = request.getRequestedSessionId();
+        boolean b = redisUtil.hasKey("regionId:" + requestedSessionId);
+        if(b){
+            Integer regionId = redisUtil.get("regionId:" + requestedSessionId);
+            SysRegion sysRegion = sysRegionService.getById(regionId);
+            model.addAttribute("sysRegion",sysRegion);
+        }
 
         //热卖推荐
         Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, MapUtil.getMap("orderByDesc", "stickDeadline"));
