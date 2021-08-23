@@ -4,7 +4,7 @@
   <div class="w1200 clearBoth clearfix" style="margin-top:2px;">
     <h1 class="logo fl"><a href="/api/duohui/chanpin/index" target="_blank"><img th:src="@{/duohui/chanpin/images/logo.jpg}" title="多汇供应"  /></a> </h1>
     <div class="fr fabu">
-      <a class="" th:if="${activeUser!=null}" th:href="${'http://10.10.10.200:8080/una/dashboard?token='+activeUser['token']}">发布产品信息</a>
+      <a class="" th:if="${activeUser!=null}" href="javascript:void(0)" onclick="skipToUserCenter()">发布产品信息</a>
       <a class="" th:if="${activeUser==null}" href="/api/duohui/login/toLogin">发布产品信息</a>
     </div>
     <div class="fl area ml10"> <img th:src="@{/duohui/chanpin/images/dhcp_area.jpg}">

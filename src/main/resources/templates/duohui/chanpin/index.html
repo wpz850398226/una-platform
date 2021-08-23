@@ -63,6 +63,8 @@
 <div th:replace="../templates/duohui/chanpin/include/script :: script"></div>
 <script type="text/javascript"><!--分类-->
 $(document).ready(function () {
+  console.log('token:'+ localStorage.getItem("token"))
+
   $(".topbar .menu").hover(function () {
             $(".topbar li").removeClass("hover");
             $(this).addClass("hover");
@@ -201,6 +203,12 @@ function openShop(id,isOpenShop){
   }else{
     layer.msg("未开通店铺",function(){})
   }
+}
+
+//跳转后台用户中心
+function skipToUserCenter(){
+  console.log("http://10.10.10.200:8080/una/login?token="+localStorage.getItem("token"))
+  window.open("http://10.10.10.200:8080/una/login?token="+localStorage.getItem("token"));
 }
 </script>
 </body>
