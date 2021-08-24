@@ -41,6 +41,21 @@ public class DhLoginController {
         return "duohui/denglu/register";
     }
 
+    @GetMapping("/seekPass1")
+    public String seekPass1() {
+        return "duohui/denglu/zhmm";
+    }
+
+    @GetMapping("/seekPass2")
+    public String seekPass2() {
+        return "duohui/denglu/zhmm1";
+    }
+
+    @GetMapping("/seekPass3")
+    public String seekPass3() {
+        return "duohui/denglu/zhmm2";
+    }
+
     @GetMapping("/regionList")
     public String regionList(Model model,String targetUrl) {
 

@@ -39,7 +39,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
             //创建企业
             SysAccount sysAccount = sysAccountService.getById(entity.getId());
-            if(sysAccount.getTypeDcode().equals("account_type_company")){
+            if(StringUtils.isNotBlank(sysAccount.getTypeDcode())&&sysAccount.getTypeDcode().equals("account_type_company")){
 
                 SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryTypeDcodes(sysAccount.getIndustryTypeDcodes()).setRegionIds(sysAccount.getRegionIds())
                         .setCoord(sysAccount.getCoord()).setTypeDcode(sysAccount.getTypeDcode()).setName(entity.getName());
@@ -83,6 +83,10 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             //如果账号来源是自行注册，则状态为待提交
             if(StringUtils.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
                 obj.setStatusDcode("account_status_toSubmit").setRoleId("100002");//未认证会员角色
+            }
+
+            if(StringUtils.isBlank(obj.getTypeDcode())){
+                obj.setTypeDcode("account_type_person");
             }
         }else{
             if(obj.getIsAudit()!=null){

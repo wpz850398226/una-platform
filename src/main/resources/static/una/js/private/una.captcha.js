@@ -6,6 +6,9 @@ function loadCaptcha(){
 function verifyCaptcha(captcha,ele){
 	captcha = captcha.toLowerCase();
 	var inputText = $(ele).val();
+
+	console.log("yzm:"+captcha+";sr="+inputText);
+
 	if(inputText==''){
 		layer.msg("请输入验证码！",function(){})
 		return false;
