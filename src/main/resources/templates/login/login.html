@@ -73,7 +73,7 @@
                         layer.msg(result.message);
                         localStorage.setItem("token",result.data);
                         setTimeout(function () {
-                            window.location.href="/api/sys/index/index";
+                            window.location.href="javascript:void(0)" onclick="skipToUserCenter()";
                         },'500')
 
                     }else{
