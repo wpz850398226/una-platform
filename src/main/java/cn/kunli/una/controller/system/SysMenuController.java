@@ -27,9 +27,6 @@ import java.util.List;
 @RequestMapping("/sys/menu")
 public class SysMenuController extends BaseController<SysMenuService, SysMenu> {
 
-    @Autowired
-    private SysMenuService objService;
-
     /**
      * 跳转管理页
      *

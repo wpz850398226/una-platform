@@ -11,33 +11,73 @@
 <!--注册内容-->
 
 <div class="box"  style="margin:30px auto; width:880px; border:1px solid #e5e5e5; padding-top:50px;">
-  <p class="zhmm"> <a href="#"  >确认帐号</a> <a href="#" class="act2" >安全验证</a> <a href="zhmm2.html" >重置密码</a></p>
-  <form id="fMain" method="post" onSubmit="return false;">
+  <p class="zhmm"> <a href="#"  >确认帐号</a> <a href="#" class="act2" >安全验证</a> <a href="#" >重置密码</a></p>
     <div class="gtform" style="padding-top:60px;">
       <li> <em>
         <p style="color:#999;">为了你的帐号安全，请完成身份验证</p>
         </em> </li>
       <li>
         <label class="fl  mr10">手机验证&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <em> 手机号： 139******77 </em> </li>
+        <em> 手机号： [[${username}]] </em> </li>
       <li class="clear clearfix">
         <label class="fl" >手机验证码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="text" name="uname" maxlength="64"  style="width:210px;" class="it" value="" />
+        <input type="text" id="captcha" maxlength="64"  style="width:210px;" class="it" value="" />
         <p class="send" id="send_scode" onclick="SendSCode();">发送验证码</p>
         </em> </li>
-
-
       <li>
         <label class="fl"></label>
         <em>
-        <input type="submit" value="下一步" class="btn" />
+        <input type="button" onclick="submit()" value="下一步" class="btn" />
         </em> </li>
-
-
     </div>
-  </form>
 </div>
-<div th:replace="../templates/duohui/denglu/include/header :: header"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<script type="text/javascript">
+  var mobile = '[[${username}]]';
+
+  //发送短信验证码
+  function SendSCode(){
+    $.ajax({
+      url: '/api/sys/message/sms',
+      type: "POST",
+      data: {"mobile":mobile},
+      dataType: 'json',
+      success:function(result){
+          layer.msg(result.message);
+      }
+    });
+  }
+
+  function submit() {
+    let captcha = $("#captcha").val();
+
+    if(captcha==""){
+      layer.msg("请输入验证码");
+      return;
+    }
+
+
+    $.ajax({
+      url: '/api/sys/message/verify',
+      type: "POST",
+      data: {"mobile":mobile,"captcha":captcha},
+      dataType: 'json',
+      success:function(result){
+        if(result.isSuccess){
+          layer.msg(result.message);
+          setTimeout(function () {
+            window.location.href="/api/duohui/login/seekPass3?username="+mobile;
+          },'500')
+
+        }else{
+          layer.msg(result.message,function () {})
+        }
+
+      }
+    })
+
+  }
+</script>
 </body>
 </html>

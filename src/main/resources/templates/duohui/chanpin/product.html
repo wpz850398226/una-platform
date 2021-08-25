@@ -60,8 +60,9 @@
                         <dl id="box">
                             <dt> 地区：</dt>
                             <div style="width:970px; float:left;">
-                                <dd th:class="${param['provinceRegionId']!=null?'':'on'}" name="provinceRegionId" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
-                                <dd th:class="${#strings.trim(param['provinceRegionId']) == #strings.trim(region['id'])?'on':''}" class="" th:each="region:${sysRegionList}" name="provinceRegionId" th:value="${region.id}">
+                                <dd th:class="${param[':regionIds']!=null?'':'on'}" name=":regionIds" value="all"><a href="#" onclick="searchGoods(this)">全部</a></dd>
+<!--                                <dd th:class="${#strings.trim(param['provinceRegionId']) == #strings.trim(region['id'])?'on':''}" class="" th:each="region:${sysRegionList}" name=":regionIds" th:value="${region.id+','}">-->
+                                <dd th:class="${param[':regionIds']!=null && #strings.contains(param[':regionIds'],region['id']+',')?'on':''}" class="" th:each="region:${sysRegionList}" name=":regionIds" th:value="${region.id+','}">
                                     <a href="#" onclick="searchGoods(this)">[[${region.name}]]</a></dd>
                             </div>
                         </dl>

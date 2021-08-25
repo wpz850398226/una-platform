@@ -30,7 +30,7 @@ public class SysMessage extends BasePojo implements Serializable {
     //操作相关实体类id
     private Integer entityId;
     //操作相关数据id
-    private String dataId;
+    private Integer dataId;
     //内容
     private String content;
 
@@ -43,8 +43,6 @@ public class SysMessage extends BasePojo implements Serializable {
     private String templateCode;        //模板编号
     //文件保存地址
     private String fileIds;
-
-
     //是否已推送
     private Boolean isSend;
     //是否已读：0未读，1已读
@@ -52,21 +50,6 @@ public class SysMessage extends BasePojo implements Serializable {
     //是否人为（0：否，1：是）
     private Boolean isArtificial;
     //接收人id
-    private String receiverId;
-
-    private Date sendTime;
-
-
-    @TableField(exist = false)
-    private String creatorPhotoUrl;
-    @TableField(exist = false)
-    private String receiverName;
-    @TableField(exist = false)
-    private String entityName;
-    @TableField(exist = false)
-    private Integer amount;            //统计用：消息数量
-    @TableField(exist = false)
-    private List<String> receiverIdList;            //接收前台传回守信者id，群发功能
-
+    private String receiverAccountId;
 
 }

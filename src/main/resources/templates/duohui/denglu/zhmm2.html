@@ -12,35 +12,86 @@
 
 <div class="box"  style="margin:30px auto; width:880px; border:1px solid #e5e5e5; padding-top:50px;">
   <p class="zhmm"> <a href="#"  >确认帐号</a> <a href="#"  >安全验证</a> <a href="#" class="act3" >重置密码</a></p>
-  <form id="fMain" method="post" onSubmit="return false;">
     <div class="gtform" style="padding-top:60px;">
 
 
 
       <li> <em>
-        <p style="color:#999;">您正在找回的帐号是：1250qqcom</p>
+        <p style="color:#999;">您正在找回的帐号是：[[${sysAccount.username}]]</p>
         </em> </li>
       <li>
         <label class="fl">新密码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="password" name="upwd1" maxlength="64" class="it" value="" />
+        <input type="password" id="newPassword" maxlength="64" class="it" value="" />
         </em> </li>
       <li>
         <label class="fl">确认新密码<i class=" line36  ml5 mr10 red">*</i></label>
         <em>
-        <input type="password" name="upwd1" maxlength="128" value=""  class="it" />
+        <input type="password" id="confirmPassword" maxlength="128" value=""  class="it" />
         </em> </li>
       <li>
         <label class="fl"></label>
         <em>
-        <input type="submit" value="注册" class="btn" />
+        <input type="button" onclick="submit()" value="提交" class="btn" />
         </em> </li>
       <li>
         <label class="fl"></label>
-        <em>您已经找回密码？ <a href="login.html">立即登录</a></em> </li>
+        <em>您已经找回密码？ <a href="/api/duohui/login/toLogin">立即登录</a></em> </li>
     </div>
-  </form>
 </div>
-<div th:replace="../templates/duohui/denglu/include/header :: header"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<script type="text/javascript">
+  var id = '[[${sysAccount.id}]]';
+
+  function submit() {
+    let newPassword = $("#newPassword").val();
+    let confirmPassword = $("#confirmPassword").val();
+
+    if(newPassword==""){
+      layer.msg("请输入新密码");
+      return;
+    }
+
+    if(confirmPassword==""){
+      layer.msg("请确认新密码");
+      return;
+    }
+
+    if(newPassword!=confirmPassword){
+      layer.msg("密码不一致");
+      return;
+    }
+
+    if(newPassword.length<7){
+      layer.msg("密码长度必须大于6");
+      return;
+    }
+
+    var param = {"id":id,"password":newPassword};
+
+    console.log(param)
+
+
+    $.ajax({
+      url: '/api/sys/account/setPassword',
+      type: "POST",
+      data: {"id":id,"password":newPassword},
+      success:function(result){
+        if(result.isSuccess){
+          layer.msg(result.message);
+          setTimeout(function () {
+            window.location.href="/api/duohui/login/toLogin";
+          },'500')
+
+        }else{
+          layer.msg(result.message,function () {})
+        }
+
+      }
+    })
+
+  }
+
+</script>
 </body>
 </html>

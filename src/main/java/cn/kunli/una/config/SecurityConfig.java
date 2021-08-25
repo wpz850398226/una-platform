@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //拦截器/授权
         http.authorizeRequests()
                 //放行登录页
-                .antMatchers("/sys/login/toLogin","/sys/account/register","/sys/dictionary/list","/sys/region/list").permitAll()
+                .antMatchers("/sys/login/toLogin","/sys/account/register","/sys/account/setPassword","/sys/dictionary/list","/sys/region/list","/sys/message/sms","/sys/message/verify").permitAll()
                 //放行静态资源
                 .antMatchers("/una/**","/xadmin/**","/layui/**","/duohui/**","/cp/goods/fDetail/**","/gq/information/fDetail/**").permitAll()
                 //所有请求都必 须认证才能访问，必须登录

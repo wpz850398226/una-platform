@@ -1,6 +1,9 @@
 package cn.kunli.una.controller.duohui.denglu;
 
+import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysRegion;
+import cn.kunli.una.pojo.vo.SysResult;
+import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +12,9 @@ import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,6 +26,8 @@ public class DhLoginController {
 
     @Autowired
     private SysRegionService sysRegionService;
+    @Autowired
+    private SysAccountService sysAccountService;
 
     @GetMapping("/toLogin")
     public String toLogin(Model model,HttpServletRequest req) {
@@ -47,12 +54,16 @@ public class DhLoginController {
     }
 
     @GetMapping("/seekPass2")
-    public String seekPass2() {
+    public String seekPass2(Model model,String username) {
+        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username", username));
+        model.addAttribute("username",username);
         return "duohui/denglu/zhmm1";
     }
 
     @GetMapping("/seekPass3")
-    public String seekPass3() {
+    public String seekPass3(Model model,String username) {
+        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username", username));
+        model.addAttribute("sysAccount",sysAccount);
         return "duohui/denglu/zhmm2";
     }
 

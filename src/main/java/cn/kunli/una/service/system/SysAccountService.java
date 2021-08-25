@@ -1,5 +1,6 @@
 package cn.kunli.una.service.system;
 
+import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysAccountMapper;
 
 import cn.kunli.una.pojo.system.SysAccount;
@@ -8,10 +9,12 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 
 import cn.kunli.una.utils.common.MapUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +36,12 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
 
     @Override
+    @SneakyThrows
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(SysAccount entity) {
         if(entity.getIsAudit()!=null&&entity.getIsAudit()){
             //审核通过
-
             //创建企业
             SysAccount sysAccount = sysAccountService.getById(entity.getId());
             if(StringUtils.isNotBlank(sysAccount.getTypeDcode())&&sysAccount.getTypeDcode().equals("account_type_company")){

@@ -117,13 +117,13 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
                                 if(null != value){
                                     //实体中该字段值为空的
                                     SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
+                                    if(sysData.getMap()==null)sysData.setMap(new HashMap<>());
                                     if(displayResult.getIsSuccess()){
                                         displayValue = displayResult.getData().toString();
 //                                    sysData.getValue().put(sysField.getDisplayCode(),displayValue);
-                                        Map<String, Object> map = sysData.getMap();
-                                        if(map==null)map = new HashMap<>();
-                                        map.put(sysField.getDisplayCode(), displayValue);
-                                        sysData.setMap(map);
+                                        sysData.getMap().put(sysField.getDisplayCode(), displayValue);
+                                    }else{
+                                        sysData.getMap().put(sysField.getDisplayCode(), displayResult.getMessage());
                                     }
                                 }
                             }

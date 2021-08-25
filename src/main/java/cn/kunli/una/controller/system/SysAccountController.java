@@ -51,28 +51,17 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
         return sysResult;
     }
 
-    //审核
-    /*@PutMapping("/audit/{id}/{isAudit}")
+    //注册
+    @PostMapping("/setPassword")
     @ResponseBody
-    public SysResult audit(@PathVariable Integer id,@PathVariable Integer isAudit) {
-        SysAccount targetAccount = (SysAccount) new SysAccount().setId(id);
-        if(isAudit==1){//审核通过
-            SysAccount sysAccount = service.getById(id);
-            SysCompany sysCompany = (SysCompany) new SysCompany().setName(sysAccount.getName() + "的店铺");
-            //创建店铺
-            sysCompanyService.saveRecord(sysCompany);
-            targetAccount.setRoleId("100003").setStatusDcode("account_status_auditSuccess").setCompanyId(sysCompany.getId());//免费会员
+    public SysResult setPassword(Integer id,String password) {
 
-            //创建企业
-            if(sysAccount.getTypeDcode().equals("account_type_company")){
-                SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryDcode(sysAccount.getIndustryTypeDcode()).setName(sysAccount.getName());
-                sysCompanyService.saveRecord(sysCompany);
-                targetAccount.setCompanyId(sysCompany.getId());
-            }
-        }
-        //修改账号信息
-        return service.updateRecordById(targetAccount);
+        if(id==null||password==null)return SysResult.fail();
 
-    }*/
+        SysResult sysResult = service.updateRecordById((SysAccount) new SysAccount().setPassword(password).setId(id));
+
+        return sysResult;
+    }
+
 
 }

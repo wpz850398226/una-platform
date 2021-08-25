@@ -69,10 +69,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs,String transformDisplayCode) {
         if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
         int length = assignmentCode.length();
-        String resultStr = "";
-        List<? extends BasePojo> resultList = new ArrayList<>();
+        List<? extends BasePojo> resultList = null;
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=5){
+        if(assignmentCode.length()>=5){
             switch (assignmentCode.substring(length - 5)) {
                 case "Dcode"://字典编码
                     resultList = sysDictionaryService.selectList(MapUtil.getMap("code", value));
@@ -80,7 +79,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=6){
+        if(resultList==null&&assignmentCode.length()>=6){
             switch (assignmentCode.substring(length - 6)) {
                 case "nodeId"://流程节点 entityId
                 case "NodeId"://流程节点 entityId
@@ -105,7 +104,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=7){
+        if(resultList==null&&assignmentCode.length()>=7){
             switch (assignmentCode.substring(length - 7)) {
                 case "FieldId"://字段 fieldId
                 case "fieldId"://字段 fieldId
@@ -126,7 +125,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=8){
+        if(resultList==null&&assignmentCode.length()>=8){
             switch (assignmentCode.substring(length - 8)) {
                 case "EntityId"://实体 entityId
                 case "entityId"://实体 entityId
@@ -139,7 +138,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=9){
+        if(resultList==null&&assignmentCode.length()>=9){
             switch (assignmentCode.substring(length - 9)) {
                 case "companyId"://公司 companyId
                 case "CompanyId"://公司 companyId
@@ -159,7 +158,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)&&assignmentCode.length()>=10){
+        if(resultList==null&&assignmentCode.length()>=10){
             switch (assignmentCode.substring(length - 10)) {
                 case "companyIds"://公司 companyId
                 case "CompanyIds"://公司 companyId
@@ -168,7 +167,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isBlank(resultStr)&&CollectionUtils.isEmpty(resultList)){
+        if(resultList==null){
             switch (assignmentCode) {
                 case "permissionId"://权限 permissionId
                     resultList = sysPermissionService.selectList(MapUtil.getMap("id",value));
@@ -186,7 +185,6 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             }
         }
 
-        if(StringUtils.isNotBlank(resultStr))return new SysResult().success("查询成功",resultStr);
         if(CollectionUtils.isNotEmpty(resultList)){
             List<String> resultStrList = new ArrayList<>();
             if(StringUtils.isNotBlank(transformDisplayCode)){
@@ -213,7 +211,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 return new SysResult().success("查询成功",ListUtil.listToStr(resultStrList));
             }
         }
-        return SysResult.fail("查询失败：赋值编码 未识别");
+        return SysResult.fail("查询无数据");
     }
 
     /**
