@@ -7,10 +7,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
@@ -22,7 +20,7 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
             ResponseUtil.responseJson(response, HttpStatus.OK.value(), SysResult.fail(msg));
         }else {
             msg = e.getMessage();
-            ResponseUtil.responseJson(response, HttpStatus.BAD_REQUEST.value(), SysResult.fail(msg));
+            ResponseUtil.responseJson(response, HttpStatus.OK.value(), SysResult.fail(msg));
         }
     }
 }

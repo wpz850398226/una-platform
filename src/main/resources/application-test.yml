@@ -11,7 +11,7 @@ server:
 spring:
   datasource:
     username: root
-    password: Wpz1992124*
+    password: Kunli@888
     #测试环境
     url: jdbc:mysql://127.0.0.1:3306/una-platform?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
     driver-class-name: com.mysql.jdbc.Driver
@@ -42,9 +42,9 @@ spring:
 
   redis:
     host: 127.0.0.1
-    port: 6379
+    port: 9003
     database: 1
-    password: wpz1992124*
+    password: kunli@888
     ssl: false
     timeout: 5000
 
@@ -101,8 +101,8 @@ token:
   jwtSecret: Ponzio-Una
 
 minio:
-  endpoint: 42.192.150.206
-  port: 9000
+  endpoint: 123.56.79.121
+  port: 9002
   accessKey: admin
   secretKey: wpz1992124*
   secure: false
