@@ -28,7 +28,7 @@
     <div class="clear clearfix"></div>
     <div class="clear" style="color:#000;margin-left:190px; margin-top:45px;">
         <ul class="scroll_ul">
-            <li th:each="shop:${hotShopList}"> <a href="" target="_blank" >
+            <li th:each="shop:${hotShopList}"> <a href="#" th:onclick="openShop([[${shop.id}]],[[${shop.isFacade}]])" >
                 <div class="txt">
                     <p class="t">热门商铺排行榜</p>
                     <p>热门商铺排行榜</p>

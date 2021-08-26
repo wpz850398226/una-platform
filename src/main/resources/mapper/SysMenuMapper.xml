@@ -58,8 +58,8 @@
         SELECT DISTINCT smnu2.parent_id FROM sys_menu as smnu2
         LEFT JOIN sys_role_permission as srfc2 on srfc2.permission_id = smnu2.permission_id AND srfc2.scope_dcode != 'permission_scope_0'
         LEFT JOIN sys_account as sysUser2 on FIND_IN_SET(srfc2.role_id,sysUser2.role_id)
-        where sysUser2.id = #{record.id} AND smnu2.is_effect = 1 and smnu2.is_delete=0
-        ))AND smnu1.is_effect = 1 and smnu1.is_delete=0
+        where sysUser2.id = #{record.id} AND smnu2.is_effect = 1 and smnu2.is_delete=0 ORDER BY smnu2.parent_id,smnu2.sort_order
+        ))AND smnu1.is_effect = 1 and smnu1.is_delete=0 ORDER BY smnu1.parent_id,smnu1.sort_order
         ))AND smnu.is_effect = 1 and smnu.is_delete=0
         ORDER BY smnu.parent_id,smnu.sort_order
     </select>

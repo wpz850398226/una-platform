@@ -12,9 +12,9 @@
         <ul id="count1">
           <li th:each="shop:${coopShopList}">
             <div class="playerdetail">
-              <div class="detailimg"><a href="" target="_blank" th:title="${shop.name}"><img th:src="${shop.map['titleFileUrl']}"></a></div>
+              <div class="detailimg"><a href="#" th:onclick="openShop([[${shop.id}]],[[${shop.isFacade}]])" th:title="${shop.name}"><img th:src="${shop.map['titleFileUrl']}"></a></div>
               <div class="teanames">[[${shop.name}]]</div>
-              <a class="checkdetail" href="" target="_blank" th:title="${shop.name}">查看详情</a>
+              <a class="checkdetail" href="#" th:onclick="openShop([[${shop.id}]],[[${shop.isFacade}]])" th:title="${shop.name}">查看详情</a>
             </div>
           </li>
         </ul>

@@ -33,7 +33,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     public List<SysMenu> selectTreeBySelective(SysMenu obj) {
         List<SysMenu> menuList = new ArrayList<>();
         if (obj.getId() == 100000) {
-            menuList = thisProxy.list();
+            menuList = thisProxy.selectList(null);
         } else {
             menuList = mapper.selectTreeBySelective(obj);
         }
