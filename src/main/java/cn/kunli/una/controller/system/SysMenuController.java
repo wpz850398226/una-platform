@@ -1,14 +1,10 @@
 package cn.kunli.una.controller.system;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysMenu;
-import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysMenuService;
-import cn.kunli.una.utils.common.UserUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,9 +49,7 @@ public class SysMenuController extends BaseController<SysMenuService, SysMenu> {
 	@GetMapping("/getByToken")
 	@ResponseBody
 	public SysResult getByToken() {
-		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-		BasePojo sample = new SysMenu().setId(loginUser.getId());
-		List<SysMenu> list = service.selectTreeBySelective((SysMenu) sample);
+		List<SysMenu> list = service.selectByAccount();
 		return new SysResult().success(list);
 	}
 

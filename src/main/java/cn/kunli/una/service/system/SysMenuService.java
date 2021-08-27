@@ -1,20 +1,22 @@
 package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysMenuMapper;
-import cn.kunli.una.pojo.system.SysButton;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.pojo.system.SysPermission;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
@@ -30,7 +32,60 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     }
 
     //通过用户id查询所有菜单，并按层级排序
-    public List<SysMenu> selectTreeBySelective(SysMenu obj) {
+    public List<SysMenu> selectByAccount() {
+        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+        List<SysMenu> menuList = thisProxy.parse(thisProxy.selectList(MapUtil.getMap("level",1)));
+        List<String> permissionCodeList = loginUser.getPermissionCodeList();
+        List<String> retriveList = permissionCodeList.stream().filter((String pc) -> pc.indexOf(":retrieve") != -1).collect(Collectors.toList());
+
+        //移除没有权限的菜单
+        List<SysMenu> formatMenuList = filterByPermission(menuList, retriveList);
+        //移除空菜单
+        formatMenuList = filterWithNull(formatMenuList);
+        return formatMenuList;
+    }
+
+    //移除无权限查看的菜单
+    private List<SysMenu> filterByPermission(List<SysMenu> menuList,List<String> codeList){
+        Iterator<SysMenu> iterator = menuList.iterator();
+        while (iterator.hasNext()) {
+            SysMenu parentMenu = iterator.next();
+            if(parentMenu.getType().equals("列表")){
+                //如果是列表，则遍历子菜单
+                if(CollectionUtils.isNotEmpty(parentMenu.getChildren())){
+                    List<SysMenu> formatMenuList = filterByPermission(parentMenu.getChildren(), codeList);
+                    parentMenu.setChildren(formatMenuList);
+                }
+            }else{
+                //判断是否有该菜单权限，没有则移除
+                if(StringUtils.isBlank(parentMenu.getCode())||!codeList.contains(parentMenu.getCode()+":retrieve")){
+                    iterator.remove();
+                }
+            }
+        }
+
+        return menuList;
+    }
+
+    //移除空菜单
+    private List<SysMenu> filterWithNull(List<SysMenu> menuList){
+        Iterator<SysMenu> iterator = menuList.iterator();
+        while (iterator.hasNext()) {
+            SysMenu parentMenu = iterator.next();
+            if(parentMenu.getType().equals("列表")){
+                if(CollectionUtils.isEmpty(parentMenu.getChildren())){
+                    iterator.remove();
+                }else{
+                    List<SysMenu> children = filterWithNull(parentMenu.getChildren());
+                    parentMenu.setChildren(children);
+                }
+            }
+        }
+
+        return menuList;
+    }
+
+    /*public List<SysMenu> selectTreeBySelective(SysMenu obj) {
         List<SysMenu> menuList = new ArrayList<>();
         if (obj.getId() == 100000) {
             menuList = thisProxy.selectList(null);
@@ -76,7 +131,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         }
 
         return firstMenuList;
-    }
+    }*/
 
     @Override
     public SysResult validate(SysMenu obj) {

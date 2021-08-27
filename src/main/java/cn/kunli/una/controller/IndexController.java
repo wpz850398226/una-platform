@@ -32,7 +32,7 @@ public class IndexController {
     public String index(Model model) {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 
-        List<SysMenu> sysMenuList = sysMenuService.selectTreeBySelective((SysMenu) new SysMenu().setId(loginUser.getId()));
+        List<SysMenu> sysMenuList = sysMenuService.selectByAccount();
         SysConfiguration sysConfiguration = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
         model.addAttribute("sysMenuList", sysMenuList);
         //model.addAttribute("systemName", sysConfiguration.getValue());

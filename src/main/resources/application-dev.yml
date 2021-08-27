@@ -11,9 +11,9 @@ server:
 spring:
   datasource:
     username: root
-    password: glodon2021
+    password: Kunli@888
     #测试环境
-    url: jdbc:mysql://127.0.0.1:3306/una-platform?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://123.56.79.121:3306/una-platform?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -101,11 +101,11 @@ token:
   jwtSecret: Ponzio-Una
 
 minio:
-  endpoint: 42.192.150.206
-  port: 9000
+  endpoint: 123.56.79.121
+  port: 9002
   accessKey: admin
-  secretKey: wpz1992124*
+  secretKey: kunli@888
   secure: false
-  bucketName: "una"
+  bucketName: "duohui"
   configDir: "/home/data/"
 
