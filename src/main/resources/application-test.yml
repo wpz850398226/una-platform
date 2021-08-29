@@ -38,7 +38,7 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
   thymeleaf:
-    cache: false  #关闭thymeleaf缓存
+    cache: true  #关闭thymeleaf缓存
 
   redis:
     host: 127.0.0.1

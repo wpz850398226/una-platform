@@ -3,6 +3,7 @@ package cn.kunli.una.service.oa;
 import cn.kunli.una.mapper.OaAttendanceMapper;
 import cn.kunli.una.pojo.oa.OaAttendance;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.RequestUtil;
 import cn.kunli.una.utils.common.UserUtil;
@@ -26,11 +27,17 @@ public class OaAttendanceService extends BasicService<OaAttendanceMapper, OaAtte
     }
 
     @Override
+    public SysResult validate(OaAttendance obj) {
+        return SysResult.success();
+    }
+
+    @Override
     public OaAttendance initialize(OaAttendance obj) {
-        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getId()==null){
             //通过反射赋值"顺序"字段
+            obj.setName("未打卡");
         }else{
+            SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
             if(loginUser!=null){
                 obj.setModifierId(loginUser.getId());
                 obj.setModifierName(loginUser.getName());

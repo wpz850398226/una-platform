@@ -36,7 +36,7 @@ public class SysRoleController extends BaseController<SysRoleService, SysRole> {
             model.addAttribute("scopeList", sysDictionaryService.selectList(MapUtil.getMap("parentId", permissionScopeDic.getId())));
         }
 
-        List<SysEntity> entityList = sysEntityService.list();
+        List<SysEntity> entityList = sysEntityService.selectList(null);
         for (SysEntity sysEntity : entityList) {
             sysEntity.setPermissionList(sysPermissionService.selectList(sysPermissionService.format(MapUtil.getMap("entityId",sysEntity.getId()))));
         }

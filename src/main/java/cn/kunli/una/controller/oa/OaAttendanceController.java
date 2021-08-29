@@ -14,10 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -40,12 +37,13 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
      * 自动生成考勤记录
      */
     @Scheduled(cron = "0 1 0 * * ?")//凌晨12:01
-    @GetMapping("/auto")
+    @PostMapping("/auto")
     @ResponseBody
     private void autoAttendance(){
         //查询所有有修改考勤记录权限的人，都需要打卡
         SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
         if(sysEntity!=null){
+            //查询修改考勤记录的权限
             SysPermission permission = sysPermissionService.selectOne(MapUtil.buildHashMap().put("type_dcode", "permission_type_update")
                             .put("entityId", sysEntity.getId()).build());
             if(permission!=null){
@@ -81,8 +79,8 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
      * 考勤打卡
      */
     @ResponseBody
-    @PutMapping ("/punch")
-    private SysResult punch(String coord){
+    @PutMapping ("/punch/{coord}")
+    private SysResult punch(@PathVariable String coord){
         Date punchTime = new Date();
         String time = DateUtil.getStrOfTime(punchTime);
 
@@ -102,10 +100,10 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
         if(oaAttendance==null)return SysResult.fail("打卡失败，未生成当天的考勤记录");
 
         //查到了对应的考勤记录
-        if(oaAttendanceConfig.getValue().equals("上班")){
+        if(oaAttendance.getSignTime()!=null && oaAttendanceConfig.getValue().equals("上班")){//上班打卡，不能重复打卡，不能覆盖前面的，下班打卡可以覆盖
             return SysResult.fail("无需重复打卡");
         }else{
-            SysResult sysResult = service.updateRecordById(oaAttendance.setCoord(coord).setSignTime(punchTime));
+            SysResult sysResult = service.updateRecordById((OaAttendance) oaAttendance.setCoord(coord).setSignTime(punchTime).setName(oaAttendanceConfig.getDescription()));
             return sysResult;
         }
 

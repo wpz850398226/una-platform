@@ -38,7 +38,7 @@ public class SysRegionService extends BasicService<SysRegionMapper, SysRegion> {
         super.parse(list);
         for (SysRegion record : list) {
             if(record.getLevel() == 2){
-                List<SysRegion> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
+                List<SysRegion> subList = thisProxy.selectList(MapUtil.getMap("parentId", record.getId()));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.parse(subList);
                 }

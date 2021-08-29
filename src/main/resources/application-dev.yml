@@ -44,7 +44,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     database: 1
-    password:
+    password: kunli@888
     ssl: false
     timeout: 5000
 

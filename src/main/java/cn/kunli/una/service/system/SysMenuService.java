@@ -178,7 +178,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         list = super.parse(list);
         for (SysMenu record : list) {
             if(record.getLevel()<2){
-                List<SysMenu> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
+                List<SysMenu> subList = thisProxy.selectList(MapUtil.getMap("parentId", record.getId()));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.parse(subList);
                 }

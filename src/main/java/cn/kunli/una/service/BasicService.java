@@ -31,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Primary
@@ -389,7 +387,21 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build()));
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
-                    for (SysSort sysSort : sortList) {
+                    int size = sortList.size();
+                    String [][] orderArray = new String[size][2];
+                    for (int i = 0; i < size; i++) {
+                        SysSort sysSort = sortList.get(i);
+                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
+                        orderArray[i][1] = assignmentCode;
+                        if(sysSort.getSortord()){
+                            orderArray[i][0] = "orderByAsc";
+                        }else{
+                            orderArray[i][0] = "orderByDesc";
+                        }
+                    }
+                    map.put("#orderArray",orderArray);
+
+                    /*for (SysSort sysSort : sortList) {
                         String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
                         if(sysSort.getSortord()){
                             if(map.containsKey("orderByAsc")){
@@ -404,7 +416,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                                 map.put("orderByDesc",assignmentCode);
                             }
                         }
-                    }
+                    }*/
                 }
             }
         }
@@ -417,47 +429,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             map.put("in:id",map.get("rootTreeIds"));
             map.remove("rootTreeIds");
         }
-
-
-//        SysPermission sysPermission = sysPermissionService.getOne(sysPermissionService.getWrapper(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build()));
-//        if(sysPermission!=null&&loginUser!=null){
-//            Integer scopeCode = 0;
-//            List<SysRolePermission> rolePermissionList = sysRolePermissionService.list(sysRolePermissionService.getWrapper(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build()));
-//            if(CollectionUtils.isNotEmpty(rolePermissionList)){
-//                for (SysRolePermission sysRolePermission : rolePermissionList) {
-//                    if(StringUtils.isNotBlank(sysRolePermission.getScopeDcode())){
-//                        String scopeDcode = sysRolePermission.getScopeDcode();
-//                        Integer scope = Integer.valueOf(scopeDcode.substring(scopeDcode.lastIndexOf("_")+1));
-//                        if(scope>scopeCode)scopeCode = scope;
-//                    }
-//                }
-//            }
-//
-//            if(scopeCode>=0){
-//                //有查询权限
-//                switch (scopeCode) {
-//                    case 100:
-//                        //查询全部
-//                        break;
-//                    case 50:
-//                        //查询公司范围
-//                        map.put("companyId",loginUser.getCompanyId());
-//                        break;
-//                    case 10:
-//                        //查询部门范围
-//                        map.put("departmentId",loginUser.getDepartmentId());
-//                        break;
-//                    case 1:
-//                        //查询个人范围
-//                        map.put("creatorId",loginUser.getId());
-//                        break;
-//                    default:
-//                        //无权限
-//                        map.put("creatorId","-1");
-//                        break;
-//                }
-//            }
-//        }
 
         return map;
     }

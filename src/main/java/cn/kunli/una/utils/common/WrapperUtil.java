@@ -75,6 +75,27 @@ public class WrapperUtil<T> {
                             queryWrapper.apply(value.toString());
                             break;
                     }
+                    continue;
+                }if(key.contains("#")){
+                    int index = key.indexOf("#");
+                    String item = key.substring(index + 1);
+                    switch(item){
+                        case "orderArray":
+                            String [][] orderArray = (String[][]) value;
+                            int length = orderArray.length;
+                            for (int i = 0; i < length; i++) {
+                                String orderType = orderArray[i][0];
+                                String fieldCode = orderArray[i][1];
+                                String column = StringUtil.upperCharToUnderLine(fieldCode);
+                                if(orderType.equals("orderByAsc")){
+                                    queryWrapper.orderByAsc(column);
+                                }else{
+                                    queryWrapper.orderByDesc(column);
+                                }
+                            }
+                            break;
+                    }
+                    continue;
                 }else{
                     String[] fieldCodeArray = value.toString().split(",");
                     String[] columnArray = ArrayUtil.upperCharToUnderLine(fieldCodeArray);
@@ -112,6 +133,11 @@ public class WrapperUtil<T> {
                             }
                             break;
                         case "orderByDesc":
+                            for (String column : columnArray) {
+                                queryWrapper.orderByDesc(column);
+                            }
+                            break;
+                        case "orderArray":
                             for (String column : columnArray) {
                                 queryWrapper.orderByDesc(column);
                             }

@@ -215,6 +215,166 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     }
 
     /**
+     * 转换存储值为显示值
+     * @param displayCode    取值编码编码
+     * @param value 存储至
+     * @param bs    源服务
+     * @param transformDisplayCode       取值编码
+     * @return
+     */
+    @SneakyThrows
+    public SysResult getAssignmentValue(String displayCode, String value, BasicService bs,String transformDisplayCode) {
+        if (StringUtils.isBlank(displayCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
+        int length = displayCode.length();
+        List<? extends BasePojo> resultList = null;
+
+        if(displayCode.length()>=5){
+            switch (displayCode.substring(length - 5)) {
+                case "Dname"://字典编码
+                    resultList = sysDictionaryService.selectList(MapUtil.getMap(":name", value));
+                    transformDisplayCode = "code";
+                    break;
+            }
+        }
+
+        if(resultList==null&&displayCode.length()>=6){
+            switch (displayCode.substring(length - 6)) {
+                case "Dnames"://字典编码
+                    resultList = sysDictionaryService.selectList(MapUtil.getMap(":name", value));
+                    transformDisplayCode = "code";
+                    break;
+            }
+        }
+
+        /*if(resultList==null&&displayCode.length()>=7){
+            switch (displayCode.substring(length - 7)) {
+                case "fileUrl"://流程节点 entityId
+                case "FileUrl"://流程节点 entityId
+                    resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("path", value)));
+                    break;
+            }
+        }*/
+
+        if(resultList==null&&displayCode.length()>=8){
+            switch (displayCode.substring(length - 8)) {
+                case "nodeName"://流程节点 entityId
+                case "NodeName"://流程节点 entityId
+//                    FlowNode flowNode = flowNodeService.getById(Integer.valueOf(value));
+                    resultList = flowNodeService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "roleName"://角色id，复数，以逗号分隔
+                case "RoleName"://角色id，复数，以逗号分隔
+                    resultList = sysRoleService.selectList(MapUtil.getMap(":name", value));
+                    break;
+                case "shopName"://店铺 companyId
+                case "ShopName"://店铺 companyId
+                    resultList = sysCompanyService.selectList(MapUtil.getMap(":name", value));
+                    break;
+                /*case "fileUrls"://流程节点 entityId
+                case "FileUrls"://流程节点 entityId
+                    resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("in:path", value)));
+                    break;*/
+            }
+        }
+
+        if(resultList==null&&displayCode.length()>=9){
+            switch (displayCode.substring(length - 9)) {
+                case "FieldName"://字段 fieldId
+                case "fieldName"://字段 fieldId
+                    resultList = sysFieldService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "GoodsName"://商品 goodsId
+                case "goodsName"://商品 goodsId
+                    resultList = cpGoodsService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "modelName"://商品型号
+                case "ModelName"://商品型号
+                    resultList = cpModelService.selectList(MapUtil.getMap(":name", value));
+                    break;
+            }
+        }
+
+        if(resultList==null&&displayCode.length()>=10){
+            switch (displayCode.substring(length - 10)) {
+                case "EntityName"://实体 entityId
+                case "entityName"://实体 entityId
+                    resultList = sysEntityService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "regionName"://地区 regionId
+                case "RegionName"://地区 regionId
+                    resultList = sysRegionService.selectList(MapUtil.getMap(":name",value));
+                    break;
+            }
+        }
+
+        if(resultList==null&&displayCode.length()>=11){
+            switch (displayCode.substring(length - 11)) {
+                case "companyName"://公司 companyId
+                case "CompanyName"://公司 companyId
+                    resultList = sysCompanyService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "artmentName"://部门 departmentId
+                    resultList = sysDepartmentService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "accountName"://账号 accountId
+                case "AccountName"://账号 accountId
+                    resultList = sysAccountService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "regionNames"://地区 regionId
+                case "RegionNames"://地区 regionId
+                    resultList = sysRegionService.selectList(MapUtil.getMap(":name", value));
+                    break;
+            }
+        }
+
+        if(resultList==null){
+            switch (displayCode) {
+                case "permissionName"://权限 permissionId
+                    resultList = sysPermissionService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "definitionName"://权限 permissionId
+                    resultList = flowDefinitionService.selectList(MapUtil.getMap(":name",value));
+                case "instanceName"://权限 permissionId
+                    resultList = flowInstanceService.selectList(MapUtil.getMap(":name",value));
+                    break;
+                case "parentName"://父id parentId
+                    resultList = bs.list(bs.getWrapper(MapUtil.getMap("name",value)));
+                    break;
+                default:
+                    return SysResult.fail("查询失败：取值编码 未识别");
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(resultList)){
+            List<String> resultStrList = new ArrayList<>();
+            if(StringUtils.isNotBlank(transformDisplayCode)){
+                BasePojo result0 = resultList.get(0);
+                //如果指定了转换取值编码，则通过反射获取，否则默认取name
+                Class<? extends BasePojo> resultClass = result0.getClass();
+                Field transformDisplayField = resultClass.getDeclaredField(transformDisplayCode);
+                transformDisplayField.setAccessible(true);
+
+                for (BasePojo basePojo : resultList) {
+                    //获取转换取值字段值
+                    Object transformDisplayValueObj = transformDisplayField.get(basePojo);
+                    if(transformDisplayValueObj!=null){
+                        resultStrList.add(transformDisplayValueObj.toString());
+                    }
+                }
+            }else{
+                for (BasePojo basePojo : resultList) {
+                    resultStrList.add(String.valueOf(basePojo.getId()));
+                }
+            }
+
+            if(CollectionUtils.isNotEmpty(resultStrList)){
+                return new SysResult().success("查询成功",ListUtil.listToStr(resultStrList));
+            }
+        }
+        return SysResult.fail("查询无数据");
+    }
+
+    /**
      * 保存实例格式化
      *
      * @param obj

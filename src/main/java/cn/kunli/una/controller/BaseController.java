@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -264,6 +265,32 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			map.remove("pageSize");
 		}
 		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
+
+		//处理查询条件
+        if(MapUtils.isNotEmpty(map)){
+            SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
+            if(sysEntity!=null){
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    String displayCode = entry.getKey();
+                    int i = displayCode.indexOf(":");
+                    if(i==0){
+                    	//只处理模糊查询的情况
+                        displayCode = displayCode.substring(i+1);
+						SysField sysField = sysFieldService.selectOne(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("displayCode", displayCode).build());
+						String assignmentCode = sysField.getAssignmentCode();
+						if(sysField!=null&&!assignmentCode.equals(displayCode)){
+							//如果赋值编码不等于取值编码，换查询条件
+							SysResult assignmentValue = sysFieldService.getAssignmentValue(displayCode, String.valueOf(entry.getValue()), service, null);
+							if(assignmentValue.getIsSuccess()){
+								map.put("in:"+assignmentCode,assignmentValue.getData());
+//								map.put(entry.getKey().replace(displayCode,assignmentCode),assignmentValue.getData());
+								map.remove(entry.getKey());
+							}
+						}
+                    }
+                }
+            }
+        }
 		IPage page = service.page(objectPage, service.getWrapper(service.format(map)));
 		List<T> list = service.parse(page.getRecords());
 		//判断是否是统计查询

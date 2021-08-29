@@ -28,7 +28,7 @@ public class SysQueryService extends BasicService<SysQueryMapper, SysQuery> {
         for (SysQuery sysQuery : list) {
             if(sysQuery.getFieldId()!=null){
                 SysField sysField = sysFieldService.getById(sysQuery.getFieldId());
-                sysQuery.setFieldCode(sysField.getAssignmentCode());
+                sysQuery.setFieldCode(sysField.getDisplayCode());
             }
         }
 

@@ -33,7 +33,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
         for (GwMenu record : list) {
-            List<GwMenu> subList = thisProxy.list(getWrapper(MapUtil.getMap("parentId", record.getId())));
+            List<GwMenu> subList = thisProxy.selectList(MapUtil.getMap("parentId", record.getId()));
             if(CollectionUtils.isNotEmpty(subList)){
                 this.parse(subList);
             }
