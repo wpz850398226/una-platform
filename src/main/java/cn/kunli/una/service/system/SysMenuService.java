@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
@@ -36,10 +35,10 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         List<SysMenu> menuList = thisProxy.parse(thisProxy.selectList(MapUtil.getMap("level",1)));
         List<String> permissionCodeList = loginUser.getPermissionCodeList();
-        List<String> retriveList = permissionCodeList.stream().filter((String pc) -> pc.indexOf(":retrieve") != -1).collect(Collectors.toList());
+//        List<String> retriveList = permissionCodeList.stream().filter((String pc) -> pc.indexOf(":retrieve") != -1).collect(Collectors.toList());
 
         //移除没有权限的菜单
-        List<SysMenu> formatMenuList = filterByPermission(menuList, retriveList);
+        List<SysMenu> formatMenuList = filterByPermission(menuList, permissionCodeList);
         //移除空菜单
         formatMenuList = filterWithNull(formatMenuList);
         return formatMenuList;
@@ -57,9 +56,18 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
                     parentMenu.setChildren(formatMenuList);
                 }
             }else{
-                //判断是否有该菜单权限，没有则移除
-                if(StringUtils.isBlank(parentMenu.getCode())||!codeList.contains(parentMenu.getCode()+":retrieve")){
-                    iterator.remove();
+                //链接型菜单，判断菜单权限
+                if(parentMenu.getPermissionId()!=null){
+                    String permissionCode = "";
+                    SysPermission sysPermission = sysPermissionService.getById(parentMenu.getPermissionId());
+                    if(sysPermission!=null){
+                        String typeDcode = sysPermission.getTypeDcode();
+                        permissionCode = parentMenu.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1);
+                        //判断是否有该菜单权限，没有则移除
+                        if(!codeList.contains(permissionCode)){
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         }

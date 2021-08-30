@@ -5,11 +5,11 @@ import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpSpecification;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.duohui.chanpin.CpModelService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
+import cn.kunli.una.service.duohui.chanpin.CpModelService;
+import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +64,12 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
             if(CollectionUtils.isNotEmpty(specificationList)){
                 for (CpSpecification cpSpecification : specificationList) {
                     String attributeNames = cpSpecification.getAttributeNames();
-                    attributeNameList.add(attributeNames.substring(0,attributeNames.indexOf(",")));
+                    if(attributeNames.contains(",")){
+                        attributeNameList.add(attributeNames.substring(0,attributeNames.indexOf(",")));
+                    }else{
+                        attributeNameList.add(attributeNames);
+                    }
+
                 }
             }
             cpModel = cpModelService.selectOne(

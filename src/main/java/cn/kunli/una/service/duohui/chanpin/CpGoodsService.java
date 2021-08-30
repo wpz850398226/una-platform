@@ -108,7 +108,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         return sysResult;
     }
 
-    @Override
+    /*@Override
     public SysResult validate(CpGoods obj) {
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
@@ -123,7 +123,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         }
 
         return SysResult.success();
-    }
+    }*/
 
     @Override
     public CpGoods initialize(CpGoods obj) {
@@ -159,7 +159,12 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             cpGoods.setModelList(attributeList);
             if(StringUtils.isNotBlank(cpGoods.getFileIds())){
                 String fileUrls = String.valueOf(cpGoods.getMap().get("fileUrls"));
-                cpGoods.setTitleImgUrl(fileUrls.substring(0,fileUrls.indexOf(",")));
+                if(fileUrls.contains(",")){
+                    cpGoods.setTitleImgUrl(fileUrls.substring(0,fileUrls.indexOf(",")));
+                }else{
+                    cpGoods.setTitleImgUrl(fileUrls);
+                }
+
             }
             SysCompany sysCompany = sysCompanyService.getById(cpGoods.getCompanyId());
             cpGoods.setIsOpenShop(sysCompany.getIsFacade());

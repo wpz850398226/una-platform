@@ -2,3 +2,56 @@
 spring:
   profiles:
     active: dev
+
+#自定义日期格式化
+#  mvc:
+#    date-format:
+mybatis:
+  basepackage: cn.kunli.una.mapper
+  type-aliases-package: cn.kunli.una.pojo
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true    #开启驼峰映射
+    call-setters-on-nulls: true
+  type-handlers-package: cn.kunli.una.handler
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: isDelete  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+logging:
+  level:
+    cn.kunli.una.mapper: debug
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+mapper:
+  not-empty: true #通用mapper设置selective中的！=''
+
+http:
+  maxTotal: 100  #最大连接数
+  defaultMaxPerRoute: 20  #并发数
+  connectTimeout: 2000  #创建连接的最长时间
+  connectionRequestTimeout: 5000  #从连接池中获取到连接的最长时间
+  socketTimeout: 10000  #数据传输的最长时间
+  staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
+
+token:
+  expire:
+    seconds: 14400
+  jwtSecret: Ponzio-Una
+
+minio:
+  endpoint: 123.56.79.121
+  port: 9002
+  accessKey: admin
+  secretKey: kunli@888
+  secure: false
+  bucketName: "duohui"
+  configDir: "/home/data/"
