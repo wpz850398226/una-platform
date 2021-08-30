@@ -4,13 +4,16 @@ import cn.kunli.una.controller.BaseController;
 
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysCompany;
+import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 
 import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysCompanyService;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,12 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     @ResponseBody
     public SysResult getInfo() {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+        if(StringUtils.isNotBlank(loginUser.getStatusDcode())){
+            SysDictionary sysDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code", loginUser.getStatusDcode()));
+            if(sysDictionary!=null){
+                loginUser.setStatusDname(sysDictionary.getName());
+            }
+        }
         return new SysResult().success(loginUser);
     }
 

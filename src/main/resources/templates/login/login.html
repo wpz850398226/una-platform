@@ -46,8 +46,6 @@
     if(top != self){
         parent.location.href = '/login/login.html'
     }
-
-    var form = $("#loginForm");
     var token = localStorage.getItem("token");
     /*if(token != null && token.trim().length != 0){
         $.ajax({
@@ -60,6 +58,8 @@
     }*/
 
     function login(selector){
+        var form = $("#loginForm");
+        console.log("asfasdfasdf")
         $(selector).attr("disabled",true);
 
         if(checkForm(selector)){
@@ -73,7 +73,7 @@
                         layer.msg(result.message);
                         localStorage.setItem("token",result.data);
                         setTimeout(function () {
-                            window.location.href="javascript:void(0)" onclick="skipToUserCenter()";
+                            window.location.href="/api/sys/index/index";
                         },'500')
 
                     }else{

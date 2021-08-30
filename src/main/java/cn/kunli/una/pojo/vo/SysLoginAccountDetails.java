@@ -48,6 +48,8 @@ public class SysLoginAccountDetails extends SysAccount implements UserDetails {
 
 	private Long expireTime;	//过期时间戳
 
+	private String statusDname;	//账号状态
+
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public void setPermissionCodeList(List<String> permissionCodeList) {
