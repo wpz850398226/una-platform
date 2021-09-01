@@ -150,18 +150,18 @@ public class CpIndexController {
             model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
             map.put(":industryTypeDcodes",map.get("primaryIndustryDcode")+",");
             map.remove("primaryIndustryDcode");
+        }
 
-            if(map.containsKey("secondryIndustryDcode")){
-                List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
-                model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
-                map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("secondryIndustryDcode")+",");
-                map.remove("secondryIndustryDcode");
+        if(map.containsKey("secondryIndustryDcode")){
+            List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
+            model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
+            map.put(":industryTypeDcodes",map.containsKey(":industryTypeDcodes")?map.get(":industryTypeDcodes").toString()+map.get("secondryIndustryDcode")+",":map.get("secondryIndustryDcode")+",");
+            map.remove("secondryIndustryDcode");
+        }
 
-                if(map.containsKey("thirdryIndustryDcode")){
-                    map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("thirdryIndustryDcode"));
-                    map.remove("thirdryIndustryDcode");
-                }
-            }
+        if(map.containsKey("thirdryIndustryDcode")){
+            map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("thirdryIndustryDcode"));
+            map.remove("thirdryIndustryDcode");
         }
 
         map.put("orderByDesc", "stickDeadline");

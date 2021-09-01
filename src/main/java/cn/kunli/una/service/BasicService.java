@@ -422,7 +422,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         }
 
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
-            map.put("orderByDesc","createTime");
+            map.put("orderByAsc","sortOrder");
         }
 
         if(map.containsKey("rootTreeIds")){
