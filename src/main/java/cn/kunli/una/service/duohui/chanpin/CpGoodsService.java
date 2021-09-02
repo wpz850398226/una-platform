@@ -62,11 +62,19 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             }
 
             if(CollectionUtils.isNotEmpty(entity.getModelList())){
+                CpModel cpModel1 = entity.getModelList().get(0);
+                Integer inventory = 0;
                 //保存商品规格属性
                 for (CpModel cpModel : entity.getModelList()) {
                     cpModel.setGoodsId(entity.getId());
                     cpModelService.saveRecord(cpModel);
+                    inventory+=cpModel.getInventory();
                 }
+
+                entity.setInventory(inventory).setSellingPrice(cpModel1.getSellingPrice())
+                        .setCeilingPrice(cpModel1.getCeilingPrice()).setCostPrice(cpModel1.getCostPrice())
+                        .setFloorPrice(cpModel1.getFloorPrice()).setWholesalePrice(cpModel1.getWholesalePrice())
+                        .setTaxExclusiveMarketPrice(cpModel1.getTaxExclusiveMarketPrice()).setTaxInclusiveMarketPrice(cpModel1.getTaxInclusiveMarketPrice());
             }else{
                 //生成一个默认型号
                 CpModel cpModel = new CpModel().setGoodsId(entity.getId());
@@ -108,7 +116,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         return sysResult;
     }
 
-    /*@Override
+    @Override
     public SysResult validate(CpGoods obj) {
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
@@ -123,7 +131,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         }
 
         return SysResult.success();
-    }*/
+    }
 
     @Override
     public CpGoods initialize(CpGoods obj) {
