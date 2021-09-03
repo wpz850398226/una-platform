@@ -1,6 +1,6 @@
 #连接数据库参数
 server:
-  port: 10080
+  port: 9600
   servlet:
     context-path: /api
   tomcat:

@@ -254,7 +254,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			}
 		}
 
-		Long pageNum = 1L;
+		/*Long pageNum = 1L;
 		Long pageSize = 10L;
 		if(map.get("pageNum")!=null){
 			pageNum = Long.valueOf(map.get("pageNum").toString());
@@ -264,7 +264,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			pageSize = Long.valueOf(map.get("pageSize").toString());
 			map.remove("pageSize");
 		}
-		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);
+		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);*/
 
 		//处理查询条件
         if(MapUtils.isNotEmpty(map)){
@@ -291,7 +291,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
                 }
             }
         }
-		IPage page = service.page(objectPage, service.getWrapper(service.format(map)));
+		IPage page = service.page(map.get("pageNum"),map.get("pageSize"), map);
 		List<T> list = service.parse(page.getRecords());
 		//判断是否是统计查询
 		if(map.containsKey("groupBy")&&CollectionUtils.isNotEmpty(list)){

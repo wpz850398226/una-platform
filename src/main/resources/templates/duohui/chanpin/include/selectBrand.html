@@ -3,12 +3,14 @@
 <div th:fragment="selectBrand" class="nav_bom fl" id="selectBrand">
     <div class="cat_show lanmu-list" id="seleAttr" >
         <dl th:each="primaryIndustry:${industryDlist}">
-            <a th:href="${'/api/duohui/chanpin/list?primaryIndustryDcode='+primaryIndustry.code}"><dd class="biao">[[${primaryIndustry.name}]]</dd></a>
+            <a th:href="${'/api/duohui/chanpin/list?primaryIndustryDcode='+primaryIndustry.code}">
+                <dd class="biao">[[${primaryIndustry.name}]]</dd></a>
             <div class="show_more" style="display: none;">
                 <div class="show_more_l" th:each="secondryIndustry:${primaryIndustry.children}">
-                    <div class="title"> <a th:href="${'/api/duohui/chanpin/list?secondryIndustryDcode='+secondryIndustry.code}">[[${secondryIndustry.name}]]</a></div>
+                    <div class="title"> <a th:href="${'/api/duohui/chanpin/list?primaryIndustryDcode='+primaryIndustry.code+'&secondryIndustryDcode='+secondryIndustry.code}">
+                        [[${secondryIndustry.name}]]</a></div>
                     <div class="content">
-                        <a href="/api/duohui/chanpin/list" th:href="${'/api/duohui/chanpin/list?thirdryIndustryDcode='+thirdryIndustry.code}" th:each="thirdryIndustry:${secondryIndustry.children}">[[${thirdryIndustry.name}]]</a>
+                        <a href="/api/duohui/chanpin/list" th:href="${'/api/duohui/chanpin/list?primaryIndustryDcode='+primaryIndustry.code+'&secondryIndustryDcode='+secondryIndustry.code+'&thirdryIndustryDcode='+thirdryIndustry.code}" th:each="thirdryIndustry:${secondryIndustry.children}">[[${thirdryIndustry.name}]]</a>
                     </div>
                 </div>
             </div>
