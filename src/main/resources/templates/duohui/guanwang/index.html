@@ -26,7 +26,7 @@ $(function () {
 </script>
     <div class="callbacks_container">
       <ul class="rslides callbacks callbacks1" id="slider">
-        <li th:each="imageUrl : ${#strings.arraySplit(record.map['bannerFileUrl'], ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
+        <li th:each="imageUrl : ${#strings.arraySplit(record.map['bannerFileUrls'], ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
       </ul>
     </div>
   </div>
@@ -38,7 +38,7 @@ $(function () {
         <div class="una-editor-show left aboutusnr wow bounce animated" th:value="${record.value.gywmContent }">
 
           <a href="#" class="left mt20"><img th:src="@{/duohui/guanwang/images/nore.jpg}" /></a> </div>
-        <div class="abouttu right wow fadeInRight animated"><img th:src="${record.value.gywmImg}"/></div>
+        <div class="abouttu right wow fadeInRight animated"><img th:src="${record.map['gywmImgFileUrl']}"/></div>
       </div>
     </div>
     <div class="server clearBoth clearfix">
@@ -49,19 +49,19 @@ $(function () {
           <ul>
             <li><a th:href="${record.value.xxptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>信息平台</b> </div>
-              <div class="xia"><img th:src="${record.value.xxptImg}" /></div>
+              <div class="xia"><img th:src="${record.map['xxptImgFileUrl']}" /></div>
               </a> </li>
             <li><a th:href="${record.value.cpptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>产品平台</b> </div>
-              <div class="xia"> <img th:src="${record.map.cpptImgFileUrl}" /></div>
+              <div class="xia"> <img th:src="${record.map['cpptImgFileUrl']}" /></div>
               </a> </li>
             <li><a th:href="${record.value.fwptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>服务平台</b> </div>
-              <div class="xia"><img th:src="${record.value.fwptImg}" /></div>
+              <div class="xia"><img th:src="${record.map['fwptImgFileUrl']}" /></div>
               </a> </li>
             <li><a th:href="${record.value.ztbptLink}">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>招投标</b> </div>
-              <div class="xia"><img th:src="${record.value.ztbptImg}" /> </div>
+              <div class="xia"><img th:src="${record.map['ztbptImgFileUrl']}" /> </div>
               </a> </li>
           </ul>
         </div>

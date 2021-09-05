@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -30,7 +31,7 @@ public class SysData extends BasePojo implements Serializable {
 
     private static final long serialVersionUID = 159534622053945179L;
     //所属实体类id
-    @NotNull(message = "实体id不能为空！")
+//    @NotBlank(message = "实体id不能为空！")
     private Integer entityId;
     //值，扩展字段
     @TableField(typeHandler = FastjsonTypeHandler.class)

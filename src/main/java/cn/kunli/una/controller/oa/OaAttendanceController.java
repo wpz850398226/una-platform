@@ -60,9 +60,10 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                     //查询拥有这些角色的所有账号
                     List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+roleIds+"',',',',|'),',') =1"));
                     //生成考勤记录
-                    OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(DateUtil.getDayBegin()).setCreatorId(100000);
+                    OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(DateUtil.getDayBegin());
                     for (SysAccount sysAccount : accountList) {
-                        oaAttendance.setAccountId(sysAccount.getId()).setCompanyId(sysAccount.getCompanyId()).setDepartmentId(sysAccount.getDepartmentId());
+                        oaAttendance.setAccountId(sysAccount.getId()).setCompanyId(sysAccount.getCompanyId())
+                                .setDepartmentId(sysAccount.getDepartmentId()).setCreatorId(sysAccount.getId());
                         service.saveRecord((OaAttendance)oaAttendance.setIsOnDuty(true).setId(null)); //上班打卡记录
                         service.saveRecord((OaAttendance)oaAttendance.setIsOnDuty(false).setId(null)); //下班打卡记录
                     }

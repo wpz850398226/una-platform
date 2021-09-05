@@ -50,7 +50,12 @@ public class SysArticleController extends BaseController<SysArticleService, SysA
 
             String content = templateArticle.getContent();
             for (Map.Entry<String, Object> entry : value.entrySet()) {
-                content.replace("{"+entry.getKey()+"}",entry.getValue().toString());
+                if(content.contains("{" + entry.getKey() + "}")){
+                    content = content.replace("{"+entry.getKey()+"}",entry.getValue().toString());
+                }
+                if(content.contains("{</u><span>"+entry.getKey()+"</span><u>}")){
+                    content = content.replace("{</u><span>"+entry.getKey()+"</span><u>}",entry.getValue().toString());
+                }
             }
             return new SysResult().success(content);
 

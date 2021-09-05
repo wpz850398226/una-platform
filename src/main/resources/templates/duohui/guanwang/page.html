@@ -17,7 +17,7 @@
               <dl>
                 <dd class="clearBoth" th:each="record : ${page.records}">
                   <span class="right mr10">[[${#dates.format(record.createTime, 'yyyy-MM-dd')}]]</span>
-                  <a th:href="${'/duohui/guanwang/single/'+record.id+'?menuId='+currentMenu.id}">[[${record.name}]]</a>
+                  <a th:href="${'/api/duohui/guanwang/single/'+record.id+'?menuId='+currentMenu.id}">[[${record.name}]]</a>
                 </dd>
               </dl>
             </div>

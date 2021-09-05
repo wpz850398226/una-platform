@@ -31,7 +31,14 @@ public class SysDataController extends BaseController<SysDataService, SysData> {
      */
     @RequestMapping("/virtual")
     @ResponseBody
-    public SysResult saveData(@Valid SysData record, @RequestParam Map<String, Object> params) {
+    public SysResult saveData(@RequestBody Map<String, Object> params) {
+        SysData record = new SysData();
+        if(params.containsKey("entityId")){
+            record.setEntityId(Integer.valueOf(params.get("entityId").toString()));
+        }
+        if(params.containsKey("name")){
+            record.setName(params.get("name").toString());
+        }
         JSONObject jsonObject = new JSONObject();
         params.remove("id");
         params.remove("entityId");
