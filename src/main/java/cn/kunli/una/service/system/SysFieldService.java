@@ -164,6 +164,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "CompanyIds"://公司 companyId
                     resultList = sysCompanyService.selectList(MapUtil.getMap("in:id",value));
                     break;
+                case "accountIds"://账号 accountIds
+                case "AccountIds"://账号 accountIds
+                    resultList = sysAccountService.selectList(MapUtil.getMap("in:id",value));
+                    break;
             }
         }
 

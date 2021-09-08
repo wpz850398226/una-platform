@@ -11,6 +11,7 @@ import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysDepartmentService;
+import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -55,13 +56,24 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
      */
     public SysResult activate(Integer nodeId, Integer instanceId){
         FlowTask flowTask = new FlowTask().setInstanceId(instanceId).setNodeId(nodeId).setActivateTime(new Date());
-        FlowNode flowNode = flowNodeService.getById(nodeId);
         SysResult sysResult = thisProxy.saveRecord(flowTask);
 
-        if(sysResult.getIsSuccess()&&StringUtils.isBlank(flowNode.getCandidateTypeDcode())){
+        if(sysResult.getIsSuccess()){
+            FlowNode flowNode = flowNodeService.getById(nodeId);
             //如果节点没有候选人类型，则执行
-            handle((FlowTask) new FlowTask().setId(flowTask.getId()));
+            if(StringUtils.isBlank(flowNode.getCandidateTypeDcode())){
+                handle((FlowTask) new FlowTask().setId(flowTask.getId()));
+            }else{
+                String candidateAccountIds = flowTask.getCandidateAccountIds();
+                //如果 被激活的任务 的候选人 包含当前在线用户，则返回任务id
+                if(StringUtils.isNotBlank(candidateAccountIds)&&candidateAccountIds.indexOf(String.valueOf(flowTask.getCreatorId()))!=-1){
+                    sysResult.setData(this.parse(ListUtil.getList(flowTask)).get(0));
+                }
+            }
         }
+
+
+
 
         return sysResult;
 
@@ -150,7 +162,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             if(StringUtils.isNotBlank(flowNode.getCandidateTypeDcode())){
                 switch(flowNode.getCandidateTypeDcode()){
                     case "flow_candidateType_account":             //账号（复数）
-                        obj.setCandidateAccountId(flowNode.getCandidateValue());
+                        obj.setCandidateAccountIds(flowNode.getCandidateValue());
                         break;
                     case "flow_candidateType_role":                //角色（复数）
                         List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
@@ -160,18 +172,18 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                                 stringBuffer.append(",").append(sysAccount.getId());
                             }
                             String accountIds = stringBuffer.toString();
-                            if(StringUtils.isNotBlank(accountIds))obj.setCandidateAccountId(accountIds.substring(1));
+                            if(StringUtils.isNotBlank(accountIds))obj.setCandidateAccountIds(accountIds.substring(1));
                         }
                         break;
                     case "flow_candidateType_superior":            //流程发起人的直接上级
-                        obj.setCandidateAccountId(String.valueOf(initiator.getSuperiorAccountId()));
+                        obj.setCandidateAccountIds(String.valueOf(initiator.getSuperiorAccountId()));
                         break;
                     case "flow_candidateType_departmentManager":   //部门主管
                         SysDepartment sysDepartment = sysDepartmentService.getById(initiator.getDepartmentId());
-                        obj.setCandidateAccountId(String.valueOf(sysDepartment.getManagerAccountId()));
+                        obj.setCandidateAccountIds(String.valueOf(sysDepartment.getManagerAccountId()));
                         break;
                     case "flow_candidateType_initiator":           //流程发起人
-                        obj.setCandidateAccountId(flowInstance.getCreatorId().toString());
+                        obj.setCandidateAccountIds(flowInstance.getCreatorId().toString());
                         break;
                 }
             }

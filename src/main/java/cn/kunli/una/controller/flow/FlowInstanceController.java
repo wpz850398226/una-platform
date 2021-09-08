@@ -65,6 +65,10 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
                     for (FlowNode flowNode : subsequentNodeList) {
                         SysResult activateResult = flowTaskService.activate(flowNode.getId(), entity.getId());
                         if(!activateResult.getIsSuccess())return activateResult;
+                        //判断激活任务的返回结果，如果data不为空，则说明被激活任务的受理人与当前办理人相同
+                        if(activateResult.getData()!=null&&activateResult.getData() instanceof FlowTask){
+                            saveResult.setData(activateResult.getData());
+                        }
                     }
                 }
             }

@@ -1,15 +1,14 @@
 package cn.kunli.una.pojo.oa;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 办公-加班(OaExtrawork)实体类
@@ -25,7 +24,7 @@ import lombok.EqualsAndHashCode;
 public class OaExtrawork extends BasePojo implements Serializable {
     private static final long serialVersionUID = -40962512432287245L;
     //工作者id
-    private Integer workerId;
+//    private Integer workerId;
     //开始时间
     private Date startTime;
     //结束时间
