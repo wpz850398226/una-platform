@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -140,7 +141,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             FlowNode flowNode = flowNodeService.getById(obj.getNodeId());
             FlowInstance flowInstance = flowInstanceService.getById(obj.getInstanceId());
             obj.setNodeTypeDcode(flowNode.getTypeDcode());
-            obj.setNodeEntityId(flowNode.getEntityId());
+//            obj.setNodeEntityId(flowNode.getEntityId());
             obj.setName(flowInstance.getName()+flowNode.getName());
 
             //流程发起人
@@ -186,6 +187,14 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                 List<FlowTask> submitTaskList = thisProxy.selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
                         .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build());
                 flowTask.setSubmitTaskList(submitTaskList);
+            }
+            //查询关联表单
+            if(flowTask.getNodeId()!=null){
+                FlowNode flowNode = flowNodeService.getById(flowTask.getNodeId());
+                if(flowNode!=null){
+                    if(MapUtils.isEmpty(flowTask.getMap()))flowTask.setMap(new HashMap<>());
+                    flowTask.getMap().put("nodeEntityId",flowNode.getEntityId());
+                }
             }
         }
         return list;

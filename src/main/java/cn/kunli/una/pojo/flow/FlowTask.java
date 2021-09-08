@@ -44,7 +44,7 @@ public class FlowTask extends BasePojo implements Serializable {
     //节点类型编码
     private String nodeTypeDcode;
     //节点关联的实体id
-    private Integer nodeEntityId;
+//    private Integer nodeEntityId;
     //激活时间
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
