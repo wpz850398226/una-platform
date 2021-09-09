@@ -56,27 +56,32 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
      */
     public SysResult activate(Integer nodeId, Integer instanceId){
         FlowTask flowTask = new FlowTask().setInstanceId(instanceId).setNodeId(nodeId).setActivateTime(new Date());
-        SysResult sysResult = thisProxy.saveRecord(flowTask);
+        //如果候选人id为空，则激活失败
+        FlowTask initializedTask = this.initialize(flowTask);
+        FlowNode flowNode = flowNodeService.getById(nodeId);
 
+        //如果节点有候选人类型，且候选人为空，则返回失败
+        if(StringUtils.isNotBlank(flowNode.getCandidateTypeDcode())&&StringUtils.isBlank(initializedTask.getCandidateAccountIds())){
+            return SysResult.fail("激活失败，无候选人");
+        }
+
+        //激活任务
+        SysResult sysResult = thisProxy.saveRecord(flowTask);
         if(sysResult.getIsSuccess()){
-            FlowNode flowNode = flowNodeService.getById(nodeId);
-            //如果节点没有候选人类型，则执行
             if(StringUtils.isBlank(flowNode.getCandidateTypeDcode())){
+                //如果节点没有候选人类型，则执行
                 handle((FlowTask) new FlowTask().setId(flowTask.getId()));
             }else{
+                //如果有候选人类型，查询候选人id
                 String candidateAccountIds = flowTask.getCandidateAccountIds();
                 //如果 被激活的任务 的候选人 包含当前在线用户，则返回任务id
-                if(StringUtils.isNotBlank(candidateAccountIds)&&candidateAccountIds.indexOf(String.valueOf(flowTask.getCreatorId()))!=-1){
+                if(StringUtils.isNotBlank(candidateAccountIds)&& candidateAccountIds.contains(String.valueOf(flowTask.getCreatorId()))){
                     sysResult.setData(this.parse(ListUtil.getList(flowTask)).get(0));
                 }
             }
         }
 
-
-
-
         return sysResult;
-
         /*if(flowNode.getTypeDcode().equals("flow_nudeType_end")){
             //如果目标节点是结束类型，直接完成任务，并结束
             SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
@@ -93,56 +98,61 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
 
     /**
      * 处理待办任务
-     * @param nodeId
-     * @param instanceId
      * @return
+     *
+     *
+     *
      */
     public SysResult handle(FlowTask entity){
         entity.setOffTime(new Date());
-        SysResult updateResult = thisProxy.updateRecordById(entity);
-
-        //如果修改任务成功，查询后续节点并激活
-        if(updateResult.getIsSuccess()){
-            FlowTask flowTask = thisProxy.getById(entity.getId());
-            if(flowTask.getNodeTypeDcode().equals("flow_nudeType_end")){
-                //如果处理的是结束节点，则结束流程实例
+        //查询该任务
+        FlowTask flowTask = thisProxy.getById(entity.getId());
+        if(flowTask.getNodeTypeDcode().equals("flow_nudeType_end")){
+            //如果处理的是结束节点，则结束流程实例
+            SysResult updateResult = thisProxy.updateRecordById(entity);
+            if(updateResult.getIsSuccess()){
                 flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setId(flowTask.getInstanceId()));
                 return SysResult.success("流程结束");
-            }else{
-                //查询任务后续连线
-                List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
+            }
+        }else{
+            //不是结束节点，查询任务后续连线
+            List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
 
-                if(CollectionUtils.isNotEmpty(flowLineList)){
-                    for (FlowLine flowLine : flowLineList) {
-                        JSONObject flowCondition = flowLine.getFlowCondition();
-                        if(MapUtils.isNotEmpty(flowCondition)){
-                            //流程连线设置了条件
-                            if(flowCondition.containsKey("isAgree")){
-                                //条件是审批是否通过
-                                if(!entity.getIsAgree().equals(flowCondition.get("isAgree"))){
-                                    //不符合条件，跳过该节点
-                                    break;
-                                }
-                            }else{
-                                //条件是其他参数，暂时跳过
+            if(CollectionUtils.isNotEmpty(flowLineList)){
+                //如果连线不为空
+                for (FlowLine flowLine : flowLineList) {
+                    JSONObject flowCondition = flowLine.getFlowCondition();
+                    if(MapUtils.isNotEmpty(flowCondition)){
+                        //流程连线设置了条件
+                        if(flowCondition.containsKey("isAgree")){
+                            //条件是审批是否通过
+                            if(!entity.getIsAgree().equals(flowCondition.get("isAgree"))){
+                                //不符合条件，跳过该节点
                                 break;
                             }
-                        }
-
-                        //连线无条件或符合条件，未跳过，执行该节点
-                        FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
-                        //激活任务
-                        SysResult activateResult = this.activate(targetNode.getId(), flowTask.getInstanceId());
-                        if(!activateResult.getIsSuccess()){
-                            return activateResult;
+                        }else{
+                            //条件是其他参数，暂时跳过
+                            break;
                         }
                     }
+
+                    //连线无条件或符合条件，未跳过，执行该节点
+                    FlowNode targetNode = flowNodeService.getById(flowLine.getTargetNodeId());
+                    //激活任务
+                    SysResult activateResult = this.activate(targetNode.getId(), flowTask.getInstanceId());
+                    if(!activateResult.getIsSuccess()){
+                        //激活失败
+                        return activateResult;
+                    }
                 }
+            }else{
+                return SysResult.fail("流程配置错误：缺少后续连线");
             }
         }
 
+        //走到这一步，说明所有后续节点都激活成功了
+        SysResult updateResult = thisProxy.updateRecordById(entity);
         return updateResult;
-
     }
 
     @Override
