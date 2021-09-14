@@ -206,8 +206,8 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
         list = super.parse(list);
         for (FlowTask flowTask : list) {
             if(StringUtils.isNotBlank(flowTask.getNodeTypeDcode())&&flowTask.getNodeTypeDcode().equals("flow_nudeType_audit")){
-                List<FlowTask> submitTaskList = thisProxy.selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
-                        .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build());
+                List<FlowTask> submitTaskList = thisProxy.parse(thisProxy.selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
+                        .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build()));
                 flowTask.setSubmitTaskList(submitTaskList);
             }
             //查询关联表单
