@@ -23,6 +23,8 @@ import java.util.Date;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class BidProject extends BasePojo implements Serializable {
     private static final long serialVersionUID = -96784303890499086L;
+    //状态
+    private String statusDcode;
     //项目区域
     private String regionIds;
     //开标类型
@@ -57,7 +59,15 @@ public class BidProject extends BasePojo implements Serializable {
     private String phone;
     //浏览次数
     private String browseCount;
-    //公司名称
-    private String corporateName;
+    //收藏次数
+    private String collectCount;
+    //保证金
+    private String deposit;
+    //开标结果
+    private String resultTypeDcode;
+    //中标单位id
+    private Integer bidAccountId;
+    //收藏用户
+    private String collectAccountIds;
 
 }

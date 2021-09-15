@@ -1,10 +1,8 @@
 package cn.kunli.una.pojo.bid;
 
 import cn.kunli.una.pojo.BasePojo;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,16 +27,19 @@ public class BidBidder extends BasePojo implements Serializable {
     private static final long serialVersionUID = 733158152365029293L;
     //投标项目id
     private Integer projectId;
-    //投标人id
-    private Integer accountId;
     //投标文件id
     private Integer bidFileId;
     //竞价文件id
     private Integer biddingFileId;
     //投标状态
     private String statusDcode;
-    //详细信息
-    @TableField(typeHandler = FastjsonTypeHandler.class)
-    private JSONObject information;
+    //投标结果
+    private String resultTypeDcode;
+    //是否递交保证金
+    private Boolean isDeposit;
+    //是否递交投标文件
+    private Boolean isDeliver;
 
+    @TableField(exist = false)
+    private String projectStatusDname;    //项目状态
 }

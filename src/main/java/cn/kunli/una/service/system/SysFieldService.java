@@ -9,6 +9,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
 
+import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
@@ -56,6 +57,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private CpGoodsService cpGoodsService;
     @Autowired
     private CpModelService cpModelService;
+
+    @Autowired
+    private BidProjectService bidProjectService;
 
     /**
      * 转换存储值为显示值
@@ -146,6 +150,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     break;
                 case "artmentId"://部门 departmentId
                     resultList = sysDepartmentService.selectList(MapUtil.getMap("id",value));
+                    break;
+                case "ProjectId"://项目
+                case "projectId":
+                    resultList = bidProjectService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "accountId"://账号 accountId
                 case "AccountId"://账号 accountId
