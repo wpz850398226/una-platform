@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head>
-<meta charset="utf-8"/>
-<title>多汇供应链管理有限公司</title>
-<meta name="keywords" th:content="${systemName}">
-<meta name="description" th:content="${systemName}">
-<link th:href="@{/duohui/toubiao/css/base1.css}" rel="stylesheet" type="text/css">
-<link th:href="@{/duohui/toubiao/css/main_001.css}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" th:href="@{/duohui/toubiao/css/demo.css}">
-<link rel="stylesheet" th:href="@{/duohui/toubiao/css/iconfont.css}">
-<script th:src="@{/duohui/toubiao/js/jquery-1.js}" type="text/javascript"></script>
-<script th:src="@{/duohui/toubiao/js/public.js}" type="text/javascript"></script>
-<script type="text/javascript">        var _curWeb = "news";</script>
-<!--下面是大图，上面是导航-->
-</head>
+<div th:replace="../templates/duohui/toubiao/include/head :: head"></div>
 <body>
 <div class="header ">
   <div class="w1200 clearBoth clearfix">
@@ -74,9 +61,15 @@ $(function () {
 </div>
 <div class=" clear clearfix " style="height:26px;"></div>
 <!--盖楼-->
-<div class="clear">
+<div class="clear" th:if="${primaryStatus.index<3}" th:each="primaryIndustry,primaryStatus:${industryDlist}">
   <div class="clear w1200 product mt20">
-    <h2><span class="fr"><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a></span><em class="mr10">1F</em><a href="#">轻工业招标</a></h2>
+    <h2>
+      <span class="fr">
+      <!--<a href="#">小分类</a><a>|</a>-->
+      <a href="#">查看更多</a>
+      </span>
+      <em class="mr10">[[${primaryStatus.index+1}]]F</em><a href="#">[[${primaryIndustry.name}]]招标</a>
+    </h2>
     <div class="clear product-nr clearfix">
       <div class="fl w230 ">
         <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/toubiao/images/toubiao_biao.jpg}"> </a> </div>
@@ -84,164 +77,40 @@ $(function () {
       <div class="fr product-r">
         <div class=" clearfix kuan">
           <ul class="biaoti">
-            <li id="1_m1" class="on">
-              <h3 ><a onmouseover="javascript:gopage(1,4,1)">食品工业</a></h3>
-            </li>
-            <li class="" id="1_m2">
-              <h3><a onmouseover="javascript:gopage(2,4,1)">纺织工业</a></h3>
-            </li>
-            <li class="" id="1_m3">
-              <h3><a onmouseover="javascript:gopage(3,4,1)">家电工业</a></h3>
-            </li>
-            <li class="" id="1_m4">
-              <h3><a onmouseover="javascript:gopage(4,4,1)">造纸工业</a></h3>
+            <li th:class="${secondryStatus.index==0?'on':' '}" th:if="${secondryStatus.index<4}" th:each="secondryIndustry,secondryStatus:${primaryIndustry.children}">
+              <h3 ><a th:onmouseover="gopage(this,[[${secondryIndustry.id}]])">[[${secondryIndustry.name}]]</a></h3>
             </li>
           </ul>
-          <div id="content" class=" clear clearfix">
-            <div id="1_c1" class=" huadong">
+          <div class=" clear clearfix">
+            <div th:id="${'industryProject'+secondryIndustry.id}" th:style="${secondryStatus.index==0?' ':'display: none;'}" class=" huadong"
+                 th:if="${secondryStatus.index<4}" th:each="secondryIndustry,secondryStatus:${primaryIndustry.children}">
               <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="1_c2" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="1_c3" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="1_c4" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
+                <li th:each="project:${projectListMap[secondryIndustry.code]}">
+                  <span class="fr">2020-1-19</span>
+                  <a href="#">[[${project.name}]]</a>
+                  <em class="ml10">[<i>河北省</i>]</em>
+                  <i class="ml23">正在招标</i>
+                </li>
               </ul>
             </div>
           </div>
         </div>
         <div class=" clearfix kuan">
           <ul class="biaoti">
-            <li id="2_m1" class="on">
-              <h3 ><a onmouseover="javascript:gopage(1,4,2)">食品工业</a></h3>
-            </li>
-            <li class="" id="2_m2">
-              <h3><a onmouseover="javascript:gopage(2,4,2)">纺织工业</a></h3>
-            </li>
-            <li class="" id="2_m3">
-              <h3><a onmouseover="javascript:gopage(3,4,2)">家电工业</a></h3>
-            </li>
-            <li class="" id="2_m4">
-              <h3><a onmouseover="javascript:gopage(4,4,2)">造纸工业</a></h3>
+            <li th:class="${secondryStatus.index==4?'on':' '}" th:if="${secondryStatus.index<8&&secondryStatus.index>3}" th:each="secondryIndustry,secondryStatus:${primaryIndustry.children}">
+              <h3 ><a th:onmouseover="gopage(this,[[${secondryIndustry.id}]])">[[${secondryIndustry.name}]]</a></h3>
             </li>
           </ul>
-          <div id="content" class=" clear clearfix">
-            <div id="2_c1" class=" huadong">
+          <div class=" clear clearfix">
+            <div th:id="${'industryProject'+secondryIndustry.id}" th:style="${secondryStatus.index==4?' ':'display: none;'}" class=" huadong"
+                 th:if="${secondryStatus.index<8&&secondryStatus.index>3}" th:each="secondryIndustry,secondryStatus:${primaryIndustry.children}">
               <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="2_c2" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="2_c3" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="2_c4" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
+                <li th:each="project:${projectListMap[secondryIndustry.code]}">
+                  <span class="fr">2020-1-19</span>
+                  <a href="#">[[${project.name}]]</a>
+                  <em class="ml10">[<i>河北省</i>]</em>
+                  <i class="ml23">正在招标</i>
+                </li>
               </ul>
             </div>
           </div>
@@ -249,206 +118,9 @@ $(function () {
       </div>
     </div>
   </div>
+  <div class="clear clearfix mt20"></div>
+  <div class="clear clearfix w1200"><a href="#"><img th:src="@{/duohui/toubiao/images/guanggaoyi.jpg}" width="1200" height="90"> </a></div>
 </div>
-<div class="clear clearfix mt20"></div>
-<div class="clear clearfix w1200"><a href="#"><img th:src="@{/duohui/toubiao/images/guanggaoyi.jpg}" width="1200" height="90"> </a></div>
-<div class="clear">
-  <div class="clear w1200 product mt20">
-    <h2><span class="fr"><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a></span><em class="mr10">2F</em><a href="#">重工业招标</a></h2>
-    <div class="clear product-nr clearfix">
-      <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/toubiao/images/toubiao_biao.jpg}"> </a> </div>
-      </div>
-      <div class="fr product-r">
-        <div class=" clearfix kuan">
-          <ul class="biaoti">
-            <li id="3_m1" class="on">
-              <h3 ><a onmouseover="javascript:gopage(1,4,3)">食品工业</a></h3>
-            </li>
-            <li class="" id="3_m2">
-              <h3><a onmouseover="javascript:gopage(2,4,3)">纺织工业</a></h3>
-            </li>
-            <li class="" id="3_m3">
-              <h3><a onmouseover="javascript:gopage(3,4,3)">家电工业</a></h3>
-            </li>
-            <li class="" id="3_m4">
-              <h3><a onmouseover="javascript:gopage(4,4,3)">造纸工业</a></h3>
-            </li>
-          </ul>
-          <div id="content" class=" clear clearfix">
-            <div id="3_c1" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="3_c2" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="3_c3" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="3_c4" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class=" clearfix kuan">
-          <ul class="biaoti">
-            <li id="4_m1" class="on">
-              <h3 ><a onmouseover="javascript:gopage(1,4,4)">食品工业</a></h3>
-            </li>
-            <li class="" id="4_m2">
-              <h3><a onmouseover="javascript:gopage(2,4,4)">纺织工业</a></h3>
-            </li>
-            <li class="" id="4_m3">
-              <h3><a onmouseover="javascript:gopage(3,4,4)">家电工业</a></h3>
-            </li>
-            <li class="" id="4_m4">
-              <h3><a onmouseover="javascript:gopage(4,4,4)">造纸工业</a></h3>
-            </li>
-          </ul>
-          <div id="content" class=" clear clearfix">
-            <div id="4_c1" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="4_c2" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="4_c3" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-            <div id="4_c4" style="display: none;" class=" huadong">
-              <ul>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-                <li> <span class="fr">2020-1-19</span> <a href="#">食品工业招标的项目标题展示位置题展示位置题展示位置</a> <em class="ml10">[<i>河北省</i>]</em> <i class="ml23">正在招标</i> </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--滑动门效果的js -->
-<div class="clear clearfix mt20"></div>
-<div class="clear clearfix mt20 w1200"><a href="#"><img th:src="@{/duohui/toubiao/images/guanggaoyi.jpg}" width="1200" height="90"> </a></div>
-<script type="text/javascript">
-<!--
-//切换到相关页
-function gopage(n,slen,sss)
-{
-  var taglength =slen;
-  for (i=1;i<=taglength;i++)
-  {
-    document.getElementById(sss+"_m"+i).className="";
-    document.getElementById(sss+"_c"+i).style.display='none';
-  }
-    document.getElementById(sss+"_m"+n).className="on";
-    document.getElementById(sss+"_c"+n).style.display='';
-}
-//-->
-</script>
-<!--滑动门效果的js -->
-
 <!--盖楼-->
 
 <div class=" clear clearfix mt20"></div>
@@ -501,163 +173,23 @@ function gopage(n,slen,sss)
 </div>
 <div class=" clear clearfix mt20"></div>
 <div class="w1200" style=" padding-bottom:30px;">
-  <div class="tjhy-title">
-    <h2 class="fl"><a class="mr30" href="#">合作单位</a></h2>
-  </div>
-  <div class="clear clearfix mt20"></div>
-  <div class="m_inttd w1200">
-    <div class="m_intl"><a ><img th:src="@{/duohui/toubiao/images/intl.png}"></a></div>
-    <div class="m_intr"><a><img th:src="@{/duohui/toubiao/images/intr.png}"></a></div>
-    <div class="m_intm" style="visibility: visible; overflow: hidden; position: relative; z-index: 2; left: 0px; width: 1104px;">
-      <ul id="count1">
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="中土大地"><img th:src="@{/duohui/toubiao/images/toubiao_20.jpg}"></a></div>
-            <div class="teanames">中土大地</div>
-            <a class="checkdetail" href="" target="_blank" title="中土大地">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北精工检测"><img th:src="@{/duohui/toubiao/images/toubiao_22.jpg}"></a></div>
-            <div class="teanames">河北精工检测</div>
-            <a class="checkdetail" href="" target="_blank" title="河北精工检测">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北博瑞"><img th:src="@{/duohui/toubiao/images/toubiao_24.jpg}"></a></div>
-            <div class="teanames">河北博瑞</div>
-            <a class="checkdetail" href="" target="_blank" title="河北博瑞">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北世纪设备"><img th:src="@{/duohui/toubiao/images/toubiao_26.jpg}"></a></div>
-            <div class="teanames">河北世纪设备</div>
-            <a class="checkdetail" href="" target="_blank" title="河北世纪设备">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="中土大地"><img th:src="@{/duohui/toubiao/images/toubiao_20.jpg}"></a></div>
-            <div class="teanames">中土大地</div>
-            <a class="checkdetail" href="" target="_blank" title="中土大地">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北精工检测"><img th:src="@{/duohui/toubiao/images/toubiao_22.jpg}"></a></div>
-            <div class="teanames">河北精工检测</div>
-            <a class="checkdetail" href="" target="_blank" title="河北精工检测">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北博瑞"><img th:src="@{/duohui/toubiao/images/toubiao_24.jpg}"></a></div>
-            <div class="teanames">河北博瑞</div>
-            <a class="checkdetail" href="" target="_blank" title="河北博瑞">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北世纪设备"><img th:src="@{/duohui/toubiao/images/toubiao_26.jpg}"></a></div>
-            <div class="teanames">河北世纪设备</div>
-            <a class="checkdetail" href="" target="_blank" title="河北世纪设备">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="中土大地"><img th:src="@{/duohui/toubiao/images/toubiao_20.jpg}"></a></div>
-            <div class="teanames">中土大地</div>
-            <a class="checkdetail" href="" target="_blank" title="中土大地">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北精工检测"><img th:src="@{/duohui/toubiao/images/toubiao_22.jpg}"></a></div>
-            <div class="teanames">河北精工检测</div>
-            <a class="checkdetail" href="" target="_blank" title="河北精工检测">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北博瑞"><img th:src="@{/duohui/toubiao/images/toubiao_24.jpg}"></a></div>
-            <div class="teanames">河北博瑞</div>
-            <a class="checkdetail" href="" target="_blank" title="河北博瑞">查看详情</a> </div>
-        </li>
-        <li >
-          <div class="playerdetail">
-            <div class="detailimg"><a href="" target="_blank" title="河北世纪设备"><img th:src="@{/duohui/toubiao/images/toubiao_26.jpg}"></a></div>
-            <div class="teanames">河北世纪设备</div>
-            <a class="checkdetail" href="" target="_blank" title="河北世纪设备">查看详情</a> </div>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <div th:replace="../templates/duohui/chanpin/include/cooperator :: cooperator"></div>
   <script th:src="@{/duohui/toubiao/js/flickerplate.min.js}"></script>
   <script type="text/javascript" th:src="@{/duohui/toubiao/js/jcarousellite_1.0.1.js}"></script>
   <script type="text/javascript" th:src="@{/duohui/toubiao/js/js.js}"></script>
 </div>
 <div class=" clear clearfix mt20"></div>
-<div class="w1200" style=" padding-bottom:30px;">
-  <div class="tjhy-title">
-    <h2 class="fl"><a class="mr30" href="#">友情链接</a></h2>
-  </div>
-  <div class="clear clearfix mt20"></div>
-  <div class="links clear clearfix">
-    <ul>
-      <li><a href="" title="国家企业信用信息公示" target="_blank">国家企业信用信息公示</a></li>
-      <li><a href="" title="亚马逊分类目录" target="_blank">亚马逊分类目录</a></li>
-      <li><a href="" title="站长分类目录" target="_blank">站长分类目录</a></li>
-      <li><a href="" title="奥菲特能源" target="_blank">奥菲特能源</a></li>
-    </ul>
-  </div>
-</div>
-<div class="footer clear clearfix">
-  <div class="w1200">
-    <div class=" W950 clear clearfix" style="margin:0 auto;">
-      <div class="fl list w210">
-        <dl>
-          <dt>新手上路</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">会员注册</a></dd>
-          <dd><a href="">会员登录</a></dd>
-          <dd><a href="">找回密码</a></dd>
-          <dd><a href="">发布信息</a></dd>
-          <dd><a href="">查找信息</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210 ml23">
-        <dl>
-          <dt>会员服务</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">工程年费会员</a></dd>
-          <dd><a href="">认证队伍</a></dd>
-          <dd><a href="">认证机械商</a></dd>
-          <dd><a href="">主材商家</a></dd>
-          <dd><a href="">广告服务</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210  ml23">
-        <dl>
-          <dt>认证服务</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">手机认证服务</a></dd>
-          <dd><a href="">实名认证服务</a></dd>
-          <dd><a href="">公司认证服务</a></dd>
-          <dd><a href="">现场认证服务</a></dd>
-        </dl>
-      </div>
-      <div class="fl list w210  ml23">
-        <dl>
-          <dt>支付方式</dt>
-          <div class="clear clearfix"></div>
-          <dd><a href="">积分</a></dd>
-          <dd><a href="">积分充值</a></dd>
-          <dd><a href="">银行汇款积分</a></dd>
-          <dd><a href="">提现须知</a></dd>
-        </dl>
-      </div>
-    </div>
-    <div class="w1200 clear clearfix" style="height:1px; background:#e2e2e2; margin:30px;"></div>
-    <div class="clear clearfix footerdibu" style="padding-bottom:30px;">
-      <div class="mt20 clear clearfix"><a href="about.html">关于我们</a>|<a href="contact.html">联系方式</a>|<a href="contact.html">免责条款</a>|<a href="contact.html">网站地图</a>|<a href="contact.html">网站留言</a>|<a href="contact.html">广告服务</a></div>
-      <p>备案号   全国服务热线:400-635-1907    商务邮箱:yewubu@dhgyl.com</p>
-      <p>&copy;2017-2019 SYSTEM All Rights Reserved 免责声明：本站信息均为网友自行发布，交易所带来的风险本站概不负责！</p>
-      <p class="mt30" ><img th:src="@{/duohui/toubiao/images/1_121.jpg}"></p>
-    </div>
-  </div>
-</div>
+<div th:replace="../templates/duohui/chanpin/include/outlink :: outlink"></div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
 </body>
+<script type="text/javascript">
+  //切换到相关页
+  function gopage(ele,industryId) {
+    $(ele).closest("ul.biaoti").children(".on").removeClass("on");
+    $(ele).closest("li").addClass("on");
+
+    let industryDiv = $("#industryProject"+industryId);
+    industryDiv.css("display","").parent().children().not(industryDiv).css("display","none")
+  }
+</script>
 </html>

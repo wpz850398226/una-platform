@@ -1,12 +1,12 @@
-package cn.kunli.una.controller.duohui.chanpin;
+package cn.kunli.una.controller.duohui.toubiao;
 
+import cn.kunli.una.pojo.bid.BidProject;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
+import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.system.*;
-import cn.kunli.una.utils.common.DateUtil;
-import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
@@ -22,13 +22,19 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/duohui/chanpin")
-public class CpIndexController {
+@RequestMapping("/duohui/toubiao")
+public class BidIndexController {
     @Autowired
     private RedisUtil<Integer> redisUtil;
+    @Autowired
+    private BidProjectService bidProjectService;
+    @Autowired
+    private SysCompanyService sysCompanyService;
     @Autowired
     SysMenuService sysMenuService;
     @Autowired
@@ -37,10 +43,6 @@ public class CpIndexController {
     private SysDictionaryService sysDictionaryService;
     @Autowired
     private CpGoodsService cpGoodsService;
-    @Autowired
-    private SysDataService sysDataService;
-    @Autowired
-    private SysCompanyService sysCompanyService;
     @Autowired
     private SysRegionService sysRegionService;
     @Autowired
@@ -67,66 +69,44 @@ public class CpIndexController {
         getCommonItem(model);
         //行业字典
         List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
-        model.addAttribute("industryDlist",industryDlist);
-        //首页信息
-        SysData record = sysDataService.getById(100017);
-        record = sysDataService.parse(ListUtil.getList(record)).get(0);
-        //热门商铺
-        if(record.getValue().get("remaiCompanyIds")!=null){
-            String remaiCompanyIds = String.valueOf(record.getValue().get("remaiCompanyIds"));
-            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:id", remaiCompanyIds)));
-            model.addAttribute("hotShopList",list);
-        }
+        //按行业分页查询
+        Map<String,Object> projectListMap = new HashMap<>();
+        //查询实例
+        Map<String, Object> paramMap = MapUtil.getMap("statusDcode", "dh_bidStatus_applying");
 
-        model.addAttribute("record",record);
-
-        List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_goodsStatus"));
-        if(CollectionUtils.isNotEmpty(goodsStatusDlist)){
-            //按商品状态查询商品列表
-            Map<String,Object> goodsListMap = new HashMap<>();
-            Map<String, Object> goodsParamMap = MapUtil.buildHashMap().put("isAdded", true).put("isAudit", true).build();
-            if(regionId!=null)goodsParamMap.put(":regionIds",regionId+",");
-            for (SysDictionary sysDictionary : goodsStatusDlist) {
-                goodsParamMap.put("statusDcode", sysDictionary.getCode());
-                Page<CpGoods> goodsPage = cpGoodsService.page(1L,4L, goodsParamMap);
-                goodsListMap.put(sysDictionary.getCode(),cpGoodsService.parse(goodsPage.getRecords()));
-            }
-            //商品状态字典
-            model.addAttribute("goodsStatusDlist",goodsStatusDlist);
-            model.addAttribute("goodsListMap",goodsListMap);
-
-            //查询置顶商铺
-            List<SysCompany> companyList = new ArrayList<>();
-            Page<SysCompany> stickShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
-            companyList = stickShopPage.getRecords();
-            if(companyList.size()<=goodsStatusDlist.size()){
-                Page<SysCompany> refreshShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
-                if(refreshShopPage.getTotal()>0){
-                    List<SysCompany> records = refreshShopPage.getRecords();
-                    if(companyList.size()==0){
-                        companyList = records;
-                    }else{
-                        companyList.addAll(records);
-                    }
+        for (SysDictionary primaryIndustryDic : industryDlist) {
+            if(CollectionUtils.isNotEmpty(primaryIndustryDic.getChildren())){
+                for (SysDictionary secondryIndustryDic : primaryIndustryDic.getChildren()) {
+                    paramMap.put(":industryDcodes",","+secondryIndustryDic.getCode());
+                    Page<BidProject> page = bidProjectService.page(0, 12, paramMap);
+                    projectListMap.put(secondryIndustryDic.getCode(),page.getRecords());
                 }
             }
-
-            model.addAttribute("recommendShopList",sysCompanyService.parse(companyList));
         }
+
+        model.addAttribute("industryDlist",industryDlist);
+        model.addAttribute("projectListMap",projectListMap);
+
+        Map<String, Object> projectParamMap = MapUtil.getMap("orderByDesc", "createTime");
+        //已中标项目
+        projectParamMap.put("statusDcode", "dh_bidStatus_publicity");
+        Page<BidProject> publicityPage = bidProjectService.page(0, 10, projectParamMap);
+        model.addAttribute("publicityProjectList",publicityPage.getRecords());
+        //拟在建项目
+        projectParamMap.put("statusDcode", "dh_bidStatus_notStart");
+        Page<BidProject> notStartPage = bidProjectService.page(0, 10, projectParamMap);
+        model.addAttribute("notStartProjectList",notStartPage.getRecords());
+        //报名中项目
+        projectParamMap.put("statusDcode", "dh_bidStatus_applying");
+        Page<BidProject> applyingPage = bidProjectService.page(0, 10, projectParamMap);
+        model.addAttribute("applyingProjectList",applyingPage.getRecords());
 
         //合作企业
         Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
         List<SysCompany> coopShopList = sysCompanyService.parse(coopShopPage.getRecords());
         model.addAttribute("coopShopList",coopShopList);
 
-        //查询公告
-        String strOfDate = DateUtil.getStrOfDate(new Date(), "yyyy-MM-dd");
-        Page<SysAnnouncement> sysAnnouncementPage = sysAnnouncementService.page(1L, 4L, MapUtil.buildHashMap()
-                .put(":platformDcode", "platform_type_chanpin").put("le:startTime",strOfDate)
-                .put("ge:endTime",strOfDate).build());
-        model.addAttribute("sysAnnouncementList",sysAnnouncementPage.getRecords());
-
-        return "duohui/chanpin/index";
+        return "duohui/toubiao/index";
     }
 
     /**
