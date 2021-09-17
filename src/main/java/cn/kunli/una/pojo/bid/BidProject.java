@@ -33,20 +33,16 @@ public class BidProject extends BasePojo implements Serializable {
     private String introduction;
     //内容
     private String content;
-    //发布时间
-    private Date releaseTime;
     //报名开始时间
     private Date registerStartTime;
     //报名结束时间
     private Date registerEndTime;
-    //投标开始时间
-    private Date bidStartTime;
-    //投标结束时间
-    private Date bidEndTime;
     //开标时间
     private Date openTime;
-    //投标完成时间
-    private Date completeTime;
+    //公示时间
+    private Date publicityTime;
+    //公示时长
+    private Integer publicityDays;
     //招标文件id
     private Integer bidFileId;
     //竞价文件id

@@ -79,7 +79,7 @@ public class BidIndexController {
                 for (SysDictionary secondryIndustryDic : primaryIndustryDic.getChildren()) {
                     paramMap.put(":industryDcodes",","+secondryIndustryDic.getCode());
                     Page<BidProject> page = bidProjectService.page(0, 12, paramMap);
-                    projectListMap.put(secondryIndustryDic.getCode(),page.getRecords());
+                    projectListMap.put(secondryIndustryDic.getCode(),bidProjectService.parse(page.getRecords()));
                 }
             }
         }
@@ -91,15 +91,15 @@ public class BidIndexController {
         //已中标项目
         projectParamMap.put("statusDcode", "dh_bidStatus_publicity");
         Page<BidProject> publicityPage = bidProjectService.page(0, 10, projectParamMap);
-        model.addAttribute("publicityProjectList",publicityPage.getRecords());
+        model.addAttribute("publicityProjectList",bidProjectService.parse(publicityPage.getRecords()));
         //拟在建项目
         projectParamMap.put("statusDcode", "dh_bidStatus_notStart");
         Page<BidProject> notStartPage = bidProjectService.page(0, 10, projectParamMap);
-        model.addAttribute("notStartProjectList",notStartPage.getRecords());
+        model.addAttribute("notStartProjectList",bidProjectService.parse(notStartPage.getRecords()));
         //报名中项目
         projectParamMap.put("statusDcode", "dh_bidStatus_applying");
         Page<BidProject> applyingPage = bidProjectService.page(0, 10, projectParamMap);
-        model.addAttribute("applyingProjectList",applyingPage.getRecords());
+        model.addAttribute("applyingProjectList",bidProjectService.parse(applyingPage.getRecords()));
 
         //合作企业
         Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
@@ -120,42 +120,40 @@ public class BidIndexController {
 
         getCommonItem(model);
 
+        //项目状态
+        List<SysDictionary> bidStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_bidStatus"));
+        model.addAttribute("bidStatusDlist",bidStatusDlist);
+
         //行业字典
         List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry"));
         model.addAttribute("primaryIndustryDlist",primaryIndustryDlist);
-
         if(map.containsKey("primaryIndustryDcode")){
             List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
             model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
-            map.put(":industryTypeDcodes",map.get("primaryIndustryDcode")+",");
+            map.put(":industryDcodes",map.get("primaryIndustryDcode")+",");
             map.remove("primaryIndustryDcode");
 
             if(map.containsKey("secondryIndustryDcode")){
                 List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
                 model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
-                map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("secondryIndustryDcode")+",");
+                map.put(":industryDcodes",map.get(":industryDcodes").toString()+map.get("secondryIndustryDcode")+",");
                 map.remove("secondryIndustryDcode");
 
                 if(map.containsKey("thirdryIndustryDcode")){
-                    map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("thirdryIndustryDcode"));
+                    map.put(":industryDcodes",map.get(":industryDcodes").toString()+map.get("thirdryIndustryDcode"));
                     map.remove("thirdryIndustryDcode");
                 }
             }
         }
 
-        map.put("orderByDesc", "stickDeadline");
-        Page<CpGoods> goodsPage = cpGoodsService.page(map.get("pageNum"),16, map);
-        model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
-
-        //商品状态
-        List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_goodsStatus"));
-        model.addAttribute("goodsStatusDlist",goodsStatusDlist);
+        Page<BidProject> projectPage = bidProjectService.page(map.get("pageNum"), 16, map);
+        model.addAttribute("projectList",bidProjectService.parse(projectPage.getRecords()));
 
         //省级地区
         List<SysRegion> sysRegionList = sysRegionService.selectList(MapUtil.getMap("level", 2));
         model.addAttribute("sysRegionList",sysRegionList);
 
-        return "duohui/chanpin/product";
+        return "duohui/toubiao/list";
     }
 
     /**

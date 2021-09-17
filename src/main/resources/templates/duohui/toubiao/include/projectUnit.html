@@ -1,0 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="projectUnit">
+  <span class="fr">[[${#dates.format(project.createTime, 'yyyy-MM-dd')}]]</span>
+  <a th:href="${'/api/bid/project/fDetail/'+project.id}">[[${project.name}]]</a>
+  <em class="ml10">[<i>[[${#strings.substring(project['map']['regionNames'],0,#strings.indexOf(project['map']['regionNames'],','))}]]</i>]</em>
+  <i class="ml23">[[${project['map']['statusDname']}]]</i>
+  <!--<span class="fr">2020-1-19</span>
+  <a href="#">******</a>
+  <em class="ml10">[<i>河北省</i>]</em>
+  <i class="ml23">正在招标</i>-->
+</div>
+</html>

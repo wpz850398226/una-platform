@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="header" class="header ">
+  <div class="w1200 clearBoth clearfix">
+    <h1 class="logo fl"><a href="/api/duohui/toubiao/index" target="_blank"><img th:src="@{/duohui/toubiao/images/logo.png}" title="多汇供应"  /></a> </h1>
+    <ul class="menu fl" id="menu">
+      <li class="on"> <a class="on"  href="/api/duohui/toubiao/index">多汇首页</a> </li>
+      <li class="on"> <a class=" " href="javascript:void(0)">招标服务</a>
+        <ul class="submenu">
+          <li><a href="/api/duohui/toubiao/list">轻工业招标</a></li>
+          <li><a href="qinggongye.html">重工业招标</a></li>
+          <li><a href="qinggongye.html">服务招标</a></li>
+          <li><a href="qinggongye.html">中标公示</a></li>
+          <li><a href="qinggongye.html">拟在建</a></li>
+        </ul>
+
+      <li class="on"> <a class=""  href="cooperation.html">合作名录</a> </li>
+      <li class="on"> <a class=""  href="download.html">标书下载</a> </li>
+      <li class="on"> <a class=""  href="contact.html">联系我们</a> </li>
+    </ul>
+    <div class="sousuo fl mr30  ml10" >
+      <form>
+        <input type="search" class="soukuang fl" placeholder="请输入产品名称" />
+        <input type="button" class="sousuo fl" value="  " style="margin-top:1px;" />
+      </form>
+    </div>
+    <div class="fl anniulogin "> <a  href="#"> 登录 </a> <a href="# "> 注册 </a> </div>
+  </div>
+</div>
+</html>

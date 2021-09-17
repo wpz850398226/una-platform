@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../templates/duohui/toubiao/include/head :: head"></div>
+<body>
+<div th:replace="../templates/duohui/toubiao/include/header :: header"></div>
+<div>
+    <div class="banner" style="background:url(/api/duohui/toubiao/images/banner2.jpg) center top no-repeat;"></div>
+    <div class="weizhi w1200">
+        <!--<p><em class="fl"></em><span class="ml10">您当前的位置 : : <a href="index.html">首页</a>>
+          <a href="newslist.html">品质保障</a></span></p>-->
+    </div>
+    <div class=" clear clearfix w1200  bor " style=" margin:0 auto;">
+        <div class="fenleisousuo clear clearfix">
+            <ul id="searchUl">
+                <li class="industryLi">
+                    <div class="fenlist clear clearfix">
+                        <dl>
+                            <dt> 一级行业：</dt>
+                            <dd th:class="${param['primaryIndustryDcode']!=null?'':'on'}" name="primaryIndustryDcode" value="all"><a href="#" onclick="searchProject(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['primaryIndustryDcode']) == #strings.trim(industry['code'])?'on':''}" th:each="industry:${primaryIndustryDlist}" name="primaryIndustryDcode" th:value="${industry['code']}">
+                                <a href="#" onclick="searchProject(this)">[[${industry.name}]]</a></dd>
+                        </dl>
+                    </div>
+                </li>
+                <li th:if="${secondryIndustryDlist!=null}" class="industryLi">
+                    <div class="fenlist clear clearfix">
+                        <dl>
+                            <dt> 二级行业：</dt>
+                            <dd th:class="${param['secondryIndustryDcode']!=null?'':'on'}" name="secondryIndustryDcode" value="all"><a href="#" onclick="searchProject(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['secondryIndustryDcode']) == #strings.trim(industry['code'])?'on':''}" th:each="industry:${secondryIndustryDlist}" name="secondryIndustryDcode" th:value="${industry.code}">
+                                <a href="#" onclick="searchProject(this)">[[${industry.name}]]</a></dd>
+                        </dl>
+                    </div>
+                </li>
+                <li th:if="${thirdryIndustryDlist!=null}" class="industryLi">
+                    <div class="fenlist clear clearfix">
+                        <dl>
+                            <dt> 三级行业：</dt>
+                            <dd th:class="${param['thirdryIndustryDcode']!=null?'':'on'}" name="thirdryIndustryDcode" value="all"><a href="#" onclick="searchProject(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['thirdryIndustryDcode']) == #strings.trim(industry['code'])?'on':''}" th:each="industry:${thirdryIndustryDlist}" name="thirdryIndustryDcode" th:value="${industry.code}">
+                                <a href="#" onclick="searchProject(this)">[[${industry.name}]]</a></dd>
+                        </dl>
+                    </div>
+                </li>
+                <li>
+                    <div class="fenlist clear clearfix">
+                        <dl id="box">
+                            <dt> 地区：</dt>
+                            <div style="width:970px; float:left;">
+                                <dd th:class="${param[':regionIds']!=null?'':'on'}" name=":regionIds" value="all"><a href="#" onclick="searchProject(this)">全部</a></dd>
+                                <!--                                <dd th:class="${#strings.trim(param['provinceRegionId']) == #strings.trim(region['id'])?'on':''}" class="" th:each="region:${sysRegionList}" name=":regionIds" th:value="${region.id+','}">-->
+                                <dd th:class="${param[':regionIds']!=null && #strings.contains(param[':regionIds'],region['id']+',')?'on':''}" class="" th:each="region:${sysRegionList}" name=":regionIds" th:value="${region.id+','}">
+                                    <a href="#" onclick="searchProject(this)">[[${region.name}]]</a></dd>
+                            </div>
+                        </dl>
+                        <p id="tog"
+                           style="cursor:pointer; line-height:45px; height:45px; font-size:14px; color:#ff5400; font-weight:600;">
+                            展开</p>
+                        <script>
+                            var len = $("#box dd").length;
+
+                            function int() {
+                                for (i = 8; i < len; i++) {
+                                    $("#box dd").eq(i).addClass("hid");
+                                }
+                            }
+
+                            $("#tog").click(function () {
+                                var t = $(this).text();
+                                if (t == "展开") {
+                                    $("#box .hid").addClass("show");
+                                    $(this).text("收缩");
+                                } else {
+                                    $("#box .hid").removeClass("show");
+                                    $(this).text("展开");
+                                }
+                            });
+                            int();//初始化隐藏多余标签
+                        </script>
+                    </div>
+                </li>
+                <li>
+                    <div class="fenlist clear clearfix">
+                        <dl>
+                            <dt> 项目状态：</dt>
+                            <dd th:class="${param['statusDcode']!=null?'':'on'}" name="statusDcode" value="all"><a href="#" onclick="searchProject(this)">全部</a></dd>
+                            <dd th:class="${#strings.trim(param['statusDcode']) == #strings.trim(bidStatus['code'])?'on':''}" class="" th:each="bidStatus:${bidStatusDlist}" name="statusDcode" th:value="${bidStatus.code}">
+                                <a href="#" onclick="searchProject(this)">[[${bidStatus.name}]]</a></dd>
+                        </dl>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class=" clear clearfix w1200" style="padding:20px 0;  margin:0 auto;">
+        <div class=" fr w280">
+
+            <!--<div class=" clear clearfix  border">
+                <div class="huiyuan" style="width:260px;position:relative; left:0; right:0; float:left; margin-left:10px; margin-top:10px;">
+
+                    &lt;!&ndash;登录之前&ndash;&gt;
+                    <script language="javascript">
+
+                        function checklogin() {
+                            if (document.getElementById("username").value == "") {
+                                alert("注册手机号不能为空！");
+                                document.getElementById("username").focus();
+                                return false;
+                            }
+                            if (document.getElementById("userpass").value == "") {
+                                alert("密码不能为空！");
+                                document.getElementById("userpass").focus();
+                                return false;
+                            }
+                            if (document.getElementById("usercode").value == "") {
+                                alert("验证码不能为空！");
+                                document.getElementById("usercode").focus();
+                                return false;
+                            }
+
+                        }
+                    </script>
+                    <input name="p" type="hidden" value="1">
+                    <ul class="addwlsc1 clear clearfix">
+                        <li id="li_email">
+                            <div class="fl input">
+                                <label class="xinxi5"><b class="biaoti">&nbsp;</b></label>
+                                <div class="xinxi2 fl">
+                                    <input name="username" id="username" size="30" class="text1" type="text">
+                                </div>
+                            </div>
+                        </li>
+                        <li id="li_pwd">
+                            <div class="fl input">
+                                <label class="xinxi5"><b class="mima">&nbsp;</b></label>
+                                <div class="xinxi2 fl">
+                                    <input name="userpass" id="userpass" size="30" class="text1" type="password">
+                                </div>
+                            </div>
+                        </li>
+                        <li id="queding" style="height:20px;">
+                            <div class="fr">
+                                <p class="fr "><a href="">忘记密码</a></p>
+                            </div>
+                            <div class="fl input">
+                                <div class="xinxi2">
+                                    <input type="checkbox" style=" margin-right:5px;">
+                                    <em style="color:#999999;">自动登录</em></div>
+                            </div>
+                        </li>
+                        <li id="qued">
+                            <input name="提交" type="submit" class="fl login" value="登   录">
+                            <input type="button" value="注   册" class="fr registered">
+                        </li>
+                        <div class="clear clearfix"></div>
+                    </ul>
+                    <div class="clear"></div>
+                    <div class="zhushan-tel"><img th:src="@{/duohui/toubiao/images/z4.png}" width="77" height="69"
+                                                  class="fl mt10"> <span class="fl ml10 biao mt10">客服电话</span> <span
+                            class="fl ml10 tel">400-635-1907</span> <span class="fl ml10  biao1">工作时间：9：00-18：00</span>
+                    </div>
+                    <div class="clear"></div>
+                    <div><a href="" class="xiazai" target="_blank">下载专区</a><a href="" class="xiazai fukuan"
+                                                                              target="_blank">付款指导</a><a href=""
+                                                                                                         class="xiazai"
+                                                                                                         target="_blank">服务列表</a>
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="biao_ul mt10">
+                        <li>新会员： <a href="">会员申请表下载――多汇供应链</a></li>
+                        <li>老会员： <a href="">会员续费协议下载――多汇供应链</a></li>
+                        <li>老会员： <a href="">会员续费协议下载――多汇供应链</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clear clearfix mt10"></div>-->
+            <div class=" clear clearfix newslei border">
+                <dl>
+                    <dt>按行业浏览</dt>
+                    <dd><a class="no" href="#">公司</a></dd>
+                    <dd><a href="#">行业</a></dd>
+                    <dd><a href="#">平台</a></dd>
+                    <dd><a href="#">政策法规</a></dd>
+                </dl>
+            </div>
+            <div class="clear clearfix mt10"></div>
+            <div class=" clear clearfix newslei border">
+                <dl>
+                    <dt>按地区浏览</dt>
+                    <dd><a class="no" href="#">河北省</a></dd>
+                    <dd><a href="#">湖南省</a></dd>
+                    <dd><a href="#">湖北省</a></dd>
+                    <dd><a href="#">陕西省</a></dd>
+                    <dd><a href="#">湖南省</a></dd>
+                    <dd><a href="#">湖北省</a></dd>
+                    <dd><a href="#">陕西省</a></dd>
+                    <dd><a href="#">湖南省</a></dd>
+                    <dd><a href="#">湖北省</a></dd>
+                    <dd><a href="#">陕西省</a></dd>
+                </dl>
+            </div>
+            <div class="clear clearfix mt10"></div>
+            <div class=" clear clearfix  newslei">
+                <div class="tjhy-title">
+                    <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">本周搜索排行</a></h2>
+                </div>
+                <div class="paixu mt20">
+                    <ul>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                        <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+        <div class=" w900 fl" style="padding:0;">
+            <div class="list_left">
+                <script type="text/javascript">
+                    $(function () {
+                        $(".biaoti_li li").hover(function () {
+                            $(this).find("div").show();
+                        }, function () {
+                            $(this).find("div").hide();
+                        });
+                    });
+                </script>
+                <div class="block_list">
+                    <div class="biaoti_list">
+                        <p class="t_1">项目名称</p>
+                        <p class="t_2">&nbsp;</p>
+                        <p class="t_4">报名开始时间</p>
+                        <p class="t_6">开标时间</p>
+                        <p class="t_5">地区</p>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="biaoti_li">
+                        <ul>
+                            <li th:each="project:${projectList}">
+                                <p class="t_11">
+                                    <em th:class="${project.statusDcode =='dh_bidStatus_applying'?'qiugou':project.statusDcode =='dh_bidStatus_notStart'?'ding':'gongying'}">[[${#strings.substring(project['map']['statusDname'],0,3)}]]</em>
+                                    <span class="ml10">
+                                        <a th:href="${'/api/bid/project/fDetail/'+project.id}" th:title="${project.name}" target="_blank">[[${project.name}]]</a>
+                                    </span>
+                                </p>
+                                <p class="t_22"></p>
+                                <p class="t_44"><font color="#b6b6b6">[[${#dates.format(project.registerStartTime, 'yyyy-MM-dd')}]]</font></p>
+                                <p class="t_66"><font color="#b6b6b6">
+                                    [[${#dates.format(project.openTime, 'yyyy-MM-dd')}]]
+                                <p class="t_55"><font color="#1479d7">[[${#strings.substring(project['map']['regionNames'],0,#strings.indexOf(project['map']['regionNames'],','))}]]</font></p>
+                                <div class="suinfo_d line-height" style="display: none;">
+                                    <dl>
+                                        <dd class="biaoti">
+                                            <h3>[[${project.name}]] 招标公告</h3>
+                                        </dd>
+                                        <dd class="miaoshu"><em>报名开始时间：</em>
+                                          <i class="ml23">[[${#dates.format(project['registerStartTime'], 'yyyy-MM-dd HH:mm:ss')}]]</i>
+                                          <em class=" ml23">报名截止时间：</em>
+                                          <i class="  ml23">[[${#dates.format(project.registerEndTime, 'yyyy-MM-dd HH:mm:ss')}]]</i></dd>
+                                        <dd class="jianjie"><em class="fl">简介：</em>
+                                            <p class="ml23 fl">[[${#strings.abbreviate(project.introduction,30)}]]</p>
+                                            <a class=" ml23 red" th:href="${'/api/bid/project/fDetail/'+project.id}" target="_blank">[查看详情]</a>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page clear clearfix" style=" text-align:right;">
+                <a>首页</a><a>上一页</a><a class="on">1</a>
+                <a href="">2</a><a href="">下一页</a><a href="">尾页</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+</body>
+<script>
+    //点击筛选
+    function searchProject(e){
+        $(e).parent().parent().find("dd.on").removeClass("on");
+        $(e).parent().addClass("on");
+        if($(e).parent().attr("value")=="all"&&$(e).closest("li").hasClass("industryLi")){
+            $(e).closest("li").nextAll("li.industryLi").remove();
+        }
+
+        var param = "";
+        $("#searchUl").find("dd.on").each(function(){
+            dd = $(this);
+            var name = dd.attr("name");
+            var value = dd.attr("value");
+            if(value!="all")param = param + name +"="+value+"&"
+        })
+        if(param.length>0){
+            param = "?"+param;
+        }
+        window.location.href="/api/duohui/toubiao/list"+param;
+    }
+
+</script>
+</html>
