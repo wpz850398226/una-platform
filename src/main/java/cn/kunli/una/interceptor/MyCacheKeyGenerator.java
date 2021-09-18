@@ -2,9 +2,11 @@ package cn.kunli.una.interceptor;
 
 
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.utils.common.StringUtil;
+import cn.kunli.una.utils.common.JSONUtil;
+import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.WrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,13 @@ public class MyCacheKeyGenerator implements KeyGenerator {
                 sqlSegment = sqlSegment.replace(oldChar, map.get(o).toString());
             }
             return key+sqlSegment;
+        }else if(param instanceof UpdateWrapper){
+            //参数为MP条件构造器，方法来源：getOne、list
+            UpdateWrapper wrapper = (UpdateWrapper)param;
+            BasePojo entity = (BasePojo)wrapper.getEntity();
+            if(entity.getId()!=null){
+                return key+"(id = "+entity.getId()+")";
+            }
         }else if(param instanceof HashMap){
             //参数为HashMap，方法来源：selectOne、selectList
             /*QueryWrapper wrapper = wrapperUtil.mapToWrapper((HashMap) param);

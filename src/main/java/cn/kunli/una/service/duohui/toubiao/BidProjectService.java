@@ -21,4 +21,6 @@ public class BidProjectService extends BasicService<BidProjectMapper, BidProject
     public BasicService getThisProxy() {
         return thisProxy;
     }
+
+
 }

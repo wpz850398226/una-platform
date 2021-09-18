@@ -1,7 +1,6 @@
 package cn.kunli.una.controller.duohui.toubiao;
 
 import cn.kunli.una.pojo.bid.BidProject;
-import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
@@ -56,7 +55,7 @@ public class BidIndexController {
     @RequestMapping("/index")
     public String index(Model model,Integer regionId) {
         //查询对话所属地区
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+        /*HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
         String requestedSessionId = request.getRequestedSessionId();
         if(regionId!=null){
@@ -65,7 +64,7 @@ public class BidIndexController {
         boolean b = redisUtil.hasKey("regionId:" + requestedSessionId);
         if(b){
             regionId = redisUtil.get("regionId:" + requestedSessionId);
-        }
+        }*/
         getCommonItem(model);
         //行业字典
         List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
@@ -187,12 +186,12 @@ public class BidIndexController {
             model.addAttribute("sysRegion",sysRegion);
         }
 
-        //热卖推荐
-        Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, MapUtil.getMap("orderByDesc", "stickDeadline"));
-        model.addAttribute("hotGoodsList",cpGoodsService.parse(stickGoodsPage.getRecords()));
-
         //搜索排行
-        Page<CpGoods> searchPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
-        model.addAttribute("searchGoodsList",searchPage.getRecords());
+        /*Page<CpGoods> searchPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
+        model.addAttribute("searchGoodsList",searchPage.getRecords());*/
+
+        //点击排行
+        Page<BidProject> browsePage = bidProjectService.page(0, 10, MapUtil.getMap("orderByDesc", "browseCount"));
+        model.addAttribute("browseProjectList",browsePage.getRecords());
     }
 }

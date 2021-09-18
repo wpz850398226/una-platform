@@ -427,6 +427,7 @@
 
   //加入购物车
   function addCart(modelId){
+    if (!judgeActive())return;
     console.log(modelId);
     var buyNumber = $("#buyNumber").val();
     var goodsId = '[[${record.id}]]';
@@ -438,14 +439,8 @@
           success: function (result) {
               layer.msg(result.message,function () {})
           },
-          error: function(XMLHttpRequest, textStatus, errorThrown) {
-            if(XMLHttpRequest.responseURL.length>0){
-              window.location.href=XMLHttpRequest.responseURL;
-            }
-              layer.closeAll('loading');
-              console.log(XMLHttpRequest.status);
-              console.log(XMLHttpRequest.readyState);
-              console.log(textStatus);
+          error: function(XMLHttpRequest) {
+            console.log("访问出错了，错误代号："+XMLHttpRequest.status);
           }
       })
 

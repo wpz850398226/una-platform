@@ -45,21 +45,18 @@
       </div>
       <div class="paixu mt20">
         <ul>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
-          <li><a href="#">河北邢台常洁松求职电焊工</a></li>
+          <li th:each="project:${browseProjectList}"><a href="#">[[${project.name}]]</a></li>
         </ul>
       </div>
     </div>
   </div>
   <div class=" W920 fl bor">
     <h2 style=" text-align:center; color:#000; font-size:24px; line-height:50px;"><span>[[${record.name}]]</span><img class="ml10" th:src="@{/duohui/toubiao/images/v.gif}"></h2>
-    <div style="text-align:center; margin:0 auto;  display:block; line-height:60px;"> 来源：平台方 &nbsp;&nbsp;发布时间：[[${#dates.format(record.createTime, 'yyyy-MM-dd')}]] &nbsp;&nbsp;浏览：[[${record.browseCount}]]次  <a class="shoucang" onclick="javascript:SendFav();">收藏</a></div>
+    <div style="text-align:center; margin:0 auto;  display:block; line-height:60px;"> 来源：平台方 &nbsp;&nbsp;发布时间：[[${#dates.format(record.createTime, 'yyyy-MM-dd')}]]
+      &nbsp;&nbsp;浏览：[[${record.browseCount}]]次
+      <a id="collectBtn" class="shoucang" onclick="javascript:collectProject();">
+        [[${record.collectAccountIds!=null&&activeUser!=null&&#strings.contains(record.collectAccountIds,activeUser.id)?'已':''}]]收藏</a>
+    </div>
     <div class="clear line-height  border-top ">
       <div class="tjhy-title" style=" padding-bottom: 40px;">
         <h2 class="fl" style="padding-bottom:7px;"><a class="mr30" style="font-size:16px;">招标信息</a></h2>
@@ -75,7 +72,10 @@
             <td width="160">[[${record.qualification}]]</td>
             <td class="td1_bg" width="100">项目进展</td>
             <td width="160"> [<span style="color:#125baa">[[${record['map']['statusDname']}]]</span>]
-              <span class="fuwu_gb" >参与投标报名</span></td>
+              <span class="fuwu_gb" th:if="${record.statusDcode == 'dh_bidStatus_applying'}">
+                <a id="applyBtn" th:if="${record.isApplyed != true}" href="javascript:applyProject()">投标报名</a>
+                [[${record.isApplyed == true ?'已报名':''}]]
+              </span></td>
           </tr>
           <tr>
             <td class="td1_bg" width="100">报名截止时间</td>
@@ -95,25 +95,79 @@
       <div class="page clear  " style="min-height:100px; margin-top:20px;"> <span class="danye-kuai">会员登录后才可查看详细信息，请<br>
         <a href="">登录</a></span> </div>
       <div class="clear clearfix mt20"></div>
-      <div class="prenext"  style="margin:0 0 0 15px; line-height:40px;"> 上一篇：<a href="#">如何发布信息</a> <br />
+      <!--<div class="prenext"  style="margin:0 0 0 15px; line-height:40px;"> 上一篇：<a href="#">如何发布信息</a> <br />
         下一篇：<a href="#">如何发布信息</a>
         <div style="clear:both;"></div>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
 <div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/chanpin/include/script :: script"></div>
 </body>
+<script th:src="@{/layui/layui.all.js}" charset="utf-8"></script>
 <script th:fragment="script">
-  $(".una-editor-show").each(function (){
-    var className = $(this).attr("class");
-    var newClassName = $.trim(className.replace("una-editor-show",""));
-    $(this).after('<div class="'+newClassName+'">'+$(this).attr("value")+'</div>').remove()
-  })
-
   //收藏项目
-  function collectProject(id){
-    console.log(id)
+  function collectProject(){
+    if (!judgeActive())return;
+
+    var projectId = '[[${record.id}]]';
+    let text = $("#collectBtn").text().trim();
+    var isCollect = 0;
+    if(text === '收藏'){
+      isCollect = 1;
+    }
+
+
+    // layer.confirm('您确定要'+text+'该项目吗？', {
+    //   btn: ['确认','取消'] //按钮
+    // }, function(){
+      $.ajax({
+        type: 'PUT',
+        dataType: 'json',
+        traditional:true,
+        url: "/api/bid/project/collect/"+projectId+"/"+isCollect,
+        success:function(result){
+          if(isCollect==1){
+            $("#collectBtn").text("已收藏");
+          }else{
+            $("#collectBtn").text("收藏");
+          }
+          layer.msg(result.message)
+        },
+        error: function(XMLHttpRequest) {
+          console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+        }
+      })
+    // })
+  }
+
+  //报名投标
+  function applyProject(){
+    if (!judgeActive())return;
+
+    /*var text = $("#applyBtn").text();
+    if(text==='已报名'){
+
+    }*/
+
+    layer.confirm('您确定要报名该项目吗？', {
+      btn: ['确认','取消'] //按钮
+    }, function(){
+      var projectId = '[[${record.id}]]';
+      $.ajax({
+        type: 'post',
+        url: "/api/bid/bidder/save",
+        dataType: 'json',
+        data: {"projectId":projectId},
+        success: function (result) {
+          layer.msg(result.message)
+        },
+        error: function(XMLHttpRequest) {
+          console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+        }
+      })
+    })
   }
 </script>
 </html>

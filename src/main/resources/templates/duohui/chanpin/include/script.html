@@ -7,5 +7,26 @@
         $(this).after('<div class="'+newClassName+'">'+$(this).attr("value")+'</div>').remove()
     })
 
+    //判断是否在线
+    function judgeActive(){
+        var activeUser = '[[${activeUser}]]';
+        if(activeUser==null||activeUser==""){
+            var oldPath = window.location.pathname;
+            var oldPathUnicode = encodeURI(oldPath);
+            //跳转登录页
+            window.location.href="/api/duohui/login/toLogin?oldPath="+oldPathUnicode
+            return false;
+        }
+        return true;
+    }
+
+    //跳转登录页，登录成功后，跳转回老页面
+    function loginWithOldPath(){
+        var oldPath = window.location.pathname;
+        var oldPathUnicode = encodeURI(oldPath);
+        //跳转登录页
+        window.location.href="/api/duohui/login/toLogin?oldPath="+oldPathUnicode
+    }
+
 </script>
 </html>

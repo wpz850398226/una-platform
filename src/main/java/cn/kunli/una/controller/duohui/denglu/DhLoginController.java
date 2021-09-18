@@ -2,19 +2,16 @@ package cn.kunli.una.controller.duohui.denglu;
 
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysRegion;
-import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,17 +27,24 @@ public class DhLoginController {
     private SysAccountService sysAccountService;
 
     @GetMapping("/toLogin")
-    public String toLogin(Model model,HttpServletRequest req) {
-        String requestURI = "/api/duohui/chanpin/index";
+    public String toLogin(Model model,HttpServletRequest req,String oldPath) {
+        /*String requestURI = "/api/duohui/chanpin/index";
 
         Object obj = req.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
         if(obj!=null){
             DefaultSavedRequest spring_security_saved_request = (DefaultSavedRequest)obj;
             requestURI = spring_security_saved_request.getRequestURI();
-        }
+        }*/
 
-        model.addAttribute("originUri",requestURI);
+        if(StringUtils.isBlank(oldPath))oldPath = "/api/duohui/chanpin/index";
+
+        model.addAttribute("originUri",oldPath);
         return "duohui/denglu/login";
+    }
+
+    @GetMapping("/toLoginMini")
+    public String toLoginMini(Model model,HttpServletRequest req) {
+        return "duohui/denglu/loginMini";
     }
 
     @GetMapping("/toRegister")

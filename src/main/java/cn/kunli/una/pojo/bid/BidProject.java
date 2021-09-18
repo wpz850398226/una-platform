@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.bid;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -66,4 +67,7 @@ public class BidProject extends BasePojo implements Serializable {
     //收藏用户
     private String collectAccountIds;
 
+
+    @TableField(exist = false)
+    private Boolean isApplyed;    //是否已报名
 }
