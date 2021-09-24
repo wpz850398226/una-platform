@@ -55,3 +55,7 @@ minio:
   secure: false
   bucketName: "duohui"
   configDir: "/home/data/"
+
+tim:
+  appid: 1400554950
+  key: 05d9c9174f0f12d0804b9cff287473fad2f7fd524ecee7e9adf60ed388b2c9e3

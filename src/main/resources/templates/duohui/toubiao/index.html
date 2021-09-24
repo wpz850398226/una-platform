@@ -27,9 +27,7 @@ $(function () {
 </script>
   <div class="callbacks_container">
     <ul class="rslides callbacks callbacks1" id="slider">
-      <li><a ><img th:src="@{/duohui/toubiao/images/banner.jpg}" alt=""></a></li>
-      <li><a ><img th:src="@{/duohui/toubiao/images/banner.jpg}" alt=""></a></li>
-      <li><a ><img th:src="@{/duohui/toubiao/images/banner.jpg}" alt=""></a></li>
+      <li th:each="imageUrl : ${#strings.arraySplit(record.map.bannerFileUrls, ',')}"><a ><img th:src="${imageUrl}" alt=""></a></li>
     </ul>
   </div>
 </div>
@@ -46,7 +44,9 @@ $(function () {
     </h2>
     <div class="clear product-nr clearfix">
       <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/toubiao/images/toubiao_biao.jpg}"> </a> </div>
+        <div class=" product-l"> <a href="#">
+          <img th:if="${record.map['hyggFileUrls'] != null && #strings.arraySplit(record.map['hyggFileUrls'], ',').length>=primaryStatus.index+1}"
+               th:src="${#strings.arraySplit(record.map['hyggFileUrls'], ',')[primaryStatus.index]}"> </a> </div>
       </div>
       <div class="fr product-r">
         <div class=" clearfix kuan">
@@ -87,7 +87,9 @@ $(function () {
     </div>
   </div>
   <div class="clear clearfix mt20"></div>
-  <div class="clear clearfix w1200"><a href="#"><img th:src="@{/duohui/toubiao/images/guanggaoyi.jpg}" width="1200" height="90"> </a></div>
+  <div class="clear clearfix w1200"><a href="#">
+    <img th:if="${record.map['hfggFileUrls'] != null && #strings.arraySplit(record.map['hfggFileUrls'], ',').length>=primaryStatus.index+1}"
+         th:src="${#strings.arraySplit(record.map['hfggFileUrls'], ',')[primaryStatus.index]}" width="1200" height="90"> </a></div>
 </div>
 <!--盖楼-->
 

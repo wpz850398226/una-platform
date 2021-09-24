@@ -4,10 +4,12 @@ import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysFileMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.system.SysFile;
+import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.MinIoUtil;
+import cn.kunli.una.utils.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -82,6 +84,14 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
                     //图片文件大小超过规定上限
                     return SysResult.fail("单个图片文件不可超过2M，保存失败:" + obj.getFile().getOriginalFilename());
                 }
+            }
+
+            SysLoginAccountDetails loginAccount = UserUtil.getLoginAccount();
+            List<SysFile> sysFiles = thisProxy.selectList(MapUtil.buildHashMap().put("creatorId", loginAccount.getId())
+                    .put("originName", fileName).put("size", obj.getFile().getSize()).build());
+            if(CollectionUtils.isNotEmpty(sysFiles)){
+                //如果有相同账号，相同源文件名，相同大小的文件，说明是相同文件，不允许重复上传
+                return SysResult.fail("您已上传过相同文件，本次保存失败:" + obj.getFile().getOriginalFilename());
             }
 
         }

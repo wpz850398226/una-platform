@@ -95,4 +95,15 @@ public class BidProjectController extends BaseController<BidProjectService, BidP
         }
     }
 
+    /**
+     * 打开前端 详情页面
+     * @param model
+     * @return
+     */
+    @RequestMapping("/download/{id}")
+    public String download(Model model, @PathVariable Integer id, String attributeName) {
+
+        return "duohui/toubiao/download";
+    }
+
 }

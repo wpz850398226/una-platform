@@ -3,9 +3,9 @@ package cn.kunli.una.controller.duohui.toubiao;
 import cn.kunli.una.pojo.bid.BidProject;
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.system.*;
+import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
@@ -41,7 +41,7 @@ public class BidIndexController {
     @Autowired
     private SysDictionaryService sysDictionaryService;
     @Autowired
-    private CpGoodsService cpGoodsService;
+    private SysDataService sysDataService;
     @Autowired
     private SysRegionService sysRegionService;
     @Autowired
@@ -104,6 +104,11 @@ public class BidIndexController {
         Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
         List<SysCompany> coopShopList = sysCompanyService.parse(coopShopPage.getRecords());
         model.addAttribute("coopShopList",coopShopList);
+
+        //首页信息
+        SysData record = sysDataService.getById(100024);
+        record = sysDataService.parse(ListUtil.getList(record)).get(0);
+        model.addAttribute("record",record);
 
         return "duohui/toubiao/index";
     }
