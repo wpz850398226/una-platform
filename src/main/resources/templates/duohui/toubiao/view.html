@@ -56,7 +56,7 @@
       &nbsp;&nbsp;浏览：[[${record.browseCount}]]次
       <a id="collectBtn" class="shoucang" onclick="javascript:collectProject();">
         [[${record.collectAccountIds!=null&&activeUser!=null&&#strings.contains(record.collectAccountIds,activeUser.id)?'已':''}]]收藏</a>
-      <a class="shoucang" onclick="javascript:timTalk();">咨询</a>
+      <a class="shoucang" onclick="javascript:timTalk('duohui');">咨询</a>
     </div>
     <div class="clear line-height  border-top ">
       <div class="tjhy-title" style=" padding-bottom: 40px;">
@@ -181,44 +181,6 @@
         }
       })
     })
-  }
-
-  //打开即时通讯窗口
-  function timTalk(){
-    if (!judgeActive())return;
-
-    // 创建 SDK 实例，TIM.create() 方法对于同一个 SDKAppID 只会返回同一份实例
-    /*let options = {
-      SDKAppID: 1400554950 // 接入时需要将0替换为您的即时通信应用的 SDKAppID
-    };
-    let tim = TIM.create(options); // SDK 实例通常用 tim 表示*/
-
-    $.ajax({
-      type: 'get',
-      url: "/api/tim/userSig",
-      dataType: 'json',
-      success: function (result) {
-        layer.msg(result.isSuccess)
-        if(result.isSuccess){
-          console.log(result.data)
-          // 开始登录
-          // tim.login({userID: '100000', userSig: result.data});
-          layer.open({
-            type: 2,
-            title: '在线客服',
-            shadeClose: true,
-            shade: false,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: '/api/tim/index'
-          });
-        }
-      },
-      error: function(XMLHttpRequest) {
-        console.log("访问出错了，错误代号："+XMLHttpRequest.status);
-      }
-    })
-
   }
 </script>
 </html>

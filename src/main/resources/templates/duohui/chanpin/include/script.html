@@ -28,5 +28,42 @@
         window.location.href="/api/duohui/login/toLogin?oldPath="+oldPathUnicode
     }
 
+    //打开即时通讯窗口
+    function timTalk(toUserId){
+        if (toUserId == null || toUserId === ''){
+            layer.msg("开启失败，对方未设置客服！！",function(){});
+            return false;
+        }
+        if (!judgeActive())return;
+        let activeUserId = $("#activeUserId").val();
+        if(activeUserId != null && activeUserId !== ''){
+            $.ajax({
+                type: 'get',
+                url: "/api/tim/userSig",
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.isSuccess)
+                    if(result.isSuccess){
+                        console.log(result.data)
+                        // 开始登录
+                        // tim.login({userID: '100000', userSig: result.data});
+                        layer.open({
+                            type: 2,
+                            title: '在线客服',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['893px', '600px'],
+                            content: 'http://123.56.79.121/tim/index?fromUserId='+activeUserId+'&toUserId='+toUserId
+                        });
+                    }
+                },
+                error: function(XMLHttpRequest) {
+                    console.log("访问出错了，错误代号："+XMLHttpRequest.status);
+                }
+            })
+        }
+
+    }
 </script>
 </html>

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
   <div th:fragment="footer" class="footer clear clearfix">
     <div class="w1200">
+      <input type="hidden" th:if="${activeUser != null}" th:value="${activeUser.id}" id="activeUserId"/>
       <div class=" W950 clear clearfix" style="margin:0 auto;">
         <div class="fl list w210">
           <dl>
