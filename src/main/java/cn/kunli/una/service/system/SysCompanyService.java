@@ -2,10 +2,7 @@ package cn.kunli.una.service.system;
 
 import cn.kunli.una.mapper.SysCompanyMapper;
 import cn.kunli.una.pojo.system.SysCompany;
-import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,18 +36,6 @@ public class SysCompanyService extends BasicService<SysCompanyMapper, SysCompany
         }else{
             if(obj.getIsAudit()==null)obj.setIsAudit(false);    //如果修改，默认改为未审核
         }
-        //赋值行业类型
-        /*if(StringUtils.isNotBlank(obj.getThirdryIndustryDcode())){
-            if(StringUtils.isBlank(obj.getSecondryIndustryDcode())){
-                SysDictionary thirdryIndustryDic = sysDictionaryService.selectOne(MapUtil.getMap("code", obj.getThirdryIndustryDcode()));
-                obj.setSecondryIndustryDcode(thirdryIndustryDic.getParentCode());
-                if(StringUtils.isBlank(obj.getPrimaryIndustryDcode())){
-                    SysDictionary secondryIndustryDic = sysDictionaryService.getById(thirdryIndustryDic.getParentId());
-                    obj.setPrimaryIndustryDcode(secondryIndustryDic.getParentCode());
-                }
-
-            }
-        }*/
 
         return obj;
     }

@@ -1,20 +1,13 @@
 package cn.kunli.una.controller.duohui.gongqiu;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-
 import cn.kunli.una.pojo.gongqiu.GqInformation;
-import cn.kunli.una.pojo.system.SysCompany;
-import cn.kunli.una.pojo.system.SysConfiguration;
-import cn.kunli.una.pojo.system.SysDictionary;
-import cn.kunli.una.pojo.system.SysRegion;
+import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-
 import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
-import cn.kunli.una.service.system.SysCompanyService;
-import cn.kunli.una.service.system.SysConfigurationService;
-import cn.kunli.una.service.system.SysDictionaryService;
-import cn.kunli.una.service.system.SysRegionService;
+import cn.kunli.una.service.system.*;
+import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +37,8 @@ public class GqIndexController {
     private SysCompanyService sysCompanyService;
     @Autowired
     private SysRegionService sysRegionService;
+    @Autowired
+    private SysDataService sysDataService;
 
     /**
      * 打开主体框架
@@ -55,6 +49,10 @@ public class GqIndexController {
     @RequestMapping("/index")
     public String index(Model model) {
         getCommonItem(model);
+        //首页信息
+        SysData record = sysDataService.getById(100025);
+        record = sysDataService.parse(ListUtil.getList(record)).get(0);
+        model.addAttribute("record",record);
 
         //行业字典
         List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
@@ -82,16 +80,7 @@ public class GqIndexController {
 
         //合作企业
         Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
-        List<SysCompany> parse = sysCompanyService.parse(coopShopPage.getRecords());
-        List<SysCompany> coopShopList = new ArrayList<>();
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
-        coopShopList.addAll(parse);
+        List<SysCompany> coopShopList = sysCompanyService.parse(coopShopPage.getRecords());
         model.addAttribute("coopShopList",coopShopList);
         return "duohui/gongqiu/index";
     }

@@ -90,7 +90,7 @@ public class QyIndexController {
         for (int i = 0; i < industryDlist.size(); i++) {
             if(i<6){
                 String code = industryDlist.get(i).getCode();
-                Page<SysCompany> companyPage = sysCompanyService.page(1L, 4L, MapUtil.getMap("primaryIndustryDcode", code));
+                Page<SysCompany> companyPage = sysCompanyService.page(1L, 4L, MapUtil.getMap("in:industryTypeDcodes", code+","));
                 List<SysCompany> records = sysCompanyService.parse(companyPage.getRecords());
                 companyListMap.put(code,records);
             }

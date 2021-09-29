@@ -4,7 +4,7 @@
 <div th:replace="../templates/duohui/dianpu/include/head :: head"></div>
 <body>
 <div class="header ">
-    <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+    <div th:replace="../templates/duohui/common/headerTop :: header_top"></div>
     <div th:replace="../templates/duohui/dianpu/include/header :: header"></div>
     <div th:replace="../templates/duohui/dianpu/include/menu :: menu"></div>
 </div>
@@ -24,13 +24,7 @@
 </div>
 
 
-<div th:replace="../templates/duohui/dianpu/include/footer :: footer"></div>
-<script type="text/javascript">
-    $(".una-editor-show").each(function (){
-        var className = $(this).attr("class");
-        var newClassName = $.trim(className.replace("una-editor-show",""));
-        $(this).after('<div class="'+newClassName+'">'+$(this).attr("value")+'</div>').remove()
-    })
-</script>
+<div th:replace="../templates/duohui/common/footer :: footer"></div>
+<div th:replace="../templates/duohui/common/script :: script"></div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <div th:replace="../templates/duohui/denglu/include/head :: head"></div>
 <body>
 <div class="header ">
-  <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+  <div th:replace="../templates/duohui/common/headerTop :: header_top"></div>
   <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
   <div th:replace="../templates/duohui/denglu/include/menu :: menu"></div>
 </div>
@@ -58,7 +58,8 @@
                         </div>
                     </li>
                     <div class="clear clearfix"></div>
-                    <p class="fr mr30 dldl"> 您还不是会员，<a class=" mr10" href="/api/duohui/login/toRegister">请注册</a>|<a href="/api/duohui/login/seekPass1" class=" ml10">找回密码</a></p>
+                    <p class="fr mr30 dldl"> 您还不是会员，<a class=" mr10" href="/api/duohui/login/toRegister">请注册</a>
+                        |<a href="/api/duohui/login/seekPass1" class=" ml10">找回密码</a></p>
                 </ul>
             </form>
 
@@ -68,7 +69,8 @@
 </div>
 
 
-<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/common/footer :: footer"></div>
+<div th:replace="../templates/duohui/common/script :: script"></div>
 <script type="text/javascript">
     var form = $("#loginForm");
     var uri = "[[${originUri}]]";

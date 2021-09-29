@@ -1,6 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <script th:fragment="script">
+    //跳转后台用户中心
+    function skipToUserCenter(){
+        // console.log("http://10.10.10.200:8080/una/login?token="+localStorage.getItem("token"))
+        window.open("http://10.10.10.200:8080/una/login?token="+localStorage.getItem("token"));
+        // window.open("http://123.56.79.121/una/login?token="+localStorage.getItem("token"));
+        // window.open("http://192.168.1.76:8080/una/login?token="+localStorage.getItem("token"));
+    }
+
     $(".una-editor-show").each(function (){
         var className = $(this).attr("class");
         var newClassName = $.trim(className.replace("una-editor-show",""));

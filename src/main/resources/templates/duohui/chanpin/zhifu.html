@@ -3,7 +3,7 @@
 <div th:replace="../templates/duohui/chanpin/include/head :: head"></div>
 <body>
 <div class="header ">
-    <div th:replace="../templates/duohui/chanpin/include/headerTop :: header_top"></div>
+    <div th:replace="../templates/duohui/common/headerTop :: header_top"></div>
     <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
     <div th:replace="../templates/duohui/chanpin/include/navbg :: navbg"></div>
 </div>
@@ -201,7 +201,8 @@
         </table>
     </form>
 </div>
-<div th:replace="../templates/duohui/chanpin/include/footer :: footer"></div>
+<div th:replace="../templates/duohui/common/footer :: footer"></div>
+<div th:replace="../templates/duohui/common/script :: script"></div>
 <script th:src="@{/xadmin/js/jquery.min.js}" type="text/javascript"></script>
 <script th:src="@{/una/js/private/una.common.js}" charset="utf-8"></script>
 <script>
