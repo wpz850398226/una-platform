@@ -93,58 +93,10 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         return menuList;
     }
 
-    /*public List<SysMenu> selectTreeBySelective(SysMenu obj) {
-        List<SysMenu> menuList = new ArrayList<>();
-        if (obj.getId() == 100000) {
-            menuList = thisProxy.selectList(null);
-        } else {
-            menuList = mapper.selectTreeBySelective(obj);
-        }
-
-        List<SysMenu> firstMenuList = new ArrayList<>();
-        List<SysMenu> secondMenuList = new ArrayList<>();
-        List<SysMenu> thirdMenuList = new ArrayList<>();
-
-        for (SysMenu sysMenu : menuList) {
-            switch (sysMenu.getLevel()) {
-                case 1:
-                    firstMenuList.add(sysMenu);
-                    break;
-                case 2:
-                    secondMenuList.add(sysMenu);
-                    break;
-                case 3:
-                    thirdMenuList.add(sysMenu);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        for (SysMenu secondMenu : secondMenuList) {
-            for (SysMenu thirdMenu : thirdMenuList) {
-                if (thirdMenu.getParentId().equals(secondMenu.getId())) {
-                    secondMenu.getChildren().add(thirdMenu);
-                }
-            }
-        }
-
-        for (SysMenu firstMenu : firstMenuList) {
-            for (SysMenu secondMenu : secondMenuList) {
-                if (secondMenu.getParentId().equals(firstMenu.getId())) {
-                    firstMenu.getChildren().add(secondMenu);
-                }
-            }
-        }
-
-        return firstMenuList;
-    }*/
-
     @Override
     public SysResult validate(SysMenu obj) {
         if(StringUtils.isNotBlank(obj.getName())){
-            List<SysMenu> objList = thisProxy.selectList(MapUtil.getMap("name", obj.getName().trim()));
+            List<SysMenu> objList = thisProxy.selectList(MapUtil.buildHashMap().put("name", obj.getName().trim()).put("parentId",obj.getParentId()).build());
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("名称重复，保存失败:" + obj.getName());
             }
@@ -169,6 +121,12 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");
+        }
+
+        if(obj.getType().equals("列表")){
+            obj.setRoute("Layout");
+        }else{
+            obj.setRoute("SysManage");
         }
 
         if(obj.getPermissionId()!=null){

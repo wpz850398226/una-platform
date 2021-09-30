@@ -5,9 +5,9 @@
     <!--menu start-->
     <ul class="menu right" id="menu">
       <li class="on" th:each="primaryMenu : ${gwMenuList}">
-        <a class=" " th:href="${primaryMenu.type=='链接'?primaryMenu.path:'javascript:void(0)'}">[[${primaryMenu.name}]]</a>
+        <a class=" " th:href="${primaryMenu.type=='链接'?primaryMenu.path:'javascript:void(0)'}" target="_blank">[[${primaryMenu.name}]]</a>
         <ul class="submenu">
-          <li th:each="secondaryMenu : ${primaryMenu.children}"><a th:href="${secondaryMenu.path + '?menuId=' + secondaryMenu.id}">[[${secondaryMenu.name}]]</a></li>
+          <li th:each="secondaryMenu : ${primaryMenu.children}"><a th:href="${secondaryMenu.path + '?menuId=' + secondaryMenu.id}" target="_blank">[[${secondaryMenu.name}]]</a></li>
         </ul>
       </li>
     </ul>
