@@ -33,5 +33,7 @@ public class OaExtrawork extends BasePojo implements Serializable {
     private Integer duration;
     //事由
     private String reason;
+    //流程id
+    private Integer instanceId;
 
 }
