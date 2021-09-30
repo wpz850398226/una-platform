@@ -13,7 +13,7 @@
         <div th:replace="../templates/duohui/guanwang/include/innerMenu :: inner_menu"></div>
         <div class="right w890 mt10">
           <h3 class="title"><a class="heise" href="#">[[${record.name }]]</a></h3>
-          <div th:if="${record.value != null}" class="una-editor-show nr clearBoth line30" th:value="${record.value.content }"></div>
+          <div class="una-editor-show nr clearBoth line30" th:value="${record.content }"></div>
         </div>
       </div>
     </div>

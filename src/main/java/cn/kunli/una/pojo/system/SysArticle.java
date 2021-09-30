@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class SysArticle extends BasePojo implements Serializable {
     private static final long serialVersionUID = 478525008536411865L;
     //类型
-    private String type;
+    private String typeDcode;
     //内容
     private String content;
     //浏览次数

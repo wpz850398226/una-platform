@@ -1,8 +1,10 @@
 package cn.kunli.una.controller.duohui.guanwang;
 
 import cn.kunli.una.controller.BaseController;
+import cn.kunli.una.pojo.bid.BidProject;
 import cn.kunli.una.pojo.guanwang.GwConfiguration;
 import cn.kunli.una.pojo.guanwang.GwMenu;
+import cn.kunli.una.pojo.system.SysArticle;
 import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.service.duohui.guanwang.GwConfigurationService;
@@ -10,6 +12,7 @@ import cn.kunli.una.service.duohui.guanwang.GwMenuService;
 import cn.kunli.una.service.system.SysDataService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,27 +73,13 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
         }
         getCommonItem(model,menuId);
 
-        Long pageNum = 1L;
-        Long pageSize = 5L;
-        if(map.get("pageNum")!=null){
-            pageNum = Long.valueOf(map.get("pageNum").toString());
-            map.remove("pageNum");
-        }
-        if(map.get("pageSize")!=null){
-            pageSize = Long.valueOf(map.get("pageSize").toString());
-            map.remove("pageSize");
-        }
-        if(StringUtils.isNotBlank(code)){
-            SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", code));
-            if(sysEntity!=null){
-                map.put("entityId",sysEntity.getId());
-            }
-        }
         if(!map.containsKey("orderByAsc")&&!map.containsKey("orderByDesc")){
             map.put("orderByDesc","createTime");
         }
-        Page<SysData> objectPage = new Page<SysData>().setCurrent(pageNum).setSize(pageSize);
-        Page page = sysDataService.page(objectPage, sysDataService.getWrapper(service.format(map)));
+        if(StringUtils.isNotBlank(code)){
+            map.put("typeDcode",code);
+        }
+        Page page = sysArticleService.page(map.get("pageNum"),map.get("pageSize"), map);
 
         model.addAttribute("page", page);
         return "duohui/guanwang/page";
@@ -104,8 +93,13 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
      */
     @GetMapping("/single/{id}")
     public String single(Model model, @PathVariable("id") Integer id,@RequestParam Map<String, Object> map) {
-        SysData record = sysDataService.getById(id);
+        SysArticle record = sysArticleService.getById(id);
         model.addAttribute("record",record);
+        //增加点击量
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.setEntity(new SysArticle().setId(id));
+        updateWrapper.setSql("view_amount = view_amount + 1");
+        sysArticleService.update(updateWrapper);
 
         Object menuId = null;
         if(map.containsKey("menuId")){

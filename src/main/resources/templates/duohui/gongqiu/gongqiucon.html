@@ -24,90 +24,16 @@
                 <span>[[${record.name}]]</span><img class="ml10" th:src="@{/duohui/gongqiu/images/v.gif}"></h2>
             <div style="text-align:center; margin:0 auto;  display:block; line-height:60px;"><em class="ml10 yanzhensj">[[${record['map']['certifyDname']}]]</em>
                 <em class="ml10">[[${record.viewAmount}]]次浏览</em>
-              <em class="ml10">信息编号：[[${record.code}]]</em>
+<!--              <em class="ml10">信息编号：[[${record.code}]]</em>-->
               <em class="ml10">时间：[[${#dates.format(record.createTime, 'yyyy-MM-dd')}]]</em>
             </div>
             <div class="clear line-height  border-top">
                 <div class="gongchengpage sjbiaozhi renzhengbiaozhi una-editor-show" th:value="${record.description}"></div>
                 <div class="clear clearfix mt20"></div>
-                <div class="border-top clear clearfix sjhaoma" th:if="${activeUser==null}"><span>联系方式</span> <i class="ml23">***********</i><em class="fr btn1">点击查看完整号码</em></div>
-                <div class="border-top clear clearfix sjhaoma" th:if="${activeUser!=null}"><span>联系方式</span> <i class="ml23">[[${record.mobile}]]</i></div>
+                <div class="border-top clear clearfix sjhaoma" th:if="${activeUser==null}"><span>联系方式</span> <i class="ml23">***********</i><em class="fr btn1" onclick="loginWithOldPath()">点击查看完整号码</em></div>
+                <div class="border-top clear clearfix sjhaoma" th:if="${activeUser!=null}"><span>联系方式</span> <i class="ml23">[[${record.mobile!=null?record.mobile:'无手机号码'}]]</i></div>
                 <div class="box1"></div>
-                <div class="hint">
-                    <div class="hint-in1">
-                        <div class="hint2">登录</div>
-                        <div class="hint3"></div>
-                    </div>
-                    <div class="hint-in2">
-                        <input type="text" class="kuang" placeholder="请输入用户名"/>
-                        <input type="password" class="kuang" placeholder="请输入密码"/>
-                    </div>
-                    <div class="hint-in3">确定</div>
-                    <div class="zhuce"><A href="#">注册</A></div>
-                </div>
-                <script type="text/javascript">
-                    $(document).ready(function ($) {
 
-                        $(".btn1").click(function (event) {
-                            var index = layer.open({
-                                type: 2,
-                                title: '登录',
-                                maxmin: true,
-                                shadeClose: true, //点击遮罩关闭层
-                                area : ['800px' , '520px'],
-                                content: '/api/duohui/login/toLogin'
-                            });
-                            // $(".hint").css({"display": "block"});
-                            // $(".box1").css({"display": "block"});
-                        });
-
-                        $(".hint-in3").click(function (event) {
-                            $(".hint").css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-                        $(".btn2").click(function (event) {
-                            $(".hintl").css({"display": "block"});
-                            $(".box1").css({"display": "block"});
-                        });
-
-                        $(".hint3").click(function (event) {
-                            $(this).parent().parent().css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-                        $(".hintl-in3").click(function (event) {
-                            $(".hintl").css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-                        $(".hintl-in4").click(function () {
-                            $(".hintl").css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-                        $(".btn3").click(function (event) {
-                            $(".hintq").css({"display": "block"});
-                            $(".box1").css({"display": "block"});
-                        });
-                        $(".hint3").click(function (event) {
-                            $(this).parent().parent().css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-                        $(".hintq-in3").click(function (event) {
-                            $(".hintq").css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-                        $(".hintq-in4").click(function () {
-                            $(".hintq").css({"display": "none"});
-                            $(".box1").css({"display": "none"});
-                        });
-
-
-                    });
-                </script>
                 <div class="clear clearfix mt20"></div>
                 <div class="clear clearfix border-top fencang">
                     <span class="fr bdsharebuttonbox">
@@ -141,24 +67,12 @@
                 <div class="tjhy-title" style="  padding-bottom: 40px;">
                     <h2 class="fl"><span></span><a class="mr30" style="font-size:18px;" href="#">详细说明</a></h2>
                 </div>
-              <div class="una-editor-show" th:value="${record.description}"></div>
+              <div class="una-editor-show" th:value="${record.content}"></div>
             </div>
         </div>
     </div>
 </div>
 <div th:replace="../templates/duohui/common/footer :: footer"></div>
 <div th:replace="../templates/duohui/common/script :: script"></div>
-<script>
-    function openLogin(){
-        var index = layer.open({
-            type: 2,
-            title: '登录',
-            maxmin: true,
-            shadeClose: true, //点击遮罩关闭层
-            area : ['800px' , '520px'],
-            content: '/api/duohui/login/toLogin'
-        });
-    }
-</script>
 </body>
 </html>

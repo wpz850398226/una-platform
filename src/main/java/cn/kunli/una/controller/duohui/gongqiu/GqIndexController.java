@@ -65,7 +65,7 @@ public class GqIndexController {
                 if(CollectionUtils.isNotEmpty(primaryIndustry.getChildren())){
                     for (SysDictionary secondryIndustry : primaryIndustry.getChildren()) {
                         Page<GqInformation> informationPage = gqInformationService.page(1L, 5L, MapUtil.buildHashMap()
-                                .put("secondryIndustryDcode", secondryIndustry.getCode()).put("isAdded",true).put("isAudit",true).build());
+                                .put(":industryTypeDcodes", secondryIndustry.getCode()+",").put("isAdded",true).put("isAudit",true).build());
                         gqInformationListMap.put(secondryIndustry.getCode(),informationPage.getRecords());
                     }
                 }

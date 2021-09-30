@@ -87,7 +87,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
         //如果父字典不是根目录，则新增字典根id与父字典保持一致
         SysDictionary parentDictionary = sysDictionaryService.getById(obj.getParentId());
 
-        if (obj.getParentId().equals(0)) {
+        if (obj.getParentId().equals(0)||obj.getParentId().equals(100000)) {
             obj.setRootId(0);
             obj.setCode(obj.getValue());
         } else {

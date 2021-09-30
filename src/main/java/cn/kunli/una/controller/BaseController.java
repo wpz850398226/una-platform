@@ -72,6 +72,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	protected SysPermissionService sysPermissionService;
 	@Autowired
 	protected SysConfigurationService sysConfigurationService;
+	@Autowired
+	protected SysArticleService sysArticleService;
 
 	// 当前Service上泛型的字节码对象
 	protected Class<T> entityClass;
@@ -254,21 +256,16 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			}
 		}
 
-		/*Long pageNum = 1L;
-		Long pageSize = 10L;
-		if(map.get("pageNum")!=null){
-			pageNum = Long.valueOf(map.get("pageNum").toString());
-			map.remove("pageNum");
-		}
-		if(map.get("pageSize")!=null){
-			pageSize = Long.valueOf(map.get("pageSize").toString());
-			map.remove("pageSize");
-		}
-		Page<T> objectPage = new Page<T>().setCurrent(pageNum).setSize(pageSize);*/
-
 		//处理查询条件
         if(MapUtils.isNotEmpty(map)){
             SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
+            //如果是虚拟实体
+			if(entityClassName.equals("SysData")&&map.containsKey("entityId")){
+				sysEntity = sysEntityService.getById(map.get("entityId").toString());
+				map.remove("entityId");
+			}
+
+			//处理模糊查询条件
             if(sysEntity!=null){
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                     String displayCode = entry.getKey();
