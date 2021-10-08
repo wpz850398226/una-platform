@@ -35,9 +35,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         List<SysMenu> menuList = thisProxy.parse(thisProxy.selectList(MapUtil.getMap("level",1)));
         List<String> permissionCodeList = loginUser.getPermissionCodeList();
-//        List<String> retriveList = permissionCodeList.stream().filter((String pc) -> pc.indexOf(":retrieve") != -1).collect(Collectors.toList());
-
-        //移除没有权限的菜单
+        //移除没有权限的菜单 与不展示的菜单isEffect = false
         List<SysMenu> formatMenuList = filterByPermission(menuList, permissionCodeList);
         //移除空菜单
         formatMenuList = filterWithNull(formatMenuList);
@@ -48,21 +46,25 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     private List<SysMenu> filterByPermission(List<SysMenu> menuList,List<String> codeList){
         Iterator<SysMenu> iterator = menuList.iterator();
         while (iterator.hasNext()) {
-            SysMenu parentMenu = iterator.next();
-            if(parentMenu.getType().equals("列表")){
+            SysMenu sysMenu = iterator.next();
+            if(!sysMenu.getIsEffect()){
+                iterator.remove();
+                continue;
+            }
+            if(sysMenu.getType().equals("列表")){
                 //如果是列表，则遍历子菜单
-                if(CollectionUtils.isNotEmpty(parentMenu.getChildren())){
-                    List<SysMenu> formatMenuList = filterByPermission(parentMenu.getChildren(), codeList);
-                    parentMenu.setChildren(formatMenuList);
+                if(CollectionUtils.isNotEmpty(sysMenu.getChildren())){
+                    List<SysMenu> formatMenuList = filterByPermission(sysMenu.getChildren(), codeList);
+                    sysMenu.setChildren(formatMenuList);
                 }
             }else{
                 //链接型菜单，判断菜单权限
-                if(parentMenu.getPermissionId()!=null){
+                if(sysMenu.getPermissionId()!=null){
                     String permissionCode = "";
-                    SysPermission sysPermission = sysPermissionService.getById(parentMenu.getPermissionId());
+                    SysPermission sysPermission = sysPermissionService.getById(sysMenu.getPermissionId());
                     if(sysPermission!=null){
                         String typeDcode = sysPermission.getTypeDcode();
-                        permissionCode = parentMenu.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1);
+                        permissionCode = sysMenu.getCode()+":"+typeDcode.substring(typeDcode.lastIndexOf("_")+1);
                         //判断是否有该菜单权限，没有则移除
                         if(!codeList.contains(permissionCode)){
                             iterator.remove();

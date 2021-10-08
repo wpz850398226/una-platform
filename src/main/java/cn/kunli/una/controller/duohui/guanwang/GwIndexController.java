@@ -1,13 +1,10 @@
 package cn.kunli.una.controller.duohui.guanwang;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.bid.BidProject;
-import cn.kunli.una.pojo.guanwang.GwConfiguration;
 import cn.kunli.una.pojo.guanwang.GwMenu;
 import cn.kunli.una.pojo.system.SysArticle;
+import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.pojo.system.SysData;
-import cn.kunli.una.pojo.system.SysEntity;
-import cn.kunli.una.service.duohui.guanwang.GwConfigurationService;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
 import cn.kunli.una.service.system.SysDataService;
 import cn.kunli.una.utils.common.ListUtil;
@@ -32,8 +29,6 @@ import java.util.Map;
 public class GwIndexController extends BaseController<SysDataService, SysData> {
     @Autowired
     private GwMenuService gwMenuService;
-    @Autowired
-    private GwConfigurationService gwConfigurationService;
 
     /**
      * 打开主体框架
@@ -112,9 +107,9 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
 
     private void getCommonItem(Model model,Object menuId){
         List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.selectList(MapUtil.getMap("parentId", 100000)));
-        GwConfiguration systemTitle = gwConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
+        SysConfiguration sysConfiguration = sysConfigurationService.selectOne(MapUtil.getMap("code", "GwIndex_systemName"));
         model.addAttribute("gwMenuList", gwMenuList);
-        model.addAttribute("systemName", systemTitle.getValue());
+        model.addAttribute("systemName", sysConfiguration.getValue());
 
         if(menuId!=null){
             for (GwMenu gwMenu : gwMenuList) {

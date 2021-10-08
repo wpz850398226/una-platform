@@ -114,18 +114,84 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
-        String className = entityClass.getSimpleName();
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
-        //获取当前类对应实体类对象
-        if(sysEntity!=null) {
-            //获取父字段字段类对象
-            SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-            String tableName = StringUtil.upperCharToUnderLine(className);
-            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
-            commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
+        boolean removeResult = super.removeById(id);
+        if(removeResult){
+            //获取当前类对应实体类对象
+            String className = entityClass.getSimpleName();
+            SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+            //后续记录升序
+            if(sysEntity!=null) {
+                //获取父字段字段类对象
+                SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
+                String tableName = StringUtil.upperCharToUnderLine(className);
+                String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
+                commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
+            }
+
+            //级联删除
+            List<SysRelation> sysRelationList = sysRelationService.selectList(MapUtil.getMap("parentEntityId", sysEntity.getId()));
+            if(CollectionUtils.isNotEmpty(sysRelationList)){
+                for (SysRelation sysRelation : sysRelationList) {
+                    //需要级联删除的记录所属实体类
+                    Integer relatedEntityId = sysRelation.getEntityId();
+                    Integer relatedFieldId = sysRelation.getRelatedFieldId();
+
+                    SysEntity relatedEntity = sysEntityService.getById(relatedEntityId);
+                    SysField relatedField = sysFieldService.getById(relatedFieldId);
+
+                    //获取service名称，并动态获取service
+                    String serviceName = relatedEntity.getCode()+"Service";
+
+                    BasicService<M, T> thisProxy = null;
+                    //关联自身实体类
+                    if(className.equals(relatedEntity.getCode())){
+                        thisProxy = getThisProxy();
+                    }else{
+                        switch(relatedEntity.getCode()){
+                            case "SysField":
+                                thisProxy = (BasicService<M, T>)sysFieldService;
+                                break;
+                            case "SysQuery":
+                                thisProxy = (BasicService<M, T>)sysQueryService;
+                                break;
+                            case "SysFilter":
+                                thisProxy = (BasicService<M, T>)sysFilterService;
+                                break;
+                            case "SysRelation":
+                                thisProxy = (BasicService<M, T>)sysRelationService;
+                                break;
+                            case "SysButton":
+                                thisProxy = (BasicService<M, T>)sysButtonService;
+                                break;
+                            case "SysSort":
+                                thisProxy = (BasicService<M, T>)sysSortService;
+                                break;
+                        }
+                    }
+
+                    if(thisProxy!=null){
+                        List<T> ts = thisProxy.selectList(MapUtil.getMap(relatedField.getAssignmentCode(), id));
+                        if(CollectionUtils.isNotEmpty(ts)){
+                            for (T t : ts) {
+                                thisProxy.deleteById(t.getId());
+                            }
+                        }
+                    }
+
+
+                    /*Object bean1 = SpringUtil.getBean(serviceName);
+                    BasicService bean = SpringUtil.getBean(serviceName, BasicService.class);
+                    List<BasePojo> list = bean.selectList(MapUtil.getMap(relatedField.getAssignmentCode(), id));
+                    if(CollectionUtils.isNotEmpty(list)){
+                        list.forEach(e -> bean.deleteById(e.getId()));
+                    }*/
+
+                }
+            }
+
         }
 
-        return super.removeById(id);
+        return removeResult;
     }
 
     /**
@@ -370,6 +436,61 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     }
 
     /**
+     * 查询结果格式化
+     * @param list
+     * @return
+     */
+    @SneakyThrows
+    public List<T> parse(List<T> list) {
+        if(CollectionUtils.isEmpty(list))return list;
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+        if(sysEntity!=null){
+            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
+            if(CollectionUtils.isNotEmpty(fieldList)){
+                //遍历该实体类的所有字段
+                for (SysField sysField : fieldList) {
+                    if(StringUtils.isNotBlank(sysField.getAssignmentCode())
+                            &&StringUtils.isNotBlank(sysField.getDisplayCode())
+                            &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
+                        //如果赋值与取值的字段值不同，则反射获取赋值字段值，查询取值字段值
+
+                        Field assignmentCodeField = null;
+                        try {
+                            assignmentCodeField = entityClass.getDeclaredField(sysField.getAssignmentCode());
+                        } catch (NoSuchFieldException e) {
+                            assignmentCodeField = entityClass.getSuperclass().getDeclaredField(sysField.getAssignmentCode());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        if(assignmentCodeField!=null){
+                            assignmentCodeField.setAccessible(true);
+                            for (T entity : list) {
+                                //获取记录中赋字段的值
+                                Object value = assignmentCodeField.get(entity);
+                                String displayValue = "";
+
+                                if(null != value){
+                                    //实体中该字段值为空的
+                                    SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
+                                    if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
+                                }
+                                Map<String, Object> map = entity.getMap();
+                                if(map==null)map = new HashMap<>();
+                                map.put(sysField.getDisplayCode(), displayValue);
+                                entity.setMap(map);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return list;
+    }
+
+    /**
      * 查询实例格式化
      * @param map
      * @return
@@ -431,60 +552,5 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         }
 
         return map;
-    }
-
-    /**
-     * 查询结果格式化
-     * @param list
-     * @return
-     */
-    @SneakyThrows
-    public List<T> parse(List<T> list) {
-        if(CollectionUtils.isEmpty(list))return list;
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
-        if(sysEntity!=null){
-            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
-            if(CollectionUtils.isNotEmpty(fieldList)){
-                //遍历该实体类的所有字段
-                for (SysField sysField : fieldList) {
-                    if(StringUtils.isNotBlank(sysField.getAssignmentCode())
-                            &&StringUtils.isNotBlank(sysField.getDisplayCode())
-                            &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
-                        //如果赋值与取值的字段值不同，则反射获取赋值字段值，查询取值字段值
-
-                        Field assignmentCodeField = null;
-                        try {
-                            assignmentCodeField = entityClass.getDeclaredField(sysField.getAssignmentCode());
-                        } catch (NoSuchFieldException e) {
-                            assignmentCodeField = entityClass.getSuperclass().getDeclaredField(sysField.getAssignmentCode());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        if(assignmentCodeField!=null){
-                            assignmentCodeField.setAccessible(true);
-                            for (T entity : list) {
-                                //获取记录中赋字段的值
-                                Object value = assignmentCodeField.get(entity);
-                                String displayValue = "";
-
-                                if(null != value){
-                                    //实体中该字段值为空的
-                                    SysResult displayResult = sysFieldService.getDisplayValue(sysField.getAssignmentCode(), value.toString(),getThisProxy(),sysField.getTransformDisplayCode());
-                                    if(displayResult.getIsSuccess())displayValue = displayResult.getData().toString();
-                                }
-                                Map<String, Object> map = entity.getMap();
-                                if(map==null)map = new HashMap<>();
-                                map.put(sysField.getDisplayCode(), displayValue);
-                                entity.setMap(map);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        return list;
     }
 }
