@@ -7,6 +7,8 @@ import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
+import cn.kunli.una.service.flow.FlowInstanceService;
+import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
@@ -78,6 +80,10 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     protected SysPermissionService sysPermissionService;
     @Autowired
     protected SysCompanyService sysCompanyService;
+    @Autowired
+    protected FlowInstanceService flowInstanceService;
+    @Autowired
+    protected FlowTaskService flowTaskService;
     @Autowired
     protected CommonMapper commonMapper;
 

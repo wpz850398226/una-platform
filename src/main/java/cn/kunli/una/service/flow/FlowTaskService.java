@@ -1,6 +1,7 @@
 package cn.kunli.una.service.flow;
 
 import cn.kunli.una.mapper.FlowTaskMapper;
+import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.flow.FlowInstance;
 import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.pojo.flow.FlowNode;
@@ -40,7 +41,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
     @Autowired
     private FlowLineService flowLineService;
     @Autowired
-    private FlowInstanceService flowInstanceService;
+    private FlowDefinitionService flowDefinitionService;
     @Autowired
     private SysDepartmentService sysDepartmentService;
     @Override
@@ -99,19 +100,33 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
     /**
      * 处理待办任务
      * @return
-     *
-     *
-     *
      */
     public SysResult handle(FlowTask entity){
         entity.setOffTime(new Date());
         //查询该任务
         FlowTask flowTask = thisProxy.getById(entity.getId());
         if(flowTask.getNodeTypeDcode().equals("flow_nudeType_end")){
+            boolean isAgree = true;
             //如果处理的是结束节点，则结束流程实例
             SysResult updateResult = thisProxy.updateRecordById(entity);
             if(updateResult.getIsSuccess()){
-                flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setId(flowTask.getInstanceId()));
+                //结束节点，判断所有审批节点是否都审批通过
+                Integer instanceId = flowTask.getInstanceId();
+                FlowInstance flowInstance = flowInstanceService.getById(instanceId);
+                //查询所属流程定义的所有审批节点
+                List<FlowNode> flowNodeList = flowNodeService.selectList(MapUtil.buildHashMap()
+                        .put("definitionId", flowInstance.getDefinitionId()).put("typeDcode", "flow_nudeType_audit").build());
+                //查询同一个流程实例下的所有审批节点，是否都审批通过
+                for (FlowNode flowNode : flowNodeList) {
+                    FlowTask auditTask = thisProxy.selectOne(MapUtil.buildHashMap()
+                            .put("nodeId", flowNode.getId()).put("instanceId", instanceId).build());
+                    if(auditTask==null || !auditTask.getIsAgree()){
+                        isAgree = false;
+                        break;
+                    }
+                }
+
+                flowInstanceService.updateRecordById((FlowInstance) new FlowInstance().setIsRunning(false).setIsAgree(isAgree).setId(flowTask.getInstanceId()));
                 return SysResult.success("流程结束");
             }
         }else{
@@ -152,6 +167,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
 
         //走到这一步，说明所有后续节点都激活成功了
         SysResult updateResult = thisProxy.updateRecordById(entity);
+
         return updateResult;
     }
 

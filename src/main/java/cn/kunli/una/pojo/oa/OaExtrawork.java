@@ -1,6 +1,7 @@
 package cn.kunli.una.pojo.oa;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,5 +36,9 @@ public class OaExtrawork extends BasePojo implements Serializable {
     private String reason;
     //流程id
     private Integer instanceId;
+
+
+    @TableField(exist = false)
+    private Boolean isAgree;    //是否审核通过
 
 }

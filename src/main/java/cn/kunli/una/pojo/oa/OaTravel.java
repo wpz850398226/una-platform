@@ -1,15 +1,15 @@
 package cn.kunli.una.pojo.oa;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 办公-出差(OaTravel)实体类
@@ -36,5 +36,11 @@ public class OaTravel extends BasePojo implements Serializable {
     private Integer duration;
     //总开销
     private Double expense;
+    //流程id
+    private Integer instanceId;
+
+
+    @TableField(exist = false)
+    private Boolean isAgree;    //是否审核通过
 
 }

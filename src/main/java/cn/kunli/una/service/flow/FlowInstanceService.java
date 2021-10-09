@@ -34,6 +34,8 @@ public class FlowInstanceService extends BasicService<FlowInstanceMapper, FlowIn
             if(flowDefinition!=null){
                 obj.setName(flowDefinition.getName()+"-"+obj.getCreatorName()+"-"+ BaseUtil.getPrimaryId());
             }
+            //默认为未通过状态
+            obj.setIsAgree(false);
         }
 
         return obj;

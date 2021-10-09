@@ -1,15 +1,15 @@
 package cn.kunli.una.pojo.oa;
 
-import java.util.Date;
-import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import cn.kunli.una.pojo.BasePojo;
-
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.experimental.Accessors;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 办公-请假(OaVacate)实体类
@@ -32,13 +32,15 @@ public class OaVacate extends BasePojo implements Serializable {
     private Date endTime;
     //事由
     private String reason;
-    //状态
-    private String statusDcode;
-    //是否审批通过
-    private Boolean isApprove;
     //流程实例id
     private Integer instanceId;
     //流程任务id，未通过时记录
     private Integer taskId;
+    //时长
+    private Integer duration;
+
+
+    @TableField(exist = false)
+    private Boolean isAgree;    //是否审核通过
 
 }
