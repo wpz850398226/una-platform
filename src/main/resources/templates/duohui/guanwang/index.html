@@ -33,11 +33,11 @@ $(function () {
   <div class="main" >
     <div class=" aboutus  clearBoth clearfix">
       <div class="w1200">
-        <h2 class="title clearBoth clearfix" > <a href="about.html" >关于我们</a><em>[[${record.value.gywmDescription}]]</em><i></i> </h2>
+        <h2 class="title clearBoth clearfix" > <a th:href="${record.value.gywmLink}" >关于我们</a><em>[[${record.value.gywmDescription}]]</em><i></i> </h2>
         <div class="clearBoth clearfix" style="height:80px;"></div>
         <div class="una-editor-show left aboutusnr wow bounce animated" th:value="${record.value.gywmContent }">
 
-          <a href="#" class="left mt20"><img th:src="@{/duohui/guanwang/images/nore.jpg}" /></a> </div>
+          <a th:href="${record.value.gywmLink}" class="left mt20"><img th:src="@{/duohui/guanwang/images/nore.jpg}" /></a> </div>
         <div class="abouttu right wow fadeInRight animated"><img th:src="${record.map['gywmImgFileUrl']}"/></div>
       </div>
     </div>
@@ -47,19 +47,19 @@ $(function () {
         <div class="clearBoth clearfix" style="height:80px;"></div>
         <div class="serverlist">
           <ul>
-            <li><a th:href="${record.value.xxptLink}">
+            <li><a th:href="${record.value.xxptLink}" target="_blank">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>信息平台</b> </div>
               <div class="xia"><img th:src="${record.map['xxptImgFileUrl']}" /></div>
               </a> </li>
-            <li><a th:href="${record.value.cpptLink}">
+            <li><a th:href="${record.value.cpptLink}" target="_blank">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>产品平台</b> </div>
               <div class="xia"> <img th:src="${record.map['cpptImgFileUrl']}" /></div>
               </a> </li>
-            <li><a th:href="${record.value.fwptLink}">
+            <li><a th:href="${record.value.fwptLink}" target="_blank">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>服务平台</b> </div>
               <div class="xia"><img th:src="${record.map['fwptImgFileUrl']}" /></div>
               </a> </li>
-            <li><a th:href="${record.value.ztbptLink}">
+            <li><a th:href="${record.value.ztbptLink}" target="_blank">
               <div class="shang"> <em><img th:src="@{/duohui/guanwang/images/product.png}" /></em> <b>招投标</b> </div>
               <div class="xia"><img th:src="${record.map['ztbptImgFileUrl']}" /> </div>
               </a> </li>
@@ -70,49 +70,59 @@ $(function () {
     <div class="main-list clearBoth">
       <div class="w1200">
         <div class="list left mt20">
-          <h3 class="title"><em class="right mr10">+more</em><a href="#">政策法规</a></h3>
+          <h3 class="title"><em class="right mr10">+more</em>
+            <a href="/api/duohui/guanwang/page/articleType_policy?menuId=100013">政策法规</a>
+          </h3>
           <dl>
-            <dt> <a class="left" href="#"><img th:src="@{/duohui/guanwang/images/duohui_41.jpg}" /></a>
-              <div class="right"><a href="#">集多元化商品贸易为主的贸易！</a>
-                <p>创建于2019年。是集多元化商品贸建于2
-                  019年。是集多元化商品贸易......</p>
-                <a href="#" class="more">更多</a></div>
+            <dt>
+              <a class="left" href="#">
+                <img width="144px" height="96px"
+                     th:src="${zcfgList[0].titleFileId!=null?zcfgList[0]['map']['titleFilePath']:'/api/duohui/guanwang/images/duohui_41.jpg'}" />
+              </a>
+              <div class="right"><a href="#">[[${zcfgList[0].name}]]</a>
+                <p>[[${#strings.abbreviate(zcfgList[0].content,16)}]]</p>
+                <a href="/api/duohui/guanwang/page/articleType_policy?menuId=100013" class="more">更多</a></div>
             </dt>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth" th:each="article,status : ${zcfgList}" th:if="${status.index>0}">
+              <span class="right mr10">[[${#dates.format(article.createTime, 'yyyy-MM-dd')}]]</span>
+              <a th:href="${'/api/duohui/guanwang/single/'+article.id+'?menuId=100013'}">[[${#strings.abbreviate(article.name,16)}]]</a>
+            </dd>
           </dl>
         </div>
         <div class="list left mt20">
-          <h3 class="title"><em class="right mr10">+more</em><a href="#">行业动态</a></h3>
+          <h3 class="title"><em class="right mr10">+more</em><a href="/api/duohui/guanwang/page/articleType_industryState?menuId=100011">行业动态</a></h3>
           <dl>
-            <dt> <a class="left" href="#"><img th:src="@{/duohui/guanwang/images/duohui_41.jpg}" /></a>
-              <div class="right"><a href="#">集多元化商品贸易为主的贸易！</a>
-                <p>创建于2019年。是集多元化商品贸建于2
-
-                  019年。是集多元化商品贸易......</p>
-                <a href="#" class="more">更多</a></div>
+            <dt>
+              <a class="left" href="#">
+                <img width="144px" height="96px"
+                     th:src="${hydtList[0].titleFileId!=null?hydtList[0]['map']['titleFilePath']:'/api/duohui/guanwang/images/duohui_41.jpg'}" />
+              </a>
+              <div class="right"><a href="#">[[${hydtList[0].name}]]</a>
+                <p>[[${#strings.abbreviate(hydtList[0].content,16)}]]</p>
+                <a href="/api/duohui/guanwang/page/articleType_industryState?menuId=100011" class="more">更多</a></div>
             </dt>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth" th:each="article,status : ${hydtList}" th:if="${status.index>0}">
+              <span class="right mr10">[[${#dates.format(article.createTime, 'yyyy-MM-dd')}]]</span>
+              <a th:href="${'/api/duohui/guanwang/single/'+article.id+'?menuId=100013'}">[[${#strings.abbreviate(article.name,16)}]]</a>
+            </dd>
           </dl>
         </div>
         <div class="list left mt20">
-          <h3 class="title"><em class="right mr10">+more</em><a href="#">公司公告</a></h3>
+          <h3 class="title"><em class="right mr10">+more</em><a href="/api/duohui/guanwang/page/articleType_notice?menuId=100012">公司公告</a></h3>
           <dl>
-            <dt> <a class="left" href="#"><img th:src="@{/duohui/guanwang/images/duohui_41.jpg}" /></a>
-              <div class="right"><a href="#">集多元化商品贸易为主的贸易！</a>
-                <p>创建于2019年。是集多元化商品贸建于2
-                  019年。是集多元化商品贸易......</p>
-                <a href="#" class="more">更多</a></div>
+            <dt>
+              <a class="left" href="#">
+                <img width="144px" height="96px"
+                     th:src="${gsggList[0].titleFileId!=null?gsggList[0]['map']['titleFilePath']:'/api/duohui/guanwang/images/duohui_41.jpg'}" />
+              </a>
+              <div class="right"><a href="#">[[${gsggList[0].name}]]</a>
+                <p>[[${#strings.abbreviate(gsggList[0].content,16)}]]</p>
+                <a href="/api/duohui/guanwang/page/articleType_notice?menuId=100012" class="more">更多</a></div>
             </dt>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
-            <dd class="clearBoth"><span class="right mr10">2019-1-1</span><a href="#">创建于2019年。是集多元化商品贸易......</a></dd>
+            <dd class="clearBoth" th:each="article,status : ${gsggList}" th:if="${status.index>0}">
+              <span class="right mr10">[[${#dates.format(article.createTime, 'yyyy-MM-dd')}]]</span>
+              <a th:href="${'/api/duohui/guanwang/single/'+article.id+'?menuId=100013'}">[[${#strings.abbreviate(article.name,16)}]]</a>
+            </dd>
           </dl>
         </div>
       </div>

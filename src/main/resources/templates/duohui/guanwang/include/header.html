@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="header" class="header">
-  <div class="w1200 clearBoth clearfix"> <a class="logo left" href="index.html"><img th:src="@{/duohui/guanwang/images/logo.jpg}" border="0"></a>
+  <div class="w1200 clearBoth clearfix"> <a class="logo left" href="/api/duohui/guanwang/index"><img th:src="@{/duohui/guanwang/images/logo.jpg}" border="0"></a>
     <!--menu start-->
     <ul class="menu right" id="menu">
       <li class="on" th:each="primaryMenu : ${gwMenuList}">

@@ -2,11 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="footer" class="footer clearBoth">
   <div class="w1200">
-    <div class="foot-nav"> <a href="#">关于我们</a><a>|</a> <a href="#">供求信息</a> <a>|</a> <a href="#">产品商城</a> <a>|</a> <a href="#">招投标</a> <a>|</a> <a href="#">产品及服务</a> <a>|</a> <a href="#">公司动态</a> <a>|</a> <a href="#">联系我们</a> </div>
-    <div class="banquan "> 咨询热线：400-635-1907        企业邮箱：yewubu@dhgyl.com<br />
-      河北省石家庄市裕华区槐安东路鑫科国际广场C座1806室<br />
-      版权所有：多汇供应链管理有限公司<br />
-      备案号： 冀ICP备19032765号 </div>
+    <div class="foot-nav">
+      <a href="/api/duohui/guanwang/single/100001?menuId=100006">关于我们</a><a>|</a>
+      <a href="/api/duohui/gongqiu/index">供求信息</a> <a>|</a>
+      <a href="/api/duohui/chanpin/index">产品商城</a> <a>|</a>
+      <a href="/api/duohui/toubiao/index">招投标</a> <a>|</a>
+      <a href="/api/duohui/qiye/index">服务平台</a> <a>|</a>
+      <a href="/api/duohui/guanwang/page/articleType_notice?menuId=100012">公司动态</a> <a>|</a>
+      <a href="/api/duohui/guanwang/single/100007">联系我们</a>
+    </div>
+    <div class="banquan "> 咨询热线：[[${configMap['GwIndex_zxrx']}]]        企业邮箱：[[${configMap['GwIndex_qyyx']}]]<br />
+      [[${configMap['GwIndex_address']}]]<br />
+      版权所有：[[${configMap['GwIndex_bqsy']}]]<br />
+      备案号： [[${configMap['GwIndex_bah']}]] </div>
   </div>
 </div>
 </html>

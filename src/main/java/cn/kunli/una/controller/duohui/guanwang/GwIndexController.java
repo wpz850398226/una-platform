@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,16 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
         SysData record = sysDataService.getById(100001);
         record = sysDataService.parse(ListUtil.getList(record)).get(0);
         model.addAttribute("record",record);
+
+        //查询政策法规前5条
+        Page<SysArticle> page1 = sysArticleService.page(0, 5, MapUtil.getMap("typeDcode", "articleType_policy"));
+        model.addAttribute("zcfgList",sysArticleService.parse(page1.getRecords()));
+        //查询行业动态前5条
+        Page<SysArticle> page2 = sysArticleService.page(0, 5, MapUtil.getMap("typeDcode", "articleType_industryState"));
+        model.addAttribute("hydtList",sysArticleService.parse(page2.getRecords()));
+        //查询公司公告前5条
+        Page<SysArticle> page3 = sysArticleService.page(0, 5, MapUtil.getMap("typeDcode", "articleType_notice"));
+        model.addAttribute("gsggList",sysArticleService.parse(page3.getRecords()));
 
         getCommonItem(model,null);
         return "duohui/guanwang/index";
@@ -107,9 +118,13 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
 
     private void getCommonItem(Model model,Object menuId){
         List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.selectList(MapUtil.getMap("parentId", 100000)));
-        SysConfiguration sysConfiguration = sysConfigurationService.selectOne(MapUtil.getMap("code", "GwIndex_systemName"));
         model.addAttribute("gwMenuList", gwMenuList);
-        model.addAttribute("systemName", sysConfiguration.getValue());
+
+        //查询系统配置信息
+        List<SysConfiguration> configList = sysConfigurationService.selectList(MapUtil.getMap(":code", "GwIndex_"));
+        Map<String,String> configMap = new HashMap<>();
+        configList.forEach(c -> configMap.put(c.getCode(),c.getValue()));
+        model.addAttribute("configMap", configMap);
 
         if(menuId!=null){
             for (GwMenu gwMenu : gwMenuList) {

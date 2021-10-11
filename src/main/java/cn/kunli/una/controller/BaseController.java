@@ -212,6 +212,13 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	public SysResult page(@RequestParam Map<String, Object> map) {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+		Object current = map.get("pageNum");
+		Object size = map.get("pageSize");
+		map.remove("pageNum");
+		map.remove("pageSize");
+		//经过处理的请求参数
+		Map<String,Object> handledParamMap = new HashMap<>();
+
 		if(loginUser.getRoleId().indexOf("100000")==-1){
 			//如果不是超级管理员，查询权限范围
 			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
@@ -266,7 +273,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			}
 
 			//处理模糊查询条件
-            if(sysEntity!=null){
+            if(sysEntity!=null&&MapUtils.isNotEmpty(map)){
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                     String displayCode = entry.getKey();
                     int i = displayCode.indexOf(":");
@@ -279,16 +286,19 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 							//如果赋值编码不等于取值编码，换查询条件
 							SysResult assignmentValue = sysFieldService.getAssignmentValue(displayCode, String.valueOf(entry.getValue()), service, null);
 							if(assignmentValue.getIsSuccess()){
-								map.put("in:"+assignmentCode,assignmentValue.getData());
+								handledParamMap.put("in:"+assignmentCode,assignmentValue.getData());
+//								map.put("in:"+assignmentCode,assignmentValue.getData());
 //								map.put(entry.getKey().replace(displayCode,assignmentCode),assignmentValue.getData());
-								map.remove(entry.getKey());
+//								map.remove(entry.getKey());
 							}
 						}
-                    }
+                    }else{
+						handledParamMap.put(entry.getKey(),entry.getValue());
+					}
                 }
             }
         }
-		IPage page = service.page(map.get("pageNum"),map.get("pageSize"), map);
+		IPage page = service.page(current,size, handledParamMap);
 		List<T> list = service.parse(page.getRecords());
 		//判断是否是统计查询
 		if(map.containsKey("groupBy")&&CollectionUtils.isNotEmpty(list)){
