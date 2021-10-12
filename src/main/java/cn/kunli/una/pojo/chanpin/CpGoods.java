@@ -73,7 +73,8 @@ public class CpGoods extends BasePojo implements Serializable {
     private Integer adderId;
     //上架时间
     private Date addedTime;
-    //库存
+    //总库存
+    @TableField(exist = false)
     private Integer inventory;
     //是否显示库存
     private Boolean isShowInventory;

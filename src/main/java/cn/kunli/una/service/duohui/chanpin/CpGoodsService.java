@@ -1,6 +1,5 @@
 package cn.kunli.una.service.duohui.chanpin;
 
-import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
@@ -12,12 +11,9 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
-import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,76 +40,6 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     @Override
     public BasicService getThisProxy() {
         return thisProxy;
-    }
-
-    @Override
-    public SysResult saveRecord(CpGoods entity) {
-        SysResult sysResult = super.saveRecord(entity);
-        if(sysResult.getIsSuccess()){
-            if(CollectionUtils.isNotEmpty(entity.getSpecificationList())){
-                //保存规格
-                for (CpSpecification cpSpecification : entity.getSpecificationList()) {
-                    cpSpecification.setGoodsId(entity.getId());
-                    cpSpecificationService.saveRecord(cpSpecification);
-                }
-            }else{
-                //生成一个默认规格
-                cpSpecificationService.saveRecord((CpSpecification) new CpSpecification().setGoodsId(entity.getId()).setAttributeNames("默认").setName("默认"));
-            }
-
-            if(CollectionUtils.isNotEmpty(entity.getModelList())){
-                CpModel cpModel1 = entity.getModelList().get(0);
-                Integer inventory = 0;
-                //保存商品规格属性
-                for (CpModel cpModel : entity.getModelList()) {
-                    cpModel.setGoodsId(entity.getId());
-                    cpModelService.saveRecord(cpModel);
-                    inventory+=cpModel.getInventory();
-                }
-
-                entity.setInventory(inventory).setSellingPrice(cpModel1.getSellingPrice())
-                        .setCeilingPrice(cpModel1.getCeilingPrice()).setCostPrice(cpModel1.getCostPrice())
-                        .setFloorPrice(cpModel1.getFloorPrice()).setWholesalePrice(cpModel1.getWholesalePrice())
-                        .setTaxExclusiveMarketPrice(cpModel1.getTaxExclusiveMarketPrice()).setTaxInclusiveMarketPrice(cpModel1.getTaxInclusiveMarketPrice());
-            }else{
-                //生成一个默认型号
-                CpModel cpModel = new CpModel().setGoodsId(entity.getId());
-                BeanUtils.copyProperties(entity,cpModel);
-                cpModel.setName("默认");
-                cpModelService.saveRecord(cpModel);
-            }
-        }
-        return sysResult;
-    }
-
-    @Override
-    @SneakyThrows
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
-    public SysResult updateRecordById(CpGoods entity) {
-        SysResult sysResult = super.updateRecordById(entity);
-        if(sysResult.getIsSuccess()){
-            if(CollectionUtils.isNotEmpty(entity.getSpecificationList())){
-                //删除原有规格
-                boolean deleteResult = cpSpecificationService.deleteBySelective(MapUtil.getMap("goodsId", entity.getId()));
-                //保存规格
-                for (CpSpecification cpSpecification : entity.getSpecificationList()) {
-                    cpSpecification.setGoodsId(entity.getId());
-                    cpSpecificationService.saveRecord(cpSpecification);
-                }
-            }
-
-            if(CollectionUtils.isNotEmpty(entity.getModelList())){
-                //删除原有规格
-                boolean deleteResult = cpModelService.deleteBySelective(MapUtil.getMap("goodsId", entity.getId()));
-                //保存商品规格属性
-                for (CpModel cpModel : entity.getModelList()) {
-                    cpModel.setGoodsId(entity.getId());
-                    cpModelService.saveRecord(cpModel);
-                }
-            }
-        }
-        return sysResult;
     }
 
     @Override
@@ -155,6 +81,48 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
         }
 
         return obj;
+    }
+
+    @Override
+    public SysResult afterSaveSuccess(CpGoods obj) {
+        if(CollectionUtils.isNotEmpty(obj.getSpecificationList())){
+            //删除原有规格
+            cpSpecificationService.deleteBySelective(MapUtil.getMap("goodsId", obj.getId()));
+            //保存规格
+            for (CpSpecification cpSpecification : obj.getSpecificationList()) {
+                cpSpecification.setGoodsId(obj.getId());
+                cpSpecificationService.saveRecord(cpSpecification);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(obj.getModelList())){
+            //删除原有型号
+            cpModelService.deleteBySelective(MapUtil.getMap("goodsId", obj.getId()));
+
+            CpGoods targetGoods = (CpGoods) new CpGoods().setIsAudit(obj.getIsAudit()).setId(obj.getId());
+            //取标价最低的型号作为展示型号
+            CpModel lowestModel = obj.getModelList().get(0);
+            //保存型号
+            for (CpModel cpModel : obj.getModelList()) {
+                cpModel.setGoodsId(obj.getId());
+                cpModelService.saveRecord(cpModel);
+                //取最低标价
+                if(cpModel.getSellingPrice()<=lowestModel.getSellingPrice()){
+                    lowestModel = cpModel;
+                }
+            }
+
+            targetGoods.setSellingPrice(lowestModel.getSellingPrice())
+                    .setCeilingPrice(lowestModel.getCeilingPrice()).setCostPrice(lowestModel.getCostPrice())
+                    .setFloorPrice(lowestModel.getFloorPrice()).setWholesalePrice(lowestModel.getWholesalePrice())
+                    .setTaxExclusiveMarketPrice(lowestModel.getTaxExclusiveMarketPrice())
+                    .setTaxInclusiveMarketPrice(lowestModel.getTaxInclusiveMarketPrice());
+
+            //修改商品
+            SysResult sysResult = thisProxy.updateRecordById(targetGoods);
+            if(!sysResult.getIsSuccess())return sysResult;
+        }
+        return SysResult.success();
     }
 
     @Override

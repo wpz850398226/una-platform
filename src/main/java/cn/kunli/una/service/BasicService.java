@@ -105,7 +105,12 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //保存数据，保存前进行初始化
         boolean saveResult = super.save(initialize(entity));
         if(saveResult){
-            return new SysResult().success(entity.getId());
+            //保存成功的结果
+            SysResult success = new SysResult().success(entity.getId());
+            //保存成功后的操作
+            SysResult sysResult = afterSaveSuccess(entity);
+            if(!sysResult.getIsSuccess())success.setMessage(success.getMessage()+","+sysResult.getMessage());
+            return success;
         }
         return SysResult.fail();
     }
@@ -241,7 +246,12 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //保存数据，保存前进行初始化
         boolean result = super.updateById(initialize(entity));
         if(result){
-            return SysResult.success();
+            //保存成功的结果
+            SysResult success = SysResult.success();
+            //保存成功后的操作
+            SysResult sysResult = afterSaveSuccess(entity);
+            if(!sysResult.getIsSuccess())success.setMessage(success.getMessage()+","+sysResult.getMessage());
+            return success;
         }
         return SysResult.fail();
     }
@@ -439,6 +449,16 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         }
 
         return obj;
+    }
+
+    /**
+     * 保存成功后的逻辑
+     * @param obj
+     * @return
+     */
+    @SneakyThrows
+    public SysResult afterSaveSuccess(T obj) {
+        return SysResult.success();
     }
 
     /**

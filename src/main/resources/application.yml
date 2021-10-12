@@ -50,8 +50,8 @@ token:
 minio:
   endpoint: 123.56.79.121
   port: 9002
-  accessKey: admin
-  secretKey: kunli@888
+  accessKey: una@admin
+  secretKey: una@135246
   secure: false
   bucketName: "duohui"
   configDir: "/home/data/"
