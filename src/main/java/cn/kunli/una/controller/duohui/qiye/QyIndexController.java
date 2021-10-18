@@ -1,11 +1,9 @@
 package cn.kunli.una.controller.duohui.qiye;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.ListUtil;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -99,6 +98,69 @@ public class QyIndexController {
         model.addAttribute("companyListMap",companyListMap);
 
         return "duohui/qiye/index";
+    }
+
+    /**
+     * 列表页
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("/list")
+    public String list(Model model,@RequestParam Map<String,Object> map) {
+        model.addAttribute("param", map);
+        getCommonItem(model);
+
+        //行业字典
+        List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry"));
+        model.addAttribute("primaryIndustryDlist",primaryIndustryDlist);
+
+        if(map.containsKey("primaryIndustryDcode")){
+            List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
+            model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
+        }
+
+        if(map.containsKey("secondryIndustryDcode")){
+            List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
+            model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
+        }
+
+        //搜索结果
+        Long pageNum = 1L;
+        Long pageSize = 16L;
+        if(map==null){
+            map = new HashMap<>();
+        }else{
+            if(map.containsKey("pageNum")){
+                pageNum = Long.valueOf(map.get("pageNum").toString());
+                map.remove("pageNum");
+            }
+            if(map.containsKey("pageSize")){
+                pageSize = Long.valueOf(map.get("pageSize").toString());
+                map.remove("pageSize");
+            }
+        }
+        map.put("orderByDesc", "stickDeadline");
+        Page<SysCompany> page = sysCompanyService.page(pageNum, pageSize, map);
+        model.addAttribute("recordList",sysCompanyService.parse(page.getRecords()));
+
+        //认证情况
+        List<SysDictionary> certifyTypeDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_certify"));
+        model.addAttribute("certifyTypeDlist",certifyTypeDlist);
+
+        //信息类型
+        List<SysDictionary> informationTypeDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_informationType"));
+        model.addAttribute("informationTypeDlist",informationTypeDlist);
+
+        //来源类型
+        List<SysDictionary> originTypeDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_originType"));
+        model.addAttribute("originTypeDlist",originTypeDlist);
+
+        //省级地区
+        List<SysRegion> sysRegionList = sysRegionService.selectList(MapUtil.getMap("level", 2));
+        model.addAttribute("sysRegionList",sysRegionList);
+
+        return "duohui/qiye/company";
     }
 
     public void getCommonItem(Model model){

@@ -6,7 +6,7 @@
 <div class="header ">
   <div th:replace="../templates/duohui/common/headerTop :: header_top"></div>
   <div th:replace="../templates/duohui/chanpin/include/header :: header"></div>
-  <div th:replace="../templates/duohui/chanpin/include/navbg :: navbg"></div>
+  <div th:replace="../templates/duohui/common/navbg :: navbg"></div>
 </div>
 
 <div class="w1200">
@@ -24,7 +24,7 @@
   <div class="clear w1200 product mt20" th:each="industry,status : ${industryDlist}">
     <h2>
       <span class="fr">
-        <a href="/api/duohui/chanpin/list" th:if="${secondryStatus.index<8}" th:each="secondryIndustry,secondryStatus:${industry.children}">[[${secondryIndustry.name}]]  &nbsp;&nbsp;|</a>
+        <a href="/api/duohui/qiye/list" th:if="${secondryStatus.index<8}" th:each="secondryIndustry,secondryStatus:${industry.children}">[[${secondryIndustry.name}]]  &nbsp;&nbsp;|</a>
       </span>
       <em class="mr10">[[${status.index+1}]]F</em>
       <a href="#">[[${industry.name}]]</a>
@@ -49,177 +49,6 @@
     </div>
   </div>
 </div>
-<!--盖楼-->
-
-<!--盖楼-->
-<!--<div class="clear">
-  <div class="clear w1200 product mt20">
-    <h2><span class="fr"><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a></span><em class="mr10">1F</em><a href="#">在售产品</a></h2>
-    <div class="clear product-nr clearfix">
-      <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/qiye/images/tu3.png}">
-          <h3>推荐商家</h3>
-          <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
-          </a> </div>
-        <div class=" product-l mt10"> <a href="#"> <img th:src="@{/duohui/qiye/images/tu3.png}">
-          <h3>推荐商家</h3>
-          <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
-          </a> </div>
-      </div>
-      <div class="fr product-r">
-        <ul>
-          <li>
-          <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="clear w1200 product mt20">
-    <h2><span class="fr"><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a></span><em class="mr10">2F</em><a href="#">库存商品</a></h2>
-    <div class="clear product-nr clearfix">
-      <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/qiye/images/tu3.png}">
-          <h3>推荐商家</h3>
-          <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
-          </a> </div>
-      </div>
-      <div class="fr product-r">
-        <ul>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="clear w1200 product mt20">
-    <h2><span class="fr"><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a></span><em class="mr10">3F</em><a href="#">新产品</a></h2>
-    <div class="clear product-nr clearfix">
-      <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/qiye/images/tu3.png}">
-          <h3>推荐商家</h3>
-          <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
-          </a> </div>
-      </div>
-      <div class="fr product-r">
-        <ul>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="clear w1200 product mt20">
-    <h2><span class="fr"><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a><a>|</a><a href="#">小分类</a></span><em class="mr10">4F</em><a href="#">易货产品</a></h2>
-    <div class="clear product-nr clearfix">
-      <div class="fl w230 ">
-        <div class=" product-l"> <a href="#"> <img th:src="@{/duohui/qiye/images/tu3.png}">
-          <h3>推荐商家</h3>
-          <p>主营产品：主营产品：在售产品主营产品：主营产品：在售产品</p>
-          </a> </div>
-      </div>
-      <div class="fr product-r">
-        <ul>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-          <li> <a class="pic" href="#"><img th:src="@{/duohui/qiye/images/chanpin.jpg}"></a> <a class="biaoti" href="">多汇供应链管理有限公司</a><em class="diqu">
-            <p class="fr"><b class=" biaozhi ml10  v5"></b><em class="ml10"><img th:src="@{/duohui/qiye/images/shouji.png}"></em><em class="ml10"><img th:src="@{/duohui/qiye/images/shiming.png}"></em></p>
-            行业 | 地区</em>
-            <p class="miaoshu">主营业务：公司主要生产精准的汽车配件、汽车相关配件</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>-->
-
 <!--盖楼-->
 <div class=" clear clearfix mt20"></div>
 <div th:replace="../templates/duohui/chanpin/include/bottomAd :: bottomAd"></div>

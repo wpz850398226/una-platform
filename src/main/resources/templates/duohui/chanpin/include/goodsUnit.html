@@ -5,9 +5,9 @@
     <img th:src="${goods.titleImgUrl}">
   </a>
   <a class="biaoti" th:href="${'/api/cp/goods/fDetail/'+goods.id}">[[${goods.name}]]</a>
-  <em class="diqu">[[${goods.map['industryTypeDnames']}]] | [[${goods.map['regionNames']}]]</em>
+  <em class="diqu">[[${goods.map['industryTypeDnames']}]] | [[${#strings.substringBefore(goods.map['regionNames'],',')}]]</em>
   <i class="jiage">
-    <a class="fr mr10" href="#">议价</a>
+    <a class="fr" href="javascript:void(0)" th:onclick="timTalk([[${goods.creatorId}]])">咨询</a>
     ￥<b>[[${goods.sellingPrice}]]</b> 元
   </i>
   <a class="company" href="javascript:void(0)" th:onclick="openShop([[${goods.companyId}]],[[${goods.isOpenShop}]])">[[${goods.map['companyName']}]]</a>

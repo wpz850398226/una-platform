@@ -29,6 +29,8 @@ public class GqInformation extends BasePojo implements Serializable {
     private String fullName;
     //已销售量
     private Integer sales;
+    //是否供应，非供应则需求
+    private Boolean isSupply;
     //行业类型
     private String industryTypeDcodes;
     //类型编码

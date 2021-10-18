@@ -52,8 +52,10 @@ public class BasePojo implements Serializable{
     private Date modifyTime;			//修订时间
 
     private Boolean isDelete;			//是否删除：1删除；0未删除
-
+	//顺序
 	private Integer sortOrder;
+	//权重
+	private Integer weight;
 	//公司id
 	private Integer companyId;
 	//部门id

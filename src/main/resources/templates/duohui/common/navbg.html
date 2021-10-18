@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="navbg" class="navbg clear clearfix">
+  <nav  id="menu" class="menu"> <em class="fl"><img th:src="@{/duohui/common/images/lanmu.png}" class="mr10">行业分类</em>
+    <ul>
+      <li><a href="#"> 首页 </a></li>
+      <li><a href="/api/duohui/gongqiu/list?isSupply=1"> 最新供应</a> </li>
+      <li><a href="/api/duohui/gongqiu/list?isSupply=0"> 最新需求</a></li>
+      <li><a href="special.html"> 最新入驻企业</a></li>
+      <li><a href="/api/duohui/guanwang/page/articleType_help?menuId=100022"> 帮助中心 </a></li>
+      <li><a href="/api/duohui/guanwang/single/100007">联系我们</a></li>
+    </ul>
+  </nav>
+</div>
+</html>

@@ -12,7 +12,7 @@
 <div class="clear clearfix mt20"></div>
 <div class=" clear clearfix w1150  bor " style=" margin:0 auto;">
   <div class="fenleisousuo clear clearfix">
-    <ul>
+    <ul id="searchUl">
       <li>
         <div class="fenlist clear clearfix">
           <dl>
@@ -43,13 +43,23 @@
           </dl>
         </div>
       </li>
-      <li>
+      <!--<li>
         <div class="fenlist clear clearfix">
           <dl>
             <dt> 信息类型： </dt>
             <dd th:class="${param['typeDcode']!=null?'':'on'}" name="typeDcode" value="all"><a href="#" onclick="searchInformation(this)">全部</a></dd>
-            <dd th:class="${#strings.trim(param['typeDcode']) == #strings.trim(typeDcode['code'])?'on':''}" class="" th:each="typeDcode:${informationTypeDlist}" name="typeDcode" th:value="${typeDcode.code}">
-              <a href="#" onclick="searchInformation(this)">[[${typeDcode.name}]]</a></dd>
+            <dd th:class="${#strings.trim(param['typeDcode']) == #strings.trim(typeDcode['code'])?'on':''}" th:each="typeDcode:${informationTypeDlist}" name="typeDcode" th:value="${typeDcode.code}">
+              <a href="#" onclick="searchInformation(this)">${typeDcode.name}</a></dd>
+          </dl>
+        </div>
+      </li>-->
+      <li>
+        <div class="fenlist clear clearfix">
+          <dl>
+            <dt> 供求类型：</dt>
+            <dd th:class="${param['isSupply']!=null?'':'on'}" name="isSupply" value="all"><a href="#" onclick="searchInformation(this)">全部</a></dd>
+            <dd th:class="${#strings.trim(param['isSupply']) eq '1'?'on':''}" name="isSupply" value="1"><a href="#" onclick="searchInformation(this)">供应</a></dd>
+            <dd th:class="${#strings.trim(param['isSupply']) eq '0'?'on':''}" name="isSupply" value="0"><a href="#" onclick="searchInformation(this)">求购</a></dd>
           </dl>
         </div>
       </li>
@@ -139,8 +149,10 @@ $(this).find("div").hide();
         <div class="biaoti_li">
           <ul>
             <li th:each="record:${recordList}">
-              <p class="t_11"><em class="gongying">供应</em><span class="ml10"><a href="chanpincon.html" th:title="${record.name}" target="_blank">[[${record.name}]]</a></span></p>
-              <p class="t_22"><em class="v1 ml10"></em><em class="v2 ml10"></em><em class="v3 ml10"></em><em class="v4 ml10"></em><em class="v5 ml10"></em></p>
+              <p class="t_11"><em th:if="${record.isSupply == true}" class="gongying">供应</em><em th:if="${record.isSupply == false}" class="qiugou">求购</em>
+                <span class="ml10"><a href="chanpincon.html" th:title="${record.name}" target="_blank">[[${record.name}]]</a></span></p>
+              <p class="t_22"><em class="v1 ml10"></em><em class="v2 ml10"></em>
+                <em class="v3 ml10"></em><em class="v4 ml10"></em><em class="v5 ml10"></em></p>
               <p class="t_44"><font color="#b6b6b6">[[${#dates.format(record.createTime, 'yyyy-MM-dd')}]]</font></p>
               <p class="t_55"><font color="#b6b6b6">[上海]</font></p>
               <div class="suinfo_d line-height" style="display: none;">
