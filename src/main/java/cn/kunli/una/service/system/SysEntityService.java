@@ -47,6 +47,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
             sysEntity.setButtonList(sysButtonService.parse(sysButtonService.selectList(map)));
             sysEntity.setQueryList(sysQueryService.parse(sysQueryService.selectList(map)));
             sysEntity.setPermissionList(sysPermissionService.selectList(MapUtil.getMap("entityId",sysEntity.getId())));
+            sysEntity.setSortList(sysSortService.parse(sysSortService.selectList(map)));
             List<SysFilter> filterList = sysFilterService.parse(sysFilterService.selectList(map));
             if(CollectionUtils.isNotEmpty(filterList)){
                 List<SysFilter> newFilterList = ListUtil.getList((SysFilter)new SysFilter().setName("全部"));

@@ -37,8 +37,6 @@
         ,#{record.isDelete}
 
     </sql>
-
-
     <!--批量插入-->
     <insert id="batchInsert" parameterType="java.util.List">
         insert into sys_sort
@@ -47,36 +45,5 @@
             (<include refid="columnValue" />)
         </foreach>
     </insert>
-    <select id="selectBySelective" resultMap="BaseResultMap">
-        select record.*
-        ,sysField.name as fieldName
-        ,sysField.dql_name as fieldDqlName
-        ,sysEntity.name as entityName
-        from sys_sort as record
-        left join sys_field as sysField on sysField.id = record.field_id
-        left join sys_entity as sysEntity on sysEntity.id = record.entity_id
-        <where>
-            <include refid="cn.kunli.una.handler.BasicMapper.baseCondition" />
-            <if test="record.entityId!= null and record.entityId!= ''">
-                and record.entity_id = #{record.entityId}
-            </if>
-            <if test="record.fieldId != null and record.fieldId != ''">
-                and record.field_id = #{record.fieldId}
-            </if>
-            <if test="record.keyword != null and record.keyword !=''">
-                and (CONCAT_WS('|',sysEntity.name,sysField.dql_name)) like '%${record.keyword}%'
-            </if>
-        </where>
-        <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
-    </select>
 
-    <select id="selectByEntityIdCollection" resultMap="BaseResultMap">
- 	select record.*
-        ,sysField.name as fieldName
-        ,sysField.dql_name as fieldDqlName
-        from sys_sort as record
-        left join sys_field as sysField on sysField.id = record.field_id
-        where record.entity_id = #{entityId} and record.is_delete = 0
-        order by record.sort_order
-  </select>
 </mapper>

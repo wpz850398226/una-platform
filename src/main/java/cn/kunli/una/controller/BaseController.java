@@ -2,10 +2,7 @@ package cn.kunli.una.controller;
 
 
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.system.SysEntity;
-import cn.kunli.una.pojo.system.SysField;
-import cn.kunli.una.pojo.system.SysPermission;
-import cn.kunli.una.pojo.system.SysRolePermission;
+import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -74,6 +71,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	protected SysConfigurationService sysConfigurationService;
 	@Autowired
 	protected SysArticleService sysArticleService;
+	@Autowired
+	protected SysSortService sysSortService;
 
 	// 当前Service上泛型的字节码对象
 	protected Class<T> entityClass;
@@ -162,15 +161,26 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@PutMapping("/ascend/{id}")
 	@ResponseBody
 	public SysResult ascend(@PathVariable Serializable id) {
-		//查询升序记录
+		//查询需要升序的记录
 		T ascendRecord = (T) service.getById(id);
 		if(ascendRecord!=null){
 			Integer sortOrder = ascendRecord.getSortOrder();
-			if(sortOrder!=null&&sortOrder>0){
-				Map<String, Object> paramMap = MapUtil.getMap("sortOrder", sortOrder - 1);
+			if(sortOrder!=null){
 				//获取当前类对应实体类对象
-				SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+				SysEntity sysEntity = service.getEntity();
 				if(sysEntity!=null){
+					//默认：升序 则顺序-1
+					Integer sortValue = -1;
+					List<SysSort> sortList = sysSortService.selectList(MapUtil.getMap("entityId", sysEntity.getId()));
+					//如果单以排序字段排序 且 倒序排序，则 升序时 顺序+1，即修改sortValue为1
+					if(CollectionUtils.isNotEmpty(sortList)&&sortList.size()==1){
+						SysSort theSort = sysSortService.parse(sortList).get(0);
+						if(theSort.getIsSortField()&&!theSort.getSortord()){
+							sortValue = 1;
+						}
+					}
+
+					Map<String, Object> paramMap = MapUtil.getMap("sortOrder", sortOrder + sortValue);
 					//获取父字段字段类对象
 					SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
 					if(sysField!=null){
@@ -181,19 +191,21 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 						Object parentValueObj = parentField.get(ascendRecord);
 						paramMap.put(sysField.getAssignmentCode(),parentValueObj);
 					}
-				}
-				//查询要降序的记录
-				BasePojo descendRecord = service.selectOne(paramMap);
-				if(descendRecord!=null){
+
+					//查询要降序的记录
+					BasePojo descendRecord = service.selectOne(paramMap);
+					if(descendRecord == null) return SysResult.fail("顺序已至顶，无法升序，请尝试修改权重");
+
+					//目标记录降序
 					T descT = entityClass.newInstance();
 					descT.setId(descendRecord.getId()).setSortOrder(sortOrder);
-					//降序
 					service.updateRecordById(descT);
+					//本记录 升序
+					T ascT = entityClass.newInstance();
+					ascT.setId(ascendRecord.getId()).setSortOrder(sortOrder + sortValue);
+					return service.updateRecordById(ascT);
 				}
-				//升序
-				T ascT = entityClass.newInstance();
-				ascT.setId(ascendRecord.getId()).setSortOrder(sortOrder - 1);
-				return service.updateRecordById(ascT);
+
 			}
 			return SysResult.fail("顺序为空或无法提升");
 		}
@@ -221,7 +233,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 		if(loginUser.getRoleId().indexOf("100000")==-1){
 			//如果不是超级管理员，查询权限范围
-			SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
+			SysEntity sysEntity = service.getEntity();
 			SysPermission sysPermission = sysPermissionService.getOne(sysPermissionService.getWrapper(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build()));
 			if(sysPermission!=null&&loginUser!=null){
 				Integer scopeCode = 0;

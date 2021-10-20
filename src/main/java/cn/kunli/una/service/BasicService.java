@@ -91,6 +91,12 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     public QueryWrapper<T> getWrapper(Map<String,Object> map){
         return wrapperUtil.mapToWrapper(map);
     }
+    @Autowired
+    public SysEntity getEntity(){
+        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+        if(sysEntity==null)return null;
+        return sysEntity;
+    }
 
     /**
      * 新增记录
@@ -128,13 +134,12 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         boolean removeResult = super.removeById(id);
         if(removeResult){
             //获取当前类对应实体类对象
-            String className = entityClass.getSimpleName();
-            SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+            SysEntity sysEntity = getEntity();
             //后续记录升序
             if(sysEntity!=null) {
                 //获取父字段字段类对象
                 SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-                String tableName = StringUtil.upperCharToUnderLine(className);
+                String tableName = StringUtil.upperCharToUnderLine(entityClass.getSimpleName());
                 String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
                 commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
             }
@@ -155,7 +160,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
                     BasicService<M, T> thisProxy = null;
                     //关联自身实体类
-                    if(className.equals(relatedEntity.getCode())){
+                    if(entityClass.getSimpleName().equals(relatedEntity.getCode())){
                         thisProxy = getThisProxy();
                     }else{
                         switch(relatedEntity.getCode()){
@@ -351,7 +356,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         //反射获取需要验证的字段值
         Map<String, Object> map = new HashMap<String, Object>();
         //获取当前类对应实体类对象
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+        SysEntity sysEntity = getEntity();
         if(sysEntity!=null){
             //如果名称不为空，验证名称唯一性
             if(StringUtils.isNotBlank(obj.getName())){
@@ -417,7 +422,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             //通过反射赋值"顺序"字段
             if(obj.getSortOrder()==null){
                 //获取当前类对应实体类对象
-                SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+                SysEntity sysEntity = getEntity();
 
                 if(sysEntity==null)return obj;
                 //获取父字段字段类对象
@@ -469,7 +474,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     @SneakyThrows
     public List<T> parse(List<T> list) {
         if(CollectionUtils.isEmpty(list))return list;
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+        SysEntity sysEntity = getEntity();
         if(sysEntity!=null){
             List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
             if(CollectionUtils.isNotEmpty(fieldList)){
@@ -525,9 +530,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
 //        if(MapUtils.isEmpty(map))return map;
         if(map==null)map=new HashMap<>();
-        SysEntity sysEntity = sysEntityService.getOne(sysEntityService.getWrapper(MapUtil.getMap("code", entityClass.getSimpleName())));
+        SysEntity sysEntity = getEntity();
 
-        //如果没有指定排序条件，则启用系统设置的排序方式
+        //如果没有指定排序条件，则启用自定义设置的排序方式
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
@@ -535,41 +540,29 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     int size = sortList.size();
-                    String [][] orderArray = new String[size][2];
+                    String [][] orderArray = new String[size+1][2];
+                    orderArray[0][0] = "orderByDesc";
+                    orderArray[0][1] = "weight";
                     for (int i = 0; i < size; i++) {
                         SysSort sysSort = sortList.get(i);
                         String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
-                        orderArray[i][1] = assignmentCode;
+                        orderArray[i+1][1] = assignmentCode;
                         if(sysSort.getSortord()){
-                            orderArray[i][0] = "orderByAsc";
+                            orderArray[i+1][0] = "orderByAsc";
                         }else{
-                            orderArray[i][0] = "orderByDesc";
+                            orderArray[i+1][0] = "orderByDesc";
                         }
                     }
                     map.put("#orderArray",orderArray);
-
-                    /*for (SysSort sysSort : sortList) {
-                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
-                        if(sysSort.getSortord()){
-                            if(map.containsKey("orderByAsc")){
-                                map.put("orderByAsc",map.get("orderByAsc")+","+assignmentCode);
-                            }else{
-                                map.put("orderByAsc",assignmentCode);
-                            }
-                        }else{
-                            if(map.containsKey("orderByDesc")){
-                                map.put("orderByDesc",map.get("orderByDesc")+","+assignmentCode);
-                            }else{
-                                map.put("orderByDesc",assignmentCode);
-                            }
-                        }
-                    }*/
                 }
             }
-        }
 
-        if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null&&map.get("#orderArray")==null) {
-            map.put("orderByAsc","sortOrder");
+            if(map.get("#orderArray")==null) {
+                //默认排序 1、权重倒叙 2、顺序正序
+                String [][] defaultOrderArray = {{"orderByDesc","weight"},{"orderByAsc","sortOrder"}};
+                map.put("#orderArray",defaultOrderArray);
+//                map.put("orderByAsc","sortOrder");
+            }
         }
 
         if(map.containsKey("rootTreeIds")){

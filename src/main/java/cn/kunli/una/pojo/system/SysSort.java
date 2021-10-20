@@ -26,7 +26,7 @@ public class SysSort extends BasePojo implements Serializable {
 
 
     @TableField(exist = false)
-    private String fieldDqlName;        //排序查询字段语句
+    private Boolean isSortField;        //是否以“排序”字段排序
 
     private static final long serialVersionUID = 1L;
 
