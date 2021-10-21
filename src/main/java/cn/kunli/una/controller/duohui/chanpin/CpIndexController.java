@@ -1,9 +1,11 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
+import cn.kunli.una.pojo.gongqiu.GqInformation;
 import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
+import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.ListUtil;
@@ -45,6 +47,8 @@ public class CpIndexController {
     private SysRegionService sysRegionService;
     @Autowired
     private SysAnnouncementService sysAnnouncementService;
+    @Autowired
+    private GqInformationService gqInformationService;
 
     /**
      * 打开主页
@@ -77,6 +81,10 @@ public class CpIndexController {
             List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:id", remaiCompanyIds)));
             model.addAttribute("hotShopList",list);
         }
+
+        //精品推荐
+        Page<GqInformation> hotPage = gqInformationService.page(1L, 8L, MapUtil.getMap("isHot", true));
+        model.addAttribute("hotList",gqInformationService.parse(hotPage.getRecords()));
 
         model.addAttribute("record",record);
 

@@ -326,7 +326,12 @@ a:focus {
 .product-nr .product-r ul li .diqu{ color:#7a7a7a; font-size:12px; display:block; line-height:24px;}
 .product-nr .product-r ul li .jiage{ display:block; color:#e48202; font-size:14px; line-height:28px;}
 .product-nr .product-r ul li .jiage b{ font-size:24px;}
-.product-nr .product-r ul li .jiage a{ color:#e48202; font-size:15px; font-weight:bold;}
+/*.product-nr .product-r ul li .jiage a{ color:#e48202; font-size:15px; font-weight:bold;}*/
+.product-nr .product-r ul li .jiage a ,.wr-price-panel .zixun ,.tuijian ul li a.zixun ,.product-nr .product-r div dl dd a.zixun {
+	color: #fff;width: 46px;
+	font-size: 13px;
+	font-weight: bold; display:inline-block; background:#ff5400; padding:0 10px; border-radius:7px; box-shadow:1px 1px 1px #ccc; line-height: 23px;
+}
 .product-nr .product-r ul li .company{ color:#747474; font-size:14px;display:block;}
 .product-nr .product-r div.huibgg ,.product-nr .product-r div.baibg{ width:48.8%; display:inline-block}
 .product-nr .product-r div.huibgg:nth-child(2n) ,.product-nr .product-r div.baibg:nth-child(2n){ margin-left:15px;}

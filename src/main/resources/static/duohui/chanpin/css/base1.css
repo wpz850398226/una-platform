@@ -320,8 +320,8 @@ a:focus {
 .product-nr .product-r ul li .diqu{ color:#7a7a7a; font-size:12px; display:block; line-height:24px;}
 .product-nr .product-r ul li .jiage{ display:block; color:#ff5400; font-size:14px; line-height:28px;}
 .product-nr .product-r ul li .jiage b{ font-size:24px;}
-.product-nr .product-r ul li .jiage a ,.wr-price-panel .zixun {
-	color: #fff;
+.product-nr .product-r ul li .jiage a ,.wr-price-panel .zixun ,.tuijian ul li a.zixun {
+	color: #fff;width: 46px;
 	font-size: 13px;
 	font-weight: bold; display:inline-block; background:#ff5400; padding:0 10px; border-radius:7px; box-shadow:1px 1px 1px #ccc; line-height: 23px;
 }

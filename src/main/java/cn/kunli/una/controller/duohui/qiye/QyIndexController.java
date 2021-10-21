@@ -163,6 +163,22 @@ public class QyIndexController {
         return "duohui/qiye/company";
     }
 
+    /**
+     * 列表页
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("/fDetail/{id}")
+    public String fDetail(Model model,@RequestParam Map<String,Object> map) {
+        model.addAttribute("param", map);
+        getCommonItem(model);
+
+
+
+        return "duohui/qiye/qiyecon";
+    }
+
     public void getCommonItem(Model model){
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
