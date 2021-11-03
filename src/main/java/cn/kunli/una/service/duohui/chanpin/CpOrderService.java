@@ -8,10 +8,12 @@ import cn.kunli.una.pojo.chanpin.CpOrder;
 import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.DateUtil;
+import cn.kunli.una.service.ali.AlipayService;
+import cn.kunli.una.utils.BaseUtil;
 import cn.kunli.una.utils.common.ListUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,8 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
     private CpDeliveryService cpDeliveryService;
     @Autowired
     private CpOrderItemService cpOrderItemService;
+    @Autowired
+    private AlipayService alipayService;
 
     @Override
     public BasicService getThisProxy() {
@@ -57,6 +61,7 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
             //一个店铺对应一个订单
             Map<Integer, CpOrder> shopOrderMap = new LinkedHashMap<>();
             for (int i = 0; i < modelIdList.size(); i++) {
+                //查询店铺id
                 CpModel cpModel = cpModelService.getById(modelIdList.get(i));
                 Integer companyId = cpModel.getCompanyId();
                 CpOrderItem cpOrderItem = new CpOrderItem().setModelId(modelIdList.get(i)).setVolume(volumeList.get(i));
@@ -70,12 +75,17 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
                 }
             }
 
+            //创建订单集合，一起结算
+            List<CpOrder> orderList = new ArrayList<>();
+
             if(MapUtils.isNotEmpty(shopOrderMap)){
                 for (Map.Entry<Integer, CpOrder> shopOrderEntry : shopOrderMap.entrySet()) {
                     CpOrder cpOrder = shopOrderEntry.getValue();
                     //保存订单
                     SysResult sysResult = super.saveRecord(cpOrder);
                     if(sysResult.getIsSuccess()){
+                        //加入订单集合
+                        orderList.add(cpOrder);
                         //订单保存成功，保存订单项
                         for (CpOrderItem cpOrderItem : cpOrder.getCpOrderItemList()) {
                             SysResult orderItemResult = cpOrderItemService.saveRecord(cpOrderItem.setOrderId(cpOrder.getId()));
@@ -90,20 +100,24 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
 
                 }
 
+                //批量结算
+                return this.settle(orderList);
+
             }
 
         }
 
-        return SysResult.success();
+        return SysResult.fail();
     }
 
     @Override
     public CpOrder initialize(CpOrder obj) {
         obj = super.initialize(obj);
         if(obj.getId()==null){
-            obj.setCode(UUID.randomUUID().toString().replace("-",""))
-                    .setStatusDcode("dh_orderStatus_unpaid");//新建订单，状态为待支付
-            obj.setName(obj.getCreatorName()+ DateUtil.getStrOfDate(new Date(),"yyyyMMdd")+"-"+obj.getCode().substring(0,6));
+            //订单编号，订单状态
+            obj.setCode(BaseUtil.getPrimaryId()).setStatusDcode("dh_orderStatus_unpaid");//新建订单，状态为待支付
+            //订单名称
+            obj.setName(obj.getCreatorName()+ obj.getCode());
             if(CollectionUtils.isNotEmpty(obj.getCpOrderItemList())){
                 //设置订单商品总件数
                 Integer totalVolume = 0;
@@ -120,5 +134,29 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
 
         }
         return obj;
+    }
+
+    //订单（一或多）结算
+    public SysResult settle(List<CpOrder> objList){
+        CpOrder sample = new CpOrder();
+        if(objList.size()==1){
+            sample = objList.get(0);
+        }else{
+            for (CpOrder obj : objList) {
+                sample.setCode(sample.getCode() + obj.getCode());
+                sample.setBargainAmount(sample.getBargainAmount() + obj.getBargainAmount());
+                sample.setName(sample.getName() + obj.getName());
+            }
+        }
+
+        Map<String, String> orderParam = new HashMap<>();
+        if(StringUtils.isBlank(sample.getCode())) return SysResult.fail("订单编号异常，结算失败");
+        orderParam.put("WIDout_trade_no", sample.getCode());    //订单编号
+        orderParam.put("WIDsubject", sample.getCode());    //订单名称
+        if(sample.getBargainAmount()==null) return SysResult.fail("订单成交价异常，结算失败");
+        orderParam.put("WIDtotal_amount", String.valueOf(sample.getBargainAmount()));    //成交金额
+        if(StringUtils.isNotBlank(sample.getRemark()))orderParam.put("WIDout_trade_no", sample.getRemark());    //商品描述，可空
+        SysResult toPayResult = alipayService.toPay(orderParam);
+        return toPayResult;
     }
 }

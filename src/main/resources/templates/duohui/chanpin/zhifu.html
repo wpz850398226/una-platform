@@ -224,12 +224,21 @@
             dataType: 'json',
             success:function(result){
                 if(result.isSuccess){
-                    layer.msg(result.message);
+                    // layer.msg(result.message);
+                    layer.msg(result.message,function(){
+                        console.log(result.data)
+                        //打开新页面
+                        var dw;
+                        dw=window.open();
+                        dw.document.open();
+                        dw.document.write("<html><head><title>支付页面</title>");
+                        dw.document.write("<body>");
+                        dw.document.write(result.data);
+                        dw.document.write("</body></html>");
+                        dw.document.close();
+                    })
                 }else{
-                    //登录失败，刷新验证码
-                    form.find("input[name=captcha]").val("");
-                    form.find(".captchaImage").click();
-                    layer.msg(result.message,function () {})
+                    layer.msg(result.message,function (){});
                 }
 
             }

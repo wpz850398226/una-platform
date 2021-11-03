@@ -1,24 +1,18 @@
 package cn.kunli.una.utils.common;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
-import net.coobird.thumbnailator.name.Rename;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * @author lcj
  * @version 1.0
- * @description 生成缩略图和水印非常好用,具体帮助文档 https://github.com/coobird/thumbnailator/wiki/Maven
- *              缩略图
- *              水印
- *              选择
- *              格式转换
+ * @description 生成缩略图和水印非常好用, 具体帮助文档 https://github.com/coobird/thumbnailator/wiki/Maven
+ * 缩略图
+ * 水印
+ * 选择
+ * 格式转换
  * @Create 2017-08-03
  */
 public class ThumbnailatorUtil {
@@ -47,7 +41,7 @@ public class ThumbnailatorUtil {
     /**
      * 使用给定的图片生成指定大小的图片
      */
-    public static void generateFixedSizeImage(String srcImg, String purposeImg){
+    public static void generateFixedSizeImage(String srcImg, String purposeImg) {
         try {
 //            srcImg = srcImg.replaceAll("/file", "D:/una/fileUpload");
 //            int i = srcImg.lastIndexOf(".");
@@ -55,10 +49,10 @@ public class ThumbnailatorUtil {
             //创建文件路径
             File purposeFile = new File(purposeImg);
             File fileParent = purposeFile.getParentFile();
-            if(!fileParent.exists()){
+            if (!fileParent.exists()) {
                 fileParent.mkdirs();
             }
-            Thumbnails.of(srcImg).size(200,200).toFile(purposeImg);
+            Thumbnails.of(srcImg).size(200, 200).toFile(purposeImg);
         } catch (IOException e) {
             System.out.println("原因: " + e.getMessage());
         }

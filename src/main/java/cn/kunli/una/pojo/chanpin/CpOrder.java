@@ -59,6 +59,7 @@ public class CpOrder extends BasePojo implements Serializable {
     private String invoiceName;
 
 
+
     //型号id集合
     @TableField(exist = false)
     private List<Integer> modelIdList;

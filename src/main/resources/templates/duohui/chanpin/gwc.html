@@ -172,7 +172,12 @@
             var map = {"modelId":modelId,"num":num};
             mapArray.push(map);
         })
-        window.location.href="/api/cp/order/zhifu?jsonStr="+encodeURI(JSON.stringify(mapArray))
+        console.log(mapArray)
+        if(mapArray.length == 0){
+            layer.msg("请选择至少一件商品",function (){});
+        }else{
+            window.location.href="/api/cp/order/zhifu?jsonStr="+encodeURI(JSON.stringify(mapArray))
+        }
     }
 </script>
 </body>
