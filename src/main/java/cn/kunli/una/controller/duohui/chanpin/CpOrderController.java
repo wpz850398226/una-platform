@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -103,12 +105,22 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
     }
 
     //订单结算
+    @RequestMapping("/settle")
+    @ResponseBody
     public SysResult settle(Integer orderId) {
         if(orderId==null)return SysResult.fail("订单ID为空，结算失败");
         CpOrder cpOrder = service.getById(orderId);
         if(cpOrder == null) return SysResult.fail("订单查询失败，结算失败");
         //如果生成订单成功，打开支付页
         return service.settle(ListUtil.getList(cpOrder));
+    }
+
+    //订单支付成功回调
+    @RequestMapping("/paySuccess")
+    @ResponseBody
+    public String paySuccess(HttpServletRequest request) {
+        System.out.println(request);
+        return "success";
     }
 
 }
