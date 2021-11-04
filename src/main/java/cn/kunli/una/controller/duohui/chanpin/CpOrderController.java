@@ -6,11 +6,13 @@ import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpOrder;
 import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.pojo.system.SysDictionary;
+import cn.kunli.una.pojo.system.SysLog;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.chanpin.CpDeliveryService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
 import cn.kunli.una.service.duohui.chanpin.CpOrderService;
+import cn.kunli.una.service.system.SysLogService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
@@ -21,9 +23,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,6 +45,8 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
     private CpModelService cpModelService;
     @Autowired
     private CpDeliveryService cpDeliveryService;
+    @Autowired
+    private SysLogService sysLogService;
 
     /**
      * 订单页
@@ -119,8 +123,19 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
     //订单支付成功回调
     @RequestMapping("/paySuccess")
     @ResponseBody
-    public String paySuccess(HttpServletRequest request) {
-        System.out.println(request);
+    public String paySuccess(@RequestParam Map<String, Object> map) {
+        sysLogService.save(new SysLog().setDescription(String.valueOf(map)));
+
+        //支付成功
+        if(map.containsKey("trade_status")&&map.get("trade_status").equals("TRADE_SUCCESS")){
+            //获取订单编号
+            Object out_trade_no = map.get("out_trade_no");
+            CpOrder cpOrder = service.selectOne(MapUtil.getMap("code", out_trade_no));
+            if(cpOrder!=null){
+                service.updateById((CpOrder) new CpOrder().setStatusDcode("dh_orderStatus_toSend").setId(cpOrder.getId()));
+            }
+        }
+        System.out.println(map);
         return "success";
     }
 
