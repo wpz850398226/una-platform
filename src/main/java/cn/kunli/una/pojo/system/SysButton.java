@@ -45,6 +45,10 @@ public class SysButton extends BasePojo implements Serializable {
     private Integer formEntityId;
     //表单携带参数字段id
     private Integer formFieldId;
+    //条件字段id
+    private Integer conditionFieldId;
+    //条件值
+    private String conditionValue;
 
 
 

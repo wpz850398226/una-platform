@@ -19,6 +19,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -105,11 +106,11 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
     }
 
     //订单结算
-    @RequestMapping("/settle")
+    @RequestMapping("/settle/{id}")
     @ResponseBody
-    public SysResult settle(Integer orderId) {
-        if(orderId==null)return SysResult.fail("订单ID为空，结算失败");
-        CpOrder cpOrder = service.getById(orderId);
+    public SysResult settle(@PathVariable Integer id) {
+        if(id==null)return SysResult.fail("订单ID为空，结算失败");
+        CpOrder cpOrder = service.getById(id);
         if(cpOrder == null) return SysResult.fail("订单查询失败，结算失败");
         //如果生成订单成功，打开支付页
         return service.settle(ListUtil.getList(cpOrder));
