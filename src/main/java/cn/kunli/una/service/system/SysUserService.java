@@ -32,7 +32,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
     //校验格式
     public SysResult validate(SysUser obj) {
         if (StringUtils.isNotBlank(obj.getMobile())) {
-            List<SysUser> objList = thisProxy.list(getWrapper(MapUtil.getMap("mobile",obj.getMobile())));
+            List<SysUser> objList = thisProxy.getList(MapUtil.getMap("mobile",obj.getMobile()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("手机号码重复，保存失败:" + obj.getMobile());
@@ -40,7 +40,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
         }
 
         if (StringUtils.isNotBlank(obj.getIdNumber())) {
-            List<SysUser> objList = thisProxy.list(getWrapper(MapUtil.getMap("idNumber",obj.getIdNumber())));
+            List<SysUser> objList = thisProxy.getList(MapUtil.getMap("idNumber",obj.getIdNumber()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("证件号重复，保存失败:" + obj.getIdNumber());
@@ -49,7 +49,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
 
 
         if (StringUtils.isNotBlank(obj.getEmail())) {
-            List<SysUser> objList = thisProxy.list(getWrapper(MapUtil.getMap("email",obj.getEmail())));
+            List<SysUser> objList = thisProxy.getList(MapUtil.getMap("email",obj.getEmail()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
                 return SysResult.fail("邮箱重复，保存失败:" + obj.getEmail());

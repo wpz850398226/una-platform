@@ -54,7 +54,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
-                    obj.setSortOrder(this.count(getWrapper(MapUtil.getMap("parentId",obj.getParentId()))) + 1);
+                    obj.setSortOrder(this.selectCount(MapUtil.getMap("parentId",obj.getParentId())) + 1);
                 obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");

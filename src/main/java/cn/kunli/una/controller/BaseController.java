@@ -234,10 +234,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		if(loginUser.getRoleId().indexOf("100000")==-1){
 			//如果不是超级管理员，查询权限范围
 			SysEntity sysEntity = service.getEntity();
-			SysPermission sysPermission = sysPermissionService.getOne(sysPermissionService.getWrapper(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build()));
+			SysPermission sysPermission = sysPermissionService.selectOne(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build());
 			if(sysPermission!=null&&loginUser!=null){
 				Integer scopeCode = 0;
-				List<SysRolePermission> rolePermissionList = sysRolePermissionService.list(sysRolePermissionService.getWrapper(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build()));
+				List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build());
 				if(CollectionUtils.isNotEmpty(rolePermissionList)){
 					for (SysRolePermission sysRolePermission : rolePermissionList) {
 						if(StringUtils.isNotBlank(sysRolePermission.getScopeDcode())){
@@ -320,7 +320,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			declaredField.setAccessible(true);
 			for (T record : list) {
 				Object groupByValue = declaredField.get(record);
-				int count = service.count(service.getWrapper(MapUtil.getMap(groupByField, groupByValue)));
+				int count = service.selectCount(MapUtil.getMap(groupByField, groupByValue));
 				record.setCount(count);
 				total += count;
 			}

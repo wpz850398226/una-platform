@@ -88,7 +88,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     protected CommonMapper commonMapper;
 
 
-    public QueryWrapper<T> getWrapper(Map<String,Object> map){
+    private QueryWrapper<T> getWrapper(Map<String,Object> map){
         return wrapperUtil.mapToWrapper(map);
     }
     @Autowired
@@ -299,24 +299,13 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    @Override
-    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public T getOne(Wrapper<T> queryWrapper) {
-        return super.getOne(queryWrapper);
-    }
-
-    /**
-     * 根据条件构造查询单条
-     * @param queryWrapper
-     * @return
-     */
     @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
         return super.getOne(wrapperUtil.mapToWrapper(map));
     }
 
     /**
-     * 根据条件构造查询多条
+     * 根据条件构造查询多条，带处理查询实例
      * @param map
      * @return
      */
@@ -330,21 +319,10 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      * @param queryWrapper
      * @return
      */
-    @Override
     @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
-    public List<T> list(Wrapper<T> queryWrapper) {
-        return super.list(queryWrapper);
+    public List<T> getList(Map<String,Object> map) {
+        return super.list(wrapperUtil.mapToWrapper(map));
     }
-
-    /**
-     * 查询（根据 columnMap 条件）
-     * @param record
-     * @return
-     */
-    /*@Override
-    public List<T> listByMap(Map<String,Object> map) {
-        return super.listByMap(map);
-    }*/
 
     /**
      * 校验数据格式
@@ -388,7 +366,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
                     Object codeObject = declaredField.get(obj);
                     //如果传入了code值，验证code全局唯一性
                     if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
-                        List<T> codeResultList = getThisProxy().list(getWrapper(MapUtil.getMap("code",codeObject)));
+                        List<T> codeResultList = getThisProxy().getList(MapUtil.getMap("code",codeObject));
                         if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                             //通过新文件的编码查询到数据
                             return SysResult.fail("编码重复，保存失败");
@@ -536,7 +514,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.list(sysSortService.getWrapper(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build()));
+                List<SysSort> sortList = sysSortService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     int size = sortList.size();
@@ -571,5 +549,9 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         }
 
         return map;
+    }
+
+    public int selectCount(Map<String,Object> map) {
+        return super.count(wrapperUtil.mapToWrapper(map));
     }
 }

@@ -190,7 +190,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     resultList = flowInstanceService.selectList(MapUtil.getMap("id",value));
                     break;
                 case "parentId"://父id parentId
-                    resultList = bs.list(bs.getWrapper(MapUtil.getMap("id",value)));
+                    resultList = bs.getList(MapUtil.getMap("id",value));
                     break;
                 default:
                     return SysResult.fail("查询失败：赋值编码 未识别");
@@ -350,7 +350,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     resultList = flowInstanceService.selectList(MapUtil.getMap(":name",value));
                     break;
                 case "parentName"://父id parentId
-                    resultList = bs.list(bs.getWrapper(MapUtil.getMap("name",value)));
+                    resultList = bs.getList(MapUtil.getMap("name",value));
                     break;
                 default:
                     return SysResult.fail("查询失败：取值编码 未识别");

@@ -54,8 +54,8 @@ public class FlowDefinitionService extends BasicService<FlowDefinitionMapper, Fl
     public List<FlowDefinition> parse(List<FlowDefinition> list) {
         list = super.parse(list);
         for (FlowDefinition flowDefinition : list) {
-            flowDefinition.setTotal(flowInstanceService.count(flowInstanceService.getWrapper(MapUtil.getMap("definitionId",flowDefinition.getId()))));
-            flowDefinition.setRunning(flowInstanceService.count(flowInstanceService.getWrapper(MapUtil.buildHashMap().put("definitionId",flowDefinition.getId()).put("isRunning",true).build())));
+            flowDefinition.setTotal(flowInstanceService.selectCount(MapUtil.getMap("definitionId",flowDefinition.getId())));
+            flowDefinition.setRunning(flowInstanceService.selectCount(MapUtil.buildHashMap().put("definitionId",flowDefinition.getId()).put("isRunning",true).build()));
         }
         return list;
     }
