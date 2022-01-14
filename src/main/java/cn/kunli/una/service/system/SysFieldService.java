@@ -186,6 +186,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     break;
                 case "definitionId"://权限 permissionId
                     resultList = flowDefinitionService.selectList(MapUtil.getMap("id",value));
+                    break;
                 case "instanceId"://权限 permissionId
                     resultList = flowInstanceService.selectList(MapUtil.getMap("id",value));
                     break;
