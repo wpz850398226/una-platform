@@ -26,14 +26,24 @@ public class GaEvolver extends BasePojo {
     private Integer entityId;
 
     /**
-     * 筛选代数
+     * 迭代阈值
      */
-    private Integer generationNumber;
+    private Integer iterationThreshold;
 
     /**
      * 得分阈值
      */
     private Float scoreThreshold;
+
+    /**
+     * 最高分
+     */
+    private Float topScore;
+
+    /**
+     * 迭代次数
+     */
+    private Integer iterationCount;
 
     /**
      * 得分
@@ -44,6 +54,11 @@ public class GaEvolver extends BasePojo {
      * 基因序列，有序
      */
     private String representationIds;
+
+    /**
+     * 初始群体数量
+     */
+    private Integer initializerCount;
 
     /**
      * 初始群体，无序

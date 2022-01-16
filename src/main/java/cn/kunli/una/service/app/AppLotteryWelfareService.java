@@ -45,7 +45,8 @@ public class AppLotteryWelfareService extends BasicService<AppLotteryWelfareMapp
             Float average = Float.valueOf(sum)/3;
             Double variance = ((Math.pow(hundred,2)+Math.pow(decade,2)+Math.pow(single,2))/3)-Math.pow(average,2);    //方差
             Double standardDeviation = Math.pow(variance,0.5);
-            Integer product = hundred*decade*single;
+            Integer product = (hundred==0?1:hundred)*(decade==0?1:decade)*(single==0?1:single);
+            if(single==0&&decade==0&&hundred==0)product = 0;
             //单体计算赋值
             obj.setHundred(hundred);
             obj.setDecade(decade);
@@ -72,9 +73,15 @@ public class AppLotteryWelfareService extends BasicService<AppLotteryWelfareMapp
 
             //查询往期
             List<AppLotteryWelfare> sameNumberLotteryList = selectList(cn.kunli.una.utils.common.MapUtil.buildHashMap()
-                    .put("number", number).put("orderByDesc","name").build());
+                    .put("number", number).put("orderByDesc","name").put("lt:lotteryDate",obj.getLotteryDate()).build());
             if(CollectionUtils.isNotEmpty(sameNumberLotteryList)){
-
+                AppLotteryWelfare appLotteryWelfare = sameNumberLotteryList.get(0);     //上一次同号
+                Integer intervalDays = DateUtil.getDiffDays(appLotteryWelfare.getLotteryDate(),obj.getLotteryDate());
+                obj.setIntervalDays(intervalDays);
+                obj.setHistoryCount(sameNumberLotteryList.size());
+            }else{
+                obj.setIntervalDays(0);
+                obj.setHistoryCount(0);
             }
 
         }

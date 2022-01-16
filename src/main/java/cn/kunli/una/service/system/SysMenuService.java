@@ -8,6 +8,7 @@ import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.StringUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -125,10 +126,12 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
             if (StringUtils.isBlank(obj.getType())) obj.setType("链接");
         }
 
-        if(obj.getType().equals("列表")){
-            obj.setRoute("Layout");
-        }else{
-            obj.setRoute("SysManage");
+        if(StringUtils.isNotBlank(obj.getType())){
+            if(obj.getType().equals("列表")){
+                obj.setRoute("Layout");
+            }else{
+                obj.setRoute("SysManage");
+            }
         }
 
         if(obj.getPermissionId()!=null){
