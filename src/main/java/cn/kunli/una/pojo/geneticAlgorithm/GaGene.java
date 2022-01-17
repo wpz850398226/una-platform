@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class GaRepresentation extends BasePojo {
+public class GaGene extends BasePojo {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,5 +29,10 @@ public class GaRepresentation extends BasePojo {
      * 描述
      */
     private String description;
+
+    /**
+     * 类型
+     */
+    private String typeDcode;
 
 }

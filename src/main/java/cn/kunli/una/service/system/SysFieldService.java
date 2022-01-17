@@ -13,6 +13,7 @@ import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
+import cn.kunli.una.service.geneticAlgorithm.GaGeneService;
 import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
@@ -60,6 +61,8 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
     @Autowired
     private BidProjectService bidProjectService;
+    @Autowired
+    private GaGeneService gaGeneService;
 
     /**
      * 转换存储值为显示值
@@ -98,12 +101,16 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "FileId"://流程节点 entityId
                     resultList = sysFileService.parse(sysFileService.selectList(MapUtil.getMap("id", value)));
                     break;
-                case "companyId"://店铺 companyId
+                case "shopId"://店铺 companyId
                 case "ShopId"://店铺 companyId
                     resultList = sysCompanyService.selectList(MapUtil.getMap("id", value));
                     break;
                 case "Dcodes"://字典编码
                     resultList = sysDictionaryService.selectList(MapUtil.getMap("in:code", value));
+                    break;
+                case "geneId"://遗传基因
+                case "GeneId"://遗传基因
+                    resultList = gaGeneService.selectList(MapUtil.getMap("id", value));
                     break;
             }
         }

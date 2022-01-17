@@ -2,8 +2,8 @@ package cn.kunli.una.controller.geneticAlgorithm;
 
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.geneticAlgorithm.GaRepresentation;
-import cn.kunli.una.service.geneticAlgorithm.GaRepresentationService;
+import cn.kunli.una.pojo.geneticAlgorithm.GaGene;
+import cn.kunli.una.service.geneticAlgorithm.GaGeneService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2022-01-14
  */
 @Controller
-@RequestMapping("/ga/representation")
-public class GaRepresentationController extends BaseController<GaRepresentationService, GaRepresentation> {
+@RequestMapping("/ga/gene")
+public class GaGeneController extends BaseController<GaGeneService, GaGene> {
 
 }

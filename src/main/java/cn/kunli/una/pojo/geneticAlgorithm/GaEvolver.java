@@ -51,9 +51,14 @@ public class GaEvolver extends BasePojo {
     private Float score;
 
     /**
-     * 基因序列，有序
+     * 入参基因序列，有序
      */
-    private String representationIds;
+    private Integer paramGeneId;
+
+    /**
+     * 计算基因序列，有序
+     */
+    private String calculateGeneIds;
 
     /**
      * 初始群体数量

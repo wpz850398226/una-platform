@@ -31,9 +31,14 @@ public class GaInitializer extends BasePojo {
     private Float score;
 
     /**
+     * 入参基因序列，有序
+     */
+    private Integer paramGeneId;
+
+    /**
      * 基因序列
      */
-    private String representationIds;
+    private String calculateGeneIds;
 
     /**
      * 描述

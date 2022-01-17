@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.geneticAlgorithm.GaRepresentation;
+import cn.kunli.una.pojo.geneticAlgorithm.GaGene;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import cn.kunli.una.pojo.geneticAlgorithm.GaRepresentation;
  * @author Ponzio
  * @since 2022-01-14
  */
-public interface GaRepresentationMapper extends BasicMapper<GaRepresentation> {
+public interface GaGeneMapper extends BasicMapper<GaGene> {
 
 }
