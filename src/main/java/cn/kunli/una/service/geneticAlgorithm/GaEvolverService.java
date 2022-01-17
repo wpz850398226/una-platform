@@ -33,13 +33,34 @@ public class GaEvolverService extends BasicService<GaEvolverMapper, GaEvolver> {
     public SysResult calculate(Integer id){
         GaEvolver target = getById(id);
 
+        //初代个体数量
         Integer count = target.getInitializerCount();
+        //入参基因
+        Integer paramGeneId = target.getParamGeneId();
+
         //如果没有指定初代数量，则随机20-200
         if(count==null) {
             Double v = 180 * Math.random() + 20;
             count = v.intValue();
         }
 
+        //如果没有指定初代数量，随机取
+        if (paramGeneId == null) {
+
+        }
+
+
+        return SysResult.success();
+    }
+
+    @Override
+    public SysResult validate(GaEvolver obj) {
+        SysResult validate = super.validate(obj);
+        if(!validate.getIsSuccess())return validate;
+
+        if(obj.getIterationThreshold()==null && obj.getScoreThreshold()==null){
+            return SysResult.fail("迭代阈值与得分阈值不能同时为空，保存失败");
+        }
 
         return SysResult.success();
     }

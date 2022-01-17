@@ -1,20 +1,15 @@
 package cn.kunli.una.controller.geneticAlgorithm;
 
 
-import cn.hutool.core.map.MapUtil;
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.app.AppLotteryWelfare;
 import cn.kunli.una.pojo.geneticAlgorithm.GaEvolver;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.geneticAlgorithm.GaEvolverService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * <p>
@@ -31,9 +26,7 @@ public class GaEvolverController extends BaseController<GaEvolverService, GaEvol
     @ResponseBody
     @PostMapping("/calculate/{id}")
     public SysResult calculate(@PathVariable Integer id){
-
-
-        return SysResult.success();
+        return service.calculate(id);
     }
 
 }
