@@ -56,7 +56,7 @@ public class MyCacheKeyGenerator implements KeyGenerator {
             }
         }else if(param instanceof HashMap){
             //参数为HashMap，方法来源：selectOne、selectList
-            /*QueryWrapper wrapper = wrapperUtil.mapToWrapper((HashMap) param);
+            /*QueryWrapper wrapper = wrapperUtil.mapToQueryWrapper((HashMap) param);
 
             String sqlSegment = wrapper.getExpression().getNormal().getSqlSegment();
             Map map = wrapper.getParamNameValuePairs();

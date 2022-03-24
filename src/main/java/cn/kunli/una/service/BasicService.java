@@ -89,7 +89,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
 
 
     private QueryWrapper<T> getWrapper(Map<String,Object> map){
-        return wrapperUtil.mapToWrapper(map);
+        return wrapperUtil.mapToQueryWrapper(map);
     }
     @Autowired
     public SysEntity getEntity(){
@@ -230,7 +230,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
             commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
         }*/
 
-        return super.remove(wrapperUtil.mapToWrapper(map));
+        return super.remove(wrapperUtil.mapToQueryWrapper(map));
     }
 
 
@@ -291,7 +291,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
         map.remove("pageNum");
         map.remove("pageSize");
         Page<T> pageObj = new Page<T>().setCurrent(Long.parseLong(current.toString())).setSize(Long.parseLong(size.toString()));
-        return super.page(pageObj,wrapperUtil.mapToWrapper(format(map)));
+        return super.page(pageObj,wrapperUtil.mapToQueryWrapper(format(map)));
     }
 
     /**
@@ -301,7 +301,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
-        return super.getOne(wrapperUtil.mapToWrapper(map));
+        return super.getOne(wrapperUtil.mapToQueryWrapper(map));
     }
 
     /**
@@ -311,7 +311,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> selectList(Map<String,Object> map) {
-        return super.list(wrapperUtil.mapToWrapper(format(map)));
+        return super.list(wrapperUtil.mapToQueryWrapper(format(map)));
     }
 
     /**
@@ -321,7 +321,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
      */
     @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> getList(Map<String,Object> map) {
-        return super.list(wrapperUtil.mapToWrapper(map));
+        return super.list(wrapperUtil.mapToQueryWrapper(map));
     }
 
     /**
@@ -552,6 +552,6 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     }
 
     public int selectCount(Map<String,Object> map) {
-        return super.count(wrapperUtil.mapToWrapper(map));
+        return super.count(wrapperUtil.mapToQueryWrapper(map));
     }
 }
