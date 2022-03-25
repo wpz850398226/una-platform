@@ -58,5 +58,4 @@ public class DruidConfig {
         bean.setInitParameters(initParameters);
         return bean;
     }
-
 }

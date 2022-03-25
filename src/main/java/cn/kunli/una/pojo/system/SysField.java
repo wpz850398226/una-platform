@@ -40,6 +40,8 @@ public class SysField extends BasePojo implements Serializable {
     private String permissionCode;
     //字段注释
     private String annotation;
+    //字段类型字典编码
+    private String columnTypeDcode;
     //赋值方式
     private String assignmentModeDcode;
     //前端展示类型

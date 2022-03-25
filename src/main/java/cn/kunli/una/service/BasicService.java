@@ -91,7 +91,7 @@ public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> 
     private QueryWrapper<T> getWrapper(Map<String,Object> map){
         return wrapperUtil.mapToQueryWrapper(map);
     }
-    @Autowired
+//    @Autowired
     public SysEntity getEntity(){
         SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
         if(sysEntity==null)return null;
