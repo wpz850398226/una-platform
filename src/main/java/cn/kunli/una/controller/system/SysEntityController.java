@@ -32,8 +32,14 @@ public class SysEntityController extends BaseController<SysEntityService, SysEnt
     }
 
     @ResponseBody
-    @PostMapping("/createTable/{id}")
-    public SysResult createTable(@PathVariable Integer id) {
-        return service.tableOperate(id);
+    @PostMapping("/tableGenerate/{id}")
+    public SysResult tableGenerate(@PathVariable Integer id) {
+        return service.tableGenerate(id);
+    }
+
+    @ResponseBody
+    @PostMapping("/codeGenerate/{id}")
+    public SysResult codeGenerate(@PathVariable Integer id) {
+        return service.codeGenerate(id);
     }
 }

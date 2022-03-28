@@ -89,17 +89,19 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     }
 
     //数据库表DDL操作
-    public SysResult tableOperate(Integer id){
+    public SysResult tableGenerate(Integer id){
+        //获取数据库链接信息
         DbContext ctx = new DbContext(dataSource);
         ctx.setAllowShowSQL(true);  //开启SQL日志输出
         DbContext.setGlobalDbContext(ctx);  //设定全局上下文
 
+        //获取实体信息
         SysEntity sysEntity = this.getById(id);
         TableModel tableModel = new TableModel();
         tableModel.setTableName(StrUtil.toUnderlineCase(sysEntity.getCode()));
         tableModel.setComment(sysEntity.getName());
 
-
+        //获取字段信息
         List<SysField> sysFieldList = sysFieldService.selectList(MapUtil.getMap("entityId", id));
         List<ColumnModel> columnModelList = sysFieldList.stream().map(sf -> {
             ColumnModel columnModel = new ColumnModel(StrUtil.toUnderlineCase(sf.getAssignmentCode()));
@@ -109,6 +111,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
             return columnModel;
         }).collect(Collectors.toList());
 
+        //创建公共默认字段
         ColumnModel idColumnModel = new ColumnModel("id");
         idColumnModel.setPkey(true);
         idColumnModel.setColumnType(Type.INTEGER);
@@ -118,8 +121,10 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         columnModelList.add(idColumnModel);
         tableModel.setColumns(columnModelList);
 
+        //建表
         int i = ctx.quiteExecute(ctx.toDropAndCreateDDL(tableModel));//生成DDL,建数据库表
 
+        //0表示成功，-1表示失败
         if(i==0){
             return SysResult.success();
         }
@@ -127,7 +132,11 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         return SysResult.fail();
     }
 
-    public SysResult autoCodeGenerate(String... tableName){
+    public SysResult codeGenerate(Integer id){
+        //获取实体信息
+        SysEntity sysEntity = this.getById(id);
+        if(sysEntity==null)return SysResult.fail("创建失败，实体不存在");
+
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 
@@ -232,7 +241,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
 //        strategy.setSuperControllerClass(AbstractController.class);
         // 写于父类中的公共字段
 //        strategy.setSuperEntityColumns("id");
-        strategy.setInclude(tableName);
+        strategy.setInclude(StrUtil.toUnderlineCase(sysEntity.getCode()));
         strategy.setControllerMappingHyphenStyle(true);
 //        strategy.setTablePrefix("ga_");
         mpg.setStrategy(strategy);
