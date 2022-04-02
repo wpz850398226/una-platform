@@ -31,4 +31,3 @@ import ${package.ServiceImpl}.${table.serviceName};
 @RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
 public class ${table.controllerName} extends BaseController<${table.serviceName}, ${entity}> {
 }
-</#if>

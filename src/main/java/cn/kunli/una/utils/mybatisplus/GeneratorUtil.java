@@ -24,12 +24,11 @@ public class GeneratorUtil {
             return SysResult.fail("创建失败，未指定表名");
         }
 
-        if(StringUtils.isBlank(info.getServiceName())){
-            return SysResult.fail("创建失败，未指定服务名称");
+        if(StringUtils.isBlank(info.getPassword()) || StringUtils.isBlank(info.getUsername())){
+            return SysResult.fail("创建失败，数据库账号密码信息确实");
         }
 
-        if(StringUtils.isBlank(info.getIp()) || StringUtils.isBlank(info.getDatabase())
-                || StringUtils.isBlank(info.getPassword()) || StringUtils.isBlank(info.getUsername())){
+        if((StringUtils.isBlank(info.getUrl()) && (StringUtils.isBlank(info.getIp()) || StringUtils.isBlank(info.getDatabase()))) || StringUtils.isBlank(info.getDriverName())){
             return SysResult.fail("创建失败，数据库信息有误");
         }
 
@@ -52,16 +51,22 @@ public class GeneratorUtil {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        StringBuffer sb = new StringBuffer();
-        String url = sb.append("jdbc:mysql://")
-                .append(info.getIp())
-                .append(":")
-                .append(info.getPort())
-                .append("/")
-                .append(info.getDatabase())
-                .append("?")
-                .append(info.getUrlSuffix())
-                .toString();
+        String url = "";
+        if(StringUtils.isNotBlank(info.getUrl())){
+            url = info.getUrl();
+        }else{
+            StringBuffer sb = new StringBuffer();
+            url = sb.append("jdbc:mysql://")
+                    .append(info.getIp())
+                    .append(":")
+                    .append(info.getPort())
+                    .append("/")
+                    .append(info.getDatabase())
+                    .append("?")
+                    .append(info.getUrlSuffix())
+                    .toString();
+        }
+
         dsc.setUrl(url);
         dsc.setDriverName(info.getDriverName());
         dsc.setUsername(info.getUsername());
@@ -90,7 +95,7 @@ public class GeneratorUtil {
         };
 
         // 如果模板引擎是 freemarker
-        String xmlTemplatePath = "templates/mybatisplus/mapper.xml.ftl";
+        String xmlTemplatePath = "templates/mapper.xml.ftl";
         // 如果模板引擎是 velocity
         // String templatePath = "/template/mapper.xml.vm";
 
@@ -112,8 +117,8 @@ public class GeneratorUtil {
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
         templateConfig.setController("templates/mybatisplus/controller.java");
-        templateConfig.setService("templates/mybatisplus/service.java");
-        templateConfig.setServiceImpl(null);
+        templateConfig.setService(null);
+        templateConfig.setServiceImpl("templates/mybatisplus/service.java");
         templateConfig.setMapper("templates/mapper.java");
         templateConfig.setEntity("templates/mybatisplus/entity.java");
         templateConfig.setXml(null);
@@ -125,7 +130,7 @@ public class GeneratorUtil {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass(BasePojo.class);
         strategy.setSuperEntityColumns("id","name","remark","creatorId","createTime");
-        strategy.setSuperServiceClass(BasicService.class);
+        strategy.setSuperServiceImplClass(BasicService.class);
         //开启驼峰转换
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
 //        strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");

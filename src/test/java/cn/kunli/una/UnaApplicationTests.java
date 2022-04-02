@@ -8,6 +8,7 @@ import cn.kunli.una.vo.mybatisplus.GeneratorInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
@@ -23,12 +24,19 @@ public class UnaApplicationTests {
 
     @Autowired
     AppLotteryWelfareService appLotteryWelfareService;
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverName;
 
     @Test
     public void testGenerate(){
-        SysResult<String> stringSysResult = GeneratorUtil.codeGenerate(new GeneratorInfo().setUsername("root").setPassword("GLDpcop789!")
-                .setAuthor("wangpz-b").setTableName("sys_entity").setServiceName("framework")
-                .setIp("10.0.104.147").setPort(31937).setDatabase("bcp_service_common"));
+        SysResult<String> stringSysResult = GeneratorUtil.codeGenerate(new GeneratorInfo().setUsername(username)
+                .setPassword(password).setAuthor("wangpz-b").setTableName("sys_test").setDriverName(driverName).setUrl(url));
 
         System.out.println(stringSysResult.getMessage());
     }

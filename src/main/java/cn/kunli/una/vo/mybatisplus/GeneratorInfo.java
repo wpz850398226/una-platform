@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 public class GeneratorInfo {
 
     //数据库相关
+    private String url;
     private String urlSuffix = "useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false&useAffectedRows=true&allowPublicKeyRetrieval=true";
     private String ip;
     private Integer port = 3306;
