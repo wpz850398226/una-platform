@@ -17,7 +17,7 @@ import ${package.ServiceImpl}.${table.serviceName};
 
 /**
  * <p>
- * ${table.comment!} 前端控制器
+ * ${table.comment!} 控制器
  * </p>
  *
  * @author ${author}

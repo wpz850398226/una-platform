@@ -1,6 +1,7 @@
 package cn.kunli.una.service.system;
 
 import cn.hutool.core.util.StrUtil;
+import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.mapper.SysEntityMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.system.SysEntity;
@@ -27,6 +28,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.AbstractController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +139,13 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         SysEntity sysEntity = this.getById(id);
         if(sysEntity==null)return SysResult.fail("创建失败，实体不存在");
 
+        String entityCode = sysEntity.getCode();
+        String tableName = StrUtil.toUnderlineCase(entityCode);
+        if(tableName.indexOf("_")==-1)return SysResult.fail("创建失败，表名不合法");
+        String prefix = tableName.substring(0, tableName.indexOf("_"));
+        String suffix = tableName.substring(tableName.indexOf("_")+1);
+        String moduleName = StrUtil.toCamelCase(suffix);
+
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 
@@ -154,22 +163,20 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-//        dsc.setUrl("jdbc:mysql://123.56.79.121:3306/una-layui?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true");
-        // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("Kunli@888");
-        mpg.setDataSource(dsc);
 
         dsc.setUrl(url);
+        dsc.setDriverName(driverName);
+        dsc.setUsername(username);
+        dsc.setPassword(password);
+        mpg.setDataSource(dsc);
 
         // 包配置
         PackageConfig pc = new PackageConfig();
 //        pc.setModuleName(scanner("模块名"));
         pc.setParent("cn.kunli.una");
-        pc.setEntity("pojo.geneticAlgorithm");
-        pc.setController("controller.geneticAlgorithm");
-        pc.setServiceImpl("service.geneticAlgorithm");
+        pc.setEntity("pojo."+prefix);
+        pc.setController("controller."+prefix);
+        pc.setServiceImpl("service."+prefix);
 //        pc.setMapper("mapper");
 
         mpg.setPackageInfo(pc);
@@ -220,8 +227,11 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
 
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        templateConfig.setController("templates/controller.java");
-        templateConfig.setServiceImpl("templates/serviceImpl.java");
+        templateConfig.setController("templates/mybatisplus/controller.java");
+        templateConfig.setService("templates/mybatisplus/service.java");
+        templateConfig.setMapper("templates/mybatisplus/mapper.java");
+        templateConfig.setServiceImpl("templates/mybatisplus/serviceImpl.java");
+        templateConfig.setEntity("templates/mybatisplus/entity.java");
 
         //不生成的文件
         templateConfig.setService(null);
@@ -238,10 +248,11 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         strategy.setSuperEntityClass(BasePojo.class);
 //        strategy.setRestControllerStyle(true);
         // 公共父类
-//        strategy.setSuperControllerClass(AbstractController.class);
+        strategy.setSuperControllerClass(BaseController.class);
         // 写于父类中的公共字段
-//        strategy.setSuperEntityColumns("id");
-        strategy.setInclude(StrUtil.toUnderlineCase(sysEntity.getCode()));
+        strategy.setSuperEntityColumns("id","name","code","remark","createTime","creatorName","creatorId");
+        //指定表名
+        strategy.setInclude(tableName);
         strategy.setControllerMappingHyphenStyle(true);
 //        strategy.setTablePrefix("ga_");
         mpg.setStrategy(strategy);

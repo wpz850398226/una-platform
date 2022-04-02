@@ -1,4 +1,4 @@
-package cn.kunli.una.utils.ali;
+package cn.kunli.una.utils.ali.sms;
 
 import cn.kunli.una.pojo.system.SysMessage;
 import com.aliyuncs.DefaultAcsClient;

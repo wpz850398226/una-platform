@@ -467,7 +467,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 				}
 			}
 
-		} catch (IOException | IllegalAccessException | InstantiationException | InvalidFormatException e) {
+		} catch (IOException | IllegalAccessException | InstantiationException e) {
 			e.printStackTrace();
 		}
 		return SysResult.fail();

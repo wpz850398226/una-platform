@@ -1,7 +1,10 @@
 package cn.kunli.una;
 
 import cn.kunli.una.pojo.app.AppLotteryWelfare;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.app.AppLotteryWelfareService;
+import cn.kunli.una.utils.mybatisplus.GeneratorUtil;
+import cn.kunli.una.vo.mybatisplus.GeneratorInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,15 @@ public class UnaApplicationTests {
 
     @Autowired
     AppLotteryWelfareService appLotteryWelfareService;
+
+    @Test
+    public void testGenerate(){
+        SysResult<String> stringSysResult = GeneratorUtil.codeGenerate(new GeneratorInfo().setUsername("root").setPassword("GLDpcop789!")
+                .setAuthor("wangpz-b").setTableName("sys_entity").setServiceName("framework")
+                .setIp("10.0.104.147").setPort(31937).setDatabase("bcp_service_common"));
+
+        System.out.println(stringSysResult.getMessage());
+    }
 
     @Test
     public void operateLottery(){

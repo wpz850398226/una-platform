@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 </#if>
 import com.glodon.pcop.superviseapi.Parsable;
-import ${cfg.dictPage}.${entity}Status;
+<#--import ${cfg.dictPage}.${entity}Status;-->
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
