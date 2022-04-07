@@ -11,9 +11,8 @@ import org.springframework.stereotype.Controller;
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
 </#if>
-import cn.kunli.una.controller.BaseController;
 import ${package.Entity}.${entity};
-import ${package.ServiceImpl}.${table.serviceName};
+import ${package.Service}.${table.serviceName};
 
 /**
  * <p>

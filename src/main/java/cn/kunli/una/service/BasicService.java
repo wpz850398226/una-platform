@@ -1,10 +1,12 @@
 package cn.kunli.una.service;
 
 import cn.kunli.una.annotation.MyCacheEvict;
-import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.system.SysField;
+import cn.kunli.una.pojo.system.SysRelation;
+import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowInstanceService;
@@ -14,14 +16,12 @@ import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,13 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Primary
 @Transactional
-public abstract class BasicService<M extends BasicMapper<T>,T extends BasePojo> extends ServiceImpl<M,T> {
+public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> extends ServiceImpl<M,T> {
 
     //全局参数
     protected M mapper;

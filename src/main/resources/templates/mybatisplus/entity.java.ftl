@@ -7,16 +7,15 @@ import ${pkg};
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
+import com.baomidou.mybatisplus.annotation.TableName;
 <#if entityLombokModel>
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+    <#if chainModel>
 import lombok.experimental.Accessors;
+    </#if>
 </#if>
-import com.glodon.pcop.superviseapi.Parsable;
-<#--import ${cfg.dictPage}.${entity}Status;-->
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
+
 /**
  * <p>
  * ${table.comment!}
@@ -32,20 +31,20 @@ import com.baomidou.mybatisplus.annotation.TableField;
     <#else>
 @EqualsAndHashCode(callSuper = false)
     </#if>
+    <#if chainModel>
 @Accessors(chain = true)
+    </#if>
 </#if>
-<#if table.convert>
 @TableName("${table.name}")
-</#if>
 <#if swagger2>
 @ApiModel(value="${entity}对象", description="${table.comment!}")
 </#if>
 <#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if>  implements Parsable<${entity}>{
+public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
 <#elseif activeRecord>
-public class ${entity} extends Model<${entity}> implements Parsable<${entity}>{
+public class ${entity} extends Model<${entity}> {
 <#else>
-public class ${entity} implements Serializable ,Parsable<${entity}>{
+public class ${entity} implements Serializable {
 </#if>
 
 <#if entitySerialVersionUID>
@@ -94,23 +93,9 @@ public class ${entity} implements Serializable ,Parsable<${entity}>{
     <#if (logicDeleteFieldName!"") == field.name>
     @TableLogic
     </#if>
-    private <#if field.type == "datetime">LocalDateTime<#elseif field.type == "date">LocalDate<#else>${field.propertyType}</#if> ${field.propertyName};
+    private ${field.propertyType} ${field.propertyName};
 </#list>
 <#------------  END 字段循环遍历  ---------->
-<#------------  添加自定义业务字段  ---------->
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "错误信息")
-    private String errorMsg;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "审核状态名")
-    private String statusName;
-
-<#------------  添加验证方法 是否非法输入  ---------->
-    public boolean invaild(){
-        return false;
-    }
 
 <#if !entityLombokModel>
     <#list table.fields as field>
@@ -167,13 +152,4 @@ public class ${entity} implements Serializable ,Parsable<${entity}>{
         "}";
     }
 </#if>
-
-    @Override
-    public ${entity} parse() {
-        if(this.status!=null){
-            this.setStatusName( ${entity}Status.getValue(this.getStatus()));
-        }
-        return this;
-    }
-
 }

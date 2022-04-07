@@ -43,6 +43,7 @@ public class GeneratorUtil {
         gc.setAuthor(info.getAuthor());
         gc.setOpen(false);
         gc.setSwagger2(true);
+        gc.setServiceName("%sService");
         //设置实体统一加后缀DO
 //        gc.setEntityName(FILE_NAME_MODEL);
 //        gc.setDateType(DateType.ONLY_DATE);
@@ -117,8 +118,8 @@ public class GeneratorUtil {
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
         templateConfig.setController("templates/mybatisplus/controller.java");
-        templateConfig.setService(null);
-        templateConfig.setServiceImpl("templates/mybatisplus/service.java");
+        templateConfig.setService("templates/mybatisplus/service.java");
+        templateConfig.setServiceImpl(null);
         templateConfig.setMapper("templates/mapper.java");
         templateConfig.setEntity("templates/mybatisplus/entity.java");
         templateConfig.setXml(null);
@@ -129,8 +130,9 @@ public class GeneratorUtil {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass(BasePojo.class);
-        strategy.setSuperEntityColumns("id","name","remark","creatorId","createTime");
-        strategy.setSuperServiceImplClass(BasicService.class);
+        strategy.setSuperEntityColumns("id","name","tentId","remark","creatorId","creatorHost","creatorName","createTime"
+                ,"modifierId","modifierHost","modifierName","modifyTime","isDelete","sortOrder","weight","companyId","departmentId");
+        strategy.setSuperServiceClass(BasicService.class);
         //开启驼峰转换
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
 //        strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
