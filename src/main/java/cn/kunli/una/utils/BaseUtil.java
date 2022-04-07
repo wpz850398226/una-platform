@@ -1,7 +1,7 @@
 package cn.kunli.una.utils;
 
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -113,7 +113,7 @@ public class BaseUtil {
      * </p>
      */
     public static final boolean cardNumberCheck(String idNumber) {
-        if (StringUtils.isBlank(idNumber)) {
+        if (StrUtil.isBlank(idNumber)) {
             return false;
         }
         idNumber = idNumber.trim();

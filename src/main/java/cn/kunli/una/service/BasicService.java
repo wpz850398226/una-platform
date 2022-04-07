@@ -1,5 +1,6 @@
 package cn.kunli.una.service;
 
+import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
@@ -22,7 +23,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -140,8 +140,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             if(sysEntity!=null) {
                 //获取父字段字段类对象
                 SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-                String tableName = StringUtil.upperCharToUnderLine(entityClass.getSimpleName());
-                String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
+                String tableName = StrUtil.toUnderlineCase(entityClass.getSimpleName());
+                String fieldCode = sysField == null ? "" : StrUtil.toUnderlineCase(sysField.getAssignmentCode());
                 commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
             }
 
@@ -226,8 +226,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         if(sysEntity!=null) {
             //获取父字段字段类对象
             SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-            String tableName = StringUtil.upperCharToUnderLine(className);
-            String fieldCode = sysField == null ? "" : StringUtil.upperCharToUnderLine(sysField.getAssignmentCode());
+            String tableName = StrUtil.toUnderlineCase(className);
+            String fieldCode = sysField == null ? "" : StrUtil.toUnderlineCase(sysField.getAssignmentCode());
             commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
         }*/
 
@@ -338,7 +338,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         SysEntity sysEntity = getEntity();
         if(sysEntity!=null){
             //如果名称不为空，验证名称唯一性
-            if(StringUtils.isNotBlank(obj.getName())){
+            if(StrUtil.isNotBlank(obj.getName())){
                 Map<String, Object> nameParamMap = MapUtil.getMap("name", obj.getName());
                 //获取当前类对应实体类对象
                 if(sysEntity.getParentFieldId()!=null){
@@ -366,7 +366,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     declaredField.setAccessible(true);
                     Object codeObject = declaredField.get(obj);
                     //如果传入了code值，验证code全局唯一性
-                    if(codeObject!=null&&StringUtils.isNotBlank(codeObject.toString())){
+                    if(codeObject!=null&&StrUtil.isNotBlank(codeObject.toString())){
                         List<T> codeResultList = getThisProxy().getList(MapUtil.getMap("code",codeObject));
                         if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                             //通过新文件的编码查询到数据
@@ -459,8 +459,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {
-                    if(StringUtils.isNotBlank(sysField.getAssignmentCode())
-                            &&StringUtils.isNotBlank(sysField.getDisplayCode())
+                    if(StrUtil.isNotBlank(sysField.getAssignmentCode())
+                            &&StrUtil.isNotBlank(sysField.getDisplayCode())
                             &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
                         //如果赋值与取值的字段值不同，则反射获取赋值字段值，查询取值字段值
 

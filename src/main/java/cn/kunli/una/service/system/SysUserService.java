@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
 
     //校验格式
     public SysResult validate(SysUser obj) {
-        if (StringUtils.isNotBlank(obj.getMobile())) {
+        if (StrUtil.isNotBlank(obj.getMobile())) {
             List<SysUser> objList = thisProxy.getList(MapUtil.getMap("mobile",obj.getMobile()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
@@ -39,7 +39,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
             }
         }
 
-        if (StringUtils.isNotBlank(obj.getIdNumber())) {
+        if (StrUtil.isNotBlank(obj.getIdNumber())) {
             List<SysUser> objList = thisProxy.getList(MapUtil.getMap("idNumber",obj.getIdNumber()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据
@@ -48,7 +48,7 @@ public class SysUserService extends BasicService<SysUserMapper, SysUser> {
         }
 
 
-        if (StringUtils.isNotBlank(obj.getEmail())) {
+        if (StrUtil.isNotBlank(obj.getEmail())) {
             List<SysUser> objList = thisProxy.getList(MapUtil.getMap("email",obj.getEmail()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 //通过新文件的名称查询到数据

@@ -8,7 +8,7 @@ import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysMessageService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,7 @@ public class SysMessageController extends BaseController<SysMessageService, SysM
     @PostMapping("/sms")
     @ResponseBody
     public SysResult sms (String mobile) {
-        if(StringUtils.isBlank(mobile)){
+        if(StrUtil.isBlank(mobile)){
             return SysResult.fail("发送失败，手机号为空");
         }
 

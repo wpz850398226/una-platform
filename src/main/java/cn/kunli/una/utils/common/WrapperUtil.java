@@ -5,7 +5,6 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -28,14 +27,14 @@ public class WrapperUtil<T> {
             String key = entry.getKey();
             Object value = entry.getValue();
 
-            if(value!=null&&StringUtils.isNotBlank(value.toString())){
+            if(value!=null&&StrUtil.isNotBlank(value.toString())){
                 if(key.contains(":")){
                     int index = key.indexOf(":");
                     String condition = key.substring(0, index);
                     String fieldCode = key.substring(index + 1);
                     String column = StrUtil.toUnderlineCase(fieldCode);
 
-                    if(StringUtils.isBlank(fieldCode))continue;
+                    if(StrUtil.isBlank(fieldCode))continue;
 
                     switch(condition){
                         case "":
@@ -113,7 +112,7 @@ public class WrapperUtil<T> {
                     continue;
                 }else{
                     String[] fieldCodeArray = value.toString().split(",");
-                    String[] columnArray = ArrayUtil.upperCharToUnderLine(fieldCodeArray);
+                    String[] columnArray = UnaArrayUtil.upperCharToUnderLine(fieldCodeArray);
 
                     switch(key){
                         case "select":
@@ -186,7 +185,7 @@ public class WrapperUtil<T> {
             String key = entry.getKey();
             Object value = entry.getValue();
 
-            if(value!=null&&StringUtils.isNotBlank(value.toString())){
+            if(value!=null&&StrUtil.isNotBlank(value.toString())){
                 if(key.contains(":")){
                     int index = key.indexOf(":");
                     String condition = key.substring(0, index);
@@ -265,7 +264,7 @@ public class WrapperUtil<T> {
                     continue;
                 }else{
                     String[] fieldCodeArray = value.toString().split(",");
-                    String[] columnArray = ArrayUtil.upperCharToUnderLine(fieldCodeArray);
+                    String[] columnArray = UnaArrayUtil.upperCharToUnderLine(fieldCodeArray);
 
                     switch(key){
                         case "isNull":

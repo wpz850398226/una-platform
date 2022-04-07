@@ -18,7 +18,7 @@ import cn.kunli.una.utils.common.UserUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,21 +62,21 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
         FlowNode flowNode = flowNodeService.getById(nodeId);
 
         //如果节点有候选人类型，且候选人为空，则返回失败
-        if(StringUtils.isNotBlank(flowNode.getCandidateTypeDcode())&&StringUtils.isBlank(initializedTask.getCandidateAccountIds())){
+        if(StrUtil.isNotBlank(flowNode.getCandidateTypeDcode())&&StrUtil.isBlank(initializedTask.getCandidateAccountIds())){
             return SysResult.fail("激活失败，无候选人");
         }
 
         //激活任务
         SysResult sysResult = thisProxy.saveRecord(flowTask);
         if(sysResult.getIsSuccess()){
-            if(StringUtils.isBlank(flowNode.getCandidateTypeDcode())){
+            if(StrUtil.isBlank(flowNode.getCandidateTypeDcode())){
                 //如果节点没有候选人类型，则执行
                 handle((FlowTask) new FlowTask().setId(flowTask.getId()));
             }else{
                 //如果有候选人类型，查询候选人id
                 String candidateAccountIds = flowTask.getCandidateAccountIds();
                 //如果 被激活的任务 的候选人 包含当前在线用户，则返回任务id
-                if(StringUtils.isNotBlank(candidateAccountIds)&& candidateAccountIds.contains(String.valueOf(flowTask.getCreatorId()))){
+                if(StrUtil.isNotBlank(candidateAccountIds)&& candidateAccountIds.contains(String.valueOf(flowTask.getCreatorId()))){
                     sysResult.setData(this.parse(ListUtil.getList(flowTask)).get(0));
                 }
             }
@@ -185,7 +185,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             //流程发起人
             SysAccount initiator = sysAccountService.getById(flowInstance.getCreatorId());
 
-            if(StringUtils.isNotBlank(flowNode.getCandidateTypeDcode())){
+            if(StrUtil.isNotBlank(flowNode.getCandidateTypeDcode())){
                 switch(flowNode.getCandidateTypeDcode()){
                     case "flow_candidateType_account":             //账号（复数）
                         obj.setCandidateAccountIds(flowNode.getCandidateValue());
@@ -198,7 +198,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                                 stringBuffer.append(",").append(sysAccount.getId());
                             }
                             String accountIds = stringBuffer.toString();
-                            if(StringUtils.isNotBlank(accountIds))obj.setCandidateAccountIds(accountIds.substring(1));
+                            if(StrUtil.isNotBlank(accountIds))obj.setCandidateAccountIds(accountIds.substring(1));
                         }
                         break;
                     case "flow_candidateType_superior":            //流程发起人的直接上级
@@ -221,7 +221,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
     public List<FlowTask> parse(List<FlowTask> list) {
         list = super.parse(list);
         for (FlowTask flowTask : list) {
-            if(StringUtils.isNotBlank(flowTask.getNodeTypeDcode())&&flowTask.getNodeTypeDcode().equals("flow_nudeType_audit")){
+            if(StrUtil.isNotBlank(flowTask.getNodeTypeDcode())&&flowTask.getNodeTypeDcode().equals("flow_nudeType_audit")){
                 List<FlowTask> submitTaskList = thisProxy.parse(thisProxy.selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
                         .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build()));
                 flowTask.setSubmitTaskList(submitTaskList);

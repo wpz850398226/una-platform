@@ -11,7 +11,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,7 +98,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
 
     @Override
     public SysResult validate(SysMenu obj) {
-        if(StringUtils.isNotBlank(obj.getName())){
+        if(StrUtil.isNotBlank(obj.getName())){
             List<SysMenu> objList = thisProxy.selectList(MapUtil.buildHashMap().put("name", obj.getName().trim()).put("parentId",obj.getParentId()).build());
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("名称重复，保存失败:" + obj.getName());
@@ -122,11 +122,11 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
                     obj.setSortOrder(this.selectCount(MapUtil.getMap("parentId",obj.getParentId())) + 1);
                 obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
-            if (StringUtils.isBlank(obj.getRoute())) obj.setRoute("SysManage");
-            if (StringUtils.isBlank(obj.getType())) obj.setType("链接");
+            if (StrUtil.isBlank(obj.getRoute())) obj.setRoute("SysManage");
+            if (StrUtil.isBlank(obj.getType())) obj.setType("链接");
         }
 
-        if(StringUtils.isNotBlank(obj.getType())){
+        if(StrUtil.isNotBlank(obj.getType())){
             if(obj.getType().equals("列表")){
                 obj.setRoute("Layout");
             }else{

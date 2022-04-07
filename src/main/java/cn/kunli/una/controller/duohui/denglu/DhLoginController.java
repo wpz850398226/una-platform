@@ -6,7 +6,7 @@ import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +36,7 @@ public class DhLoginController {
             requestURI = spring_security_saved_request.getRequestURI();
         }*/
 
-        if(StringUtils.isBlank(oldPath))oldPath = "/api/duohui/chanpin/index";
+        if(StrUtil.isBlank(oldPath))oldPath = "/api/duohui/chanpin/index";
 
         model.addAttribute("originUri",oldPath);
         return "duohui/denglu/login";

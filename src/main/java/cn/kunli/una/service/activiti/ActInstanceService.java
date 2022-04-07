@@ -13,7 +13,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +67,7 @@ public class ActInstanceService {
      *//*
 
     public SysResult stop(String key) {
-        if (StringUtils.isBlank(key)) return SysResult.fail();
+        if (StrUtil.isBlank(key)) return SysResult.fail();
         return instanceUtil.deleteInstanceById(key);
     }
 

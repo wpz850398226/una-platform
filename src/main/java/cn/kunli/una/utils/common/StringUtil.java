@@ -1,10 +1,9 @@
 package cn.kunli.una.utils.common;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -15,42 +14,6 @@ import java.util.regex.Pattern;
 public class StringUtil {
 
     private static Pattern linePattern = Pattern.compile("_(\\w)");
-
-	//大写转小写+下划线
-	public static String upperCharToUnderLine(String param) {
-		if(param==null ||param.equals("")){
-			return "";
-		}
-        Pattern p=Pattern.compile("[A-Z]");
-		StringBuilder builder=new StringBuilder(param);
-		Matcher mc=p.matcher(param);
-		int i=0;
-
-		while (mc.find()) {
-			builder.replace(mc.start()+i, mc.end()+i, "_"+mc.group().toLowerCase());
-			i++;
-		}
-
-		if('_' == builder.charAt(0)){
-			builder.deleteCharAt(0);
-		}
-
-		return builder.toString();
-	}
-
-    //小写+下划线转大写
-    public static String underLineToUpperChar (String param) {
-        param = param.toLowerCase();
-        Matcher matcher = linePattern.matcher(param);
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
-        }
-        matcher.appendTail(sb);
-        return sb.toString();
-    }
-
-
 
 	/**
      * 把中文转成Unicode码
@@ -114,8 +77,8 @@ public class StringUtil {
      * @return
      */
     public static Boolean containSubString(String parentStr,String subStr,String regex){
-        if(StringUtils.isBlank(parentStr)||StringUtils.isBlank(subStr))return false;
-        if(StringUtils.isBlank(regex))regex = ",";
+        if(StrUtil.isBlank(parentStr)||StrUtil.isBlank(subStr))return false;
+        if(StrUtil.isBlank(regex))regex = ",";
         String[] parentStrArray = parentStr.split(regex);
         List<String> parentStrList= Arrays.asList(parentStrArray);
         if(parentStrList.contains(subStr)){

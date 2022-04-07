@@ -67,13 +67,6 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
-        <!--必须使用0.9以上的版本-->
-        <!--<dependency>
-            <groupId>com.github.jsqlparser</groupId>
-            <artifactId>jsqlparser</artifactId>
-            <version>1.4</version>
-        </dependency>-->
-
         <!--thymeleaf 3.*版本-->
         <dependency>
             <groupId>org.thymeleaf</groupId>
@@ -92,11 +85,6 @@
         </dependency>
 
         <!-- Druid -->
-        <!--<dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.21</version>
-        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
@@ -137,19 +125,6 @@
             <version>8.1.0</version>
         </dependency>
 
-        <!--mybatis-->
-        <!--<dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.2</version>
-        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.6</version>
-        </dependency>
-
         <!--redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -162,18 +137,6 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- configure logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-
         <!--log4j-->
         <dependency>
             <groupId>log4j</groupId>
@@ -181,11 +144,6 @@
             <version>1.2.17</version>
         </dependency>
 
-        <!--JDBC-->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>-->
         <!--MYSQL-->
         <dependency>
             <groupId>mysql</groupId>
@@ -211,11 +169,11 @@
             </exclusions>
         </dependency>
         <!--apache-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
-        </dependency>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -242,18 +200,6 @@
             <artifactId>hutool-all</artifactId>
             <version>5.7.16</version>
         </dependency>
-
-        <!--发送邮件-->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>-->
-        <!--httpclient 发送文件-->
-        <!--<dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.5</version>
-        </dependency>-->
 
         <!-- 图片转缩略图 -->
         <dependency>

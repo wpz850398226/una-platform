@@ -8,7 +8,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.*;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,10 +57,10 @@ public class InstanceUtil {
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
         if(obj!=null){
             if(obj.getId()!=null)query.processInstanceId(obj.getId());
-            if(StringUtils.isNotBlank(obj.getDefinitionId()))query.processDefinitionId(obj.getDefinitionId());
-            if(StringUtils.isNotBlank(obj.getName()))query.processInstanceNameLike(obj.getName());
-            if(StringUtils.isNotBlank(obj.getKey()))query.processInstanceBusinessKey(obj.getKey());
-            if(StringUtils.isNotBlank(obj.getDefinitionKey()))query.processDefinitionKey(obj.getDefinitionKey());
+            if(StrUtil.isNotBlank(obj.getDefinitionId()))query.processDefinitionId(obj.getDefinitionId());
+            if(StrUtil.isNotBlank(obj.getName()))query.processInstanceNameLike(obj.getName());
+            if(StrUtil.isNotBlank(obj.getKey()))query.processInstanceBusinessKey(obj.getKey());
+            if(StrUtil.isNotBlank(obj.getDefinitionKey()))query.processDefinitionKey(obj.getDefinitionKey());
         }
         List<HistoricProcessInstance> list = query.orderByProcessInstanceStartTime().desc().listPage(obj.getPageNum() - 1, obj.getPageSize());
         return list;
@@ -137,7 +137,7 @@ public class InstanceUtil {
             //指定流程实例id
             if (obj.getId()!=null)historicVariableInstanceQuery.processInstanceId(obj.getId());
             //指定变量名
-            if (StringUtils.isNotBlank(obj.getVariableName()))historicVariableInstanceQuery.variableName(obj.getVariableName());
+            if (StrUtil.isNotBlank(obj.getVariableName()))historicVariableInstanceQuery.variableName(obj.getVariableName());
 
             List<HistoricVariableInstance> historicVariableInstanceList = historicVariableInstanceQuery.list();
             return historicVariableInstanceList;

@@ -8,7 +8,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.service.SpringContextUtil;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -50,7 +50,7 @@ public class WechatUtil {
 		Map<String,Object> map = (Map<String, Object>) JSON.parse(result);
 		String errmsg=(String) map.get("errmsg");
 		String access_token=(String) map.get("access_token");
-		if (StringUtils.isNotBlank(errmsg)){
+		if (StrUtil.isNotBlank(errmsg)){
 			return "error";
 		}else {
 			return access_token;

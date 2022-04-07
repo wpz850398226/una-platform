@@ -6,7 +6,7 @@ import io.minio.http.Method;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -100,7 +100,7 @@ public class MinIoUtil {
     public void download(String bucketName, String fileName,String actualFileName, HttpServletResponse httpServletResponse) {
         try {
             //如果bucket为null 为默认bucket
-            if (StringUtils.isBlank(bucketName)) {
+            if (StrUtil.isBlank(bucketName)) {
                 bucketName = minioConfig.getBucketName();
             }
             StatObjectResponse statObjectResponse = minioClient.statObject(StatObjectArgs.builder().bucket(bucketName).object(fileName).build());
@@ -126,8 +126,8 @@ public class MinIoUtil {
      */
     @SneakyThrows
     public String getDownLoadPath(String bucketName,String objectName,Integer expiryTime){
-        if(StringUtils.isBlank(objectName))return null;
-        if(StringUtils.isBlank(bucketName))bucketName = minioConfig.getBucketName();
+        if(StrUtil.isBlank(objectName))return null;
+        if(StrUtil.isBlank(bucketName))bucketName = minioConfig.getBucketName();
         if(expiryTime==null)expiryTime = 30*60;
         minioClient.statObject(StatObjectArgs.builder().bucket(bucketName).object(objectName).build());
         String presignedObjectUrl = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().method(Method.GET).bucket(bucketName).object(objectName).build());
@@ -142,7 +142,7 @@ public class MinIoUtil {
      * @return
      */
     public String getDownLoadPath(String path){
-        if(StringUtils.isBlank(path))return path;
+        if(StrUtil.isBlank(path))return path;
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("http://")
                 .append(minioConfig.getEndpoint()).append(":")

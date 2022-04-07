@@ -12,7 +12,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,7 +82,7 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
         if(!map.containsKey("orderByAsc")&&!map.containsKey("orderByDesc")){
             map.put("orderByDesc","createTime");
         }
-        if(StringUtils.isNotBlank(code)){
+        if(StrUtil.isNotBlank(code)){
             map.put("typeDcode",code);
         }
         Page page = sysArticleService.page(map.get("pageNum"),map.get("pageSize"), map);

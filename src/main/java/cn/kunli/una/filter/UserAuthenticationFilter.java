@@ -1,7 +1,7 @@
 package cn.kunli.una.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,7 +32,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
     @Override
     protected String obtainPassword(HttpServletRequest request) {
         String password = this.getBodyParams(request).get(super.SPRING_SECURITY_FORM_PASSWORD_KEY);
-        if(StringUtils.isNotBlank(password)){
+        if(StrUtil.isNotBlank(password)){
             return password;
         }
         return super.obtainPassword(request);
@@ -41,7 +41,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
     @Override
     protected String obtainUsername(HttpServletRequest request) {
         String username = this.getBodyParams(request).get(super.SPRING_SECURITY_FORM_USERNAME_KEY);
-        if(StringUtils.isNotBlank(username)){
+        if(StrUtil.isNotBlank(username)){
             return username;
         }
         return super.obtainUsername(request);

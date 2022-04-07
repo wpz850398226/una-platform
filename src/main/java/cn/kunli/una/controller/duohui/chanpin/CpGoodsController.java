@@ -12,7 +12,7 @@ import cn.kunli.una.utils.common.ListUtil;
 import cn.kunli.una.utils.common.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +57,7 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
         CpGoods record = service.parse(ListUtil.getList(service.getById(id))).get(0);
         //查询规格
         CpModel cpModel;
-        if(StringUtils.isBlank(attributeName)){
+        if(StrUtil.isBlank(attributeName)){
             //查询默认规格属性
             List<CpSpecification> specificationList = record.getSpecificationList();
             List<String> attributeNameList = new ArrayList<>();

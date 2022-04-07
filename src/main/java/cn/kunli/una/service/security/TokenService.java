@@ -7,7 +7,7 @@ import cn.kunli.una.utils.redis.RedisUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +50,7 @@ public class TokenService {
     //获取当前登录用户
     public SysLoginAccountDetails getLoginAccount(String jwtToken){
         String cacheTokenFromJWT = getCacheTokenFromJWT(jwtToken);
-        if(StringUtils.isNotBlank(cacheTokenFromJWT)){
+        if(StrUtil.isNotBlank(cacheTokenFromJWT)){
             SysLoginAccount sysLoginAccount = redisUtil.get(getTokenKey(cacheTokenFromJWT));
             if(sysLoginAccount!=null){
                 SysLoginAccountDetails sysLoginAccountDetails = new SysLoginAccountDetails();

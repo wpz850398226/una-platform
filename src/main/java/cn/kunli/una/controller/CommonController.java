@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.apache.http.util.EntityUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
@@ -65,7 +65,7 @@ public class CommonController {
     @SneakyThrows
     @RequestMapping("/manage/{className}")
     public String manage(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> params) {
-        if(StringUtils.isBlank(className))return null;
+        if(StrUtil.isBlank(className))return null;
         //判断权限
         //if(!SecurityUtils.getSubject().isPermitted(className+":retrieve"))return "error/401";
         SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
@@ -161,10 +161,10 @@ public class CommonController {
         //字段分组
         for (SysField sysField : sysFieldList) {
             //判断字段权限
-            if(StringUtils.isNotBlank(sysField.getPermissionCode())){
+            if(StrUtil.isNotBlank(sysField.getPermissionCode())){
                 if(!permissionCodeList.contains(sysField.getPermissionCode()))continue;
             }
-            if(StringUtils.isNotBlank(sysField.getGroupName())){
+            if(StrUtil.isNotBlank(sysField.getGroupName())){
                 List<SysField> subFieldList  = new ArrayList<>();
                 subFieldList.add(sysField);
                 sysFieldListList.add(subFieldList);
@@ -218,7 +218,7 @@ public class CommonController {
 
 
         for (SysField sysField : sysFieldList) {
-            if(StringUtils.isNotBlank(sysField.getGroupName())){
+            if(StrUtil.isNotBlank(sysField.getGroupName())){
                 List<SysField> subFieldList  = new ArrayList<>();
                 subFieldList.add(sysField);
                 sysFieldListList.add(subFieldList);
@@ -269,7 +269,7 @@ public class CommonController {
         for (int j = 0; j < fieldList.size(); j++) {
             String contentText = "文本";
             //String contentText = fieldList.get(j).get==null?"文本":fieldList.get(j).getStorageType();
-            if (StringUtils.isNotBlank(fieldList.get(j).getFormatCheckTypeDcode())) {
+            if (StrUtil.isNotBlank(fieldList.get(j).getFormatCheckTypeDcode())) {
 
                 contentText += "(" + fieldList.get(j).getFormatCheckTypeDcode() + ")";
             }
@@ -344,7 +344,7 @@ public class CommonController {
                     String url = "http://localhost:" + Constant.SERVICE_PORT + "/" + fieldList.get(i).getOptionEntityPath() + "/list";
                     String param = fieldList.get(i).getOptionParamValue();
                     String rul = "";
-                    if (StringUtils.isBlank(param) || "all".equals(param)) {
+                    if (StrUtil.isBlank(param) || "all".equals(param)) {
 //                        rul = HttpUtil.doPost(url, null, "auth_token_data");
                     } else {
                         Map<String, Object> mapParam = new HashMap<>();
@@ -358,20 +358,20 @@ public class CommonController {
 
                         for (int j = 0; j < dataList.size(); j++) {
                             if ("".equals(data)) {
-                                if (StringUtils.isBlank(fieldList.get(i).getOptionNameFieldCode()))
+                                if (StrUtil.isBlank(fieldList.get(i).getOptionNameFieldCode()))
                                     data += dataList.get(j).get("title");
                                 else
                                     data += dataList.get(j).get(fieldList.get(i).getOptionNameFieldCode());
-                                if (StringUtils.isBlank(fieldList.get(i).getOptionValueFieldCode()))
+                                if (StrUtil.isBlank(fieldList.get(i).getOptionValueFieldCode()))
                                     data += "&@" + dataList.get(j).get("id");
                                 else
                                     data += "&@" + dataList.get(j).get(fieldList.get(i).getOptionValueFieldCode());
                             } else {
-                                if (StringUtils.isBlank(fieldList.get(i).getOptionNameFieldCode()))
+                                if (StrUtil.isBlank(fieldList.get(i).getOptionNameFieldCode()))
                                     data += "," + dataList.get(j).get("title");
                                 else
                                     data += dataList.get(j).get(fieldList.get(i).getOptionNameFieldCode());
-                                if (StringUtils.isBlank(fieldList.get(i).getOptionValueFieldCode()))
+                                if (StrUtil.isBlank(fieldList.get(i).getOptionValueFieldCode()))
                                     data += "&@" + dataList.get(j).get("id");
                                 else
                                     data += "&@" + dataList.get(j).get(fieldList.get(i).getOptionValueFieldCode());

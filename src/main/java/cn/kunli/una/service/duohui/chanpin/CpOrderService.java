@@ -13,7 +13,7 @@ import cn.kunli.una.utils.BaseUtil;
 import cn.kunli.una.utils.common.ListUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -150,12 +150,12 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
         }
 
         Map<String, String> orderParam = new HashMap<>();
-        if(StringUtils.isBlank(sample.getCode())) return SysResult.fail("订单编号异常，结算失败");
+        if(StrUtil.isBlank(sample.getCode())) return SysResult.fail("订单编号异常，结算失败");
         orderParam.put("WIDout_trade_no", sample.getCode());    //订单编号
         orderParam.put("WIDsubject", sample.getCode());    //订单名称
         if(sample.getBargainAmount()==null) return SysResult.fail("订单成交价异常，结算失败");
         orderParam.put("WIDtotal_amount", String.valueOf(sample.getBargainAmount()));    //成交金额
-        if(StringUtils.isNotBlank(sample.getRemark()))orderParam.put("WIDout_trade_no", sample.getRemark());    //商品描述，可空
+        if(StrUtil.isNotBlank(sample.getRemark()))orderParam.put("WIDout_trade_no", sample.getRemark());    //商品描述，可空
         SysResult toPayResult = alipayService.toPay(orderParam);
         return toPayResult;
     }

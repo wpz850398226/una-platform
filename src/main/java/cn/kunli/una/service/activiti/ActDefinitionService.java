@@ -8,7 +8,7 @@ import cn.kunli.una.utils.common.ListUtil;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +76,7 @@ public class ActDefinitionService {
 
     public SysResult save(ActDefinition obj) {
 
-        if (StringUtils.isNotBlank(obj.getFileId())) {
+        if (StrUtil.isNotBlank(obj.getFileId())) {
             //String fileUrl = sysFileMapper.getById(obj.getFileId()).getPath();
             Deployment deployment = definitionUtil.deployFromDisk(obj.getName(), "/file/" + obj.getName());
             if (deployment != null) return new SysResult().success("部署成功", deployment);
@@ -87,7 +87,7 @@ public class ActDefinitionService {
 		*/
 /*if(obj.getDeployType()!=null&&obj.getDeployType()==1){
 			//磁盘加载
-			if(StringUtils.isNotBlank(obj.getFileId())) {
+			if(StrUtil.isNotBlank(obj.getFileId())) {
 				//String fileUrl = sysFileMapper.getById(obj.getFileId()).getPath();
 				Deployment deployment = DefinitionUtil.deployFromDisk(obj.getName(),"/file/"+obj.getName());
 				if(deployment!=null)return SysResult.success("部署成功",deployment);

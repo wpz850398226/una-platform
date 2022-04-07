@@ -12,7 +12,7 @@ import cn.kunli.una.utils.common.MinIoUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     @MyCacheEvict(value = "list")
     public SysResult saveRecord(SysFile entity) {
         String path = minIoUtil.putObject(entity.getFile());
-        if(StringUtils.isNotBlank(path)){
+        if(StrUtil.isNotBlank(path)){
             entity.setName(path.substring(path.lastIndexOf("/")+1));
             entity.setPath(path);
         }
@@ -57,7 +57,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         SysFile record = thisProxy.getById(id);
-        if(record!=null&&StringUtils.isNotBlank(record.getPath())){
+        if(record!=null&&StrUtil.isNotBlank(record.getPath())){
             minIoUtil.delete(record.getPath());
         }
         return super.deleteById(id);
@@ -123,14 +123,14 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
         list = super.parse(list);
         if(CollectionUtils.isNotEmpty(list)){
             for (SysFile sysFile : list) {
-                if(StringUtils.isNotBlank(sysFile.getTypeDcode())){
+                if(StrUtil.isNotBlank(sysFile.getTypeDcode())){
                     SysDictionary codeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", sysFile.getTypeDcode()));
                     if(codeDic!=null){
                         sysFile.getMap().put("typeDvalue",codeDic.getValue());
                     }
                 }
 
-                if(StringUtils.isNotBlank(sysFile.getPath())){
+                if(StrUtil.isNotBlank(sysFile.getPath())){
                     sysFile.setPath(minIoUtil.getDownLoadPath(sysFile.getPath()));
                 }
             }

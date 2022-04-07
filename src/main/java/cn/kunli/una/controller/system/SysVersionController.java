@@ -5,7 +5,7 @@ import cn.kunli.una.pojo.system.SysVersion;
 import cn.kunli.una.pojo.vo.Constant;
 import cn.kunli.una.service.system.SysVersionService;
 import cn.kunli.una.utils.common.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.stereotype.Controller;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +38,7 @@ public class SysVersionController extends BaseController<SysVersionService, SysV
             List<SysVersion> list = service.selectList(params);
             if (CollectionUtils.isNotEmpty(list)) {
                 SysVersion sysVersion = list.get(0);
-                if (StringUtils.isNotBlank(sysVersion.getPath()) && StringUtils.isNotBlank(sysVersion.getInternalVersion())) {
+                if (StrUtil.isNotBlank(sysVersion.getPath()) && StrUtil.isNotBlank(sysVersion.getInternalVersion())) {
                     String fileName = sysVersion.getInternalVersion();
                     String filePath = Constant.UPLOAD_FILE_PATH + sysVersion.getPath().substring(6);
                     FileUtils.downloadFile(response, fileName, filePath);

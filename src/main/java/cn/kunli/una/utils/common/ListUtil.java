@@ -1,8 +1,9 @@
 package cn.kunli.una.utils.common;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.kunli.una.pojo.BasePojo;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -104,7 +105,7 @@ public class ListUtil {
     public static String listToStr(List<String> list){
         if(list!=null&&list.size()>0){
             Object[] array = list.toArray();
-            String str = StringUtils.join(array, ",");
+            String str = ArrayUtil.join(array, ",");
             return str;
         }else {
             return null;
@@ -113,7 +114,7 @@ public class ListUtil {
 
     //字符串集合转字符串逗号分隔
     public static List<String> strToList(String str){
-        if(StringUtils.isNotBlank(str)){
+        if(StrUtil.isNotBlank(str)){
             String[] array = str.split(",");
             List<String> list = Arrays.asList(array);
             return list;
@@ -201,7 +202,7 @@ public class ListUtil {
     public static List<String> upperCharToUnderLine(List<String> list) {
         List<String> result = new ArrayList<>();
         for (String s : list) {
-            result.add(StringUtil.upperCharToUnderLine(s));
+            result.add(StrUtil.toUnderlineCase(s));
         }
         return result;
     }

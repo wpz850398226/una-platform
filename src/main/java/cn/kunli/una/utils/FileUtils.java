@@ -3,7 +3,7 @@ package cn.kunli.una.utils;
 import cn.kunli.una.pojo.vo.Constant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -62,7 +62,7 @@ public class FileUtils {
         FileOutputStream outputStream = new FileOutputStream(file);
         String url = null;
         FileEntity fileEntity = null;
-        if (!StringUtils.isEmpty(virtualPath)) {
+        if (StrUtil.isNotBlank(virtualPath)) {
             url = file.getPath().replace(baseDir, "");
             fileEntity = new FileEntity(virtualPath + "/" + url.replace("\\", "/"), outputStream);
         } else {

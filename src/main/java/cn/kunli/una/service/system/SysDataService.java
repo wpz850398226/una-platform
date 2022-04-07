@@ -10,7 +10,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +48,8 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
         }else{
             sysEntity = sysEntityService.selectOne(MapUtil.getMap("code","SysData"));
         }
-        if((map.get("orderByAsc")==null|| StringUtils.isBlank(map.get("orderByAsc").toString()))
-                &&(map.get("orderByDesc")==null||StringUtils.isBlank(map.get("orderByDesc").toString()))) {
+        if((map.get("orderByAsc")==null|| StrUtil.isBlank(map.get("orderByAsc").toString()))
+                &&(map.get("orderByDesc")==null||StrUtil.isBlank(map.get("orderByDesc").toString()))) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
                 List<SysSort> sortList = sysSortService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
@@ -107,7 +107,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
             if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {
-                    if(StringUtils.isNotBlank(sysField.getAssignmentCode())&&StringUtils.isNotBlank(sysField.getDisplayCode())
+                    if(StrUtil.isNotBlank(sysField.getAssignmentCode())&&StrUtil.isNotBlank(sysField.getDisplayCode())
                             &&!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
                         for (SysData sysData : list) {
                             //获取记录中赋字段的值

@@ -12,7 +12,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +44,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
             //审核通过
             //创建企业
             SysAccount sysAccount = sysAccountService.getById(entity.getId());
-            if(StringUtils.isNotBlank(sysAccount.getTypeDcode())&&sysAccount.getTypeDcode().equals("account_type_company")){
+            if(StrUtil.isNotBlank(sysAccount.getTypeDcode())&&sysAccount.getTypeDcode().equals("account_type_company")){
 
                 SysCompany sysCompany = (SysCompany)new SysCompany().setIndustryTypeDcodes(sysAccount.getIndustryTypeDcodes()).setRegionIds(sysAccount.getRegionIds())
                         .setCoord(sysAccount.getCoord()).setTypeDcode(sysAccount.getTypeDcode()).setName(entity.getName());
@@ -64,7 +64,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
     public SysResult validate(SysAccount obj) {
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
-        if (StringUtils.isNotBlank(obj.getUsername())) {
+        if (StrUtil.isNotBlank(obj.getUsername())) {
             List<SysAccount> objList = sysAccountService.selectList(MapUtil.getMap("username", obj.getUsername().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
@@ -80,17 +80,17 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         super.initialize(obj);
         if (obj.getId() == null) {
             //如果id为空，新增数据
-            if(StringUtils.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
+            if(StrUtil.isBlank(obj.getStatusDcode()))obj.setStatusDcode("account_status_normal");
             //默认密码123456
-            if (StringUtils.isBlank(obj.getPassword())) {
+            if (StrUtil.isBlank(obj.getPassword())) {
                 obj.setPassword(new BCryptPasswordEncoder().encode("123456"));
             }
             //如果账号来源是自行注册，则状态为待提交
-            if(StringUtils.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
+            if(StrUtil.isNotBlank(obj.getOriginDcode())&&obj.getOriginDcode().equals("account_origin_register")){
                 obj.setStatusDcode("account_status_toSubmit").setRoleId("100002");//未认证会员角色
             }
 
-            if(StringUtils.isBlank(obj.getTypeDcode())){
+            if(StrUtil.isBlank(obj.getTypeDcode())){
                 obj.setTypeDcode("account_type_person");
             }
         }else{
@@ -108,9 +108,9 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         }
 
         //格式化账号，姓名（去空格）
-        if (StringUtils.isNotBlank(obj.getUsername())) obj.setUsername(obj.getUsername().replace(" ", ""));
-        if (StringUtils.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
-        if (StringUtils.isNotBlank(obj.getPassword())&&obj.getPassword().length()>=4&&!obj.getPassword().substring(0,4).equals("$2a$")) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
+        if (StrUtil.isNotBlank(obj.getUsername())) obj.setUsername(obj.getUsername().replace(" ", ""));
+        if (StrUtil.isNotBlank(obj.getName())) obj.setName(obj.getName().replace(" ", ""));
+        if (StrUtil.isNotBlank(obj.getPassword())&&obj.getPassword().length()>=4&&!obj.getPassword().substring(0,4).equals("$2a$")) obj.setPassword(new BCryptPasswordEncoder().encode(obj.getPassword()));
 
         return obj;
     }

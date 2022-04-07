@@ -1,7 +1,7 @@
 package cn.kunli.una.utils.common;
 
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +75,7 @@ public class MapUtil<V> {
      * @return
      */
     public static Map<String, Object> getMap(String key,Object value) {
-        if(StringUtils.isBlank(key)||value==null)return null;
+        if(StrUtil.isBlank(key)||value==null)return null;
         // 用于存值的 Map 集合
         Map<String, Object> map = new HashMap<>();
         map.put(key,value);
@@ -90,7 +90,7 @@ public class MapUtil<V> {
     public static Map<String, Object> keysUpperCharToUnderLine(Map<String, Object> map) {
         Map<String, Object> result = new HashMap<>();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            result.put(StringUtil.upperCharToUnderLine(entry.getKey()),entry.getValue());
+            result.put(StrUtil.toUnderlineCase(entry.getKey()),entry.getValue());
         }
         return result;
     }

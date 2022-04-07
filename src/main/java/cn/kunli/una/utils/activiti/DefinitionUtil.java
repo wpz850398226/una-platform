@@ -10,7 +10,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -175,8 +175,8 @@ public class DefinitionUtil {
             ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
             if(obj!=null){
                 if(obj.getId()!=null)query.processDefinitionId(obj.getId());
-                if(StringUtils.isNotBlank(obj.getName()))query.processDefinitionNameLike(obj.getName());
-                if(StringUtils.isNotBlank(obj.getKey()))query.processDefinitionKeyLike(obj.getKey());
+                if(StrUtil.isNotBlank(obj.getName()))query.processDefinitionNameLike(obj.getName());
+                if(StrUtil.isNotBlank(obj.getKey()))query.processDefinitionKeyLike(obj.getKey());
             }
             List<ProcessDefinition> list = query.listPage(obj.getPageNum() - 1, obj.getPageSize());
             return list;

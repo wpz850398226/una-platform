@@ -13,7 +13,7 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -220,8 +220,8 @@ public class ActTaskService {
 
 	public SysResult turnTransition(ActTask obj) {
 		if(obj.getId()==null)return SysResult.fail("任务id为空");
-		if(StringUtils.isBlank(obj.getUserId()))return SysResult.fail("办理人id为空");
-		if(StringUtils.isBlank(obj.getActivityId()))return SysResult.fail("目标节点id为空");
+		if(StrUtil.isBlank(obj.getUserId()))return SysResult.fail("办理人id为空");
+		if(StrUtil.isBlank(obj.getActivityId()))return SysResult.fail("目标节点id为空");
 
 		//查询待办任务
 		Task task = taskUtil.getTaskById(obj.getId());

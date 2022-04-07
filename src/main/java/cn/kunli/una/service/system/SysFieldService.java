@@ -1,14 +1,16 @@
 package cn.kunli.una.service.system;
 
+import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.mapper.SysFieldMapper;
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.flow.FlowNode;
-import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.system.SysDictionary;
+import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.system.SysField;
+import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
-
 import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
@@ -19,8 +21,7 @@ import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.StringUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +75,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      */
     @SneakyThrows
     public SysResult getDisplayValue(String assignmentCode, String value, BasicService bs,String transformDisplayCode) {
-        if (StringUtils.isBlank(assignmentCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
+        if (StrUtil.isBlank(assignmentCode) || StrUtil.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
         int length = assignmentCode.length();
         List<? extends BasePojo> resultList = null;
 
@@ -207,7 +208,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
         if(CollectionUtils.isNotEmpty(resultList)){
             List<String> resultStrList = new ArrayList<>();
-            if(StringUtils.isNotBlank(transformDisplayCode)){
+            if(StrUtil.isNotBlank(transformDisplayCode)){
                 BasePojo result0 = resultList.get(0);
                 //如果指定了转换取值编码，则通过反射获取，否则默认取name
                 Class<? extends BasePojo> resultClass = result0.getClass();
@@ -244,7 +245,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      */
     @SneakyThrows
     public SysResult getAssignmentValue(String displayCode, String value, BasicService bs,String transformDisplayCode) {
-        if (StringUtils.isBlank(displayCode) || StringUtils.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
+        if (StrUtil.isBlank(displayCode) || StrUtil.isBlank(value)) return SysResult.fail("查询失败：赋值编码或值为空");
         int length = displayCode.length();
         List<? extends BasePojo> resultList = null;
 
@@ -367,7 +368,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
         if(CollectionUtils.isNotEmpty(resultList)){
             List<String> resultStrList = new ArrayList<>();
-            if(StringUtils.isNotBlank(transformDisplayCode)){
+            if(StrUtil.isNotBlank(transformDisplayCode)){
                 BasePojo result0 = resultList.get(0);
                 //如果指定了转换取值编码，则通过反射获取，否则默认取name
                 Class<? extends BasePojo> resultClass = result0.getClass();
@@ -402,12 +403,12 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      */
     public SysField initialize(SysField obj) {
         super.initialize(obj);
-        if (StringUtils.isNotBlank(obj.getRadioOptions())) obj.setRadioOptions(obj.getRadioOptions().replace("，", ","));
+        if (StrUtil.isNotBlank(obj.getRadioOptions())) obj.setRadioOptions(obj.getRadioOptions().replace("，", ","));
         if (obj.getId() == null) {
-            if (StringUtils.isBlank(obj.getOptionNameFieldCode())) obj.setOptionNameFieldCode("name");
-            if (StringUtils.isBlank(obj.getOptionValueFieldCode())) obj.setOptionValueFieldCode("id");
-            if (StringUtils.isBlank(obj.getDqlName()))
-                obj.setDqlName("record." + StringUtil.upperCharToUnderLine(obj.getAssignmentCode()));
+            if (StrUtil.isBlank(obj.getOptionNameFieldCode())) obj.setOptionNameFieldCode("name");
+            if (StrUtil.isBlank(obj.getOptionValueFieldCode())) obj.setOptionValueFieldCode("id");
+            if (StrUtil.isBlank(obj.getDqlName()))
+                obj.setDqlName("record." + StrUtil.toUnderlineCase(obj.getAssignmentCode()));
         }else{
             if(obj.getOptionNameFieldCode()!=null&&obj.getOptionNameFieldCode().equals(""))obj.setOptionNameFieldCode("name");
             if(obj.getOptionValueFieldCode()!=null&&obj.getOptionValueFieldCode().equals(""))obj.setOptionValueFieldCode("id");
@@ -462,18 +463,18 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 record.setHideSubMap(map);
             }
 
-            if (StringUtils.isNotBlank(record.getRadioOptions())){
-                record.setRadioOptionArray(StringUtils.split(record.getRadioOptions(), ","));
+            if (StrUtil.isNotBlank(record.getRadioOptions())){
+                record.setRadioOptionArray(StrUtil.splitToArray(record.getRadioOptions(), ","));
             }
 
-            if(StringUtils.isNotBlank(record.getAssignmentModeDcode())){
+            if(StrUtil.isNotBlank(record.getAssignmentModeDcode())){
                 SysDictionary assignmentModeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", record.getAssignmentModeDcode()));
                 if(assignmentModeDic!=null){
                     record.setAssignmentType(assignmentModeDic.getRemark());
                 }
             }
 
-            if(StringUtils.isNotBlank(record.getFormatCheckTypeDcode())){
+            if(StrUtil.isNotBlank(record.getFormatCheckTypeDcode())){
                 SysDictionary codeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", record.getFormatCheckTypeDcode()));
                 if(codeDic!=null)record.getMap().put("formatCheckTypeDvalue",codeDic.getValue());
             }

@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     public SysResult updateRecordById(SysDictionary entity) {
         SysResult sysResult = super.updateRecordById(entity);
         if(sysResult.getIsSuccess()){
-            if(StringUtils.isNotBlank(entity.getCode())){
+            if(StrUtil.isNotBlank(entity.getCode())){
                 //修改子字典的父类编码
                 UpdateWrapper updateWrapper = new UpdateWrapper();
                 updateWrapper.setEntity(new SysDictionary().setParentId(entity.getId()));

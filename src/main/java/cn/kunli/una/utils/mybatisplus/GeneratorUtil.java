@@ -1,12 +1,12 @@
 package cn.kunli.una.utils.mybatisplus;
 
+import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.vo.mybatisplus.GeneratorInfo;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -20,15 +20,15 @@ import java.util.List;
 public class GeneratorUtil {
 
     public static SysResult<String> codeGenerate(GeneratorInfo info){
-        if(StringUtils.isBlank(info.getTableName())){
+        if(StrUtil.isBlank(info.getTableName())){
             return SysResult.fail("创建失败，未指定表名");
         }
 
-        if(StringUtils.isBlank(info.getPassword()) || StringUtils.isBlank(info.getUsername())){
+        if(StrUtil.isBlank(info.getPassword()) || StrUtil.isBlank(info.getUsername())){
             return SysResult.fail("创建失败，数据库账号密码信息确实");
         }
 
-        if((StringUtils.isBlank(info.getUrl()) && (StringUtils.isBlank(info.getIp()) || StringUtils.isBlank(info.getDatabase()))) || StringUtils.isBlank(info.getDriverName())){
+        if((StrUtil.isBlank(info.getUrl()) && (StrUtil.isBlank(info.getIp()) || StrUtil.isBlank(info.getDatabase()))) || StrUtil.isBlank(info.getDriverName())){
             return SysResult.fail("创建失败，数据库信息有误");
         }
 
@@ -53,7 +53,7 @@ public class GeneratorUtil {
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         String url = "";
-        if(StringUtils.isNotBlank(info.getUrl())){
+        if(StrUtil.isNotBlank(info.getUrl())){
             url = info.getUrl();
         }else{
             StringBuffer sb = new StringBuffer();

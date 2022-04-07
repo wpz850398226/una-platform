@@ -17,7 +17,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -108,7 +108,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
 			return service.updateRecordById(entity);
-		}else if(StringUtils.isNotBlank(entity.getIds())){
+		}else if(StrUtil.isNotBlank(entity.getIds())){
 			//如果ids不为空，说明是批量修改数据
 			String[] idsArray = entity.getIds().split(",");
 			for (String id : idsArray) {
@@ -139,7 +139,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		if(entity.getId()!=null) {
 			//如果id不为空，说明是修改数据
 			return service.updateRecordById(entity);
-		}else if(StringUtils.isNotBlank(entity.getIds())){
+		}else if(StrUtil.isNotBlank(entity.getIds())){
 			//如果ids不为空，说明是批量修改数据
 			String[] idsArray = entity.getIds().split(",");
 			for (String id : idsArray) {
@@ -240,7 +240,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 				List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build());
 				if(CollectionUtils.isNotEmpty(rolePermissionList)){
 					for (SysRolePermission sysRolePermission : rolePermissionList) {
-						if(StringUtils.isNotBlank(sysRolePermission.getScopeDcode())){
+						if(StrUtil.isNotBlank(sysRolePermission.getScopeDcode())){
 							String scopeDcode = sysRolePermission.getScopeDcode();
 							Integer scope = Integer.valueOf(scopeDcode.substring(scopeDcode.lastIndexOf("_")+1));
 							if(scope>scopeCode)scopeCode = scope;
@@ -409,15 +409,15 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					/**
 					 * 判断是否是必填项且是否为空
 					 */
-					if(StringUtils.isNotBlank(sysField.getFormatCheckTypeDcode())
+					if(StrUtil.isNotBlank(sysField.getFormatCheckTypeDcode())
 							&&sysField.getFormatCheckTypeDcode().indexOf("required")!=-1
-							&&StringUtils.isBlank(cellValue)) {
+							&&StrUtil.isBlank(cellValue)) {
 						//如果必填项为空
 						return SysResult.fail("导入失败，第"+(i+1)+"行第"+(j+1)+"列内容为空");
 					}
 
 					//将表格数据保存到行map中
-					if (StringUtils.isNotBlank(cellValue) && cellValue.indexOf("&@") != -1){
+					if (StrUtil.isNotBlank(cellValue) && cellValue.indexOf("&@") != -1){
 						String data = cellValue.split("&@")[1];
 						dataMap.put(sysField.getAssignmentCode(),data);
 					}else{
@@ -428,9 +428,9 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					if(!isRepeat){//如果本行已经检测出有重复项，则不进一步检测
 						//反射获取查询样本类
 						T sample = entityClass.newInstance();
-						if(StringUtils.isNotBlank(sysField.getDataCheckTypeDcode())
+						if(StrUtil.isNotBlank(sysField.getDataCheckTypeDcode())
 								&&sysField.getDataCheckTypeDcode().indexOf("global_unique")!=-1
-								&&StringUtils.isNotBlank(cellValue)) {
+								&&StrUtil.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
 							List<T> objList = service.selectList(MapUtil.getMap(sysField.getAssignmentCode(), cellValue));
 							if(ListUtil.isNotNull(objList)) {

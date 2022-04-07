@@ -21,7 +21,7 @@ import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.DelegationState;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -81,23 +81,23 @@ public class TaskUtil {
 
         List<String> definitionKeyList = new ArrayList<>();
         if(ListUtil.isNotNull(obj.getDefinitionKeyList()))definitionKeyList = obj.getDefinitionKeyList();
-        if(StringUtils.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
+        if(StrUtil.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
             String[] split = obj.getDefinitionKey().split(",");
             definitionKeyList = Arrays.asList(split);
         }
         //查询条件
         if (obj != null) {
             if (obj.getId()!=null) query.taskId(obj.getId());
-            if (StringUtils.isNotBlank(obj.getName())) query.taskName(obj.getName());
-            if (StringUtils.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
-            if (StringUtils.isNotBlank(obj.getInstanceId())) query.processInstanceId(obj.getInstanceId());
-            if (StringUtils.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
-            if (StringUtils.isNotBlank(obj.getCandidateUserId())) query.taskCandidateUser(obj.getCandidateUserId());
+            if (StrUtil.isNotBlank(obj.getName())) query.taskName(obj.getName());
+            if (StrUtil.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
+            if (StrUtil.isNotBlank(obj.getInstanceId())) query.processInstanceId(obj.getInstanceId());
+            if (StrUtil.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
+            if (StrUtil.isNotBlank(obj.getCandidateUserId())) query.taskCandidateUser(obj.getCandidateUserId());
             if (ListUtil.isNotNull(obj.getCandidateGroupList())) query.taskCandidateGroupIn(obj.getCandidateGroupList());
             if (ListUtil.isNotNull(definitionKeyList)){
                 query.processDefinitionKeyIn(definitionKeyList);
             }else{
-                if (StringUtils.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
+                if (StrUtil.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
             }
         }
         return query.count();
@@ -113,23 +113,23 @@ public class TaskUtil {
         List<Task> taskList = new ArrayList<>();
         List<String> definitionKeyList = new ArrayList<>();
         if(ListUtil.isNotNull(obj.getDefinitionKeyList()))definitionKeyList = obj.getDefinitionKeyList();
-        if(StringUtils.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
+        if(StrUtil.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
             String[] split = obj.getDefinitionKey().split(",");
             definitionKeyList = Arrays.asList(split);
         }
         //查询条件
         if (obj != null) {
             if (obj.getId()!=null) query.taskId(obj.getId());
-            if (StringUtils.isNotBlank(obj.getName())) query.taskName(obj.getName());
-            if (StringUtils.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
+            if (StrUtil.isNotBlank(obj.getName())) query.taskName(obj.getName());
+            if (StrUtil.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
             if (ListUtil.isNotNull(definitionKeyList)){
                 query.processDefinitionKeyIn(definitionKeyList);
             }else{
-                if (StringUtils.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
+                if (StrUtil.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
             }
-            if (StringUtils.isNotBlank(obj.getInstanceId())) query.processInstanceId(obj.getInstanceId());
-            if (StringUtils.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
-            if (StringUtils.isNotBlank(obj.getCandidateUserId())) query.taskCandidateUser(obj.getCandidateUserId());
+            if (StrUtil.isNotBlank(obj.getInstanceId())) query.processInstanceId(obj.getInstanceId());
+            if (StrUtil.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
+            if (StrUtil.isNotBlank(obj.getCandidateUserId())) query.taskCandidateUser(obj.getCandidateUserId());
             if (ListUtil.isNotNull(obj.getCandidateGroupList())) query.taskCandidateGroupIn(obj.getCandidateGroupList());
         }
 
@@ -157,7 +157,7 @@ public class TaskUtil {
 
         List<String> definitionKeyList = new ArrayList<>();
         if(ListUtil.isNotNull(obj.getDefinitionKeyList()))definitionKeyList = obj.getDefinitionKeyList();
-        if(StringUtils.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
+        if(StrUtil.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
             String[] split = obj.getDefinitionKey().split(",");
             definitionKeyList = Arrays.asList(split);
         }
@@ -165,15 +165,15 @@ public class TaskUtil {
         //查询条件
         if (obj != null) {
             if (obj.getId()!=null) query.taskId(obj.getId());
-            if (StringUtils.isNotBlank(obj.getName())) query.taskName(obj.getName());
-            if (StringUtils.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
-            if (StringUtils.isNotBlank(obj.getInstanceId()))query.processInstanceId(obj.getInstanceId());
-            if (StringUtils.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
-            if (StringUtils.isNotBlank(obj.getTaskDefinitionKey())) query.taskDefinitionKey(obj.getTaskDefinitionKey());
+            if (StrUtil.isNotBlank(obj.getName())) query.taskName(obj.getName());
+            if (StrUtil.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
+            if (StrUtil.isNotBlank(obj.getInstanceId()))query.processInstanceId(obj.getInstanceId());
+            if (StrUtil.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
+            if (StrUtil.isNotBlank(obj.getTaskDefinitionKey())) query.taskDefinitionKey(obj.getTaskDefinitionKey());
             if (ListUtil.isNotNull(definitionKeyList)){
                 query.processDefinitionKeyIn(definitionKeyList);
             }else{
-                if (StringUtils.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
+                if (StrUtil.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
             }
         }
         query.orderByTaskCreateTime().desc();
@@ -198,22 +198,22 @@ public class TaskUtil {
 
         List<String> definitionKeyList = new ArrayList<>();
         if(ListUtil.isNotNull(obj.getDefinitionKeyList()))definitionKeyList = obj.getDefinitionKeyList();
-        if(StringUtils.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
+        if(StrUtil.isNotBlank(obj.getDefinitionKey())&&obj.getDefinitionKey().indexOf(",")!=-1){
             String[] split = obj.getDefinitionKey().split(",");
             definitionKeyList = Arrays.asList(split);
         }
         //查询条件
         if (obj != null) {
             if (obj.getId()!=null) query.taskId(obj.getId());
-            if (StringUtils.isNotBlank(obj.getName())) query.taskName(obj.getName());
-            if (StringUtils.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
-            if (StringUtils.isNotBlank(obj.getInstanceId()))query.processInstanceId(obj.getInstanceId());
-            if (StringUtils.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
-            if (StringUtils.isNotBlank(obj.getTaskDefinitionKey())) query.taskDefinitionKey(obj.getTaskDefinitionKey());
+            if (StrUtil.isNotBlank(obj.getName())) query.taskName(obj.getName());
+            if (StrUtil.isNotBlank(obj.getNameLike())) query.taskNameLike(obj.getNameLike());
+            if (StrUtil.isNotBlank(obj.getInstanceId()))query.processInstanceId(obj.getInstanceId());
+            if (StrUtil.isNotBlank(obj.getUserId())) query.taskAssignee(obj.getUserId());
+            if (StrUtil.isNotBlank(obj.getTaskDefinitionKey())) query.taskDefinitionKey(obj.getTaskDefinitionKey());
             if (ListUtil.isNotNull(definitionKeyList)){
                 query.processDefinitionKeyIn(definitionKeyList);
             }else{
-                if (StringUtils.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
+                if (StrUtil.isNotBlank(obj.getDefinitionKey())) query.processDefinitionKey(obj.getDefinitionKey());
             }
         }
 
@@ -667,7 +667,7 @@ public class TaskUtil {
             newTransition.setDestination(pointActivity);
 
             //设置任务批注
-            if(StringUtils.isNotBlank(obj.getComments())){
+            if(StrUtil.isNotBlank(obj.getComments())){
                 String[] commentArray = obj.getComments().toString().split(",");
                 for (String comment : commentArray) {
                     taskService.addComment(obj.getId(),null,comment);
@@ -714,7 +714,7 @@ public class TaskUtil {
         ProcessDefinitionEntity processDefinition = findProcessDefinitionEntityByTaskId(taskId);
 
         // 获取当前活动节点ID
-        if (StringUtils.isBlank(activityId)) {
+        if (StrUtil.isBlank(activityId)) {
             activityId = findTaskById(taskId).getTaskDefinitionKey();
         }
 

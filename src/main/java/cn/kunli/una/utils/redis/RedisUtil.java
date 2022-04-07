@@ -1,6 +1,6 @@
 package cn.kunli.una.utils.redis;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -137,7 +137,7 @@ public class RedisUtil<T> {
      */
     public T get(String key) {
         //return key == null ? null : (T)redisTemplate.opsForValue().get(key);
-        if(StringUtils.isBlank(key))return null;
+        if(StrUtil.isBlank(key))return null;
         Object o = redisTemplate.opsForValue().get(key);
         return (T)o;
     }

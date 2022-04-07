@@ -2,7 +2,7 @@ package cn.kunli.una.utils.common;
 
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysUtilQuery;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class QueryUtil {
 		if(queryList!=null&&queryList.size()>0) {
 			for(SysUtilQuery sysQuery:queryList) {
 				//如果查询字段id不是空的且查询值不是空的，则该查询条件有效
-				if(StringUtils.isNotBlank(sysQuery.getQueryName())&& StringUtils.isNotBlank(sysQuery.getValue())) {
+				if(StrUtil.isNotBlank(sysQuery.getQueryName())&& StrUtil.isNotBlank(sysQuery.getValue())) {
 					queryStr += " and ";
 					queryStr = queryStr +sysQuery.getQueryName()+" ";
 					queryStr = queryStr + sysQuery.getRelation()+" '";
@@ -60,8 +60,8 @@ public class QueryUtil {
 	public static String sortFieldToSortSql(String sortkey,String sortord) {
 
 		String sortSql = "";
-		if(StringUtils.isNotBlank(sortkey))sortSql+=sortkey;
-		if(StringUtils.isNotBlank(sortord)&&sortord.equals("降序"))sortSql+=" desc";
+		if(StrUtil.isNotBlank(sortkey))sortSql+=sortkey;
+		if(StrUtil.isNotBlank(sortord)&&sortord.equals("降序"))sortSql+=" desc";
 		return sortSql;
 	}
 

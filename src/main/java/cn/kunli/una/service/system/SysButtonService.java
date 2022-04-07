@@ -9,7 +9,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.MapUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
     public SysResult validate(SysButton obj) {
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
-        if(StringUtils.isNotBlank(obj.getEvent())){
+        if(StrUtil.isNotBlank(obj.getEvent())){
             List<SysButton> objList = sysButtonService.selectList(MapUtil.getMap("event", obj.getEvent().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("事件名重复，保存失败:" + obj.getEvent());
@@ -54,7 +54,7 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
                 SysPermission sysPermission = sysPermissionService.getById(sysButton.getPermissionId());
                 SysEntity sysEntity = sysEntityService.getById(sysPermission.getEntityId());
                 String typeDcode = sysPermission.getTypeDcode();
-                if(sysEntity!=null&& StringUtils.isNotBlank(typeDcode)){
+                if(sysEntity!=null&& StrUtil.isNotBlank(typeDcode)){
                     String substring = typeDcode.substring(typeDcode.lastIndexOf("_")+1);
                     Map<String, Object> map = sysButton.getMap();
                     if(map==null)map = new HashMap<>();

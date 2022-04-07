@@ -5,7 +5,7 @@ import cn.kunli.una.mapper.SysRoleMapper;
 import cn.kunli.una.pojo.system.SysRole;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
     //格式化保存实例
     @Override
     public SysRole initialize(SysRole obj) {
-        if (StringUtils.isBlank(obj.getCompanyTypeDcode())) obj.setCompanyTypeDcode("0");
+        if (StrUtil.isBlank(obj.getCompanyTypeDcode())) obj.setCompanyTypeDcode("0");
         super.initialize(obj);
         return obj;
     }

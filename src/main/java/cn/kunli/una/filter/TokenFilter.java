@@ -2,7 +2,7 @@ package cn.kunli.una.filter;
 
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.security.TokenService;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +37,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
         //获取前端请求的token
         String token = getToken(request);
-        if(StringUtils.isNotBlank(token)){
+        if(StrUtil.isNotBlank(token)){
             //token获取登录用户信息
             SysLoginAccountDetails loginUser = tokenService.getLoginAccount(token);
             if(loginUser!=null){
@@ -76,7 +76,7 @@ public class TokenFilter extends OncePerRequestFilter {
      */
     public String getToken(HttpServletRequest request){
         String token = request.getParameter(TOKEN_KEY);
-        if(StringUtils.isBlank(token)){
+        if(StrUtil.isBlank(token)){
             token = request.getHeader(TOKEN_KEY);
             if(token!=null&&token.equals("null"))token = null;
         }

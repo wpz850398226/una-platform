@@ -12,7 +12,7 @@ import cn.kunli.una.service.system.SysRegionService;
 import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,10 +68,10 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             if(loginUser.getCompanyId()!=null){
                 obj.setCompanyId(loginUser.getCompanyId());
                 SysCompany sysCompany = sysCompanyService.getById(loginUser.getCompanyId());
-                if(StringUtils.isBlank(obj.getRegionIds())){
+                if(StrUtil.isBlank(obj.getRegionIds())){
                     obj.setRegionIds(sysCompany.getRegionIds());
                 }
-                if(StringUtils.isBlank(obj.getIndustryTypeDcodes())){
+                if(StrUtil.isBlank(obj.getIndustryTypeDcodes())){
                     obj.setIndustryTypeDcodes(sysCompany.getIndustryTypeDcodes());
                 }
             }
@@ -133,7 +133,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
             cpGoods.setSpecificationList(specificationList);
             List<CpModel> attributeList = cpModelService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setModelList(attributeList);
-            if(StringUtils.isNotBlank(cpGoods.getFileIds())){
+            if(StrUtil.isNotBlank(cpGoods.getFileIds())){
                 String fileUrls = String.valueOf(cpGoods.getMap().get("fileUrls"));
                 if(fileUrls.contains(",")){
                     cpGoods.setTitleImgUrl(fileUrls.substring(0,fileUrls.indexOf(",")));
