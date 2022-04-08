@@ -5,6 +5,7 @@ import cn.kunli.una.mapper.AppLotteryWelfareMapper;
 import cn.kunli.una.pojo.app.AppLotteryWelfare;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.DateUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class AppLotteryWelfareService extends BasicService<AppLotteryWelfareMapp
             }
 
             //查询往期
-            List<AppLotteryWelfare> sameNumberLotteryList = selectList(cn.kunli.una.utils.common.MapUtil.buildHashMap()
+            List<AppLotteryWelfare> sameNumberLotteryList = selectList(UnaMapUtil.buildHashMap()
                     .put("number", number).put("orderByDesc","name").put("lt:lotteryDate",obj.getLotteryDate()).build());
             if(CollectionUtils.isNotEmpty(sameNumberLotteryList)){
                 AppLotteryWelfare appLotteryWelfare = sameNumberLotteryList.get(0);     //上一次同号

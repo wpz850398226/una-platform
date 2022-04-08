@@ -1,20 +1,17 @@
 package cn.kunli.una.service.flow;
 
 import cn.kunli.una.mapper.FlowTaskMapper;
-import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.flow.FlowInstance;
 import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.flow.FlowTask;
 import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysDepartment;
-import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysDepartmentService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.UserUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -77,7 +74,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                 String candidateAccountIds = flowTask.getCandidateAccountIds();
                 //如果 被激活的任务 的候选人 包含当前在线用户，则返回任务id
                 if(StrUtil.isNotBlank(candidateAccountIds)&& candidateAccountIds.contains(String.valueOf(flowTask.getCreatorId()))){
-                    sysResult.setData(this.parse(ListUtil.getList(flowTask)).get(0));
+                    sysResult.setData(this.parse(UnaListUtil.getList(flowTask)).get(0));
                 }
             }
         }
@@ -114,11 +111,11 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                 Integer instanceId = flowTask.getInstanceId();
                 FlowInstance flowInstance = flowInstanceService.getById(instanceId);
                 //查询所属流程定义的所有审批节点
-                List<FlowNode> flowNodeList = flowNodeService.selectList(MapUtil.buildHashMap()
+                List<FlowNode> flowNodeList = flowNodeService.selectList(UnaMapUtil.buildHashMap()
                         .put("definitionId", flowInstance.getDefinitionId()).put("typeDcode", "flow_nudeType_audit").build());
                 //查询同一个流程实例下的所有审批节点，是否都审批通过
                 for (FlowNode flowNode : flowNodeList) {
-                    FlowTask auditTask = thisProxy.selectOne(MapUtil.buildHashMap()
+                    FlowTask auditTask = thisProxy.selectOne(UnaMapUtil.buildHashMap()
                             .put("nodeId", flowNode.getId()).put("instanceId", instanceId).build());
                     if(auditTask==null || !auditTask.getIsAgree()){
                         isAgree = false;
@@ -131,7 +128,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
             }
         }else{
             //不是结束节点，查询任务后续连线
-            List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", flowTask.getNodeId()));
+            List<FlowLine> flowLineList = flowLineService.selectList(UnaMapUtil.getMap("originNodeId", flowTask.getNodeId()));
 
             if(CollectionUtils.isNotEmpty(flowLineList)){
                 //如果连线不为空
@@ -191,7 +188,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
                         obj.setCandidateAccountIds(flowNode.getCandidateValue());
                         break;
                     case "flow_candidateType_role":                //角色（复数）
-                        List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
+                        List<SysAccount> accountList = sysAccountService.selectList(UnaMapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+flowNode.getCandidateValue()+"',',',',|'),',') =1"));
                         if(CollectionUtils.isNotEmpty(accountList)){
                             StringBuffer stringBuffer = new StringBuffer();
                             for (SysAccount sysAccount : accountList) {
@@ -222,7 +219,7 @@ public class FlowTaskService extends BasicService<FlowTaskMapper, FlowTask> {
         list = super.parse(list);
         for (FlowTask flowTask : list) {
             if(StrUtil.isNotBlank(flowTask.getNodeTypeDcode())&&flowTask.getNodeTypeDcode().equals("flow_nudeType_audit")){
-                List<FlowTask> submitTaskList = thisProxy.parse(thisProxy.selectList(MapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
+                List<FlowTask> submitTaskList = thisProxy.parse(thisProxy.selectList(UnaMapUtil.buildHashMap().put("instanceId", flowTask.getInstanceId())
                         .put("isNotNull", "offTime").put("isNotNull", "recordId").put("orderByAsc","offTime").build()));
                 flowTask.setSubmitTaskList(submitTaskList);
             }

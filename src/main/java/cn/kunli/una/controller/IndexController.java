@@ -5,7 +5,7 @@ import cn.kunli.una.pojo.system.SysMenu;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.system.SysConfigurationService;
 import cn.kunli.una.service.system.SysMenuService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class IndexController {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 
         List<SysMenu> sysMenuList = sysMenuService.selectByAccount();
-        SysConfiguration sysConfiguration = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
+        SysConfiguration sysConfiguration = sysConfigurationService.selectOne(UnaMapUtil.getMap("code","systemTitle"));
         model.addAttribute("sysMenuList", sysMenuList);
         //model.addAttribute("systemName", sysConfiguration.getValue());
         model.addAttribute("activeUser", loginUser);

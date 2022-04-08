@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.system.SysFieldService;
 import cn.kunli.una.utils.common.JSONUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +48,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
             params.put("assignmentModeDcode", "field_assignment_text");
         }
         model.addAttribute("record", params);
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code","SysField"));
+        SysEntity entityClass = sysEntityService.selectOne(UnaMapUtil.getMap("code","SysField"));
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
 
         return "system/field/form";

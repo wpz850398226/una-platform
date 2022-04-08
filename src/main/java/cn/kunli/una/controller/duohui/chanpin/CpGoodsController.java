@@ -8,8 +8,8 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
 import cn.kunli.una.utils.common.DateUtil;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
@@ -54,7 +54,7 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
         service.update(updateWrapper);
 
         //查询商品
-        CpGoods record = service.parse(ListUtil.getList(service.getById(id))).get(0);
+        CpGoods record = service.parse(UnaListUtil.getList(service.getById(id))).get(0);
         //查询规格
         CpModel cpModel;
         if(StrUtil.isBlank(attributeName)){
@@ -73,15 +73,15 @@ public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
                 }
             }
             cpModel = cpModelService.selectOne(
-                    MapUtil.buildHashMap().put("goodsId",record.getId()).put("name",ListUtil.listToStr(attributeNameList)).build());
+                    UnaMapUtil.buildHashMap().put("goodsId",record.getId()).put("name", UnaListUtil.listToStr(attributeNameList)).build());
         }else{
             //查询指定规格
             cpModel = cpModelService.selectOne(
-                    MapUtil.buildHashMap().put("goodsId",record.getId()).put("name",attributeName).build());
+                    UnaMapUtil.buildHashMap().put("goodsId",record.getId()).put("name",attributeName).build());
         }
 
         if(cpModel !=null){
-            cpModel.setNameList(ListUtil.strToList(cpModel.getName()));
+            cpModel.setNameList(UnaListUtil.strToList(cpModel.getName()));
             record.setCheckedModel(cpModel);
         }
         model.addAttribute("record",record);

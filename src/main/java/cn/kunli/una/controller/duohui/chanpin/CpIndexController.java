@@ -8,8 +8,8 @@ import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
 import cn.kunli.una.service.system.*;
 import cn.kunli.una.utils.common.DateUtil;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -70,29 +70,29 @@ public class CpIndexController {
         }
         getCommonItem(model);
         //行业字典
-        List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
+        List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "industry")));
         model.addAttribute("industryDlist",industryDlist);
         //首页信息
         SysData record = sysDataService.getById(100017);
-        record = sysDataService.parse(ListUtil.getList(record)).get(0);
+        record = sysDataService.parse(UnaListUtil.getList(record)).get(0);
         //热门商铺
         if(record.getValue().get("remaiCompanyIds")!=null){
             String remaiCompanyIds = String.valueOf(record.getValue().get("remaiCompanyIds"));
-            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(MapUtil.getMap("in:id", remaiCompanyIds)));
+            List<SysCompany> list = sysCompanyService.parse(sysCompanyService.selectList(UnaMapUtil.getMap("in:id", remaiCompanyIds)));
             model.addAttribute("hotShopList",list);
         }
 
         //精品推荐
-        Page<GqInformation> hotPage = gqInformationService.page(1L, 8L, MapUtil.getMap("isHot", true));
+        Page<GqInformation> hotPage = gqInformationService.page(1L, 8L, UnaMapUtil.getMap("isHot", true));
         model.addAttribute("hotList",gqInformationService.parse(hotPage.getRecords()));
 
         model.addAttribute("record",record);
 
-        List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_goodsStatus"));
+        List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "dh_goodsStatus"));
         if(CollectionUtils.isNotEmpty(goodsStatusDlist)){
             //按商品状态查询商品列表
             Map<String,Object> goodsListMap = new HashMap<>();
-            Map<String, Object> goodsParamMap = MapUtil.buildHashMap().put("isAdded", true).put("isAudit", true).build();
+            Map<String, Object> goodsParamMap = UnaMapUtil.buildHashMap().put("isAdded", true).put("isAudit", true).build();
             if(regionId!=null)goodsParamMap.put(":regionIds",regionId+",");
             for (SysDictionary sysDictionary : goodsStatusDlist) {
                 goodsParamMap.put("statusDcode", sysDictionary.getCode());
@@ -105,10 +105,10 @@ public class CpIndexController {
 
             //查询置顶商铺
             List<SysCompany> companyList = new ArrayList<>();
-            Page<SysCompany> stickShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
+            Page<SysCompany> stickShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), UnaMapUtil.buildHashMap().put("ge:stickDeadline", new Date()).put("orderByDesc", "stickDeadline").build());
             companyList = stickShopPage.getRecords();
             if(companyList.size()<=goodsStatusDlist.size()){
-                Page<SysCompany> refreshShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), MapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
+                Page<SysCompany> refreshShopPage = sysCompanyService.page(1L,Long.valueOf(goodsStatusDlist.size()), UnaMapUtil.buildHashMap().put("le:stickDeadline", new Date()).put("orderByDesc", "refreshTime").build());
                 if(refreshShopPage.getTotal()>0){
                     List<SysCompany> records = refreshShopPage.getRecords();
                     if(companyList.size()==0){
@@ -123,13 +123,13 @@ public class CpIndexController {
         }
 
         //合作企业
-        Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
+        Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, UnaMapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
         List<SysCompany> coopShopList = sysCompanyService.parse(coopShopPage.getRecords());
         model.addAttribute("coopShopList",coopShopList);
 
         //查询公告
         String strOfDate = DateUtil.getStrOfDate(new Date(), "yyyy-MM-dd");
-        Page<SysAnnouncement> sysAnnouncementPage = sysAnnouncementService.page(1L, 4L, MapUtil.buildHashMap()
+        Page<SysAnnouncement> sysAnnouncementPage = sysAnnouncementService.page(1L, 4L, UnaMapUtil.buildHashMap()
                 .put(":platformDcode", "platform_type_chanpin").put("le:startTime",strOfDate)
                 .put("ge:endTime",strOfDate).build());
         model.addAttribute("sysAnnouncementList",sysAnnouncementPage.getRecords());
@@ -149,17 +149,17 @@ public class CpIndexController {
         getCommonItem(model);
 
         //行业字典
-        List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry"));
+        List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "industry"));
         model.addAttribute("primaryIndustryDlist",primaryIndustryDlist);
 
         if(map.containsKey("primaryIndustryDcode")){
-            List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
+            List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
             model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
             map.put(":industryTypeDcodes",map.get("primaryIndustryDcode")+",");
             map.remove("primaryIndustryDcode");
 
             if(map.containsKey("secondryIndustryDcode")){
-                List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
+                List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
                 model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
                 map.put(":industryTypeDcodes",map.get(":industryTypeDcodes").toString()+map.get("secondryIndustryDcode")+",");
                 map.remove("secondryIndustryDcode");
@@ -176,11 +176,11 @@ public class CpIndexController {
         model.addAttribute("goodsList",cpGoodsService.parse(goodsPage.getRecords()));
 
         //商品状态
-        List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_goodsStatus"));
+        List<SysDictionary> goodsStatusDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "dh_goodsStatus"));
         model.addAttribute("goodsStatusDlist",goodsStatusDlist);
 
         //省级地区
-        List<SysRegion> sysRegionList = sysRegionService.selectList(MapUtil.getMap("level", 2));
+        List<SysRegion> sysRegionList = sysRegionService.selectList(UnaMapUtil.getMap("level", 2));
         model.addAttribute("sysRegionList",sysRegionList);
 
         return "duohui/chanpin/product";
@@ -202,7 +202,7 @@ public class CpIndexController {
 
     public void getCommonItem(Model model){
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
+        SysConfiguration systemTitle = sysConfigurationService.selectOne(UnaMapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
 
@@ -218,11 +218,11 @@ public class CpIndexController {
         }
 
         //热卖推荐
-        Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, MapUtil.getMap("orderByDesc", "stickDeadline"));
+        Page<CpGoods> stickGoodsPage = cpGoodsService.page(1L,3L, UnaMapUtil.getMap("orderByDesc", "stickDeadline"));
         model.addAttribute("hotGoodsList",cpGoodsService.parse(stickGoodsPage.getRecords()));
 
         //搜索排行
-        Page<CpGoods> searchPage = cpGoodsService.page(1L,10L, MapUtil.getMap("orderByDesc", "viewAmount"));
+        Page<CpGoods> searchPage = cpGoodsService.page(1L,10L, UnaMapUtil.getMap("orderByDesc", "viewAmount"));
         model.addAttribute("searchGoodsList",searchPage.getRecords());
     }
 }

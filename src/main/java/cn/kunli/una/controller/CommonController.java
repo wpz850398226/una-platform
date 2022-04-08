@@ -5,14 +5,12 @@ import cn.kunli.una.pojo.vo.Constant;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.system.*;
-import cn.kunli.una.utils.ExcelUtils;
 import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import cn.hutool.core.util.StrUtil;
-import org.apache.http.util.EntityUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,17 +66,17 @@ public class CommonController {
         if(StrUtil.isBlank(className))return null;
         //判断权限
         //if(!SecurityUtils.getSubject().isPermitted(className+":retrieve"))return "error/401";
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity entityClass = sysEntityService.selectOne(UnaMapUtil.getMap("code",className));
         if(entityClass==null)return null;
         SysResponseParameter sysResponseParameter = new SysResponseParameter();
         if(entityClass!=null){
-            entityClass = sysEntityService.parse(ListUtil.getList(entityClass)).get(0);
+            entityClass = sysEntityService.parse(UnaListUtil.getList(entityClass)).get(0);
 
             //如果查询的虚拟实体，则通过参数获取实体类名
             if(className.equals("SysData")&&params!=null){
                 Object classNameObject = params.get("className");
                 if(classNameObject!=null){
-                    SysEntity virtualEntity = sysEntityService.selectOne(MapUtil.getMap("code",classNameObject.toString()));
+                    SysEntity virtualEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",classNameObject.toString()));
                     if(virtualEntity!=null){
                         entityClass = virtualEntity;
                         params.put("entityId",virtualEntity.getId());
@@ -96,18 +94,18 @@ public class CommonController {
                             .setParentDataFieldCode("entityId")
                             .setRelatedFieldCode("entityId")
                             .setParentDataValue(null);
-                    entityClass.setRelationList(ListUtil.getList(sysRelation));
+                    entityClass.setRelationList(UnaListUtil.getList(sysRelation));
                 }
             }
 
             List<SysButton> sysButtonList = sysButtonService.parse(
-                    sysButtonService.selectList(MapUtil.getMap("entityId", entityClass.getId())));
+                    sysButtonService.selectList(UnaMapUtil.getMap("entityId", entityClass.getId())));
 
             List<SysQuery> sysQueryList = sysQueryService.parse(
-                    sysQueryService.selectList(MapUtil.getMap("entityId", entityClass.getId())));
+                    sysQueryService.selectList(UnaMapUtil.getMap("entityId", entityClass.getId())));
 
             List<SysFilter> sysFilterList = sysFilterService.parse(
-                    sysFilterService.selectList(MapUtil.getMap("entityId", entityClass.getId())));
+                    sysFilterService.selectList(UnaMapUtil.getMap("entityId", entityClass.getId())));
 
             entityClass.setButtonList(sysButtonList);
             entityClass.setQueryList(sysQueryList);
@@ -148,9 +146,9 @@ public class CommonController {
             }
         }
 
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity entityClass = sysEntityService.selectOne(UnaMapUtil.getMap("code",className));
         //创建查询实例
-        Map<String, Object> map = new MapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
+        Map<String, Object> map = new UnaMapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
@@ -207,9 +205,9 @@ public class CommonController {
     @RequestMapping("/detail/{className}")
     public String detail(Model model, @PathVariable("className") String className, @RequestParam Map<String, Object> obj) {
         //判断权限
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity entityClass = sysEntityService.selectOne(UnaMapUtil.getMap("code",className));
         //创建查询实例
-        Map<String, Object> map = new MapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
+        Map<String, Object> map = new UnaMapUtil<>().put("entityId", entityClass.getId()).put("isUpdate", 1).build();
         //如果是批量修改，则查询可批量修改的 字段
         if (obj.get("batch") != null) map.put("isBatchUpdate",1);
         //查询字段
@@ -251,10 +249,10 @@ public class CommonController {
     public void importTemplate(HttpServletResponse response, @PathVariable("className") String className) {
 
         //获取数据
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",className));
         //excel标题
         //查询可以导出的实体字段
-        List<SysField> fieldList = sysFieldService.selectList(new MapUtil<>().put("entityId",sysEntity.getId())
+        List<SysField> fieldList = sysFieldService.selectList(new UnaMapUtil<>().put("entityId",sysEntity.getId())
                         .put("isImport",1).put("isDelete",0).build());
         String[] title = new String[fieldList.size()];
         for (int j = 0; j < fieldList.size(); j++) {
@@ -325,11 +323,11 @@ public class CommonController {
     @ResponseBody
     public void importTemplateNew(HttpServletResponse response, @PathVariable("className") String className) throws IOException, MalformedObjectNameException {
         //获取数据
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
+        SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",className));
         //excel标题
         //查询可以导出的实体字段
         List<SysField> fieldList = sysFieldService.selectList(
-                MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());
+                UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isImport",1).put("isDelete",0).build());
         String[] title = new String[fieldList.size()];
 
         if (fieldList != null && fieldList.size() > 0) {
@@ -393,7 +391,7 @@ public class CommonController {
             String newFilePath = Constant.UPLOAD_FILE_PATH + "excel" + File.separator +
                     new Date().getTime() +
                     File.separator + "导入模板.xlsx";
-            String path = ExcelUtils.createExcelTemplate(newFilePath, "信息表",
+            String path = ExcelUtil.createExcelTemplate(newFilePath, "信息表",
                     headers, downData, downRows);
 
             //响应到客户端

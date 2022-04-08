@@ -3,7 +3,7 @@ package cn.kunli.una.controller.duohui.gongqiu;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.gongqiu.GqInformation;
 import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
-import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,7 @@ public class GqInformationController extends BaseController<GqInformationService
         service.update(updateWrapper);
 
         //查询商品
-        GqInformation record = service.parse(ListUtil.getList(service.getById(id))).get(0);
+        GqInformation record = service.parse(UnaListUtil.getList(service.getById(id))).get(0);
 
         model.addAttribute("record",record);
         gqIndexController.getCommonItem(model);

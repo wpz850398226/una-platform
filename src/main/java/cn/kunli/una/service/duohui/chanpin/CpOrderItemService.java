@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.chanpin.CpOrder;
 import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +82,7 @@ public class CpOrderItemService extends BasicService<CpOrderItemMapper, CpOrderI
             if(cpOrderItem.getModelId()!=null){
                 CpModel cpModel = cpModelService.getById(cpOrderItem.getModelId());
                 if(cpModel.getFileId()!=null){
-                    cpModel = cpModelService.parse(ListUtil.getList(cpModel)).get(0);
+                    cpModel = cpModelService.parse(UnaListUtil.getList(cpModel)).get(0);
                     cpOrderItem.setModelFileUrl(String.valueOf(cpModel.getMap().get("fileUrl")));
                 }
             }

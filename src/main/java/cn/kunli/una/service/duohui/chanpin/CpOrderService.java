@@ -10,7 +10,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.ali.AlipayService;
 import cn.kunli.una.utils.BaseUtil;
-import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import cn.hutool.core.util.StrUtil;
@@ -71,7 +71,7 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
                     shopOrderMap.put(companyId, (CpOrder) new CpOrder().setDeliveryId(entity.getDeliveryId())
                             .setDeliveryTypeDcode(entity.getDeliveryTypeDcode())
                             .setPaymentTypeDcode(entity.getPaymentTypeDcode())
-                            .setCpOrderItemList(ListUtil.getList(cpOrderItem)).setCompanyId(companyId));
+                            .setCpOrderItemList(UnaListUtil.getList(cpOrderItem)).setCompanyId(companyId));
                 }
             }
 

@@ -7,8 +7,8 @@ import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
 import cn.kunli.una.service.system.SysDataService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
@@ -45,17 +45,17 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
             model.addAttribute("record",list.get(0));
         }*/
         SysData record = sysDataService.getById(100001);
-        record = sysDataService.parse(ListUtil.getList(record)).get(0);
+        record = sysDataService.parse(UnaListUtil.getList(record)).get(0);
         model.addAttribute("record",record);
 
         //查询政策法规前5条
-        Page<SysArticle> page1 = sysArticleService.page(0, 5, MapUtil.getMap("typeDcode", "articleType_policy"));
+        Page<SysArticle> page1 = sysArticleService.page(0, 5, UnaMapUtil.getMap("typeDcode", "articleType_policy"));
         model.addAttribute("zcfgList",sysArticleService.parse(page1.getRecords()));
         //查询行业动态前5条
-        Page<SysArticle> page2 = sysArticleService.page(0, 5, MapUtil.getMap("typeDcode", "articleType_industryState"));
+        Page<SysArticle> page2 = sysArticleService.page(0, 5, UnaMapUtil.getMap("typeDcode", "articleType_industryState"));
         model.addAttribute("hydtList",sysArticleService.parse(page2.getRecords()));
         //查询公司公告前5条
-        Page<SysArticle> page3 = sysArticleService.page(0, 5, MapUtil.getMap("typeDcode", "articleType_notice"));
+        Page<SysArticle> page3 = sysArticleService.page(0, 5, UnaMapUtil.getMap("typeDcode", "articleType_notice"));
         model.addAttribute("gsggList",sysArticleService.parse(page3.getRecords()));
 
         getCommonItem(model,null);
@@ -117,11 +117,11 @@ public class GwIndexController extends BaseController<SysDataService, SysData> {
     }
 
     private void getCommonItem(Model model,Object menuId){
-        List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.selectList(MapUtil.getMap("parentId", 100000)));
+        List<GwMenu> gwMenuList = gwMenuService.parse(gwMenuService.selectList(UnaMapUtil.getMap("parentId", 100000)));
         model.addAttribute("gwMenuList", gwMenuList);
 
         //查询系统配置信息
-        List<SysConfiguration> configList = sysConfigurationService.selectList(MapUtil.getMap(":code", "GwIndex_"));
+        List<SysConfiguration> configList = sysConfigurationService.selectList(UnaMapUtil.getMap(":code", "GwIndex_"));
         Map<String,String> configMap = new HashMap<>();
         configList.forEach(c -> configMap.put(c.getCode(),c.getValue()));
         model.addAttribute("configMap", configMap);

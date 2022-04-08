@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.system.SysData;
 import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysArticleService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -45,7 +45,7 @@ public class SysArticleController extends BaseController<SysArticleService, SysA
             }
 
             String templateName = value.get("templateName").toString();
-            SysArticle templateArticle = service.selectOne(MapUtil.getMap("name", templateName));
+            SysArticle templateArticle = service.selectOne(UnaMapUtil.getMap("name", templateName));
             if(templateArticle==null)return SysResult.fail("查看失败，模板不存在");
 
             String content = templateArticle.getContent();

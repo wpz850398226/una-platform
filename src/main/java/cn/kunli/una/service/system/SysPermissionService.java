@@ -7,7 +7,7 @@ import cn.kunli.una.pojo.system.SysEntity;
 import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,8 +72,8 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
         if (StrUtil.isBlank(obj.getName())) {
             SysEntity sysEntity = sysEntityService.getById(obj.getEntityId());
             if (sysEntity != null) {
-                SysDictionary typeDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code",obj.getTypeDcode()));
-                SysDictionary platformDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code",sysEntity.getPlatformDcode()));
+                SysDictionary typeDictionary = sysDictionaryService.selectOne(UnaMapUtil.getMap("code",obj.getTypeDcode()));
+                SysDictionary platformDictionary = sysDictionaryService.selectOne(UnaMapUtil.getMap("code",sysEntity.getPlatformDcode()));
                 obj.setName(typeDictionary.getName() + sysEntity.getName()+"-"+platformDictionary.getName());
             }
         }

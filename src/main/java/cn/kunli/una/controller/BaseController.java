@@ -12,16 +12,13 @@ import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.common.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import cn.hutool.core.util.StrUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,10 +29,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -171,7 +165,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 				if(sysEntity!=null){
 					//默认：升序 则顺序-1
 					Integer sortValue = -1;
-					List<SysSort> sortList = sysSortService.selectList(MapUtil.getMap("entityId", sysEntity.getId()));
+					List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.getMap("entityId", sysEntity.getId()));
 					//如果单以排序字段排序 且 倒序排序，则 升序时 顺序+1，即修改sortValue为1
 					if(CollectionUtils.isNotEmpty(sortList)&&sortList.size()==1){
 						SysSort theSort = sysSortService.parse(sortList).get(0);
@@ -180,7 +174,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 						}
 					}
 
-					Map<String, Object> paramMap = MapUtil.getMap("sortOrder", sortOrder + sortValue);
+					Map<String, Object> paramMap = UnaMapUtil.getMap("sortOrder", sortOrder + sortValue);
 					//获取父字段字段类对象
 					SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
 					if(sysField!=null){
@@ -216,7 +210,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	public SysResult get(@PathVariable Serializable id) {
 		T record = (T) service.getById(id);
-		return new SysResult().success(service.parse(ListUtil.getList(record)).get(0));
+		return new SysResult().success(service.parse(UnaListUtil.getList(record)).get(0));
 	}
 
 	@SneakyThrows
@@ -234,10 +228,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		if(loginUser.getRoleId().indexOf("100000")==-1){
 			//如果不是超级管理员，查询权限范围
 			SysEntity sysEntity = service.getEntity();
-			SysPermission sysPermission = sysPermissionService.selectOne(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build());
+			SysPermission sysPermission = sysPermissionService.selectOne(UnaMapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build());
 			if(sysPermission!=null&&loginUser!=null){
 				Integer scopeCode = 0;
-				List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build());
+				List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(UnaMapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build());
 				if(CollectionUtils.isNotEmpty(rolePermissionList)){
 					for (SysRolePermission sysRolePermission : rolePermissionList) {
 						if(StrUtil.isNotBlank(sysRolePermission.getScopeDcode())){
@@ -277,7 +271,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 		//处理查询条件
         if(MapUtils.isNotEmpty(map)){
-            SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
+            SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code", entityClassName));
             //如果是虚拟实体
 			if(entityClassName.equals("SysData")&&map.containsKey("entityId")){
 				sysEntity = sysEntityService.getById(map.get("entityId").toString());
@@ -292,7 +286,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
                     if(i==0){
                     	//只处理模糊查询的情况
                         displayCode = displayCode.substring(i+1);
-						SysField sysField = sysFieldService.selectOne(MapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("displayCode", displayCode).build());
+						SysField sysField = sysFieldService.selectOne(UnaMapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("displayCode", displayCode).build());
 						String assignmentCode = sysField.getAssignmentCode();
 						if(sysField!=null&&!assignmentCode.equals(displayCode)){
 							//如果赋值编码不等于取值编码，换查询条件
@@ -320,7 +314,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			declaredField.setAccessible(true);
 			for (T record : list) {
 				Object groupByValue = declaredField.get(record);
-				int count = service.selectCount(MapUtil.getMap(groupByField, groupByValue));
+				int count = service.selectCount(UnaMapUtil.getMap(groupByField, groupByValue));
 				record.setCount(count);
 				total += count;
 			}
@@ -369,11 +363,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			int colNum = headRow.getLastCellNum();
 
 			//查询对应实体类
-			SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
+			SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",entityClassName));
 			//查询需要导入的实体字段
-			Map<String, Object> map = new MapUtil<>().put("entityId", sysEntity.getId()).put("isImport",1).build();
+			Map<String, Object> map = new UnaMapUtil<>().put("entityId", sysEntity.getId()).put("isImport",1).build();
 			List<SysField> fieldList = sysFieldService.selectList(map);
-			if(ListUtil.isNotNull(fieldList)) {
+			if(UnaListUtil.isNotNull(fieldList)) {
 				//如果需要导入的字段不为空且与excel列数相等
 				if(fieldList.size()==colNum) {
 					for(int j=0;j<colNum;j++) {
@@ -432,8 +426,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 								&&sysField.getDataCheckTypeDcode().indexOf("global_unique")!=-1
 								&&StrUtil.isNotBlank(cellValue)) {
 							//用样本类在数据库查询是否有重复数据
-							List<T> objList = service.selectList(MapUtil.getMap(sysField.getAssignmentCode(), cellValue));
-							if(ListUtil.isNotNull(objList)) {
+							List<T> objList = service.selectList(UnaMapUtil.getMap(sysField.getAssignmentCode(), cellValue));
+							if(UnaListUtil.isNotNull(objList)) {
 								//有重复数据，设置本行有重复项为true，并加入到重复项数据集合
 								isRepeat = true;
 							}
@@ -490,9 +484,9 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 		//获取数据
 		List<T> objList = service.parse(service.selectList(map));
 		//查询对应实体类
-		SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClassName));
+		SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",entityClassName));
 		//查询可以导出的实体字段
-		List<SysField> fieldList = sysFieldService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isExport",1).build());
+		List<SysField> fieldList = sysFieldService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("isExport",1).build());
 		//excel标题行
 		String[] title = new String[fieldList.size()+1];
 		title[0] = "序号";

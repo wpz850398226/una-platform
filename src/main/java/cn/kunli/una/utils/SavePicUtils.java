@@ -1,7 +1,7 @@
 package cn.kunli.una.utils;
 
 import cn.kunli.una.service.system.SysConfigurationService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,8 +54,8 @@ public class SavePicUtils {
 	public String saveUpload(MultipartFile file, Integer entityId) throws IOException{
 		//获取不同操作系统的根目录
 		String path = GetPicUrlUtils.getUploadUrlBySystemType(
-		        sysConfigurationService.selectOne(MapUtil.getMap("code","windowsUploadUrl")).getValue()
-				,sysConfigurationService.selectOne(MapUtil.getMap("code","linuxUploadUrl")).getValue());
+		        sysConfigurationService.selectOne(UnaMapUtil.getMap("code","windowsUploadUrl")).getValue()
+				,sysConfigurationService.selectOne(UnaMapUtil.getMap("code","linuxUploadUrl")).getValue());
 		//原始文件名
 		String originalFileName = file.getOriginalFilename();
 		//新文件名，添加原始文件名后缀

@@ -5,7 +5,7 @@ import cn.kunli.una.mapper.SysDictionaryMapper;
 import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.SneakyThrows;
@@ -61,18 +61,18 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
      * @return
      */
     public List<SysDictionary> selectByLikeCode(String code) {
-        List<SysDictionary> list = sysDictionaryService.selectList(MapUtil.buildHashMap().put(":code", code).put("orderByAsc","sortOrder").build());
+        List<SysDictionary> list = sysDictionaryService.selectList(UnaMapUtil.buildHashMap().put(":code", code).put("orderByAsc","sortOrder").build());
         return list;
     }
 
     @Override
     public SysResult validate(SysDictionary obj) {
-        List<SysDictionary> sameNamelist = sysDictionaryService.selectList(MapUtil.buildHashMap()
+        List<SysDictionary> sameNamelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
                 .put("parentId", obj.getParentId()).put("name", obj.getName()).build());
         if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
             return SysResult.fail("名字重复，保存失败");
         }
-        List<SysDictionary> sameValuelist = sysDictionaryService.selectList(MapUtil.buildHashMap()
+        List<SysDictionary> sameValuelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
                 .put("parentId", obj.getParentId()).put("value", obj.getValue()).build());
         if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
             return SysResult.fail("值重复，保存失败");
@@ -104,7 +104,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
         for (SysDictionary record : list) {
-            List<SysDictionary> subList = sysDictionaryService.selectList(MapUtil.getMap("parentId", record.getId()));
+            List<SysDictionary> subList = sysDictionaryService.selectList(UnaMapUtil.getMap("parentId", record.getId()));
             if(CollectionUtils.isNotEmpty(subList)){
                 this.parse(subList);
             }

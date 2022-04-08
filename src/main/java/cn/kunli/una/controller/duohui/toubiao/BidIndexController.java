@@ -5,8 +5,8 @@ import cn.kunli.una.pojo.system.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.system.*;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -67,11 +67,11 @@ public class BidIndexController {
         }*/
         getCommonItem(model);
         //行业字典
-        List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry")));
+        List<SysDictionary> industryDlist = sysDictionaryService.parse(sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "industry")));
         //按行业分页查询
         Map<String,Object> projectListMap = new HashMap<>();
         //查询实例
-        Map<String, Object> paramMap = MapUtil.getMap("statusDcode", "dh_bidStatus_applying");
+        Map<String, Object> paramMap = UnaMapUtil.getMap("statusDcode", "dh_bidStatus_applying");
 
         for (SysDictionary primaryIndustryDic : industryDlist) {
             if(CollectionUtils.isNotEmpty(primaryIndustryDic.getChildren())){
@@ -86,7 +86,7 @@ public class BidIndexController {
         model.addAttribute("industryDlist",industryDlist);
         model.addAttribute("projectListMap",projectListMap);
 
-        Map<String, Object> projectParamMap = MapUtil.getMap("orderByDesc", "createTime");
+        Map<String, Object> projectParamMap = UnaMapUtil.getMap("orderByDesc", "createTime");
         //已中标项目
         projectParamMap.put("statusDcode", "dh_bidStatus_publicity");
         Page<BidProject> publicityPage = bidProjectService.page(0, 10, projectParamMap);
@@ -101,13 +101,13 @@ public class BidIndexController {
         model.addAttribute("applyingProjectList",bidProjectService.parse(applyingPage.getRecords()));
 
         //合作企业
-        Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, MapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
+        Page<SysCompany> coopShopPage = sysCompanyService.page(1L,20L, UnaMapUtil.buildHashMap().put("orderByDesc", "refreshTime").build());
         List<SysCompany> coopShopList = sysCompanyService.parse(coopShopPage.getRecords());
         model.addAttribute("coopShopList",coopShopList);
 
         //首页信息
         SysData record = sysDataService.getById(100024);
-        record = sysDataService.parse(ListUtil.getList(record)).get(0);
+        record = sysDataService.parse(UnaListUtil.getList(record)).get(0);
         model.addAttribute("record",record);
 
         return "duohui/toubiao/index";
@@ -125,20 +125,20 @@ public class BidIndexController {
         getCommonItem(model);
 
         //项目状态
-        List<SysDictionary> bidStatusDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_bidStatus"));
+        List<SysDictionary> bidStatusDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "dh_bidStatus"));
         model.addAttribute("bidStatusDlist",bidStatusDlist);
 
         //行业字典
-        List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "industry"));
+        List<SysDictionary> primaryIndustryDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "industry"));
         model.addAttribute("primaryIndustryDlist",primaryIndustryDlist);
         if(map.containsKey("primaryIndustryDcode")){
-            List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
+            List<SysDictionary> secondryIndustryDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", map.get("primaryIndustryDcode")));
             model.addAttribute("secondryIndustryDlist",secondryIndustryDlist);
             map.put(":industryDcodes",map.get("primaryIndustryDcode")+",");
             map.remove("primaryIndustryDcode");
 
             if(map.containsKey("secondryIndustryDcode")){
-                List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(MapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
+                List<SysDictionary> thirdryIndustryDlist = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", map.get("secondryIndustryDcode")));
                 model.addAttribute("thirdryIndustryDlist",thirdryIndustryDlist);
                 map.put(":industryDcodes",map.get(":industryDcodes").toString()+map.get("secondryIndustryDcode")+",");
                 map.remove("secondryIndustryDcode");
@@ -154,7 +154,7 @@ public class BidIndexController {
         model.addAttribute("projectList",bidProjectService.parse(projectPage.getRecords()));
 
         //省级地区
-        List<SysRegion> sysRegionList = sysRegionService.selectList(MapUtil.getMap("level", 2));
+        List<SysRegion> sysRegionList = sysRegionService.selectList(UnaMapUtil.getMap("level", 2));
         model.addAttribute("sysRegionList",sysRegionList);
 
         return "duohui/toubiao/list";
@@ -176,7 +176,7 @@ public class BidIndexController {
 
     public void getCommonItem(Model model){
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
+        SysConfiguration systemTitle = sysConfigurationService.selectOne(UnaMapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
 
@@ -196,7 +196,7 @@ public class BidIndexController {
         model.addAttribute("searchGoodsList",searchPage.getRecords());*/
 
         //点击排行
-        Page<BidProject> browsePage = bidProjectService.page(0, 10, MapUtil.getMap("orderByDesc", "browseCount"));
+        Page<BidProject> browsePage = bidProjectService.page(0, 10, UnaMapUtil.getMap("orderByDesc", "browseCount"));
         model.addAttribute("browseProjectList",browsePage.getRecords());
     }
 }

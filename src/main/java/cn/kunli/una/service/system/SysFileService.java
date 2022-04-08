@@ -7,7 +7,7 @@ import cn.kunli.una.pojo.system.SysFile;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.MinIoUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +87,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
             }
 
             SysLoginAccountDetails loginAccount = UserUtil.getLoginAccount();
-            List<SysFile> sysFiles = thisProxy.selectList(MapUtil.buildHashMap().put("creatorId", loginAccount.getId())
+            List<SysFile> sysFiles = thisProxy.selectList(UnaMapUtil.buildHashMap().put("creatorId", loginAccount.getId())
                     .put("originName", fileName).put("size", obj.getFile().getSize()).build());
             if(CollectionUtils.isNotEmpty(sysFiles)){
                 //如果有相同账号，相同源文件名，相同大小的文件，说明是相同文件，不允许重复上传
@@ -124,7 +124,7 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
         if(CollectionUtils.isNotEmpty(list)){
             for (SysFile sysFile : list) {
                 if(StrUtil.isNotBlank(sysFile.getTypeDcode())){
-                    SysDictionary codeDic = sysDictionaryService.selectOne(MapUtil.getMap("code", sysFile.getTypeDcode()));
+                    SysDictionary codeDic = sysDictionaryService.selectOne(UnaMapUtil.getMap("code", sysFile.getTypeDcode()));
                     if(codeDic!=null){
                         sysFile.getMap().put("typeDvalue",codeDic.getValue());
                     }

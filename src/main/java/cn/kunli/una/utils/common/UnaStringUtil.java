@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @version 2019年7月25日 上午11:05:42
  * 字符串工具类
  */
-public class StringUtil {
+public class UnaStringUtil {
 
     private static Pattern linePattern = Pattern.compile("_(\\w)");
 

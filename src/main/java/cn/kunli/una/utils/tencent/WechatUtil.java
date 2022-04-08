@@ -2,9 +2,8 @@ package cn.kunli.una.utils.tencent;
 
 import cn.kunli.una.pojo.system.SysConfiguration;
 import cn.kunli.una.service.system.SysConfigurationService;
-import cn.kunli.una.utils.common.HttpUtil;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.service.SpringContextUtil;
 import com.alibaba.fastjson.JSON;
@@ -62,8 +61,8 @@ public class WechatUtil {
 	 * @return
 	 */
 	public static String getAppId(){
-		List<SysConfiguration> appidConfigurationList = sysConfigurationService.selectList(MapUtil.getMap("code","wechatAppid"));
-		if (ListUtil.isNotNull(appidConfigurationList)){
+		List<SysConfiguration> appidConfigurationList = sysConfigurationService.selectList(UnaMapUtil.getMap("code","wechatAppid"));
+		if (UnaListUtil.isNotNull(appidConfigurationList)){
 			return appidConfigurationList.get(0).getValue();
 		}else {
 			return null;
@@ -75,8 +74,8 @@ public class WechatUtil {
 	 * @return
 	 */
 	public static String getSecret(){
-		List<SysConfiguration> secretConfigurationList = sysConfigurationService.selectList(MapUtil.getMap("code","wechatSecret"));
-		if (ListUtil.isNotNull(secretConfigurationList)){
+		List<SysConfiguration> secretConfigurationList = sysConfigurationService.selectList(UnaMapUtil.getMap("code","wechatSecret"));
+		if (UnaListUtil.isNotNull(secretConfigurationList)){
 			return secretConfigurationList.get(0).getValue();
 		}else {
 			return null;

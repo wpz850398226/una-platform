@@ -7,8 +7,8 @@ import cn.kunli.una.pojo.vo.SysParameter;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysFileService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.MinIoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +46,9 @@ public class SysFileController extends BaseController<SysFileService, SysFile> {
     public String form(Model model, SysParameter sysParameter, String textInputId, Integer num) {
 
         //如果redis已连接，则从redis中获取实体类，否则从数据库查询
-        SysEntity entityClass = sysEntityService.selectOne(MapUtil.getMap("code", "SysFile"));
+        SysEntity entityClass = sysEntityService.selectOne(UnaMapUtil.getMap("code", "SysFile"));
         if(entityClass!=null){
-            entityClass = sysEntityService.parse(ListUtil.getList(entityClass)).get(0);
+            entityClass = sysEntityService.parse(UnaListUtil.getList(entityClass)).get(0);
         }
         model.addAttribute("sysResponseParameter", new SysResponseParameter().setSysEntity(entityClass));
         model.addAttribute("textInputId", textInputId);

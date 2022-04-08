@@ -7,8 +7,7 @@ import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
-import cn.kunli.una.utils.common.StringUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
@@ -34,7 +33,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     //通过用户id查询所有菜单，并按层级排序
     public List<SysMenu> selectByAccount() {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        List<SysMenu> menuList = thisProxy.parse(thisProxy.selectList(MapUtil.getMap("level",1)));
+        List<SysMenu> menuList = thisProxy.parse(thisProxy.selectList(UnaMapUtil.getMap("level",1)));
         List<String> permissionCodeList = loginUser.getPermissionCodeList();
         //移除没有权限的菜单 与不展示的菜单isEffect = false
         List<SysMenu> formatMenuList = filterByPermission(menuList, permissionCodeList);
@@ -99,7 +98,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     @Override
     public SysResult validate(SysMenu obj) {
         if(StrUtil.isNotBlank(obj.getName())){
-            List<SysMenu> objList = thisProxy.selectList(MapUtil.buildHashMap().put("name", obj.getName().trim()).put("parentId",obj.getParentId()).build());
+            List<SysMenu> objList = thisProxy.selectList(UnaMapUtil.buildHashMap().put("name", obj.getName().trim()).put("parentId",obj.getParentId()).build());
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("名称重复，保存失败:" + obj.getName());
             }
@@ -119,7 +118,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
-                    obj.setSortOrder(this.selectCount(MapUtil.getMap("parentId",obj.getParentId())) + 1);
+                    obj.setSortOrder(this.selectCount(UnaMapUtil.getMap("parentId",obj.getParentId())) + 1);
                 obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StrUtil.isBlank(obj.getRoute())) obj.setRoute("SysManage");
@@ -149,7 +148,7 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
         list = super.parse(list);
         for (SysMenu record : list) {
             if(record.getLevel()<2){
-                List<SysMenu> subList = thisProxy.selectList(MapUtil.getMap("parentId", record.getId()));
+                List<SysMenu> subList = thisProxy.selectList(UnaMapUtil.getMap("parentId", record.getId()));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.parse(subList);
                 }

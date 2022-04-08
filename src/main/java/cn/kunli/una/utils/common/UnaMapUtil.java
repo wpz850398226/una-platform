@@ -11,15 +11,15 @@ import java.util.Map;
  * @version 2020年12月3日08:49:57
  * map工具类
  */
-public class MapUtil<V> {
+public class UnaMapUtil<V> {
 
     private Map<String, V> innerMap;
 
-    public static <V> MapUtil<V> buildHashMap() {
-        return new MapUtil<V>();
+    public static <V> UnaMapUtil<V> buildHashMap() {
+        return new UnaMapUtil<V>();
     }
 
-    public MapUtil<V> put(String k,V v) {
+    public UnaMapUtil<V> put(String k, V v) {
         if (null == innerMap) {
             innerMap = new HashMap<String,V>();
         }

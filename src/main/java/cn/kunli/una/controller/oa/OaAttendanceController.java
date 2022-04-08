@@ -8,7 +8,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.oa.OaAttendanceService;
 import cn.kunli.una.service.system.SysPermissionService;
 import cn.kunli.una.utils.common.DateUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +41,13 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
     @ResponseBody
     private void autoAttendance(){
         //查询所有有修改考勤记录权限的人，都需要打卡
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code", entityClassName));
+        SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code", entityClassName));
         if(sysEntity!=null){
             //查询修改考勤记录的权限
-            SysPermission permission = sysPermissionService.selectOne(MapUtil.buildHashMap().put("type_dcode", "permission_type_update")
+            SysPermission permission = sysPermissionService.selectOne(UnaMapUtil.buildHashMap().put("type_dcode", "permission_type_update")
                             .put("entityId", sysEntity.getId()).build());
             if(permission!=null){
-                List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(MapUtil.buildHashMap().put("permissionId", permission.getId())
+                List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(UnaMapUtil.buildHashMap().put("permissionId", permission.getId())
                                 .put("ne:scope_dcode", "permission_scope_0").build());
 
                 if(CollectionUtils.isNotEmpty(rolePermissionList)){
@@ -58,7 +58,7 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
                     //获取到所有需要考勤的角色id
                     String roleIds = stringBuffer.delete(0, 1).toString();
                     //查询拥有这些角色的所有账号
-                    List<SysAccount> accountList = sysAccountService.selectList(MapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+roleIds+"',',',',|'),',') =1"));
+                    List<SysAccount> accountList = sysAccountService.selectList(UnaMapUtil.getMap("*:apply", "CONCAT(role_id, ',') REGEXP CONCAT(REPLACE('"+roleIds+"',',',',|'),',') =1"));
                     //生成考勤记录
                     OaAttendance oaAttendance = (OaAttendance) new OaAttendance().setAttendanceDate(DateUtil.getDayBegin());
                     for (SysAccount sysAccount : accountList) {
@@ -86,14 +86,14 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
         String time = DateUtil.getStrOfTime(punchTime);
 
         //查询配置项 匹配的时间区间
-        SysConfiguration oaAttendanceConfig = sysConfigurationService.selectOne(MapUtil.buildHashMap().put("le:lower", time)
+        SysConfiguration oaAttendanceConfig = sysConfigurationService.selectOne(UnaMapUtil.buildHashMap().put("le:lower", time)
                 .put("gt:upper", time).put(":code", "OaAttendance_").build());
 
         if(oaAttendanceConfig==null)return SysResult.fail("打卡失败，当前不在打卡时间内");
 
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 
-        Map<String, Object> queryMap = MapUtil.buildHashMap().put("accountId", loginUser.getId())
+        Map<String, Object> queryMap = UnaMapUtil.buildHashMap().put("accountId", loginUser.getId())
                 .put("attendanceDate", DateUtil.getDayBegin()).put("is_on_duty",0).build();
         if(oaAttendanceConfig.getValue().equals("上班"))queryMap.put("is_on_duty",1);
         //查询对应账号的考勤记录

@@ -9,7 +9,7 @@ import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.service.flow.FlowTaskService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +45,7 @@ public class FlowInstanceController extends BaseController<FlowInstanceService, 
         SysResult saveResult = super.add(entity);
         if(saveResult.getIsSuccess()){
             //保存流程实例成功，查找开始节点
-            FlowNode startNode = flowNodeService.selectOne(MapUtil.buildHashMap()
+            FlowNode startNode = flowNodeService.selectOne(UnaMapUtil.buildHashMap()
                     .put("definitionId", entity.getDefinitionId())
                     .put("typeDcode", "flow_nudeType_start").build());
 

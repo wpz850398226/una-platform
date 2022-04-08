@@ -7,15 +7,13 @@ import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import cn.hutool.core.util.StrUtil;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,13 +44,13 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
             //虚拟实体
             sysEntity = sysEntityService.getById(map.get("entityId").toString());
         }else{
-            sysEntity = sysEntityService.selectOne(MapUtil.getMap("code","SysData"));
+            sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code","SysData"));
         }
         if((map.get("orderByAsc")==null|| StrUtil.isBlank(map.get("orderByAsc").toString()))
                 &&(map.get("orderByDesc")==null||StrUtil.isBlank(map.get("orderByDesc").toString()))) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
+                List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.getMap("entityId",sysEntity.getId()));
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     StringBuffer ascFieldBuffer = new StringBuffer();
@@ -102,7 +100,7 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
         if(sysData0.getEntityId()!=null){
             //虚拟实体，查询虚拟实体类，而不是sysData类
             Integer entityId = sysData0.getEntityId();
-            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",entityId));
+            List<SysField> fieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId",entityId));
 
             if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段

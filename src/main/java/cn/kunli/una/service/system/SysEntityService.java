@@ -9,8 +9,8 @@ import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysFilter;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -28,7 +28,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.AbstractController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,15 +71,15 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         list = super.parse(list);
 
         for (SysEntity sysEntity : list) {
-            Map<String, Object> map = MapUtil.getMap("entityId", sysEntity.getId());
+            Map<String, Object> map = UnaMapUtil.getMap("entityId", sysEntity.getId());
             sysEntity.setRelationList(sysRelationService.parse(sysRelationService.selectList(map)));
             sysEntity.setButtonList(sysButtonService.parse(sysButtonService.selectList(map)));
             sysEntity.setQueryList(sysQueryService.parse(sysQueryService.selectList(map)));
-            sysEntity.setPermissionList(sysPermissionService.selectList(MapUtil.getMap("entityId",sysEntity.getId())));
+            sysEntity.setPermissionList(sysPermissionService.selectList(UnaMapUtil.getMap("entityId",sysEntity.getId())));
             sysEntity.setSortList(sysSortService.parse(sysSortService.selectList(map)));
             List<SysFilter> filterList = sysFilterService.parse(sysFilterService.selectList(map));
             if(CollectionUtils.isNotEmpty(filterList)){
-                List<SysFilter> newFilterList = ListUtil.getList((SysFilter)new SysFilter().setName("全部"));
+                List<SysFilter> newFilterList = UnaListUtil.getList((SysFilter)new SysFilter().setName("全部"));
                 newFilterList.addAll(filterList);
                 sysEntity.setFilterList(newFilterList);
             }
@@ -104,7 +103,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         tableModel.setComment(sysEntity.getName());
 
         //获取字段信息
-        List<SysField> sysFieldList = sysFieldService.selectList(MapUtil.getMap("entityId", id));
+        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId", id));
         List<ColumnModel> columnModelList = sysFieldList.stream().map(sf -> {
             ColumnModel columnModel = new ColumnModel(StrUtil.toUnderlineCase(sf.getAssignmentCode()));
             columnModel.setColumnType(Type.valueOf(sf.getColumnTypeDcode()));

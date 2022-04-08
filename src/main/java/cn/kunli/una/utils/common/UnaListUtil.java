@@ -13,7 +13,7 @@ import java.util.*;
  * @version 创建时间：2019年7月23日 下午9:38:15
  * 类说明 :操作集合的工具类
  */
-public class ListUtil {
+public class UnaListUtil {
 
     /**
      * 拆分集合
@@ -147,7 +147,7 @@ public class ListUtil {
                     try {
                         // 将方法名的 get 前缀去掉，并增加 pd 前缀
                         //String pdKey = "pb".concat(methodName.substring(3));
-                        String pdKey = StringUtil.lowerInitial(methodName.substring(3));
+                        String pdKey = UnaStringUtil.lowerInitial(methodName.substring(3));
                         // 将 get 方法的名称作为 Map 的 key，将返回值作为 value 进行封装
                         Object val = method.invoke(obj, null);
                         if(val!=null)pdMap.put(pdKey, val);
@@ -182,7 +182,7 @@ public class ListUtil {
                 try {
                     // 将方法名的 get 前缀去掉，并增加 pd 前缀
                     //String pdKey = "pb".concat(methodName.substring(3));
-                    String pdKey = StringUtil.lowerInitial(methodName.substring(3));
+                    String pdKey = UnaStringUtil.lowerInitial(methodName.substring(3));
                     // 将 get 方法的名称作为 Map 的 key，将返回值作为 value 进行封装
                     Object val = method.invoke(obj, null);
                     if(val!=null)pdMap.put(pdKey, val);

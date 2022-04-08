@@ -6,7 +6,7 @@ import cn.kunli.una.pojo.flow.FlowDefinition;
 import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +54,8 @@ public class FlowDefinitionService extends BasicService<FlowDefinitionMapper, Fl
     public List<FlowDefinition> parse(List<FlowDefinition> list) {
         list = super.parse(list);
         for (FlowDefinition flowDefinition : list) {
-            flowDefinition.setTotal(flowInstanceService.selectCount(MapUtil.getMap("definitionId",flowDefinition.getId())));
-            flowDefinition.setRunning(flowInstanceService.selectCount(MapUtil.buildHashMap().put("definitionId",flowDefinition.getId()).put("isRunning",true).build()));
+            flowDefinition.setTotal(flowInstanceService.selectCount(UnaMapUtil.getMap("definitionId",flowDefinition.getId())));
+            flowDefinition.setRunning(flowInstanceService.selectCount(UnaMapUtil.buildHashMap().put("definitionId",flowDefinition.getId()).put("isRunning",true).build()));
         }
         return list;
     }

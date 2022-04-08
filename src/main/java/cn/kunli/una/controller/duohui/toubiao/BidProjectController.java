@@ -7,8 +7,8 @@ import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.duohui.toubiao.BidBidderService;
 import cn.kunli.una.service.duohui.toubiao.BidProjectService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +47,11 @@ public class BidProjectController extends BaseController<BidProjectService, BidP
         service.update(updateWrapper);
 
         //查询项目
-        BidProject bidProject = service.parse(ListUtil.getList(service.getById(id))).get(0);
+        BidProject bidProject = service.parse(UnaListUtil.getList(service.getById(id))).get(0);
 
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(loginUser!=null){
-            BidBidder bidBidder = bidBidderService.selectOne(MapUtil.buildHashMap().put("projectId", bidProject.getId()).put("creatorId", loginUser.getId()).build());
+            BidBidder bidBidder = bidBidderService.selectOne(UnaMapUtil.buildHashMap().put("projectId", bidProject.getId()).put("creatorId", loginUser.getId()).build());
             if(bidBidder!=null){
                 bidProject.setIsApplyed(true);
             }

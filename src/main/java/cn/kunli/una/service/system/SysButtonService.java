@@ -7,7 +7,7 @@ import cn.kunli.una.pojo.system.SysField;
 import cn.kunli.una.pojo.system.SysPermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
         if(StrUtil.isNotBlank(obj.getEvent())){
-            List<SysButton> objList = sysButtonService.selectList(MapUtil.getMap("event", obj.getEvent().trim()));
+            List<SysButton> objList = sysButtonService.selectList(UnaMapUtil.getMap("event", obj.getEvent().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("事件名重复，保存失败:" + obj.getEvent());
             }

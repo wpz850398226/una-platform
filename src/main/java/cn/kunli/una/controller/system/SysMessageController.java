@@ -6,13 +6,11 @@ import cn.kunli.una.pojo.system.SysMessage;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysMessageService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,7 +44,7 @@ public class SysMessageController extends BaseController<SysMessageService, SysM
             return SysResult.fail("发送失败，5分钟内不可重复发送，您上次的验证码是"+redisUtil.get("captcha:"+mobile));
         }
 
-        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username", mobile));
+        SysAccount sysAccount = sysAccountService.selectOne(UnaMapUtil.getMap("username", mobile));
         if(sysAccount!=null){
             int captcha = (int)(Math.random()*1000000);
             String captchaString = String.format("%06d", captcha);

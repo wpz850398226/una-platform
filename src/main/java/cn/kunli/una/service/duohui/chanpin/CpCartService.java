@@ -4,8 +4,7 @@ import cn.kunli.una.mapper.CpCartMapper;
 import cn.kunli.una.pojo.chanpin.CpCart;
 import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.system.SysCompanyService;
-import cn.kunli.una.utils.common.ListUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class CpCartService extends BasicService<CpCartMapper, CpCart> {
         for (CpCart cpCart : list) {
             if(cpCart.getModelId()!=null){
                 CpModel cpModel = cpModelService.getById(cpCart.getModelId());
-                cpModel = cpModelService.parse(ListUtil.getList(cpModel)).get(0);
+                cpModel = cpModelService.parse(UnaListUtil.getList(cpModel)).get(0);
                 cpCart.setCpModel(cpModel);
             }
         }

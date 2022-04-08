@@ -94,7 +94,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     }
 //    @Autowired
     public SysEntity getEntity(){
-        SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",entityClass.getSimpleName()));
+        SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",entityClass.getSimpleName()));
         if(sysEntity==null)return null;
         return sysEntity;
     }
@@ -146,7 +146,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             }
 
             //级联删除
-            List<SysRelation> sysRelationList = sysRelationService.selectList(MapUtil.getMap("parentEntityId", sysEntity.getId()));
+            List<SysRelation> sysRelationList = sysRelationService.selectList(UnaMapUtil.getMap("parentEntityId", sysEntity.getId()));
             if(CollectionUtils.isNotEmpty(sysRelationList)){
                 for (SysRelation sysRelation : sysRelationList) {
                     //需要级联删除的记录所属实体类
@@ -187,7 +187,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     }
 
                     if(thisProxy!=null){
-                        List<T> ts = thisProxy.selectList(MapUtil.getMap(relatedField.getAssignmentCode(), id));
+                        List<T> ts = thisProxy.selectList(UnaMapUtil.getMap(relatedField.getAssignmentCode(), id));
                         if(CollectionUtils.isNotEmpty(ts)){
                             for (T t : ts) {
                                 thisProxy.deleteById(t.getId());
@@ -339,7 +339,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         if(sysEntity!=null){
             //如果名称不为空，验证名称唯一性
             if(StrUtil.isNotBlank(obj.getName())){
-                Map<String, Object> nameParamMap = MapUtil.getMap("name", obj.getName());
+                Map<String, Object> nameParamMap = UnaMapUtil.getMap("name", obj.getName());
                 //获取当前类对应实体类对象
                 if(sysEntity.getParentFieldId()!=null){
                     //如果当前类对应实体类有设置父字段，则验证名称局部唯一性
@@ -367,7 +367,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     Object codeObject = declaredField.get(obj);
                     //如果传入了code值，验证code全局唯一性
                     if(codeObject!=null&&StrUtil.isNotBlank(codeObject.toString())){
-                        List<T> codeResultList = getThisProxy().getList(MapUtil.getMap("code",codeObject));
+                        List<T> codeResultList = getThisProxy().getList(UnaMapUtil.getMap("code",codeObject));
                         if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                             //通过新文件的编码查询到数据
                             return SysResult.fail("编码重复，保存失败");
@@ -414,7 +414,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     //获取父字段值
                     Object parentValueObj = parentField.get(obj);
                     //查询该父字段下的数据数量
-                    num = this.count(getWrapper(MapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
+                    num = this.count(getWrapper(UnaMapUtil.getMap(sysField.getAssignmentCode(),parentValueObj)));
                 }else{
                     //没有设置父字段，查询所有数量
                     num = this.count();
@@ -455,7 +455,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         if(CollectionUtils.isEmpty(list))return list;
         SysEntity sysEntity = getEntity();
         if(sysEntity!=null){
-            List<SysField> fieldList = sysFieldService.selectList(MapUtil.getMap("entityId",sysEntity.getId()));
+            List<SysField> fieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId",sysEntity.getId()));
             if(CollectionUtils.isNotEmpty(fieldList)){
                 //遍历该实体类的所有字段
                 for (SysField sysField : fieldList) {
@@ -515,7 +515,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {
                 //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.selectList(MapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
+                List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
                 //格式化排序条件，转为查询语句，并将语句赋值给查询对象
                 if(CollectionUtils.isNotEmpty(sortList)){
                     int size = sortList.size();

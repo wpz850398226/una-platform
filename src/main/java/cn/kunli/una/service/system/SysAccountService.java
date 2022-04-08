@@ -8,12 +8,11 @@ import cn.kunli.una.pojo.system.SysCompany;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -65,7 +64,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
         SysResult validate = super.validate(obj);
         if(!validate.getIsSuccess())return validate;
         if (StrUtil.isNotBlank(obj.getUsername())) {
-            List<SysAccount> objList = sysAccountService.selectList(MapUtil.getMap("username", obj.getUsername().trim()));
+            List<SysAccount> objList = sysAccountService.selectList(UnaMapUtil.getMap("username", obj.getUsername().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
                 return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
             }

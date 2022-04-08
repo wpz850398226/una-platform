@@ -2,8 +2,6 @@ package cn.kunli.una.interceptor;
 
 
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.utils.common.JSONUtil;
-import cn.kunli.una.utils.common.MapUtil;
 import cn.kunli.una.utils.common.WrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;

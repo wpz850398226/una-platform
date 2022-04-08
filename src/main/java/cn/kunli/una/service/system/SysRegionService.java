@@ -3,7 +3,7 @@ package cn.kunli.una.service.system;
 import cn.kunli.una.mapper.SysRegionMapper;
 import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class SysRegionService extends BasicService<SysRegionMapper, SysRegion> {
         super.parse(list);
         for (SysRegion record : list) {
             if(record.getLevel() == 2){
-                List<SysRegion> subList = thisProxy.selectList(MapUtil.getMap("parentId", record.getId()));
+                List<SysRegion> subList = thisProxy.selectList(UnaMapUtil.getMap("parentId", record.getId()));
                 if(CollectionUtils.isNotEmpty(subList)){
                     this.parse(subList);
                 }

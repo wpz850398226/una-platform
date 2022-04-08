@@ -4,8 +4,8 @@ import cn.kunli.una.pojo.chanpin.CpCart;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpCartService;
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +34,7 @@ public class CpCartController extends BaseController<CpCartService, CpCart> {
     @RequestMapping("/fDetail")
     public String fDetail(Model model) {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        List<CpCart> cpCartList = service.parse(service.selectList(MapUtil.getMap("creatorId",loginUser.getId())));
+        List<CpCart> cpCartList = service.parse(service.selectList(UnaMapUtil.getMap("creatorId",loginUser.getId())));
         List<List<CpCart>> recordList = new ArrayList<>();
         Map<String,Integer> map = new HashMap<>();
 
@@ -45,7 +45,7 @@ public class CpCartController extends BaseController<CpCartService, CpCart> {
                 recordList.get(index).add(cpCart);
             }else{
                 map.put(shopName,recordList.size());
-                recordList.add(ListUtil.getList(cpCart));
+                recordList.add(UnaListUtil.getList(cpCart));
             }
         }
 

@@ -13,8 +13,8 @@ import cn.kunli.una.service.duohui.chanpin.CpDeliveryService;
 import cn.kunli.una.service.duohui.chanpin.CpModelService;
 import cn.kunli.una.service.duohui.chanpin.CpOrderService;
 import cn.kunli.una.service.system.SysLogService;
-import cn.kunli.una.utils.common.ListUtil;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaListUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.collections4.CollectionUtils;
@@ -67,20 +67,20 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
                 if(paramMap.containsKey("modelId")){
                     String modelId = paramMap.get("modelId").toString();
                     CpModel cpModel = cpModelService.getById(modelId);
-                    cpModel = cpModelService.parse(ListUtil.getList(cpModel)).get(0);
+                    cpModel = cpModelService.parse(UnaListUtil.getList(cpModel)).get(0);
 
                     String shopName = cpModel.getShopName();
                     Integer num = Integer.valueOf(paramMap.get("num").toString());
                     Double modelTotal = num*cpModel.getSellingPrice();
                     orderTotal = orderTotal + modelTotal;
 
-                    Map<String, Object> build = MapUtil.buildHashMap().put("volume", num)
+                    Map<String, Object> build = UnaMapUtil.buildHashMap().put("volume", num)
                             .put("cpModel", cpModel).put("totalAmount",modelTotal).build();
                     if(mapListMap.containsKey(shopName)){
                         mapListMap.get(shopName).add(build);
                         shopTotalMap.put(shopName,shopTotalMap.get(shopName)+modelTotal);
                     }else{
-                        mapListMap.put(shopName,ListUtil.getList(build));
+                        mapListMap.put(shopName, UnaListUtil.getList(build));
                         shopTotalMap.put(shopName,modelTotal);
                     }
                 }
@@ -88,12 +88,12 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
         }
 
         //收货地址
-        List<CpDelivery> deliveryList = cpDeliveryService.parse(cpDeliveryService.selectList(MapUtil.getMap("creatorId", loginUser.getId())));
+        List<CpDelivery> deliveryList = cpDeliveryService.parse(cpDeliveryService.selectList(UnaMapUtil.getMap("creatorId", loginUser.getId())));
 
         //送货方式
-        List<SysDictionary> deliveryTypeList = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_deliveryType"));
+        List<SysDictionary> deliveryTypeList = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "dh_deliveryType"));
         //付款方式
-        List<SysDictionary> paymentTypeList = sysDictionaryService.selectList(MapUtil.getMap("parentCode", "dh_paymentType"));
+        List<SysDictionary> paymentTypeList = sysDictionaryService.selectList(UnaMapUtil.getMap("parentCode", "dh_paymentType"));
 
 
         model.addAttribute("mapListMap",mapListMap);
@@ -102,7 +102,7 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
         model.addAttribute("deliveryList",deliveryList);
         model.addAttribute("deliveryTypeList",deliveryTypeList);
         model.addAttribute("paymentTypeList",paymentTypeList);
-        SysConfiguration systemTitle = sysConfigurationService.selectOne(MapUtil.getMap("code","systemTitle"));
+        SysConfiguration systemTitle = sysConfigurationService.selectOne(UnaMapUtil.getMap("code","systemTitle"));
         model.addAttribute("systemName", systemTitle);
         model.addAttribute("activeUser", loginUser);
 
@@ -117,7 +117,7 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
         CpOrder cpOrder = service.getById(id);
         if(cpOrder == null) return SysResult.fail("订单查询失败，结算失败");
         //如果生成订单成功，打开支付页
-        return service.settle(ListUtil.getList(cpOrder));
+        return service.settle(UnaListUtil.getList(cpOrder));
     }
 
     //订单支付成功回调
@@ -130,7 +130,7 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
         if(map.containsKey("trade_status")&&map.get("trade_status").equals("TRADE_SUCCESS")){
             //获取订单编号
             Object out_trade_no = map.get("out_trade_no");
-            CpOrder cpOrder = service.selectOne(MapUtil.getMap("code", out_trade_no));
+            CpOrder cpOrder = service.selectOne(UnaMapUtil.getMap("code", out_trade_no));
             if(cpOrder!=null){
                 service.updateById((CpOrder) new CpOrder().setStatusDcode("dh_orderStatus_toSend").setId(cpOrder.getId()));
             }

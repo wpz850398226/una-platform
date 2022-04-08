@@ -4,7 +4,7 @@ import cn.kunli.una.pojo.system.SysAccount;
 import cn.kunli.una.pojo.system.SysRegion;
 import cn.kunli.una.service.system.SysAccountService;
 import cn.kunli.una.service.system.SysRegionService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,14 +59,14 @@ public class DhLoginController {
 
     @GetMapping("/seekPass2")
     public String seekPass2(Model model,String username) {
-        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username", username));
+        SysAccount sysAccount = sysAccountService.selectOne(UnaMapUtil.getMap("username", username));
         model.addAttribute("username",username);
         return "duohui/denglu/zhmm1";
     }
 
     @GetMapping("/seekPass3")
     public String seekPass3(Model model,String username) {
-        SysAccount sysAccount = sysAccountService.selectOne(MapUtil.getMap("username", username));
+        SysAccount sysAccount = sysAccountService.selectOne(UnaMapUtil.getMap("username", username));
         model.addAttribute("sysAccount",sysAccount);
         return "duohui/denglu/zhmm2";
     }
@@ -74,8 +74,8 @@ public class DhLoginController {
     @GetMapping("/regionList")
     public String regionList(Model model,String targetUrl) {
 
-        List<SysRegion> regionList = sysRegionService.selectList(MapUtil.getMap("level", 2));
-        regionList.forEach(r->r.setChildren(sysRegionService.selectList(MapUtil.getMap("parentId", r.getId()))));
+        List<SysRegion> regionList = sysRegionService.selectList(UnaMapUtil.getMap("level", 2));
+        regionList.forEach(r->r.setChildren(sysRegionService.selectList(UnaMapUtil.getMap("parentId", r.getId()))));
 
         model.addAttribute("regionList",regionList);
         model.addAttribute("targetUrl",targetUrl);

@@ -7,7 +7,7 @@ import cn.kunli.una.pojo.system.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class BidBidderService extends BasicService<BidBidderMapper, BidBidder> {
 
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getProjectId()!=null){
-            List<BidBidder> bidBidders = thisProxy.selectList(MapUtil.buildHashMap().put("projectId", obj.getProjectId()).put("creatorId", loginUser.getId()).build());
+            List<BidBidder> bidBidders = thisProxy.selectList(UnaMapUtil.buildHashMap().put("projectId", obj.getProjectId()).put("creatorId", loginUser.getId()).build());
             if(CollectionUtils.isNotEmpty(bidBidders)){
                 return SysResult.fail("已报名，请勿重复操作");
             }
@@ -57,7 +57,7 @@ public class BidBidderService extends BasicService<BidBidderMapper, BidBidder> {
             Integer projectId = bidBidder.getProjectId();
             BidProject bidProject = bidProjectService.getById(projectId);
             String statusDcode = bidProject.getStatusDcode();
-            SysDictionary sysDictionary = sysDictionaryService.selectOne(MapUtil.getMap("code", statusDcode));
+            SysDictionary sysDictionary = sysDictionaryService.selectOne(UnaMapUtil.getMap("code", statusDcode));
             if(sysDictionary!=null){
                 bidBidder.setProjectStatusDname(sysDictionary.getName());
             }

@@ -3,7 +3,7 @@ package cn.kunli.una.service.duohui.guanwang;
 import cn.kunli.una.mapper.GwMenuMapper;
 import cn.kunli.una.pojo.guanwang.GwMenu;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
         for (GwMenu record : list) {
-            List<GwMenu> subList = thisProxy.selectList(MapUtil.getMap("parentId", record.getId()));
+            List<GwMenu> subList = thisProxy.selectList(UnaMapUtil.getMap("parentId", record.getId()));
             if(CollectionUtils.isNotEmpty(subList)){
                 this.parse(subList);
             }
@@ -54,7 +54,7 @@ public class GwMenuService extends BasicService<GwMenuMapper, GwMenu> {
         if (obj.getId() == null) {
             if (obj.getParentId() != null) {
                 if (obj.getSortOrder() == null)
-                    obj.setSortOrder(this.selectCount(MapUtil.getMap("parentId",obj.getParentId())) + 1);
+                    obj.setSortOrder(this.selectCount(UnaMapUtil.getMap("parentId",obj.getParentId())) + 1);
                 obj.setLevel(thisProxy.getById(obj.getParentId()).getLevel() + 1);
             }
             if (StrUtil.isBlank(obj.getRoute())) obj.setRoute("SysManage");

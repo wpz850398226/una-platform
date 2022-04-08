@@ -9,7 +9,7 @@ import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.system.SysRegionService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
@@ -87,7 +87,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     public SysResult afterSaveSuccess(CpGoods obj) {
         if(CollectionUtils.isNotEmpty(obj.getSpecificationList())){
             //删除原有规格
-            cpSpecificationService.deleteBySelective(MapUtil.getMap("goodsId", obj.getId()));
+            cpSpecificationService.deleteBySelective(UnaMapUtil.getMap("goodsId", obj.getId()));
             //保存规格
             for (CpSpecification cpSpecification : obj.getSpecificationList()) {
                 cpSpecification.setGoodsId(obj.getId());
@@ -97,7 +97,7 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
 
         if(CollectionUtils.isNotEmpty(obj.getModelList())){
             //删除原有型号
-            cpModelService.deleteBySelective(MapUtil.getMap("goodsId", obj.getId()));
+            cpModelService.deleteBySelective(UnaMapUtil.getMap("goodsId", obj.getId()));
 
             CpGoods targetGoods = (CpGoods) new CpGoods().setIsAudit(obj.getIsAudit()).setId(obj.getId());
             //取标价最低的型号作为展示型号
@@ -129,9 +129,9 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     public List<CpGoods> parse(List<CpGoods> list) {
         list = super.parse(list);
         for (CpGoods cpGoods : list) {
-            List<CpSpecification> specificationList = cpSpecificationService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
+            List<CpSpecification> specificationList = cpSpecificationService.selectList(UnaMapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setSpecificationList(specificationList);
-            List<CpModel> attributeList = cpModelService.selectList(MapUtil.getMap("goodsId", cpGoods.getId()));
+            List<CpModel> attributeList = cpModelService.selectList(UnaMapUtil.getMap("goodsId", cpGoods.getId()));
             cpGoods.setModelList(attributeList);
             if(StrUtil.isNotBlank(cpGoods.getFileIds())){
                 String fileUrls = String.valueOf(cpGoods.getMap().get("fileUrls"));

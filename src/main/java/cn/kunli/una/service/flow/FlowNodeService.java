@@ -4,7 +4,7 @@ import cn.kunli.una.mapper.FlowNodeMapper;
 import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.pojo.flow.FlowNode;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.MapUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class FlowNodeService extends BasicService<FlowNodeMapper, FlowNode> {
     public List<FlowNode> getSubsequent(Integer nodeId){
         if(nodeId==null)return null;
         List<FlowNode> flowNodeList = new ArrayList<>();
-        List<FlowLine> flowLineList = flowLineService.selectList(MapUtil.getMap("originNodeId", nodeId));
+        List<FlowLine> flowLineList = flowLineService.selectList(UnaMapUtil.getMap("originNodeId", nodeId));
         if(CollectionUtils.isEmpty(flowLineList))return flowNodeList;
         for (FlowLine flowLine : flowLineList) {
             FlowNode flowNode = thisProxy.getById(flowLine.getTargetNodeId());
