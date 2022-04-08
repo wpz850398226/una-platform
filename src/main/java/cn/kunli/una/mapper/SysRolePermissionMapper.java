@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.system.SysRolePermission;
+import cn.kunli.una.pojo.sys.SysRolePermission;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 

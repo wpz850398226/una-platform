@@ -1,6 +1,6 @@
 package cn.kunli.una.pojo.vo;
 
-import cn.kunli.una.pojo.system.SysAccount;
+import cn.kunli.una.pojo.sys.SysAccount;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

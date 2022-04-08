@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysExceptionMapper">
 
-    <resultMap type="cn.kunli.una.pojo.system.SysException" id="BaseResultMap">
+    <resultMap type="cn.kunli.una.pojo.sys.SysException" id="BaseResultMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -65,7 +65,7 @@
 
 
     <!--条件查询（返回实体类）-->
-    <select id="selectBySelective" resultType="cn.kunli.una.pojo.system.SysException">
+    <select id="selectBySelective" resultType="cn.kunli.una.pojo.sys.SysException">
         <include refid="baseQuery" />
     </select>
 

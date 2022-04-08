@@ -1,6 +1,6 @@
 package cn.kunli.una.utils;
 
-import cn.kunli.una.service.system.SysConfigurationService;
+import cn.kunli.una.service.sys.SysConfigurationService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;

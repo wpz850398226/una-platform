@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.system.SysLog;
+import cn.kunli.una.pojo.sys.SysLog;
 
 /**
  * 日志(SysLog)表数据库访问层

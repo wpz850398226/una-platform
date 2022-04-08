@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -27,34 +28,46 @@ public class BasePojo implements Serializable{
 
 	private String name;					//名称（中文名）
 
-	private Integer tentId;
-
 	private String remark;
 
-    private Integer creatorId;
+	//权重
+	private Integer weight;
 
-	private String creatorName;
-
+	@ApiModelProperty(value = "创建时间")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    private Integer modifierId;				//修订者id
-
-	private String modifierName;				//修订者姓名
-
+	@ApiModelProperty(value = "修订时间")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyTime;			//修订时间
 
-    private Boolean isDelete;			//是否删除：1删除；0未删除
-	//顺序
+	@ApiModelProperty(value = "创建人id")
+	private Integer creatorId;
+
+	@ApiModelProperty(value = "创建人名称")
+	private String creatorName;
+
+	@ApiModelProperty(value = "修订人id")
+	private Integer modifierId;
+
+	@ApiModelProperty(value = "修订人名称")
+	private String modifierName;
+
+	@ApiModelProperty(value = "租户id")
+	private Integer tentId;
+
+	@ApiModelProperty(value = "是否删除")
+	private Boolean isDelete;
+
+	@ApiModelProperty(value = "顺序")
 	private Integer sortOrder;
-	//权重
-	private Integer weight;
-	//公司id
+
+	@ApiModelProperty(value = "所属组织id")
 	private Integer companyId;
-	//部门id
+
+	@ApiModelProperty(value = "所属部门id")
 	private Integer departmentId;
 
 

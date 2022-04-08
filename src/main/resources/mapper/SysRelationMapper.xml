@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysRelationMapper">
-    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysRelation">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.sys.SysRelation">
         <id column="id" jdbcType="VARCHAR" property="id"/>
     </resultMap>
 
@@ -84,7 +84,7 @@
         </where>
         <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
-    <select id="selectBySubEntityIdCollection" resultType="cn.kunli.una.pojo.system.SysRelation">
+    <select id="selectBySubEntityIdCollection" resultType="cn.kunli.una.pojo.sys.SysRelation">
         select record.*
         ,prtSysEntity.path as parentEntityPath
         ,prtSysEntity.name as parentEntityName

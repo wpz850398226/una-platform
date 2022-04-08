@@ -1,18 +1,7 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
-import cn.kunli.una.controller.BaseController;
-
-import cn.kunli.una.pojo.system.SysCompany;
-import cn.kunli.una.pojo.vo.SysResult;
-
-import cn.kunli.una.utils.common.DateUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Date;
 
 /**
  * 商城-店铺类(SysCompany)表控制层

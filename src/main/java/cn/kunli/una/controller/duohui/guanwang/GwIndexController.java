@@ -2,11 +2,11 @@ package cn.kunli.una.controller.duohui.guanwang;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.guanwang.GwMenu;
-import cn.kunli.una.pojo.system.SysArticle;
-import cn.kunli.una.pojo.system.SysConfiguration;
-import cn.kunli.una.pojo.system.SysData;
+import cn.kunli.una.pojo.sys.SysArticle;
+import cn.kunli.una.pojo.sys.SysConfiguration;
+import cn.kunli.una.pojo.sys.SysData;
 import cn.kunli.una.service.duohui.guanwang.GwMenuService;
-import cn.kunli.una.service.system.SysDataService;
+import cn.kunli.una.service.sys.SysDataService;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;

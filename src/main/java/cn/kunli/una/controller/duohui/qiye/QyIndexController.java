@@ -1,10 +1,10 @@
 package cn.kunli.una.controller.duohui.qiye;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
-import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.sys.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-import cn.kunli.una.service.system.*;
+import cn.kunli.una.service.sys.*;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;

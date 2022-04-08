@@ -2,11 +2,11 @@ package cn.kunli.una.controller.oa;
 
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.oa.OaAttendance;
-import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.sys.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.oa.OaAttendanceService;
-import cn.kunli.una.service.system.SysPermissionService;
+import cn.kunli.una.service.sys.SysPermissionService;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;

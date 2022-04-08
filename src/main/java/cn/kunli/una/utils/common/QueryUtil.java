@@ -1,6 +1,5 @@
 package cn.kunli.una.utils.common;
 
-import cn.kunli.una.pojo.system.SysSort;
 import cn.kunli.una.pojo.vo.SysUtilQuery;
 import cn.hutool.core.util.StrUtil;
 

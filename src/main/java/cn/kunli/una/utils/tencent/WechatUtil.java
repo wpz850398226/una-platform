@@ -1,7 +1,7 @@
 package cn.kunli.una.utils.tencent;
 
-import cn.kunli.una.pojo.system.SysConfiguration;
-import cn.kunli.una.service.system.SysConfigurationService;
+import cn.kunli.una.pojo.sys.SysConfiguration;
+import cn.kunli.una.service.sys.SysConfigurationService;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.DateUtil;

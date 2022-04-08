@@ -2,7 +2,7 @@ package cn.kunli.una.service.duohui.gongqiu;
 
 import cn.kunli.una.mapper.GqInformationMapper;
 import cn.kunli.una.pojo.gongqiu.GqInformation;
-import cn.kunli.una.pojo.system.SysCompany;
+import cn.kunli.una.pojo.sys.SysCompany;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UserUtil;

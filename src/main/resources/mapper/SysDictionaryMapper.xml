@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysDictionaryMapper">
-    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysDictionary">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.sys.SysDictionary">
         <id column="id" jdbcType="VARCHAR" property="id"/>
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysDictionary"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysDictionary"
                     select="cn.kunli.una.mapper.SysDictionaryMapper.selectByParentIdCollection" property="children" />
     </resultMap>
     <select id="selectBySelective" resultMap="BaseResultMap">
@@ -62,7 +62,7 @@
         </where>
         <include refid="cn.kunli.una.handler.BasicMapper.baseOrder" />
     </select>
-    <select id="selectByIdAssociation" resultType="cn.kunli.una.pojo.system.SysDictionary">
+    <select id="selectByIdAssociation" resultType="cn.kunli.una.pojo.sys.SysDictionary">
  	select record.*
  	,rootDictionary.name as rootName
  	,parentDictionary.name as parentName

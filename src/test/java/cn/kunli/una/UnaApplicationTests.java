@@ -4,7 +4,7 @@ import cn.kunli.una.pojo.app.AppLotteryWelfare;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.app.AppLotteryWelfareService;
 import cn.kunli.una.utils.mybatisplus.GeneratorUtil;
-import cn.kunli.una.vo.mybatisplus.GeneratorInfo;
+import cn.kunli.una.vo.mybatisplus.GeneratorProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ public class UnaApplicationTests {
 
     @Test
     public void testGenerate(){
-        SysResult<String> stringSysResult = GeneratorUtil.codeGenerate(new GeneratorInfo().setUsername(username)
-                .setPassword(password).setAuthor("wangpz-b").setTableName("sys_test").setDriverName(driverName).setUrl(url));
+        SysResult<String> stringSysResult = GeneratorUtil.codeGenerate(new GeneratorProperties().setUsername(username)
+                .setPassword(password).setAuthor("wangpz").setTableName("sys_knowledge").setDriverName(driverName).setUrl(url));
 
         System.out.println(stringSysResult.getMessage());
     }

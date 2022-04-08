@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.system.SysException;
+import cn.kunli.una.pojo.sys.SysException;
 
 /**
  * (SysException)表数据库访问层

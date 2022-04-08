@@ -1,16 +1,14 @@
 package cn.kunli.una.advice;
 
-import cn.kunli.una.pojo.system.SysLog;
+import cn.kunli.una.pojo.sys.SysLog;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.service.system.SysLogService;
+import cn.kunli.una.service.sys.SysLogService;
 import cn.kunli.una.utils.common.UserUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.Date;
 
 /**
  * @program: 全局异常处理
@@ -37,7 +35,7 @@ public class LogAdvice {
         /*Class<?>[] parameterTypes = methodSignature.getMethod().getParameterTypes();
         Parameter[] parameters = methodSignature.getMethod().getParameters();*/
 
-        SysLog sysLog = (SysLog) new SysLog().setType(name).setCreateTime(new Date());
+        SysLog sysLog = new SysLog().setType(name);
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(loginUser!=null)sysLog.setCreatorId(loginUser.getId());
 

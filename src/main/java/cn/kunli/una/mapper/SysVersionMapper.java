@@ -1,6 +1,6 @@
 package cn.kunli.una.mapper;
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.system.SysVersion;
+import cn.kunli.una.pojo.sys.SysVersion;
 
 /**
  * (SysVersion)表数据库访问层

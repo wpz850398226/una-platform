@@ -1,10 +1,10 @@
 package cn.kunli.una.controller;
 
-import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.sys.*;
 import cn.kunli.una.pojo.vo.Constant;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResponseParameter;
-import cn.kunli.una.service.system.*;
+import cn.kunli.una.service.sys.*;
 import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;

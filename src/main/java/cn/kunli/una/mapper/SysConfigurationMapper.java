@@ -1,7 +1,7 @@
 package cn.kunli.una.mapper;
 
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.pojo.system.SysConfiguration;
+import cn.kunli.una.pojo.sys.SysConfiguration;
 
 /**
  * (SysConfiguration)表数据库访问层

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysFieldMapper">
-    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysField">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.sys.SysField">
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="format_check_type_dcode" jdbcType="VARCHAR" property="formatCheckTypeDcode"></result>
         <!--<association property="formatCheckTypeDcode" column="format_check_type_dcode" javaType="java.lang.String"

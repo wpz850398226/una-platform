@@ -1,27 +1,29 @@
 package cn.kunli.una.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.system.*;
+import cn.kunli.una.pojo.sys.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.system.*;
+import cn.kunli.una.service.sys.*;
 import cn.kunli.una.utils.BaseUtil;
-import cn.kunli.una.utils.common.*;
 import cn.kunli.una.utils.common.DateUtil;
+import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import cn.hutool.core.util.StrUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -81,6 +83,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@PostMapping("")
 	@ResponseBody
+	@ApiOperation(value = "新增",notes = "")
 	public SysResult add(@Valid @RequestBody T entity) {
 		return service.saveRecord(entity);
 	}
@@ -92,6 +95,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 */
 	@PostMapping("/save")
 	@ResponseBody
+	@ApiOperation(value = "保存",notes = "")
 	public SysResult save(@Valid T entity) {
 		//验证权限
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
@@ -119,6 +123,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@DeleteMapping("/{ids}")
 	@ResponseBody
+	@ApiOperation(value = "id删除",notes = "支持批量删除")
 	public SysResult delete(@PathVariable Integer... ids) {
 		for (Integer id : ids) {
 			boolean deleteResult = service.deleteById(id);
@@ -129,9 +134,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@PutMapping("")
 	@ResponseBody
+	@ApiOperation(value = "修改",notes = "")
 	public SysResult update(@RequestBody T entity) {
 		if(entity.getId()!=null) {
-			//如果id不为空，说明是修改数据
+			//如果id不为空，说明是id修改数据
 			return service.updateRecordById(entity);
 		}else if(StrUtil.isNotBlank(entity.getIds())){
 			//如果ids不为空，说明是批量修改数据
@@ -154,6 +160,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@SneakyThrows
 	@PutMapping("/ascend/{id}")
 	@ResponseBody
+	@ApiOperation(value = "id升序",notes = "")
 	public SysResult ascend(@PathVariable Serializable id) {
 		//查询需要升序的记录
 		T ascendRecord = (T) service.getById(id);
@@ -208,6 +215,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@GetMapping("/{id}")
 	@ResponseBody
+	@ApiOperation(value = "id查询",notes = "")
 	public SysResult get(@PathVariable Serializable id) {
 		T record = (T) service.getById(id);
 		return new SysResult().success(service.parse(UnaListUtil.getList(record)).get(0));
@@ -216,6 +224,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@SneakyThrows
 	@GetMapping("/page")
 	@ResponseBody
+	@ApiOperation(value = "分页查询",notes = "")
 	public SysResult page(@RequestParam Map<String, Object> map) {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 		Object current = map.get("pageNum");
@@ -331,6 +340,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	 */
 	@GetMapping("/list")
 	@ResponseBody
+	@ApiOperation(value = "批量查询",notes = "")
 	public List<T> list(@RequestParam Map<String, Object> map) {
 		List list = service.selectList(map);
 		return service.parse(list);
@@ -338,6 +348,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@PostMapping("/import")
 	@ResponseBody
+	@ApiOperation(value = "导入",notes = "")
 	public SysResult importObj(MultipartFile file) {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
 		//验证权限
@@ -469,6 +480,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@RequestMapping("/exportPermission")
 	@ResponseBody
+	@ApiOperation(value = "导出鉴权",notes = "")
 	public SysResult exportPermission() {
 		//验证权限
 		if(UserUtil.isPermitted(entityClassName+":export")){
@@ -480,6 +492,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 
 	@SneakyThrows
 	@RequestMapping("/export")
+	@ApiOperation(value = "导出",notes = "")
 	public void exportObj(HttpServletResponse response, @RequestParam Map<String, Object> map) {
 		//获取数据
 		List<T> objList = service.parse(service.selectList(map));

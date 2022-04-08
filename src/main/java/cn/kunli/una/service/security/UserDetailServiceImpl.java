@@ -1,9 +1,9 @@
 package cn.kunli.una.service.security;
 
-import cn.kunli.una.pojo.system.SysAccount;
+import cn.kunli.una.pojo.sys.SysAccount;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
-import cn.kunli.una.service.system.SysAccountService;
-import cn.kunli.una.service.system.SysPermissionService;
+import cn.kunli.una.service.sys.SysAccountService;
+import cn.kunli.una.service.sys.SysPermissionService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.BeanUtils;

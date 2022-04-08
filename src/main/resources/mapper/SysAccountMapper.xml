@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysAccountMapper">
 
-    <resultMap type="cn.kunli.una.pojo.system.SysAccount" id="BaseResultMap">
+    <resultMap type="cn.kunli.una.pojo.sys.SysAccount" id="BaseResultMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -43,7 +43,7 @@
         <include refid="cn.kunli.una.handler.BasicMapper.baseOrder"/>
     </select>
 
-    <select id="selectByIdsCollection" resultType="cn.kunli.una.pojo.system.SysAccount">
+    <select id="selectByIdsCollection" resultType="cn.kunli.una.pojo.sys.SysAccount">
         select record.id
              , record.name
              , dutyDictionary.name as dutyDname

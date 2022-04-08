@@ -5,7 +5,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.vo.mybatisplus.GeneratorInfo;
+import cn.kunli.una.vo.mybatisplus.GeneratorProperties;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GeneratorUtil {
 
-    public static SysResult<String> codeGenerate(GeneratorInfo info){
+    public static SysResult<String> codeGenerate(GeneratorProperties info){
         if(StrUtil.isBlank(info.getTableName())){
             return SysResult.fail("创建失败，未指定表名");
         }
@@ -31,6 +31,8 @@ public class GeneratorUtil {
         if((StrUtil.isBlank(info.getUrl()) && (StrUtil.isBlank(info.getIp()) || StrUtil.isBlank(info.getDatabase()))) || StrUtil.isBlank(info.getDriverName())){
             return SysResult.fail("创建失败，数据库信息有误");
         }
+
+        String moduleName = info.getModuleName();
 
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
@@ -80,10 +82,11 @@ public class GeneratorUtil {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-//        pc.setModuleName(scanner("模块名"));
-        pc.setParent("cn.kunli.una");
-        pc.setEntity("pojo");
-//        pc.setMapper("mapper");
+//        pc.setModuleName(moduleName);
+        pc.setParent("cn.kunli.una")
+                .setController("controller."+moduleName)
+                .setService("service."+moduleName)
+                .setEntity("pojo."+moduleName);
 
         mpg.setPackageInfo(pc);
 //        System.out.println("包名：" + JSON.toJSONString(pc));
@@ -141,7 +144,7 @@ public class GeneratorUtil {
         //开启controller restful风格
         strategy.setRestControllerStyle(true);
         //关闭controller路径连字符风格
-        strategy.setControllerMappingHyphenStyle(false);
+        strategy.setControllerMappingHyphenStyle(true);
         strategy.setSuperControllerClass(BaseController.class);
         //开启链式编程
         strategy.setChainModel(true);

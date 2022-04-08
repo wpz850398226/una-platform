@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysMenuMapper">
-    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysMenu">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.sys.SysMenu">
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <!--<result column="permission_id" jdbcType="VARCHAR" property="permissionId" />
         <association property="permissionCode" column="permission_id" javaType="java.lang.String"
                      select="cn.kunli.una.mapper.SysPermissionMapper.selectCodeById" />-->
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysMenu"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysMenu"
                     select="cn.kunli.una.mapper.SysMenuMapper.selectByParentIdCollection" property="children" />
     </resultMap>
     <!--实体类数据库字段-->
@@ -43,7 +43,7 @@
         where record.parent_id = #{parentId} and record.is_delete=0
         order by record.sort_order
     </select>
-    <select id="selectTreeBySelective" resultType="cn.kunli.una.pojo.system.SysMenu">
+    <select id="selectTreeBySelective" resultType="cn.kunli.una.pojo.sys.SysMenu">
         SELECT DISTINCT smnu.*
         FROM sys_menu as smnu
         LEFT JOIN sys_role_permission as srfc on srfc.permission_id = smnu.permission_id AND srfc.scope_dcode != 'permission_scope_0'

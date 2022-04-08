@@ -1,9 +1,9 @@
 package cn.kunli.una.controller.duohui.denglu;
 
-import cn.kunli.una.pojo.system.SysAccount;
-import cn.kunli.una.pojo.system.SysRegion;
-import cn.kunli.una.service.system.SysAccountService;
-import cn.kunli.una.service.system.SysRegionService;
+import cn.kunli.una.pojo.sys.SysAccount;
+import cn.kunli.una.pojo.sys.SysRegion;
+import cn.kunli.una.service.sys.SysAccountService;
+import cn.kunli.una.service.sys.SysRegionService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.util.StrUtil;

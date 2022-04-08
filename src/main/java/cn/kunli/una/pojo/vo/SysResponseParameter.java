@@ -1,7 +1,7 @@
 package cn.kunli.una.pojo.vo;
 
 
-import cn.kunli.una.pojo.system.SysEntity;
+import cn.kunli.una.pojo.sys.SysEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;

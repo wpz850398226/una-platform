@@ -3,6 +3,9 @@ package ${package.Service};
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import org.springframework.stereotype.Service;
+<#if superControllerClassPackage??>
+import ${superServiceClassPackage};
+</#if>
 import org.springframework.beans.factory.annotation.Autowired;
 /**
  * <p>

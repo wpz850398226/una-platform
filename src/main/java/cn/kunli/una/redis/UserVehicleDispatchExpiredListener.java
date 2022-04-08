@@ -1,6 +1,6 @@
 package cn.kunli.una.redis;
 
-import cn.kunli.una.service.system.SysConfigurationService;
+import cn.kunli.una.service.sys.SysConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPubSub;

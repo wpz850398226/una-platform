@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysEntityMapper">
-    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.system.SysEntity">
+    <resultMap id="BaseResultMap" type="cn.kunli.una.pojo.sys.SysEntity">
         <id column="id" jdbcType="VARCHAR" property="id"/>
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysPermission"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysPermission"
                     select="cn.kunli.una.mapper.SysPermissionMapper.selectByEntityIdCollection" property="permissionList" />
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysRelation"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysRelation"
                     select="cn.kunli.una.mapper.SysRelationMapper.selectBySubEntityIdCollection" property="relationList" />
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysFilter"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysFilter"
                     select="cn.kunli.una.mapper.SysFilterMapper.selectByEntityIdCollection" property="filterList" />
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysQuery"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysQuery"
                     select="cn.kunli.una.mapper.SysQueryMapper.selectByEntityIdCollection" property="queryList" />
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysButton"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysButton"
                     select="cn.kunli.una.mapper.SysButtonMapper.selectByEntityIdCollection" property="buttonList" />
-        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysSort"
+        <collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysSort"
                     select="cn.kunli.una.mapper.SysSortMapper.selectByEntityIdCollection" property="sortList" />
-        <!--<collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.system.SysField"
+        <!--<collection column="id" javaType="ArrayList" ofType="cn.kunli.una.pojo.sys.SysField"
                     select="cn.kunli.una.mapper.SysFieldMapper.selectByEntityIdCollection" property="fieldList" />-->
     </resultMap>
     <select id="selectBySelective" resultMap="BaseResultMap">

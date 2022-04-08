@@ -2,7 +2,7 @@ package cn.kunli.una.interceptor;
 
 
 import cn.kunli.una.annotation.DisableAuth;
-import cn.kunli.una.pojo.system.SysAccount;
+import cn.kunli.una.pojo.sys.SysAccount;
 import cn.kunli.una.pojo.vo.SysHttpCode;
 import cn.kunli.una.utils.common.HttpUtil;
 import cn.kunli.una.utils.redis.RedisUtil;

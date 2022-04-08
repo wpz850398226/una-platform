@@ -4,14 +4,12 @@ import cn.kunli.una.mapper.CpModelMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
 
-import cn.kunli.una.pojo.system.SysCompany;
+import cn.kunli.una.pojo.sys.SysCompany;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商城-商品规格表(CpModel)表服务类

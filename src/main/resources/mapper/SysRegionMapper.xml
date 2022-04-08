@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysRegionMapper">
 
-    <resultMap type="cn.kunli.una.pojo.system.SysRegion" id="BaseResultMap">
+    <resultMap type="cn.kunli.una.pojo.sys.SysRegion" id="BaseResultMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -92,7 +92,7 @@
 
 
     <!--条件查询（返回实体类）-->
-    <select id="selectBySelective" resultType="cn.kunli.una.pojo.system.SysRegion">
+    <select id="selectBySelective" resultType="cn.kunli.una.pojo.sys.SysRegion">
         <include refid="baseQuery" />
     </select>
 

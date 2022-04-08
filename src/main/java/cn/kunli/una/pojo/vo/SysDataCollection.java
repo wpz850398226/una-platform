@@ -1,6 +1,6 @@
 package cn.kunli.una.pojo.vo;
 
-import cn.kunli.una.pojo.system.SysData;
+import cn.kunli.una.pojo.sys.SysData;
 
 import java.util.List;
 

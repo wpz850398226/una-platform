@@ -2,10 +2,10 @@ package cn.kunli.una.controller.duohui.dianpu;
 
 import cn.kunli.una.pojo.chanpin.CpGoods;
 
-import cn.kunli.una.pojo.system.SysCompany;
+import cn.kunli.una.pojo.sys.SysCompany;
 import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
 
-import cn.kunli.una.service.system.SysCompanyService;
+import cn.kunli.una.service.sys.SysCompanyService;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

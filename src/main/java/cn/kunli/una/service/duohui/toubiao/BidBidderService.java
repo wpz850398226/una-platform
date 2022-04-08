@@ -3,7 +3,7 @@ package cn.kunli.una.service.duohui.toubiao;
 import cn.kunli.una.mapper.BidBidderMapper;
 import cn.kunli.una.pojo.bid.BidBidder;
 import cn.kunli.una.pojo.bid.BidProject;
-import cn.kunli.una.pojo.system.SysDictionary;
+import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;

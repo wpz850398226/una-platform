@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.kunli.una.mapper.SysArticleMapper">
 
-    <resultMap type="cn.kunli.una.pojo.system.SysArticle" id="BaseResultMap">
+    <resultMap type="cn.kunli.una.pojo.sys.SysArticle" id="BaseResultMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
     </resultMap>
     <!--实体类数据库字段-->

@@ -1,10 +1,10 @@
 package cn.kunli.una.handler;
 
-import cn.kunli.una.pojo.system.SysException;
+import cn.kunli.una.pojo.sys.SysException;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.pojo.vo.error.BeanValidateErrorVo;
-import cn.kunli.una.service.system.SysExceptionService;
+import cn.kunli.una.service.sys.SysExceptionService;
 import cn.kunli.una.utils.common.UserUtil;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -262,8 +261,6 @@ public class GlobalExceptionHandler {
         if(loginUser!=null){
             ex.setAccountUsername(loginUser.getUsername());
             ex.setAccountPassword(loginUser.getPassword());
-            ex.setCreateTime(new Date());
-            ex.setModifyTime(new Date());
             ex.setCreatorId(loginUser.getId());
             ex.setModifierId(loginUser.getId());
             //获取错误信息
