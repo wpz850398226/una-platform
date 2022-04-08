@@ -130,8 +130,8 @@ public class GeneratorUtil {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass(BasePojo.class);
-        strategy.setSuperEntityColumns("id","name","tentId","remark","creatorId","creatorHost","creatorName","createTime"
-                ,"modifierId","modifierHost","modifierName","modifyTime","isDelete","sortOrder","weight","companyId","departmentId");
+        strategy.setSuperEntityColumns("id","name","tentId","remark","creatorId","creatorName","createTime"
+                ,"modifierId","modifierName","modifyTime","isDelete","sortOrder","weight","companyId","departmentId");
         strategy.setSuperServiceClass(BasicService.class);
         //开启驼峰转换
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);

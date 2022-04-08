@@ -33,8 +33,6 @@ public class BasePojo implements Serializable{
 
     private Integer creatorId;
 
-    private String creatorHost;
-
 	private String creatorName;
 
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -42,8 +40,6 @@ public class BasePojo implements Serializable{
     private Date createTime;
 
     private Integer modifierId;				//修订者id
-
-    private String modifierHost;				//修订者id
 
 	private String modifierName;				//修订者姓名
 

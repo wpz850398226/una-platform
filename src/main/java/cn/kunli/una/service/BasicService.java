@@ -396,7 +396,6 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 obj.setDepartmentId(loginUser.getDepartmentId());
                 obj.setCreatorName(loginUser.getName());
             }
-            obj.setCreatorHost(RequestUtil.getIpAddress(request));
 
             //通过反射赋值"顺序"字段
             if(obj.getSortOrder()==null){
@@ -429,7 +428,6 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 obj.setModifierName(loginUser.getName());
             }
 
-            obj.setModifierHost(RequestUtil.getIpAddress(request));
         }
 
         return obj;

@@ -5,7 +5,6 @@ import cn.kunli.una.pojo.oa.OaAttendance;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.utils.common.RequestUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,6 @@ public class OaAttendanceService extends BasicService<OaAttendanceMapper, OaAtte
                 obj.setModifierName(loginUser.getName());
             }
 
-            obj.setModifierHost(RequestUtil.getIpAddress(request));
         }
 
         return obj;
