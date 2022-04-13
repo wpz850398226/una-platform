@@ -55,9 +55,6 @@ public class BasePojo implements Serializable{
 	@ApiModelProperty(value = "修订人名称")
 	private String modifierName;
 
-	@ApiModelProperty(value = "租户id")
-	private Integer tentId;
-
 	@ApiModelProperty(value = "是否删除")
 	private Boolean isDelete;
 

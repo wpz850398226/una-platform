@@ -182,8 +182,14 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					}
 
 					Map<String, Object> paramMap = UnaMapUtil.getMap("sortOrder", sortOrder + sortValue);
+					//创建要被降序的修改实例
+					T descT = entityClass.newInstance();
+					//创建主动升序的修改实例
+					T ascT = entityClass.newInstance();
+
 					//获取父字段字段类对象
 					SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
+					//有父字段/主字段
 					if(sysField!=null){
 						//获取父字段
 						Field parentField = entityClass.getDeclaredField(sysField.getAssignmentCode());
@@ -191,6 +197,10 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 						//获取父字段值
 						Object parentValueObj = parentField.get(ascendRecord);
 						paramMap.put(sysField.getAssignmentCode(),parentValueObj);
+
+						//设置修改实例的父字段值
+						parentField.set(descT,parentValueObj);
+						parentField.set(ascT,parentValueObj);
 					}
 
 					//查询要降序的记录
@@ -198,11 +208,12 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 					if(descendRecord == null) return SysResult.fail("顺序已至顶，无法升序，请尝试修改权重");
 
 					//目标记录降序
-					T descT = entityClass.newInstance();
 					descT.setId(descendRecord.getId()).setSortOrder(sortOrder);
-					service.updateRecordById(descT);
+					SysResult sysResult = service.updateRecordById(descT);
+					if(!sysResult.getIsSuccess()){
+						return sysResult;
+					}
 					//本记录 升序
-					T ascT = entityClass.newInstance();
 					ascT.setId(ascendRecord.getId()).setSortOrder(sortOrder + sortValue);
 					return service.updateRecordById(ascT);
 				}
@@ -302,10 +313,9 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 							SysResult assignmentValue = sysFieldService.getAssignmentValue(displayCode, String.valueOf(entry.getValue()), service, null);
 							if(assignmentValue.getIsSuccess()){
 								handledParamMap.put("in:"+assignmentCode,assignmentValue.getData());
-//								map.put("in:"+assignmentCode,assignmentValue.getData());
-//								map.put(entry.getKey().replace(displayCode,assignmentCode),assignmentValue.getData());
-//								map.remove(entry.getKey());
 							}
+						}else{
+							handledParamMap.put(entry.getKey(),entry.getValue());
 						}
                     }else{
 						handledParamMap.put(entry.getKey(),entry.getValue());

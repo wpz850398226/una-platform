@@ -1,5 +1,6 @@
 package cn.kunli.una.service.sys;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.mapper.SysEntityMapper;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -106,7 +108,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId", id));
         List<ColumnModel> columnModelList = sysFieldList.stream().map(sf -> {
             ColumnModel columnModel = new ColumnModel(StrUtil.toUnderlineCase(sf.getAssignmentCode()));
-            columnModel.setColumnType(Type.valueOf(sf.getColumnTypeDcode()));
+            columnModel.setColumnType(Type.valueOf(sf.getColumnTypeDcode().substring(sf.getColumnTypeDcode().lastIndexOf("_"))));
             columnModel.setComment(sf.getName());
             columnModel.setDefaultValue(sf.getDefaultValue());
             return columnModel;
@@ -259,5 +261,20 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         mpg.execute();
 
         return SysResult.fail();
+    }
+
+    @Override
+    public SysResult afterSaveSuccess(SysEntity obj) {
+        //新建实体类，自动增加系统公共字段
+        Integer entityId = obj.getId();
+        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId", 100000));
+        if(CollUtil.isNotEmpty(sysFieldList)){
+            for (SysField sysField : sysFieldList) {
+                sysField.setEntityId(entityId).setId(null);
+                SysResult sysResult = sysFieldService.saveRecord(sysField);
+                if(!sysResult.getIsSuccess())return sysResult;
+            }
+        }
+        return SysResult.success();
     }
 }

@@ -40,15 +40,6 @@ public class SysEntityController extends BaseController<SysEntityService, SysEnt
     @ResponseBody
     @PostMapping("/codeGenerate/{id}")
     public SysResult codeGenerate(@PathVariable Integer id) {
-        /*List<SysEntity> list = service.list();
-        Set<String> set = new HashSet<>();
-        set.add("creatorId");
-        set.add("creatorName");
-        set.add("creatorHost");
-        set.add("createTime");
-        String path = EasyExcelUtil.export(new ExportInfo().setData(list).setSheetName("测试数据").setExcludeColumn(set));
-        return SysResult.success(path);*/
-
         return service.codeGenerate(id);
     }
 }

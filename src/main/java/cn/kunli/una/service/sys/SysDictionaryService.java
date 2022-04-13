@@ -1,5 +1,6 @@
 package cn.kunli.una.service.sys;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.SysDictionaryMapper;
 import cn.kunli.una.pojo.sys.SysDictionary;
@@ -67,16 +68,22 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
 
     @Override
     public SysResult validate(SysDictionary obj) {
-        List<SysDictionary> sameNamelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
-                .put("parentId", obj.getParentId()).put("name", obj.getName()).build());
-        if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
-            return SysResult.fail("名字重复，保存失败");
+        if(StrUtil.isNotBlank(obj.getName())){
+            List<SysDictionary> sameNamelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
+                    .put("parentId", obj.getParentId()).put("name", obj.getName()).build());
+            if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
+                return SysResult.fail("名字重复，保存失败");
+            }
         }
-        List<SysDictionary> sameValuelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
-                .put("parentId", obj.getParentId()).put("value", obj.getValue()).build());
-        if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
-            return SysResult.fail("值重复，保存失败");
+
+        if(StrUtil.isNotBlank(obj.getValue())){
+            List<SysDictionary> sameValuelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
+                    .put("parentId", obj.getParentId()).put("value", obj.getValue()).build());
+            if(CollectionUtils.isNotEmpty(sameValuelist)&&!sameValuelist.get(0).getId().equals(obj.getId())){
+                return SysResult.fail("值重复，保存失败");
+            }
         }
+
         return SysResult.success();
     }
 
@@ -87,13 +94,17 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
         //如果父字典不是根目录，则新增字典根id与父字典保持一致
         SysDictionary parentDictionary = sysDictionaryService.getById(obj.getParentId());
 
-        if (obj.getParentId().equals(0)||obj.getParentId().equals(100000)) {
-            obj.setRootId(0);
-            obj.setCode(obj.getValue());
-        } else {
-            obj.setRootId(parentDictionary.getRootId());
-            obj.setParentCode(parentDictionary.getCode());
-            obj.setCode(parentDictionary.getCode()+"_"+obj.getValue());
+        if(parentDictionary!=null){
+            if (obj.getParentId().equals(0)||obj.getParentId().equals(100000)) {
+                obj.setRootId(0);
+                obj.setCode(obj.getValue());
+            } else {
+                obj.setRootId(parentDictionary.getRootId());
+                obj.setParentCode(parentDictionary.getCode());
+                if(StrUtil.isNotBlank(obj.getValue())){
+                    obj.setCode(parentDictionary.getCode()+"_"+obj.getValue());
+                }
+            }
         }
 
         return obj;
