@@ -64,6 +64,8 @@ public class SysField extends BasePojo implements Serializable {
     private Boolean isBatchUpdate;
     //高级查询单元名称
     private String dqlName;
+    //存储长度
+    private Integer storageLength;
     //前端展示长度
     private Integer displayLength;
     //可选数量上限（多选下拉，文件选择组件用）

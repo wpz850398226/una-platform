@@ -402,6 +402,17 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     public SysField initialize(SysField obj) {
         super.initialize(obj);
         if (StrUtil.isNotBlank(obj.getRadioOptions())) obj.setRadioOptions(obj.getRadioOptions().replace("，", ","));
+        if (StrUtil.isNotBlank(obj.getAssignmentCode()) && StrUtil.isBlank(obj.getDisplayCode())) obj.setDisplayCode(obj.getAssignmentCode());
+        if(StrUtil.isNotBlank(obj.getColumnTypeDcode())){
+            switch(obj.getColumnTypeDcode()){
+                case "field_storage_VARCHAR":
+                    obj.setStorageLength(255);
+                    break;
+                case "field_storage_INT":
+                    obj.setStorageLength(11);
+                    break;
+            }
+        }
         if (obj.getId() == null) {
             if (StrUtil.isBlank(obj.getOptionNameFieldCode())) obj.setOptionNameFieldCode("name");
             if (StrUtil.isBlank(obj.getOptionValueFieldCode())) obj.setOptionValueFieldCode("id");

@@ -110,7 +110,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
             String substring = sf.getColumnTypeDcode().substring(sf.getColumnTypeDcode().lastIndexOf("_") + 1);
             ColumnModel columnModel = new ColumnModel(StrUtil.toUnderlineCase(sf.getAssignmentCode()));
             columnModel.setColumnType(Type.valueOf(substring));
-            if(!substring.equals("VARCHAR"))columnModel.setLength(11);
+            columnModel.setLength(sf.getStorageLength());
             columnModel.setComment(sf.getName());
             columnModel.setDefaultValue(sf.getDefaultValue());
 
