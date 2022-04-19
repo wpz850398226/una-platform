@@ -218,7 +218,7 @@
         <dependency>
             <groupId>com.github.drinkjava2</groupId>
             <artifactId>jsqlbox</artifactId>
-            <version>5.0.12.jre8</version>
+            <version>5.0.13.jre8</version>
         </dependency>
 
         <dependency>

@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -395,6 +396,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 obj.setCompanyId(loginUser.getCompanyId());
                 obj.setDepartmentId(loginUser.getDepartmentId());
                 obj.setCreatorName(loginUser.getName());
+                obj.setCreateTime(new Date());
             }
 
             //通过反射赋值"顺序"字段
@@ -423,6 +425,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 obj.setSortOrder(num);
             }
         }else{
+            obj.setModifyTime(new Date());
             if(loginUser!=null){
                 obj.setModifierId(loginUser.getId());
                 obj.setModifierName(loginUser.getName());

@@ -105,23 +105,24 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         tableModel.setComment(sysEntity.getName());
 
         //获取字段信息
-        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId", id));
+        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.buildHashMap().put("entityId", id).put("ne:assignmentCode","field_storage_NULL").build());
         List<ColumnModel> columnModelList = sysFieldList.stream().map(sf -> {
+            String substring = sf.getColumnTypeDcode().substring(sf.getColumnTypeDcode().lastIndexOf("_") + 1);
             ColumnModel columnModel = new ColumnModel(StrUtil.toUnderlineCase(sf.getAssignmentCode()));
-            columnModel.setColumnType(Type.valueOf(sf.getColumnTypeDcode().substring(sf.getColumnTypeDcode().lastIndexOf("_"))));
+            columnModel.setColumnType(Type.valueOf(substring));
+            if(!substring.equals("VARCHAR"))columnModel.setLength(11);
             columnModel.setComment(sf.getName());
             columnModel.setDefaultValue(sf.getDefaultValue());
+
+            if(sf.getName().equals("ID")){
+                columnModel.setPkey(true);
+                columnModel.setNullable(false);
+                columnModel.setIdGenerationType(GenerationType.AUTO);
+            }
+
             return columnModel;
         }).collect(Collectors.toList());
 
-        //创建公共默认字段
-        ColumnModel idColumnModel = new ColumnModel("id");
-        idColumnModel.setPkey(true);
-        idColumnModel.setColumnType(Type.INTEGER);
-        idColumnModel.setNullable(false);
-        idColumnModel.setIdGenerationType(GenerationType.AUTO);
-        idColumnModel.setLength(11);
-        columnModelList.add(idColumnModel);
         tableModel.setColumns(columnModelList);
 
         //建表
