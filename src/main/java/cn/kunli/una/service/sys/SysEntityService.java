@@ -105,7 +105,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         tableModel.setComment(sysEntity.getName());
 
         //获取字段信息
-        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.buildHashMap().put("entityId", id).put("ne:assignmentCode","field_storage_NULL").build());
+        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.buildHashMap().put("entityId", id).put("ne:columnTypeDcode","field_storage_NULL").build());
         List<ColumnModel> columnModelList = sysFieldList.stream().map(sf -> {
             String substring = sf.getColumnTypeDcode().substring(sf.getColumnTypeDcode().lastIndexOf("_") + 1);
             ColumnModel columnModel = new ColumnModel(StrUtil.toUnderlineCase(sf.getAssignmentCode()));
