@@ -23,6 +23,9 @@ public class GeneratorProperties {
     //模块名称
     private String moduleName = "sys";
 
+    //实体名称
+    private String entityName = "entity";
+
     //建表前缀
     private String tablePrefix = "tb_";
 
@@ -30,7 +33,7 @@ public class GeneratorProperties {
     private String serviceName;
 
     //作者
-    private String author = "admin";
+    private String author = "wangpz";
 
 
 

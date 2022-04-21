@@ -3,6 +3,7 @@ package ${package.Entity};
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
+import cn.kunli.una.pojo.BasePojo;
 <#if swagger2>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,9 +12,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 <#if entityLombokModel>
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-    <#if chainModel>
+<#if chainModel>
 import lombok.experimental.Accessors;
-    </#if>
+</#if>
 </#if>
 
 /**

@@ -33,6 +33,6 @@ import io.swagger.annotations.Api;
 <#if swagger2>
 @Api(value="${table.comment!}前端控制器")
 </#if>
-@RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
+@RequestMapping("${cfg.moduleName}/${cfg.entityName}")
 public class ${table.controllerName} extends BaseController<${table.serviceName}, ${entity}> {
 }

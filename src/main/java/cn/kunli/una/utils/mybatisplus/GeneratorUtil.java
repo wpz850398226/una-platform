@@ -6,6 +6,7 @@ import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.vo.mybatisplus.GeneratorProperties;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GeneratorUtil {
 
@@ -94,7 +96,11 @@ public class GeneratorUtil {
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
-                // to do nothing
+            Map<String, Object> map = CollectionUtils.newHashMap();
+            map.put("moduleName", info.getModuleName());
+            map.put("entityName", info.getEntityName());
+            this.setMap(map);
+            // to do nothing
             }
         };
 
@@ -133,8 +139,8 @@ public class GeneratorUtil {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass(BasePojo.class);
-        strategy.setSuperEntityColumns("id","name","tentId","remark","creatorId","creatorName","createTime"
-                ,"modifierId","modifierName","modifyTime","isDelete","sortOrder","weight","companyId","departmentId");
+        strategy.setSuperEntityColumns("id","name","tentId","remark","creator_id","creator_name","create_time"
+                ,"modifier_id","modifier_name","modify_time","is_delete","sort_order","weight","company_id","department_id");
         strategy.setSuperServiceClass(BasicService.class);
         //开启驼峰转换
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
