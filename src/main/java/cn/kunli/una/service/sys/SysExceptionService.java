@@ -2,6 +2,7 @@ package cn.kunli.una.service.sys;
 
 import cn.kunli.una.mapper.SysExceptionMapper;
 import cn.kunli.una.pojo.sys.SysException;
+import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,8 @@ public class SysExceptionService extends BasicService<SysExceptionMapper, SysExc
         return thisProxy;
     }
 
+    @Override
+    public SysResult validate(SysException obj) {
+        return SysResult.success();
+    }
 }

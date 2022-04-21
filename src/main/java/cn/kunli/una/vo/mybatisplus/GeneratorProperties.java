@@ -13,7 +13,7 @@ public class GeneratorProperties {
     private String ip;
     private Integer port = 3306;
     private String database;
-    private String driverName = "com.mysql.cj.jdbc.Driver";
+    private String driverName = "com.mysql.jdbc.Driver";
     private String username;
     private String password;
 

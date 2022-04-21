@@ -69,7 +69,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     @Override
     public SysResult validate(SysDictionary obj) {
         if(StrUtil.isNotBlank(obj.getName())){
-            List<SysDictionary> sameNamelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
+            List<SysDictionary> sameNamelist = super.selectList(UnaMapUtil.buildHashMap()
                     .put("parentId", obj.getParentId()).put("name", obj.getName()).build());
             if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
                 return SysResult.fail("名字重复，保存失败");

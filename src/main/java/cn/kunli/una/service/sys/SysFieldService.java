@@ -16,6 +16,7 @@ import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.service.geneticAlgorithm.GaGeneService;
+import cn.kunli.una.service.td.TdEtymologyService;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import lombok.SneakyThrows;
@@ -62,6 +63,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
     private BidProjectService bidProjectService;
     @Autowired
     private GaGeneService gaGeneService;
+
+    @Autowired
+    private TdEtymologyService tdEtymologyService;
 
     /**
      * 转换存储值为显示值
@@ -144,6 +148,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "regionId"://地区 regionId
                 case "RegionId"://地区 regionId
                     resultList = sysRegionService.selectList(UnaMapUtil.getMap("id",value));
+                    break;
+                case "originId"://词源 originId
+                case "OriginId"://词源 originId
+                    resultList = tdEtymologyService.selectList(UnaMapUtil.getMap("id",value));
                     break;
             }
         }
@@ -410,6 +418,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                     break;
                 case "field_storage_INT":
                     obj.setStorageLength(11);
+                    break;
+                case "field_storage_TINYINT":
+                    obj.setStorageLength(1);
                     break;
             }
         }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2020-07-21 11:04:55
  */
 @Controller
-@RequestMapping("/sys/sysException")
+@RequestMapping("/sys/exception")
 public class SysExceptionController extends BaseController<SysExceptionService, SysException> {
 
 }

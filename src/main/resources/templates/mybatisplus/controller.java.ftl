@@ -14,7 +14,7 @@ import ${superControllerClassPackage};
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
 <#if swagger2>
-import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.Api;
 </#if>
 
 /**
@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiModel;
 @Controller
 </#if>
 <#if swagger2>
-@ApiModel(value="${entity}前端控制器", description="${table.comment!}")
+@Api(value="${table.comment!}前端控制器")
 </#if>
 @RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
 public class ${table.controllerName} extends BaseController<${table.serviceName}, ${entity}> {

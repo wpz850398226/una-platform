@@ -10,7 +10,7 @@ public class GeneratorApplication {
         // 类注释里的Author
         String author = "wangpz";
         //表名
-        String tableName = "td_word";
+        String tableName = "td_etymology";
 
         GeneratorUtil.codeGenerate(new GeneratorProperties().setAuthor(author).setModuleName("td")
                 .setIp("123.56.79.121").setUsername("root").setPassword("Kunli@888").setPort(3306)

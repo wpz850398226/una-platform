@@ -479,7 +479,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                             for (T entity : list) {
                                 //获取记录中赋字段的值
                                 Object value = assignmentCodeField.get(entity);
-                                String displayValue = "";
+                                String displayValue = "-";
 
                                 if(null != value){
                                     //实体中该字段值为空的
