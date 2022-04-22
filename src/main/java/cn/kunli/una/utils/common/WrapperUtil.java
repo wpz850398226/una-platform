@@ -38,8 +38,6 @@ public class WrapperUtil<T> {
 
                     switch(condition){
                         case "":
-                            queryWrapper.like(column,value);
-                            break;
                         case "like":
                             String[] columnArray = column.split(",");
                             Consumer<QueryWrapper<T>> consumer = qw -> {

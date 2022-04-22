@@ -153,6 +153,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "OriginId"://词源 originId
                     resultList = tdEtymologyService.selectList(UnaMapUtil.getMap("id",value));
                     break;
+                case "fieldIds"://字段
+                case "FieldIds"://字段
+                    resultList = sysFieldService.selectList(UnaMapUtil.getMap("in:id", value));
+                    break;
             }
         }
 

@@ -303,8 +303,8 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                     String displayCode = entry.getKey();
                     int i = displayCode.indexOf(":");
-                    if(i==0){
-                    	//只处理模糊查询的情况
+                    if(i==0 && displayCode.indexOf(",")==-1){
+                    	//只处理模糊查询单个字段的情况
                         displayCode = displayCode.substring(i+1);
 						SysField sysField = sysFieldService.selectOne(UnaMapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("displayCode", displayCode).build());
 						String assignmentCode = sysField.getAssignmentCode();

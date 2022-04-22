@@ -30,6 +30,8 @@ public class SysEntity extends BasePojo implements Serializable {
     private String platformDcode;
     //主父字段id
     private Integer parentFieldId;
+    //模糊匹配字段集
+    private String keywordFieldIds;
     //url前缀
     private String path;
     //是否虚拟实体

@@ -1,6 +1,8 @@
 package cn.kunli.una.service.sys;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.mapper.SysEntityMapper;
 import cn.kunli.una.pojo.sys.SysEntity;
@@ -76,6 +78,14 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
                 newFilterList.addAll(filterList);
                 sysEntity.setFilterList(newFilterList);
             }
+            if(StrUtil.isNotBlank(sysEntity.getKeywordFieldIds())){
+                List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("in:id", sysEntity.getKeywordFieldIds()));
+                if(CollUtil.isNotEmpty(sysFieldList)){
+                    List<String> fieldCodeList = sysFieldList.stream().map(SysField::getAssignmentCode).collect(Collectors.toList());
+                    String fieldDisplayCodes = UnaListUtil.listToStr(fieldCodeList);
+                    sysEntity.getMap().put("keywordColumn",fieldDisplayCodes);
+                }
+            }
 
         }
 
@@ -117,7 +127,7 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         tableModel.setColumns(columnModelList);
 
         //建表
-        int i = ctx.quiteExecute(ctx.toDropAndCreateDDL(tableModel));//生成DDL,建数据库表
+        int i = ctx.quiteExecute(ctx.toCreateDDL(tableModel));//生成DDL,建数据库表
 
         //0表示成功，-1表示失败
         if(i==0){
@@ -158,6 +168,22 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
                 if(!sysResult.getIsSuccess())return sysResult;
             }
         }
+        return SysResult.success();
+    }
+
+    @Override
+    public SysResult validate(SysEntity obj) {
+        SysResult validate = super.validate(obj);
+        if(!validate.getIsSuccess())return validate;
+        if(StrUtil.isNotBlank(obj.getKeywordFieldIds())){
+            List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("in:id", obj.getKeywordFieldIds()));
+            if(CollUtil.isNotEmpty(sysFieldList)){
+                for (SysField sysField : sysFieldList) {
+                    if(!sysField.getAssignmentCode().equals(sysField.getDisplayCode()))return SysResult.fail("保存失败，字段["+sysField.getName()+"]不能模糊检索");
+                }
+            }
+        }
+
         return SysResult.success();
     }
 }
