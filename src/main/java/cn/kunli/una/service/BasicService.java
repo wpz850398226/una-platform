@@ -5,6 +5,7 @@ import cn.hutool.extra.spring.SpringUtil;
 import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.handler.BasicMapper;
+import cn.kunli.una.handler.UnaException;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.SysEntity;
@@ -35,6 +36,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.ValidationException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -328,7 +330,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 List<T> nameResultList = getThisProxy().list(getWrapper(nameParamMap));
                 if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
-                    return SysResult.fail("名称重复，保存失败");
+                    throw new UnaException("名称重复，保存失败");
+//                    return SysResult.fail("名称重复，保存失败");
                 }
             }
 

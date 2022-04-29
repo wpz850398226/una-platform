@@ -24,9 +24,9 @@ public class SysException extends BasePojo implements Serializable {
     private static final long serialVersionUID = 208638220392619236L;
 
     //异常账号
-    private String accountUsername;
-    //异常密码
-    private String accountPassword;
+    private String username;
+    //异常编码
+    private String code;
     //错误信息
     private String errorInfo;
     //输入参数

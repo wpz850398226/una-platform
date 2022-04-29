@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.ValidationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -204,6 +205,11 @@ public class GlobalExceptionHandler {
         return new SysResult().fail("错误：参数类型不匹配", sysException);
     }
 
+    @ExceptionHandler(value = UnaException.class)
+    public SysResult unaExceptionHandler(UnaException unaException) {
+        return new SysResult().fail(unaException.getMessage());
+    }
+
     /**
      * 反射异常
      *
@@ -259,8 +265,7 @@ public class GlobalExceptionHandler {
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         //设置基本信息
         if(loginUser!=null){
-            ex.setAccountUsername(loginUser.getUsername());
-            ex.setAccountPassword(loginUser.getPassword());
+            ex.setUsername(loginUser.getUsername());
             ex.setCreatorId(loginUser.getId());
             ex.setModifierId(loginUser.getId());
             //获取错误信息
@@ -288,55 +293,6 @@ public class GlobalExceptionHandler {
         return null;
     }
 
-    /**
-     * 错误信息写入到文件
-     *
-     * @param ex
-     * @return
-     */
-    private void writeToFile(SysException ex) {
 
-        //首先判断是否存在用户目录
-        File userFile = new File("log/" + ex.getAccountUsername() + "/");
-        if (!userFile.exists()) {
-            //不存在则创建目录
-            userFile.mkdirs();
-        }
-
-        //创建文件
-        File file = new File("log/" + ex.getAccountUsername() + "/" + UUID.randomUUID().toString() + ".txt");
-        FileOutputStream outputStream = null;
-        try {
-
-            outputStream = new FileOutputStream(file);
-            outputStream.write(ex.getErrorInfo().getBytes());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            try {
-                outputStream.close();
-            } catch (IOException exc) {
-                exc.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            try {
-                outputStream.close();
-            } catch (IOException exc) {
-                exc.printStackTrace();
-            }
-        } finally {
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ex.setErrorInfo(file.getPath());
-
-        //持久化错误信息到数据库
-        sysExceptionService.saveRecord(ex);
-    }
 
 }
