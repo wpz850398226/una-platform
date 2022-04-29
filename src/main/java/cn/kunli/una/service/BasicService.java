@@ -1,8 +1,10 @@
 package cn.kunli.una.service;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.annotation.MyCacheEvict;
+import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.SysEntity;
@@ -14,7 +16,9 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.service.sys.*;
-import cn.kunli.una.utils.common.*;
+import cn.kunli.una.utils.common.UnaMapUtil;
+import cn.kunli.una.utils.common.UserUtil;
+import cn.kunli.una.utils.common.WrapperUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -33,10 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Primary
@@ -160,51 +161,20 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     SysField relatedField = sysFieldService.getById(relatedFieldId);
 
                     //获取service名称，并动态获取service
-                    String serviceName = relatedEntity.getCode()+"Service";
+                    String serviceName = StrUtil.lowerFirst(relatedEntity.getCode())+"Service";
+                    Object bean = SpringUtil.getBean(serviceName);
+                    if(bean!=null){
+                        BasicService<BasicMapper<BasePojo>, BasePojo> thisProxy = (BasicService<BasicMapper<BasePojo>, BasePojo>)bean;
 
-                    BasicService<M, T> thisProxy = null;
-                    //关联自身实体类
-                    if(entityClass.getSimpleName().equals(relatedEntity.getCode())){
-                        thisProxy = getThisProxy();
-                    }else{
-                        switch(relatedEntity.getCode()){
-                            case "SysField":
-                                thisProxy = (BasicService<M, T>)sysFieldService;
-                                break;
-                            case "SysQuery":
-                                thisProxy = (BasicService<M, T>)sysQueryService;
-                                break;
-                            case "SysFilter":
-                                thisProxy = (BasicService<M, T>)sysFilterService;
-                                break;
-                            case "SysRelation":
-                                thisProxy = (BasicService<M, T>)sysRelationService;
-                                break;
-                            case "SysButton":
-                                thisProxy = (BasicService<M, T>)sysButtonService;
-                                break;
-                            case "SysSort":
-                                thisProxy = (BasicService<M, T>)sysSortService;
-                                break;
-                        }
-                    }
-
-                    if(thisProxy!=null){
-                        List<T> ts = thisProxy.selectList(UnaMapUtil.getMap(relatedField.getAssignmentCode(), id));
-                        if(CollectionUtils.isNotEmpty(ts)){
-                            for (T t : ts) {
-                                thisProxy.deleteById(t.getId());
+                        if(thisProxy!=null){
+                            List<BasePojo> pojoList = thisProxy.selectList(UnaMapUtil.getMap(relatedField.getAssignmentCode(), id));
+                            if(CollectionUtils.isNotEmpty(pojoList)){
+                                for (BasePojo pojo : pojoList) {
+                                    thisProxy.deleteById(pojo.getId());
+                                }
                             }
                         }
                     }
-
-
-                    /*Object bean1 = SpringUtil.getBean(serviceName);
-                    BasicService bean = SpringUtil.getBean(serviceName, BasicService.class);
-                    List<BasePojo> list = bean.selectList(MapUtil.getMap(relatedField.getAssignmentCode(), id));
-                    if(CollectionUtils.isNotEmpty(list)){
-                        list.forEach(e -> bean.deleteById(e.getId()));
-                    }*/
 
                 }
             }
