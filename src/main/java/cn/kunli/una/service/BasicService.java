@@ -1,6 +1,7 @@
 package cn.kunli.una.service;
 
 import cn.hutool.core.util.StrUtil;
+import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
@@ -130,6 +131,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     @SneakyThrows
+    @LogAnnotation
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {

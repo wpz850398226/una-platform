@@ -1,13 +1,19 @@
 package cn.kunli.una.annotation;
 
+import java.lang.annotation.*;
+
 /**
- * 日志注解，Controller使用此注解，操作生成日志
- * @author Ponzio
+ * 自定义日志审计注解
+ * @author wangpz
  */
-/*@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
 @Inherited
 public @interface LogAnnotation {
+    String moduleName() default "";
 
-}*/
+    String methodType() default "";
+
+    String idParamName() default "id";
+}

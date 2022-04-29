@@ -1,7 +1,6 @@
 package cn.kunli.una.pojo.sys;
 
 import cn.kunli.una.pojo.BasePojo;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,17 +29,18 @@ public class SysLog extends BasePojo implements Serializable {
     //IP地址
     private String ipAddress;
     //操作类型字典id
-    private String type;
+    private String methodType;
     //来源类型（pc，app）
     private String originalType;
-    //是否操作成功
-    private Boolean isSuccess;
     //描述
-    private String description;
+    private String packagePath;
+    //描述
+    private String className;
+    //描述
+    private String methodName;
+    //描述
+    private String param;
+    //描述
+    private String result;
 
-
-    @TableField(exist = false)
-    private String dateTime;            //日期，查询统计表用
-    @TableField(exist = false)
-    private String entityName;            //实体名称
 }

@@ -1,5 +1,6 @@
 package cn.kunli.una.controller.duohui.chanpin;
 
+import cn.hutool.json.JSONUtil;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.chanpin.CpDelivery;
 import cn.kunli.una.pojo.chanpin.CpModel;
@@ -124,7 +125,7 @@ public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
     @RequestMapping("/paySuccess")
     @ResponseBody
     public String paySuccess(@RequestParam Map<String, Object> map) {
-        sysLogService.save(new SysLog().setDescription(String.valueOf(map)));
+        sysLogService.save(new SysLog().setParam(JSONUtil.toJsonStr(map)));
 
         //支付成功
         if(map.containsKey("trade_status")&&map.get("trade_status").equals("TRADE_SUCCESS")){
