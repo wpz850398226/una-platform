@@ -30,7 +30,7 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
     /**
      * 插入数据,只操作record中的非空属性
      *
-     * @param record
+     * @param entity
      * @return
      */
     @Override

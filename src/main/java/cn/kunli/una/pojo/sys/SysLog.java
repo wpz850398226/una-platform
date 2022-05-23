@@ -28,19 +28,21 @@ public class SysLog extends BasePojo implements Serializable {
     private String dataId;
     //IP地址
     private String ipAddress;
-    //操作类型字典id
-    private String methodType;
+    //日志类型
+    private String typeDcode;
+    //操作类型
+    private String methodTypeDcode;
     //来源类型（pc，app）
-    private String originalType;
-    //描述
+    private String originalTypeDcode;
+    //包路径
     private String packagePath;
-    //描述
+    //类名
     private String className;
-    //描述
+    //方法名
     private String methodName;
-    //描述
+    //入参
     private String param;
-    //描述
+    //执行结果
     private String result;
 
 }

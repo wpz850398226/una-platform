@@ -17,6 +17,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.service.sys.*;
+import cn.kunli.una.utils.common.RequestUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.common.WrapperUtil;
@@ -36,10 +37,12 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.ValidationException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Primary
@@ -48,6 +51,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
 
     //全局参数
     protected M mapper;
+    //模块名
+    private String moduleName;
     //本类的代理
     public abstract BasicService<M,T> getThisProxy();
 
@@ -55,6 +60,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     public void setMapper(M mapper) {
         this.mapper = mapper;
     }
+
 
     @Autowired
     protected HttpServletRequest request;
@@ -97,6 +103,9 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     private QueryWrapper<T> getWrapper(Map<String,Object> map){
         return wrapperUtil.mapToQueryWrapper(map);
     }
+
+
+
 //    @Autowired
     public SysEntity getEntity(){
         SysEntity sysEntity = sysEntityService.selectOne(UnaMapUtil.getMap("code",entityClass.getSimpleName()));
@@ -109,6 +118,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param entity
      * @return
      */
+    @LogAnnotation
     @MyCacheEvict(value = "list")
     public SysResult saveRecord(T entity) {
         //数据校验
@@ -218,6 +228,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     @SneakyThrows
+    @LogAnnotation
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(T entity) {
@@ -238,6 +249,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     }
 
     @Override
+    @LogAnnotation
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean update(Wrapper<T> updateWrapper) {
