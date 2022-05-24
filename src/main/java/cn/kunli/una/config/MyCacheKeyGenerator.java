@@ -1,4 +1,4 @@
-package cn.kunli.una.interceptor;
+package cn.kunli.una.config;
 
 
 import cn.kunli.una.pojo.BasePojo;
