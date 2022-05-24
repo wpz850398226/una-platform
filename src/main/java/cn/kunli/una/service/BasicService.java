@@ -311,7 +311,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     }
 
     /**
-     * 校验数据格式
+     * 校验保存数据
      * @param obj
      * @return
      */
@@ -364,6 +364,16 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         }
         //如果通过全部格式验证，则设置code=200，表示通过验证；
 //        return SysResult.success();
+    }
+
+    /**
+     * 校验删除数据
+     * @param obj
+     * @return
+     */
+    @SneakyThrows
+    public void deleteValidate(T obj){
+
     }
 
     /**
