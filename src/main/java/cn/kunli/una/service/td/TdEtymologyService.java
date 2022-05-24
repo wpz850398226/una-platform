@@ -1,11 +1,13 @@
 package cn.kunli.una.service.td;
 
 import cn.hutool.core.util.StrUtil;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.TdEtymologyMapper;
 import cn.kunli.una.pojo.td.TdEtymology;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,15 +34,14 @@ public class TdEtymologyService extends BasicService<TdEtymologyMapper, TdEtymol
     }
 
     @Override
-    public SysResult validate(TdEtymology obj) {
+    @SneakyThrows
+    public void saveValidate(TdEtymology obj) {
         if(StrUtil.isNotBlank(obj.getName()) && StrUtil.isNotBlank(obj.getTypeDcode())){
             List<TdEtymology> sameNamelist = super.listByMap(UnaMapUtil.buildHashMap().put("name", obj.getName()).put("type_dcode", obj.getTypeDcode()).build());
             if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
-                return SysResult.fail("名字重复，保存失败");
+                throw new UnaResponseException("名字重复，保存失败");
             }
         }
-
-        return SysResult.success();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cn.kunli.una.service.sys;
 
 import cn.kunli.una.annotation.MyCacheEvict;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysFileMapper;
 import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.pojo.sys.SysFile;
@@ -10,6 +11,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.MinIoUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
@@ -70,19 +72,15 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
      * @return
      */
     @Override
-    public SysResult validate(SysFile obj) {
-        if(obj.getId()==null){
-            if(obj.getFile()==null){
-                return SysResult.fail("保存失败:文件不能为空");
-            }
-        }
+    @SneakyThrows
+    public void saveValidate(SysFile obj) {
         if (obj.getFile() != null) {
             String fileName = obj.getFile().getOriginalFilename();
 
             if (fileName.indexOf("jpg") != -1 || fileName.indexOf("png") != -1 || fileName.indexOf("bmp") != -1 || fileName.indexOf("gif") != -1 || fileName.indexOf("jpeg") != -1) {
                 if (obj.getFile().getSize() > 2 * 1024 * 1024) {
                     //图片文件大小超过规定上限
-                    return SysResult.fail("单个图片文件不可超过2M，保存失败:" + obj.getFile().getOriginalFilename());
+                    throw new UnaResponseException("单个图片文件不可超过2M，保存失败:" + obj.getFile().getOriginalFilename());
                 }
             }
 
@@ -91,13 +89,11 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
                     .put("originName", fileName).put("size", obj.getFile().getSize()).build());
             if(CollectionUtils.isNotEmpty(sysFiles)){
                 //如果有相同账号，相同源文件名，相同大小的文件，说明是相同文件，不允许重复上传
-                return SysResult.fail("您已上传过相同文件，本次保存失败:" + obj.getFile().getOriginalFilename());
+                throw new UnaResponseException("您已上传过相同文件，本次保存失败:" + obj.getFile().getOriginalFilename());
             }
 
         }
 
-        //如果通过全部格式验证，则设置code=200，表示通过验证；
-        return SysResult.success();
     }
 
 

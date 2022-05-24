@@ -1,5 +1,6 @@
 package cn.kunli.una.service.sys;
 
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysMenuMapper;
 import cn.kunli.una.pojo.sys.SysEntity;
 import cn.kunli.una.pojo.sys.SysMenu;
@@ -9,6 +10,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,14 +98,14 @@ public class SysMenuService extends BasicService<SysMenuMapper, SysMenu> {
     }
 
     @Override
-    public SysResult validate(SysMenu obj) {
+    @SneakyThrows
+    public void saveValidate(SysMenu obj) {
         if(StrUtil.isNotBlank(obj.getName())){
             List<SysMenu> objList = thisProxy.selectList(UnaMapUtil.buildHashMap().put("name", obj.getName().trim()).put("parentId",obj.getParentId()).build());
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
-                return SysResult.fail("名称重复，保存失败:" + obj.getName());
+                throw new UnaResponseException("名称重复，保存失败:" + obj.getName());
             }
         }
-        return SysResult.success();
     }
 
     /**

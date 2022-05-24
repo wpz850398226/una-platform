@@ -1,5 +1,6 @@
 package cn.kunli.una.service.duohui.chanpin;
 
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.CpGoodsMapper;
 import cn.kunli.una.pojo.chanpin.CpGoods;
 import cn.kunli.una.pojo.chanpin.CpModel;
@@ -11,6 +12,7 @@ import cn.kunli.una.service.BasicService;
 import cn.kunli.una.service.sys.SysRegionService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,20 +45,18 @@ public class CpGoodsService extends BasicService<CpGoodsMapper, CpGoods> {
     }
 
     @Override
-    public SysResult validate(CpGoods obj) {
-        SysResult validate = super.validate(obj);
-        if(!validate.getIsSuccess())return validate;
+    @SneakyThrows
+    public void saveValidate(CpGoods obj) {
+        super.saveValidate(obj);
 
         if(obj.getId()==null){
             if(CollectionUtils.isEmpty(obj.getSpecificationList())){
-                return SysResult.fail("保存失败，规格不能为空");
+                throw new UnaResponseException("保存失败，规格不能为空");
             }
             if(CollectionUtils.isEmpty(obj.getModelList())){
-                return SysResult.fail("保存失败，型号不能为空");
+                throw new UnaResponseException("保存失败，型号不能为空");
             }
         }
-
-        return SysResult.success();
     }
 
     @Override

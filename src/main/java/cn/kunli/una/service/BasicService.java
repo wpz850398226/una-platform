@@ -5,7 +5,7 @@ import cn.hutool.extra.spring.SpringUtil;
 import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.handler.BasicMapper;
-import cn.kunli.una.handler.UnaException;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.SysEntity;
@@ -17,7 +17,6 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.service.sys.*;
-import cn.kunli.una.utils.common.RequestUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.common.WrapperUtil;
@@ -118,12 +117,12 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param entity
      * @return
      */
+    @SneakyThrows
     @LogAnnotation
     @MyCacheEvict(value = "list")
     public SysResult saveRecord(T entity) {
         //数据校验
-        SysResult validationResult = validate(entity);
-        if(!validationResult.getIsSuccess())return validationResult;
+        saveValidate(entity);
         //保存数据，保存前进行初始化
         boolean saveResult = super.save(initialize(entity));
         if(saveResult){
@@ -233,8 +232,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(T entity) {
         //数据校验
-        SysResult validationResult = validate(entity);
-        if(!validationResult.getIsSuccess())return validationResult;
+        saveValidate(entity);
         //保存数据，保存前进行初始化
         boolean result = super.updateById(initialize(entity));
         if(result){
@@ -318,7 +316,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     @SneakyThrows
-    public SysResult validate(T obj){
+    public void saveValidate(T obj){
         //反射获取需要验证的字段值
         Map<String, Object> map = new HashMap<String, Object>();
         //获取当前类对应实体类对象
@@ -342,8 +340,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 List<T> nameResultList = getThisProxy().list(getWrapper(nameParamMap));
                 if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
-                    throw new UnaException("名称重复，保存失败");
-//                    return SysResult.fail("名称重复，保存失败");
+                    throw new UnaResponseException("名称重复，保存失败");
                 }
             }
 
@@ -358,7 +355,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                         List<T> codeResultList = getThisProxy().getList(UnaMapUtil.getMap("code",codeObject));
                         if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
                             //通过新文件的编码查询到数据
-                            return SysResult.fail("编码重复，保存失败");
+                            throw new UnaResponseException("编码重复，保存失败");
                         }
                     }
                     break;
@@ -366,7 +363,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             }
         }
         //如果通过全部格式验证，则设置code=200，表示通过验证；
-        return SysResult.success();
+//        return SysResult.success();
     }
 
     /**

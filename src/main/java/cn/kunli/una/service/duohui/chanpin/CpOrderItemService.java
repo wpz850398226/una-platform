@@ -1,5 +1,6 @@
 package cn.kunli.una.service.duohui.chanpin;
 
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.CpOrderItemMapper;
 import cn.kunli.una.pojo.chanpin.CpModel;
 import cn.kunli.una.pojo.chanpin.CpOrder;
@@ -7,6 +8,7 @@ import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaListUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,20 +35,18 @@ public class CpOrderItemService extends BasicService<CpOrderItemMapper, CpOrderI
     }
 
     @Override
-    public SysResult validate(CpOrderItem obj) {
-        SysResult validate = super.validate(obj);
-        if(!validate.getIsSuccess())return validate;
+    @SneakyThrows
+    public void saveValidate(CpOrderItem obj) {
+        super.saveValidate(obj);
 
         if(obj.getBargainPrice()!=null&&obj.getId()!=null){
             //议价
             CpOrderItem target = thisProxy.getById(obj.getId());
             CpModel cpModel = cpModelService.getById(target.getModelId());
             if(obj.getBargainPrice()>cpModel.getCeilingPrice()||obj.getBargainPrice()<cpModel.getFloorPrice()){
-                return SysResult.fail("议价不在范围内，最低限价："+cpModel.getFloorPrice()+";最高限价："+cpModel.getCeilingPrice());
+                throw new UnaResponseException("议价不在范围内，最低限价："+cpModel.getFloorPrice()+";最高限价："+cpModel.getCeilingPrice());
             }
         }
-
-        return SysResult.success();
     }
 
     @Override

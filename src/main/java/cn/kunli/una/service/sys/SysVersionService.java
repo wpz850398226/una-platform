@@ -1,13 +1,16 @@
 package cn.kunli.una.service.sys;
 
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysVersionMapper;
 import cn.kunli.una.pojo.sys.SysVersion;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.executable.ValidateOnExecution;
 import java.util.List;
 
 /**
@@ -28,22 +31,20 @@ public class SysVersionService extends BasicService<SysVersionMapper, SysVersion
     }
 
     //校验格式
-    public SysResult validate(SysVersion obj) {
+    @Override
+    @SneakyThrows
+    public void saveValidate(SysVersion obj) {
 
         List<SysVersion> externalVersionObjList = thisProxy.getList(UnaMapUtil.getMap("externalVersion",obj.getExternalVersion()));
         if (externalVersionObjList.size() > 0 && !externalVersionObjList.get(0).getId().equals(obj.getId())) {
             //通过新文件的名称查询到数据
-            return SysResult.fail("外部版本号重复，保存失败:" + obj.getExternalVersion());
+            throw new UnaResponseException("外部版本号重复，保存失败:" + obj.getExternalVersion());
         }
 
         List<SysVersion> internalVersionObjList = thisProxy.getList(UnaMapUtil.getMap("internalVersion",obj.getInternalVersion()));
         if (internalVersionObjList.size() > 0 && !internalVersionObjList.get(0).getId().equals(obj.getId())) {
             //通过新文件的名称查询到数据
-            return SysResult.fail("内部版本号重复，保存失败:" + obj.getInternalVersion());
+            throw new UnaResponseException("内部版本号重复，保存失败:" + obj.getInternalVersion());
         }
-
-        //如果通过全部格式验证，则设置code=0，表示通过验证；
-        return SysResult.success();
-
     }
 }

@@ -2,6 +2,7 @@ package cn.kunli.una.service.sys;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.kunli.una.annotation.MyCacheEvict;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysDictionaryMapper;
 import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.pojo.vo.SysResult;
@@ -34,7 +35,6 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     /**
      * 更新数据,只操作record中的非空属性
      *
-     * @param record
      * @return
      */
     @Override
@@ -67,12 +67,13 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     }
 
     @Override
-    public SysResult validate(SysDictionary obj) {
+    @SneakyThrows
+    public void saveValidate(SysDictionary obj) {
         if(StrUtil.isNotBlank(obj.getName())){
             List<SysDictionary> sameNamelist = super.selectList(UnaMapUtil.buildHashMap()
                     .put("parentId", obj.getParentId()).put("name", obj.getName()).build());
             if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
-                return SysResult.fail("名字重复，保存失败");
+                throw new UnaResponseException("名字重复，保存失败");
             }
         }
 
@@ -80,11 +81,10 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
             List<SysDictionary> sameValuelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
                     .put("parentId", obj.getParentId()).put("value", obj.getValue()).build());
             if(CollectionUtils.isNotEmpty(sameValuelist)&&!sameValuelist.get(0).getId().equals(obj.getId())){
-                return SysResult.fail("值重复，保存失败");
+                throw new UnaResponseException("值重复，保存失败");
             }
         }
 
-        return SysResult.success();
     }
 
     //格式化保存实例

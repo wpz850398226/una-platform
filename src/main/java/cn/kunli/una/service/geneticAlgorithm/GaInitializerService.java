@@ -27,7 +27,5 @@ public class GaInitializerService extends BasicService<GaInitializerMapper, GaIn
     }
 
     @Override
-    public SysResult validate(GaInitializer obj) {
-        return SysResult.success();
-    }
+    public void saveValidate(GaInitializer obj) {}
 }

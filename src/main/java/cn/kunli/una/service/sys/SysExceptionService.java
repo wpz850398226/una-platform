@@ -25,7 +25,5 @@ public class SysExceptionService extends BasicService<SysExceptionMapper, SysExc
     }
 
     @Override
-    public SysResult validate(SysException obj) {
-        return SysResult.success();
-    }
+    public void saveValidate(SysException obj) {}
 }

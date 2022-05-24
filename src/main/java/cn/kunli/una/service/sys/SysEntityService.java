@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysEntityMapper;
 import cn.kunli.una.pojo.sys.SysEntity;
 import cn.kunli.una.pojo.sys.SysField;
@@ -20,6 +21,7 @@ import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
 import com.github.drinkjava2.jdialects.model.ColumnModel;
 import com.github.drinkjava2.jdialects.model.TableModel;
 import com.github.drinkjava2.jsqlbox.DbContext;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -172,18 +174,18 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     }
 
     @Override
-    public SysResult validate(SysEntity obj) {
-        SysResult validate = super.validate(obj);
-        if(!validate.getIsSuccess())return validate;
+    @SneakyThrows
+    public void saveValidate(SysEntity obj) {
+        super.saveValidate(obj);
         if(StrUtil.isNotBlank(obj.getKeywordFieldIds())){
             List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("in:id", obj.getKeywordFieldIds()));
             if(CollUtil.isNotEmpty(sysFieldList)){
                 for (SysField sysField : sysFieldList) {
-                    if(!sysField.getAssignmentCode().equals(sysField.getDisplayCode()))return SysResult.fail("保存失败，字段["+sysField.getName()+"]不能模糊检索");
+                    if(!sysField.getAssignmentCode().equals(sysField.getDisplayCode())){
+                        throw new UnaResponseException("保存失败，字段["+sysField.getName()+"]不能模糊检索");
+                    }
                 }
             }
         }
-
-        return SysResult.success();
     }
 }

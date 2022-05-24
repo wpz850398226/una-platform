@@ -1,11 +1,13 @@
 package cn.kunli.una.service.geneticAlgorithm;
 
 import cn.hutool.core.map.MapUtil;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.GaEvolverMapper;
 import cn.kunli.una.pojo.geneticAlgorithm.GaEvolver;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.DateUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,15 +56,12 @@ public class GaEvolverService extends BasicService<GaEvolverMapper, GaEvolver> {
     }
 
     @Override
-    public SysResult validate(GaEvolver obj) {
-        SysResult validate = super.validate(obj);
-        if(!validate.getIsSuccess())return validate;
-
+    @SneakyThrows
+    public void saveValidate(GaEvolver obj) {
+        super.saveValidate(obj);
         if(obj.getIterationThreshold()==null && obj.getScoreThreshold()==null){
-            return SysResult.fail("迭代阈值与得分阈值不能同时为空，保存失败");
+            throw new UnaResponseException("迭代阈值与得分阈值不能同时为空，保存失败");
         }
-
-        return SysResult.success();
     }
 
     @Override

@@ -35,13 +35,13 @@ $(document).ready(function(){
 	$(".una-validateOnReady").each(function(){
 		$(this).parent().find("span.formInputSpan").remove();
 		$(this).parent().append("<span class='formInputSpan'></span>");
-		$(this).attr("onblur","validate(this)")
-		validate($(this));
+		$(this).attr("onblur","saveValidate(this)")
+		saveValidate($(this));
 	})
 	$(".una-validateOnBlur").each(function(){
 		/*$(this).parent().find("span.formInputSpan").remove();
 		$(this).parent().append("<span class='formInputSpan'></span>");
-		$(this).attr("onblur","validate(this)")*/
+		$(this).attr("onblur","saveValidate(this)")*/
 		autoValidate($(this));
 	})
 	$(".una-validateOnSubmit").each(function(){
@@ -59,7 +59,7 @@ $(document).ready(function(){
 function autoValidate(selector){
 	$(selector).parent().find("span.formInputSpan").remove();
 	$(selector).parent().append("<span class='formInputSpan'></span>");
-	if($(selector).hasClass("una-validateOnBlur"))$(selector).attr("onblur","validate(this)");
+	if($(selector).hasClass("una-validateOnBlur"))$(selector).attr("onblur","saveValidate(this)");
 }
 
 /*
@@ -73,10 +73,10 @@ function checkForm(selector){
 		$(this).html("");
 	})
 	$(selector).closest("form").find(".una-validateOnBlur").each(function(){
-		validate($(this));
+		saveValidate($(this));
 	})
 	$(selector).closest("form").find(".una-validateOnSubmit").each(function(){
-		validate($(this));
+		saveValidate($(this));
 	})
 
 	$(selector).closest("form").find(".formInputSpan").each(function(){
@@ -101,7 +101,7 @@ function checkForm(selector){
  * 检验元素格式
  * @Param selector 元素选择器 必填
  */
-function validate(selector){
+function saveValidate(selector){
 	if($(selector).closest(".displayAndDisabled").length>0)return false;
 	if($(selector).hasClass("una-activiti")&&$("#activateFlag").val()==0)return false;
 
@@ -259,7 +259,7 @@ function checkPhoneNumber(selector) {
     	selector.parent().find(".formInputSpan").html("");
     	return true;
     }
-	
+
 
 };
 

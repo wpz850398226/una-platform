@@ -1,6 +1,7 @@
 package cn.kunli.una.service.sys;
 
 import cn.kunli.una.annotation.MyCacheEvict;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysAccountMapper;
 
 import cn.kunli.una.pojo.sys.SysAccount;
@@ -60,18 +61,15 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
     //校验格式
     @Override
-    public SysResult validate(SysAccount obj) {
-        SysResult validate = super.validate(obj);
-        if(!validate.getIsSuccess())return validate;
+    @SneakyThrows
+    public void saveValidate(SysAccount obj) {
+        super.saveValidate(obj);
         if (StrUtil.isNotBlank(obj.getUsername())) {
             List<SysAccount> objList = sysAccountService.selectList(UnaMapUtil.getMap("username", obj.getUsername().trim()));
             if (CollectionUtils.isNotEmpty(objList) && !objList.get(0).getId().equals(obj.getId())) {
-                return SysResult.fail("账号重复，保存失败:" + obj.getUsername());
+                throw new UnaResponseException("账号重复，保存失败:" + obj.getUsername());
             }
         }
-
-        //如果通过全部格式验证，则设置code=0，表示通过验证；
-        return SysResult.success();
     }
 
     //格式化实体类

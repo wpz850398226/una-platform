@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -37,6 +38,7 @@ public class SysFile extends BasePojo implements Serializable {
 
 //    @TableField(exist = false)
 //    private MultipartFile[] fileArray;
+    @NotNull(message = "保存失败:文件不能为空")
     @TableField(exist = false)
     private MultipartFile file;
 

@@ -1,5 +1,6 @@
 package cn.kunli.una.service.duohui.toubiao;
 
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.BidBidderMapper;
 import cn.kunli.una.pojo.bid.BidBidder;
 import cn.kunli.una.pojo.bid.BidProject;
@@ -9,6 +10,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,19 +36,17 @@ public class BidBidderService extends BasicService<BidBidderMapper, BidBidder> {
     }
 
     @Override
-    public SysResult validate(BidBidder obj) {
-        SysResult validate = super.validate(obj);
-        if(!validate.getIsSuccess())return validate;
+    @SneakyThrows
+    public void saveValidate(BidBidder obj) {
+        super.saveValidate(obj);
 
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(obj.getProjectId()!=null){
             List<BidBidder> bidBidders = thisProxy.selectList(UnaMapUtil.buildHashMap().put("projectId", obj.getProjectId()).put("creatorId", loginUser.getId()).build());
             if(CollectionUtils.isNotEmpty(bidBidders)){
-                return SysResult.fail("已报名，请勿重复操作");
+                throw new UnaResponseException("已报名，请勿重复操作");
             }
         }
-
-        return SysResult.success();
     }
 
     @Override

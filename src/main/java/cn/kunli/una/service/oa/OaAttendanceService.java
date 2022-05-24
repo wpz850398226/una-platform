@@ -26,8 +26,7 @@ public class OaAttendanceService extends BasicService<OaAttendanceMapper, OaAtte
     }
 
     @Override
-    public SysResult validate(OaAttendance obj) {
-        return SysResult.success();
+    public void saveValidate(OaAttendance obj) {
     }
 
     @Override

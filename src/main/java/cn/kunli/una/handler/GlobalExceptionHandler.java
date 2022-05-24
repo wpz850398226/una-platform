@@ -24,11 +24,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.ValidationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -205,9 +203,9 @@ public class GlobalExceptionHandler {
         return new SysResult().fail("错误：参数类型不匹配", sysException);
     }
 
-    @ExceptionHandler(value = UnaException.class)
-    public SysResult unaExceptionHandler(UnaException unaException) {
-        return new SysResult().fail(unaException.getMessage());
+    @ExceptionHandler(value = UnaResponseException.class)
+    public SysResult unaExceptionHandler(UnaResponseException unaResponseException) {
+        return new SysResult().fail(unaResponseException.getMessage());
     }
 
     /**
