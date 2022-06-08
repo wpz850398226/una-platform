@@ -1,9 +1,10 @@
 package cn.kunli.una.config;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.kunli.una.pojo.sys.SysDictionary;
+import cn.kunli.una.service.sys.SysDictionaryService;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.*;
@@ -12,15 +13,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
-
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig;
 
@@ -28,6 +29,8 @@ import static org.springframework.data.redis.cache.RedisCacheConfiguration.defau
 public class CacheConfig extends CachingConfigurerSupport {
     @Resource
     private RedisConnectionFactory factory;
+    @Resource
+    private SysDictionaryService sysDictionaryService;
 
     /**
      * 自定义生成redis-key
@@ -74,6 +77,21 @@ public class CacheConfig extends CachingConfigurerSupport {
                         // 缓存数据保存1小时
                         .entryTtl(Duration.ofHours(1));
         return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
+    }
 
+//    @Bean
+    public Map<String,String> globalDictionaryMap() {
+        Map<String,String> map = new HashMap<>();
+        List<SysDictionary> list = new ArrayList<>();
+        List<SysDictionary> logType = sysDictionaryService.selectList(MapUtil.of("parentCode", "log_type"));
+        List<SysDictionary> logOperate = sysDictionaryService.selectList(MapUtil.of("parentCode", "log_operate"));
+        list.addAll(logType);
+        list.addAll(logOperate);
+
+        if(CollUtil.isNotEmpty(list)){
+            list.forEach(d -> map.put(d.getParentCode()+":"+d.getName(),d.getCode()));
+        }
+
+        return map;
     }
 }

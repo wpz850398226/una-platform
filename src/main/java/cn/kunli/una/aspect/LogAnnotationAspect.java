@@ -1,25 +1,23 @@
 package cn.kunli.una.aspect;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.pojo.sys.SysEntity;
 import cn.kunli.una.pojo.sys.SysLog;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.service.sys.SysLogService;
-import cn.kunli.una.utils.common.RequestUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +35,12 @@ public class LogAnnotationAspect {
 
     @Resource
     private SysLogService sysLogService;
-    @Resource
-    private HttpServletRequest request;
+//    @Resource
+//    private Map<String,String> globalDictionaryMap;
 
-    @Around(value = "@annotation(cn.kunli.una.annotation.LogAnnotation)")
-    public Object saveLog(ProceedingJoinPoint point) throws Throwable {
+    @Async
+    @AfterReturning(value = "@annotation(cn.kunli.una.annotation.LogAnnotation)", returning = "result")
+    public void saveLog(JoinPoint point, Object result) throws Throwable {
         SysEntity sysEntity = new SysEntity();
         //注解所在类 的实例对象
         Object classInstance = point.getThis();
@@ -68,27 +67,13 @@ public class LogAnnotationAspect {
         LogAnnotation logAnnotation = method.getAnnotation(LogAnnotation.class);
 
         //获取指定的模块名称
-        String moduleName = logAnnotation.moduleName();
         try {
             sysEntity =(SysEntity) classInstance.getClass().getMethod("getEntity").invoke(classInstance);
-            //如果未指定模块名称，则通过反射获取类变量：moduleName
-            if(StrUtil.isBlank(moduleName)){
-                Object moduleNameObject = classInstance.getClass().getMethod("getModuleName").invoke(classInstance);
-                if (moduleNameObject != null) {
-                    moduleName = String.valueOf(moduleNameObject);
-                }
-            }
         } catch (NoSuchMethodException e) {
-            log.warn("日志记录无法获取模块名：未指定模块名且未设置类变量moduleName");
+            log.warn("日志记录无法获取实体类");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //如果既没有指定模块名称，又没有类变量moduleName，则默认为未指定模块
-        if (StrUtil.isBlank(moduleName)) {
-            moduleName = "未指定";
-        }
-
 
         String methodType = logAnnotation.methodType();
         //id入参名称
@@ -104,7 +89,7 @@ public class LogAnnotationAspect {
             idObj = args[0];
         }
 
-        if (idObj != null) {
+        if (idObj != null && args[0] instanceof Integer) {
             dataId = idObj.toString();
         }
 
@@ -120,46 +105,30 @@ public class LogAnnotationAspect {
                 methodType = "删除";
             } else if (methodName.contains("update") || methodName.contains("modify")) {
                 methodType = "修改";
-            } else if (methodName.contains("query") || methodName.contains("select")) {
+//                methodType = globalDictionaryMap.get("log_operate:修改");
+            } else if (methodName.contains("query") || methodName.contains("select") || methodName.contains("get")) {
                 methodType = "查询";
             } else {
                 methodType = "未知";
             }
         }
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("methodType", methodType);
-        body.put("dataId", dataId);
-        body.put("packagePath", packagePath);
-        body.put("className", className);
-        body.put("methodName", methodName);
-        body.put("moduleName", moduleName);
-        body.put("param", JSONUtil.toJsonStr(params));
-
-        String ipAddress = RequestUtil.getIpAddress(request);
-        body.put("ipAddress", ipAddress);
-
         //获取当前登录用户
         SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-        Object result = point.proceed();
-        //如果执行前无法获取登录信息，怎尝试执行后获取，针对登录日志设计———登录前无法获取登录信息
-        if (loginUser == null) {
-            loginUser = UserUtil.getLoginAccount();
-        }
 
         //通过操作类型，区分并设置日志类型
         switch (methodType) {
             case "登录":
             case "登出":
                 typeDcode = "authentication";
-                body.put("result", JSONUtil.toJsonStr(result));
+//                body.put("result", JSONUtil.toJsonStr(result));
                 break;
             case "新增":
             case "导入":
             case "删除":
             case "修改":
                 //日志保存执行结果
-                body.put("result", JSONUtil.toJsonStr(result));
+//                body.put("result", JSONUtil.toJsonStr(result));
             case "查询":
             case "导出":
                 typeDcode = "business";
@@ -178,8 +147,13 @@ public class LogAnnotationAspect {
                 .setMethodName(methodName)
                 .setParam(JSON.toJSONString(params))
                 .setResult(JSON.toJSONString(result));
-        sysLog.setCreatorId(loginUser.getId()).setCreatorName(loginUser.getName()).setName(methodType+sysEntity.getName()+System.currentTimeMillis());
+        if(loginUser!=null){
+            sysLog.setIpAddress(loginUser.getLoginIp())
+                    .setCreatorId(loginUser.getId())
+                    .setCreatorName(loginUser.getName())
+                    .setName(methodType+sysEntity.getName()+System.currentTimeMillis());
+        }
+
         sysLogService.save(sysLog);
-        return result;
     }
 }

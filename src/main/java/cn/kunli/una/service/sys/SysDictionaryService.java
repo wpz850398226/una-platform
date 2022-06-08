@@ -1,9 +1,12 @@
 package cn.kunli.una.service.sys;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysDictionaryMapper;
+import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
@@ -38,32 +41,24 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
      * @return
      */
     @Override
+    @LogAnnotation
     @SneakyThrows
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(SysDictionary entity) {
-        SysResult sysResult = super.updateRecordById(entity);
+        SysResult sysResult = super.updateRecordById(initialize(entity));
         if(sysResult.getIsSuccess()){
             if(StrUtil.isNotBlank(entity.getCode())){
-                //修改子字典的父类编码
-                UpdateWrapper updateWrapper = new UpdateWrapper();
-                updateWrapper.setEntity(new SysDictionary().setParentId(entity.getId()));
-                updateWrapper.setSql("parent_code = '"+entity.getCode()+"'");
-                sysDictionaryService.update(updateWrapper);
+                List<SysDictionary> children = this.selectList(MapUtil.of("parentId", entity.getId()));
+                if(CollUtil.isNotEmpty(children)){
+                    children.forEach(c -> {
+                        SysDictionary sample = (SysDictionary) new SysDictionary().setParentCode(entity.getCode()).setCode(entity.getCode() + "_" + c.getValue()).setId(c.getId());
+                        SysResult childResult = this.updateRecordById(sample);
+                    });
+                }
             }
         }
         return sysResult;
-    }
-
-    /**
-     * 通过code模糊查询字典记录
-     *
-     * @param code
-     * @return
-     */
-    public List<SysDictionary> selectByLikeCode(String code) {
-        List<SysDictionary> list = sysDictionaryService.selectList(UnaMapUtil.buildHashMap().put(":code", code).put("orderByAsc","sortOrder").build());
-        return list;
     }
 
     @Override
@@ -73,7 +68,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
             List<SysDictionary> sameNamelist = super.selectList(UnaMapUtil.buildHashMap()
                     .put("parentId", obj.getParentId()).put("name", obj.getName()).build());
             if(CollectionUtils.isNotEmpty(sameNamelist)&&!sameNamelist.get(0).getId().equals(obj.getId())){
-                throw new UnaResponseException("名字重复，保存失败");
+                throw new UnaResponseException("保存失败：字典名称重复");
             }
         }
 
@@ -81,7 +76,11 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
             List<SysDictionary> sameValuelist = sysDictionaryService.selectList(UnaMapUtil.buildHashMap()
                     .put("parentId", obj.getParentId()).put("value", obj.getValue()).build());
             if(CollectionUtils.isNotEmpty(sameValuelist)&&!sameValuelist.get(0).getId().equals(obj.getId())){
-                throw new UnaResponseException("值重复，保存失败");
+                throw new UnaResponseException("保存失败：字典值重复");
+            }
+
+            if(obj.getValue().indexOf("_")!=-1){
+                throw new UnaResponseException("保存失败：字典值不能包含下划线_");
             }
         }
 

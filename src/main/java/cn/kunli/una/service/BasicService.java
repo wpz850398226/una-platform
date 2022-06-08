@@ -50,8 +50,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
 
     //全局参数
     protected M mapper;
-    //模块名
-    private String moduleName;
+
     //本类的代理
     public abstract BasicService<M,T> getThisProxy();
 
@@ -59,6 +58,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     public void setMapper(M mapper) {
         this.mapper = mapper;
     }
+
 
 
     @Autowired
@@ -111,6 +111,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         if(sysEntity==null)return null;
         return sysEntity;
     }
+
+
 
     /**
      * 新增记录

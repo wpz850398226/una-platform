@@ -11,8 +11,6 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 public @interface LogAnnotation {
-    String moduleName() default "";
-
     String methodType() default "";
 
     String idParamName() default "id";
