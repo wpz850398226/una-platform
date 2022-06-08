@@ -49,7 +49,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     public SysResult updateRecordById(SysDictionary entity) {
         SysResult sysResult = super.updateRecordById(initialize(entity));
         if(sysResult.getIsSuccess()){
-            if(StrUtil.isNotBlank(entity.getCode())){
+            if(StrUtil.isNotBlank(entity.getCode()) && !entity.getParentId().equals(0)){
                 List<SysDictionary> children = this.selectList(MapUtil.of("parentId", entity.getId()));
                 if(CollUtil.isNotEmpty(children)){
                     children.forEach(c -> {
@@ -95,7 +95,7 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
         SysDictionary parentDictionary = sysDictionaryService.getById(obj.getParentId());
 
         if(parentDictionary!=null){
-            if (obj.getParentId().equals(0)||obj.getParentId().equals(100000)) {
+            if (obj.getParentId().equals(100000)) {
                 obj.setRootId(0);
                 obj.setCode(obj.getValue());
             } else {
@@ -105,6 +105,10 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
                     obj.setCode(parentDictionary.getCode()+"_"+obj.getValue());
                 }
             }
+        }else {
+            //查不到父字典
+            obj.setRootId(0);
+            obj.setCode(obj.getValue());
         }
 
         return obj;

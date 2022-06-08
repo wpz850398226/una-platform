@@ -75,12 +75,12 @@ public class LogAnnotationAspect {
             e.printStackTrace();
         }
 
-        String methodType = logAnnotation.methodType();
+        String methodTypeDcode = logAnnotation.methodType();
         //id入参名称
         String idParamName = logAnnotation.idParamName();
 
         String dataId = null;
-        String typeDcode = null;
+        String typeDcode;
         //获取指定入参名称的id
         Object idObj = params.get(idParamName);
 
@@ -94,44 +94,40 @@ public class LogAnnotationAspect {
         }
 
         //如果没有指定操作类型，则通过方法名称判断操作类型
-        if (StrUtil.isBlank(methodType)) {
+        if (StrUtil.isBlank(methodTypeDcode)) {
             if (methodName.contains("login")) {
-                methodType = "登录";
+                methodTypeDcode = "log_operate_login";
             } else if (methodName.contains("logout")) {
-                methodType = "登出";
+                methodTypeDcode = "log_operate_logout";
             } else if (methodName.contains("save") || methodName.contains("insert")) {
-                methodType = "新增";
+                methodTypeDcode = "log_operate_insert";
             } else if (methodName.contains("delete") || methodName.contains("remove")) {
-                methodType = "删除";
+                methodTypeDcode = "log_operate_delete";
             } else if (methodName.contains("update") || methodName.contains("modify")) {
-                methodType = "修改";
-//                methodType = globalDictionaryMap.get("log_operate:修改");
+                methodTypeDcode = "log_operate_update";
             } else if (methodName.contains("query") || methodName.contains("select") || methodName.contains("get")) {
-                methodType = "查询";
+                methodTypeDcode = "log_operate_query";
             } else {
-                methodType = "未知";
+                methodTypeDcode = "log_operate_unknown";
             }
         }
 
-        //获取当前登录用户
-        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+
 
         //通过操作类型，区分并设置日志类型
-        switch (methodType) {
-            case "登录":
-            case "登出":
-                typeDcode = "authentication";
+        switch (methodTypeDcode) {
+            case "log_operate_login":
+            case "log_operate_logout":
+                typeDcode = "log_type_account";
 //                body.put("result", JSONUtil.toJsonStr(result));
                 break;
-            case "新增":
-            case "导入":
-            case "删除":
-            case "修改":
-                //日志保存执行结果
-//                body.put("result", JSONUtil.toJsonStr(result));
-            case "查询":
-            case "导出":
-                typeDcode = "business";
+            case "log_operate_insert":
+            case "log_operate_import":
+            case "log_operate_delete":
+            case "log_operate_update":
+            case "log_operate_query":
+            case "log_operate_export":
+                typeDcode = "log_type_business";
                 break;
             default:
                 typeDcode = "unknown";
@@ -140,18 +136,21 @@ public class LogAnnotationAspect {
 
         SysLog sysLog = new SysLog().setEntityId(sysEntity.getId())
                 .setTypeDcode(typeDcode)
-                .setMethodTypeDcode(methodType)
+                .setMethodTypeDcode(methodTypeDcode)
                 .setDataId(dataId)
                 .setPackagePath(packagePath)
                 .setClassName(className)
                 .setMethodName(methodName)
                 .setParam(JSON.toJSONString(params))
                 .setResult(JSON.toJSONString(result));
+
+        //获取当前登录用户
+        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
         if(loginUser!=null){
             sysLog.setIpAddress(loginUser.getLoginIp())
                     .setCreatorId(loginUser.getId())
                     .setCreatorName(loginUser.getName())
-                    .setName(methodType+sysEntity.getName()+System.currentTimeMillis());
+                    .setName(methodTypeDcode+sysEntity.getName()+System.currentTimeMillis());
         }
 
         sysLogService.save(sysLog);

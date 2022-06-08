@@ -194,14 +194,16 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
 
     @Override
     public SysResult afterSaveSuccess(SysEntity obj) {
-        //新建实体类，自动增加系统公共字段
-        Integer entityId = obj.getId();
-        List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId", 100000));
-        if(CollUtil.isNotEmpty(sysFieldList)){
-            for (SysField sysField : sysFieldList) {
-                sysField.setEntityId(entityId).setId(null);
-                SysResult sysResult = sysFieldService.saveRecord(sysField);
-                if(!sysResult.getIsSuccess())return sysResult;
+        if(obj.getModifyTime()==null){
+            //新建实体类，自动增加系统公共字段
+            Integer entityId = obj.getId();
+            List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("entityId", 100000));
+            if(CollUtil.isNotEmpty(sysFieldList)){
+                for (SysField sysField : sysFieldList) {
+                    sysField.setEntityId(entityId).setId(null);
+                    SysResult sysResult = sysFieldService.saveRecord(sysField);
+                    if(!sysResult.getIsSuccess())return sysResult;
+                }
             }
         }
         return SysResult.success();
