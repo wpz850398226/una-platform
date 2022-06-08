@@ -24,7 +24,7 @@ public class SysSortService extends BasicService<SysSortMapper, SysSort> {
     }
 
     @Override
-    //@MyCacheEvict(value = "list")
+    @MyCacheEvict(value = "list")
     public SysResult saveRecord(SysSort entity) {
         SysResult sysResult = super.saveRecord(entity);
         if(sysResult.getIsSuccess()){

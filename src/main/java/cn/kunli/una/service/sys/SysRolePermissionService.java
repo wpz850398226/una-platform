@@ -24,11 +24,11 @@ public class SysRolePermissionService extends BasicService<SysRolePermissionMapp
         return thisProxy;
     }
 
-    //@MyCacheEvict(value = "list")
+    @MyCacheEvict(value = "list")
     public Integer insertByPermissionId(Integer permissionId) {
         return mapper.insertByPermissionId(permissionId);
     }
 
-    //@MyCacheEvict(value = "list")
+    @MyCacheEvict(value = "list")
     public Integer insertByRoleId(Integer roleId) { return mapper.insertByRoleId(roleId); }
 }

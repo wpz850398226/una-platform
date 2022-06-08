@@ -44,8 +44,8 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     @Override
     @LogAnnotation
     @SneakyThrows
-    //@MyCacheEvict(value = {"list","record:one"})
-    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(SysDictionary entity) {
         SysResult sysResult = super.updateRecordById(initialize(entity));
         if(sysResult.getIsSuccess()){

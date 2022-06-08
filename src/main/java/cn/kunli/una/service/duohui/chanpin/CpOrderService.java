@@ -44,7 +44,7 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
     }
 
     @Override
-    //@MyCacheEvict(value = "list")
+    @MyCacheEvict(value = "list")
     public SysResult saveRecord(CpOrder entity) {
         if(CollectionUtils.isNotEmpty(entity.getModelIdList())&&CollectionUtils.isNotEmpty(entity.getVolumeList())){
             //保存新的收件人信息
