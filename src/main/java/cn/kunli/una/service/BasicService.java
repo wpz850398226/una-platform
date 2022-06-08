@@ -121,7 +121,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
-    @MyCacheEvict(value = "list")
+    //@MyCacheEvict(value = "list")
     public SysResult saveRecord(T entity) {
         //数据校验
         saveValidate(entity);
@@ -146,8 +146,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    //@MyCacheEvict(value = {"list","record:one"})
+    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         boolean removeResult = super.removeById(id);
         if(removeResult){
@@ -203,8 +203,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param id
      * @return
      */
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    //@MyCacheEvict(value = {"list","record:one"})
+    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteBySelective(Map<String,Object> map) {
         /*String className = entityClass.getSimpleName();
         SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
@@ -230,8 +230,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    //@MyCacheEvict(value = {"list","record:one"})
+    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(T entity) {
         //数据校验
         saveValidate(entity);
@@ -250,8 +250,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
 
     @Override
     @LogAnnotation
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    //@MyCacheEvict(value = {"list","record:one"})
+    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean update(Wrapper<T> updateWrapper) {
         return super.update(updateWrapper);
     }
@@ -268,7 +268,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     @Override
-    @Cacheable(value = "record:id", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    //@Cacheable(value = "record:id", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T getById(Serializable id) {
         return super.getById(id);
     }
@@ -287,7 +287,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param queryWrapper
      * @return
      */
-    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    //@Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
         return super.getOne(wrapperUtil.mapToQueryWrapper(map));
     }
@@ -297,7 +297,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param map
      * @return
      */
-    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    //@Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> selectList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToQueryWrapper(format(map)));
     }
@@ -307,7 +307,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param queryWrapper
      * @return
      */
-    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    //@Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> getList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToQueryWrapper(map));
     }
@@ -504,48 +504,49 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     public Map<String,Object> format(Map<String,Object> map) {
 
-//        if(MapUtils.isEmpty(map))return map;
         if(map==null)map=new HashMap<>();
-        SysEntity sysEntity = getEntity();
-
-        //如果没有指定排序条件，则启用自定义设置的排序方式
-        if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
-            if(sysEntity!=null) {
-                //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
-                //格式化排序条件，转为查询语句，并将语句赋值给查询对象
-                if(CollectionUtils.isNotEmpty(sortList)){
-                    int size = sortList.size();
-                    String [][] orderArray = new String[size+1][2];
-                    orderArray[0][0] = "orderByDesc";
-                    orderArray[0][1] = "weight";
-                    for (int i = 0; i < size; i++) {
-                        SysSort sysSort = sortList.get(i);
-                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
-                        orderArray[i+1][1] = assignmentCode;
-                        if(sysSort.getSortord()){
-                            orderArray[i+1][0] = "orderByAsc";
-                        }else{
-                            orderArray[i+1][0] = "orderByDesc";
+        if(map.containsKey("isFormat") && map.get("isFormat").equals(true)){
+            SysEntity sysEntity = getEntity();
+            //如果没有指定排序条件，则启用自定义设置的排序方式
+            if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
+                if(sysEntity!=null) {
+                    //查询本实体综合排序方法
+                    List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
+                    //格式化排序条件，转为查询语句，并将语句赋值给查询对象
+                    if(CollectionUtils.isNotEmpty(sortList)){
+                        int size = sortList.size();
+                        String [][] orderArray = new String[size+1][2];
+                        orderArray[0][0] = "orderByDesc";
+                        orderArray[0][1] = "weight";
+                        for (int i = 0; i < size; i++) {
+                            SysSort sysSort = sortList.get(i);
+                            String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
+                            orderArray[i+1][1] = assignmentCode;
+                            if(sysSort.getSortord()){
+                                orderArray[i+1][0] = "orderByAsc";
+                            }else{
+                                orderArray[i+1][0] = "orderByDesc";
+                            }
                         }
+                        map.put("#orderArray",orderArray);
                     }
-                    map.put("#orderArray",orderArray);
+                }
+
+                if(map.get("#orderArray")==null) {
+                    //默认排序 1、权重倒叙 2、顺序正序
+                    String [][] defaultOrderArray = {{"orderByDesc","weight"},{"orderByAsc","sortOrder"}};
+                    map.put("#orderArray",defaultOrderArray);
+//                map.put("orderByAsc","sortOrder");
                 }
             }
 
-            if(map.get("#orderArray")==null) {
-                //默认排序 1、权重倒叙 2、顺序正序
-                String [][] defaultOrderArray = {{"orderByDesc","weight"},{"orderByAsc","sortOrder"}};
-                map.put("#orderArray",defaultOrderArray);
-//                map.put("orderByAsc","sortOrder");
+            if(map.containsKey("rootTreeIds")){
+                map.put("in:id",map.get("rootTreeIds"));
+                map.remove("rootTreeIds");
             }
         }
 
-        if(map.containsKey("rootTreeIds")){
-            map.put("in:id",map.get("rootTreeIds"));
-            map.remove("rootTreeIds");
-        }
-
+        map.remove("isFormat");
         return map;
     }
 

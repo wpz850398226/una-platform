@@ -34,7 +34,7 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
      * @return
      */
     @Override
-    @MyCacheEvict(value = "list")
+    //@MyCacheEvict(value = "list")
     public SysResult saveRecord(SysRole entity) {
         SysResult sysResult = super.saveRecord(entity);
         if(sysResult.getIsSuccess()){

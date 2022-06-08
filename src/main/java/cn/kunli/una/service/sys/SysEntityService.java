@@ -67,6 +67,8 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
 
+
+
         for (SysEntity sysEntity : list) {
             Map<String, Object> map = UnaMapUtil.getMap("entityId", sysEntity.getId());
             sysEntity.setRelationList(sysRelationService.parse(sysRelationService.selectList(map)));

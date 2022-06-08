@@ -1,9 +1,6 @@
 package cn.kunli.una.config;
 
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.service.sys.SysDictionaryService;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -18,10 +15,6 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig;
 
@@ -79,19 +72,4 @@ public class CacheConfig extends CachingConfigurerSupport {
         return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
     }
 
-//    @Bean
-    public Map<String,String> globalDictionaryMap() {
-        Map<String,String> map = new HashMap<>();
-        List<SysDictionary> list = new ArrayList<>();
-        List<SysDictionary> logType = sysDictionaryService.selectList(MapUtil.of("parentCode", "log_type"));
-        List<SysDictionary> logOperate = sysDictionaryService.selectList(MapUtil.of("parentCode", "log_operate"));
-        list.addAll(logType);
-        list.addAll(logOperate);
-
-        if(CollUtil.isNotEmpty(list)){
-            list.forEach(d -> map.put(d.getParentCode()+":"+d.getName(),d.getCode()));
-        }
-
-        return map;
-    }
 }

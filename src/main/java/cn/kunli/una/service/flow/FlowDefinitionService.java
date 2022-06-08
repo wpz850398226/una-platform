@@ -39,7 +39,7 @@ public class FlowDefinitionService extends BasicService<FlowDefinitionMapper, Fl
      * @return
      */
     @Override
-    @MyCacheEvict(value = "list")
+    //@MyCacheEvict(value = "list")
     public SysResult saveRecord(FlowDefinition entity) {
         SysResult sysResult = super.saveRecord(entity);
         if(sysResult.getIsSuccess()){

@@ -1,26 +1,27 @@
 package cn.kunli.una.service.sys;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.annotation.MyCacheEvict;
 import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysDictionaryMapper;
-import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -43,8 +44,8 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     @Override
     @LogAnnotation
     @SneakyThrows
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    //@MyCacheEvict(value = {"list","record:one"})
+    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(SysDictionary entity) {
         SysResult sysResult = super.updateRecordById(initialize(entity));
         if(sysResult.getIsSuccess()){
@@ -113,13 +114,34 @@ public class SysDictionaryService extends BasicService<SysDictionaryMapper, SysD
     public List<SysDictionary> parse(List<SysDictionary> list) {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
+        //查询所有字典
+        List<SysDictionary> allDictionaryList = super.list();
+
         for (SysDictionary record : list) {
-            List<SysDictionary> subList = sysDictionaryService.selectList(UnaMapUtil.getMap("parentId", record.getId()));
-            if(CollectionUtils.isNotEmpty(subList)){
-                this.parse(subList);
-            }
-            record.setChildren(subList);
+//            List<SysDictionary> subList = sysDictionaryService.selectList(UnaMapUtil.getMap("parentId", record.getId()));
+
+            List<SysDictionary> children = parseChildren(allDictionaryList, record.getId());
+            record.setChildren(children);
         }
         return list;
+    }
+
+    private List<SysDictionary> parseChildren(List<SysDictionary> list, Integer parentId){
+        List<SysDictionary> result = new ArrayList<>();
+        Iterator<SysDictionary> iterator = list.iterator();
+        while (iterator.hasNext()){
+            SysDictionary next = iterator.next();
+            if(parentId.equals(next.getParentId())){
+                List<SysDictionary> children = parseChildren(list, next.getId());
+                if(CollectionUtil.isNotEmpty(children)){
+                    next.setChildren(children);
+                }
+                //将匹配到父id的记录放入返回结果中
+                result.add(next);
+                //递归遍历list，删除元素报错：fail-fast
+//                iterator.remove();
+            }
+        }
+        return result;
     }
 }

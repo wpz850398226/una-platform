@@ -37,8 +37,8 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
 
     @Override
     @SneakyThrows
-    @MyCacheEvict(value = {"list","record:one"})
-    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    //@MyCacheEvict(value = {"list","record:one"})
+    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(SysAccount entity) {
         if(entity.getIsAudit()!=null&&entity.getIsAudit()){
             //审核通过

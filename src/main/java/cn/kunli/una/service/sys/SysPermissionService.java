@@ -41,7 +41,7 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
      * @return
      */
     @Override
-    @MyCacheEvict(value = "list")
+    //@MyCacheEvict(value = "list")
     public SysResult saveRecord(SysPermission entity) {
         SysResult sysResult = super.saveRecord(entity);
         if(sysResult.getIsSuccess()){
