@@ -121,7 +121,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
-    //@MyCacheEvict(value = "list")
+    @MyCacheEvict(value = "list")
     public SysResult saveRecord(T entity) {
         //数据校验
         saveValidate(entity);
@@ -146,8 +146,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
-    //@MyCacheEvict(value = {"list","record:one"})
-    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
         boolean removeResult = super.removeById(id);
         if(removeResult){
@@ -203,8 +203,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param id
      * @return
      */
-    //@MyCacheEvict(value = {"list","record:one"})
-    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteBySelective(Map<String,Object> map) {
         /*String className = entityClass.getSimpleName();
         SysEntity sysEntity = sysEntityService.selectOne(MapUtil.getMap("code",className));
@@ -230,8 +230,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
-    //@MyCacheEvict(value = {"list","record:one"})
-    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(T entity) {
         //数据校验
         saveValidate(entity);
@@ -250,8 +250,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
 
     @Override
     @LogAnnotation
-    //@MyCacheEvict(value = {"list","record:one"})
-    //@CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
+    @MyCacheEvict(value = {"list","record:one"})
+    @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean update(Wrapper<T> updateWrapper) {
         return super.update(updateWrapper);
     }
@@ -268,7 +268,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     @Override
-    //@Cacheable(value = "record:id", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "record:id", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T getById(Serializable id) {
         return super.getById(id);
     }
@@ -287,7 +287,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param queryWrapper
      * @return
      */
-    //@Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "record:one", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public T selectOne(Map<String,Object> map) {
         return super.getOne(wrapperUtil.mapToQueryWrapper(map));
     }
@@ -297,7 +297,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param map
      * @return
      */
-    //@Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> selectList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToQueryWrapper(format(map)));
     }
@@ -307,7 +307,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @param queryWrapper
      * @return
      */
-    //@Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
+    @Cacheable(value = "list", keyGenerator = "myCacheKeyGenerator", unless = "#result == null")
     public List<T> getList(Map<String,Object> map) {
         return super.list(wrapperUtil.mapToQueryWrapper(map));
     }

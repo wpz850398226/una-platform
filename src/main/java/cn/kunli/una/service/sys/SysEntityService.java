@@ -6,9 +6,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysEntityMapper;
-import cn.kunli.una.pojo.sys.SysEntity;
-import cn.kunli.una.pojo.sys.SysField;
-import cn.kunli.una.pojo.sys.SysFilter;
+import cn.kunli.una.pojo.sys.*;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import cn.kunli.una.utils.common.UnaListUtil;
@@ -30,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
@@ -67,21 +66,54 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
         if(CollectionUtils.isEmpty(list))return list;
         list = super.parse(list);
 
+        List<SysRelation> allRelationList = sysRelationService.parse(sysRelationService.list());
+        List<SysButton> allButtonList = sysButtonService.parse(sysButtonService.list());
+        List<SysQuery> allQueryList = sysQueryService.parse(sysQueryService.list());
+        List<SysPermission> allPermissionList = sysPermissionService.parse(sysPermissionService.list());
+        List<SysSort> allSortList = sysSortService.parse(sysSortService.list());
+        List<SysFilter> allFilterList = sysFilterService.parse(sysFilterService.list());
+
 
 
         for (SysEntity sysEntity : list) {
-            Map<String, Object> map = UnaMapUtil.getMap("entityId", sysEntity.getId());
-            sysEntity.setRelationList(sysRelationService.parse(sysRelationService.selectList(map)));
+            Integer entityId = sysEntity.getId();
+            Map<String, Object> map = UnaMapUtil.getMap("entityId", entityId);
+
+            List<SysRelation> relationList = allRelationList.stream().filter(s -> s.getEntityId().equals(entityId)).collect(Collectors.toList());
+            sysEntity.setRelationList(relationList);
+            allRelationList.removeAll(relationList);
+
+            List<SysButton> buttonList = allButtonList.stream().filter(s -> s.getEntityId().equals(entityId)).collect(Collectors.toList());
+            sysEntity.setButtonList(buttonList);
+            allButtonList.removeAll(buttonList);
+
+            List<SysQuery> queryList = allQueryList.stream().filter(s -> s.getEntityId().equals(entityId)).collect(Collectors.toList());
+            sysEntity.setQueryList(queryList);
+            allQueryList.removeAll(queryList);
+
+            List<SysPermission> permissionList = allPermissionList.stream().filter(s -> s.getEntityId().equals(entityId)).collect(Collectors.toList());
+            sysEntity.setPermissionList(permissionList);
+            allPermissionList.removeAll(permissionList);
+
+            List<SysSort> sortList = allSortList.stream().filter(s -> s.getEntityId().equals(entityId)).collect(Collectors.toList());
+            sysEntity.setSortList(sortList);
+            allSortList.removeAll(sortList);
+
+            List<SysFilter> filterList = allFilterList.stream().filter(s -> s.getEntityId().equals(entityId)).collect(Collectors.toList());
+            if(CollectionUtils.isNotEmpty(filterList)){
+                filterList.add(0, (SysFilter) new SysFilter().setName("全部"));
+            }
+            sysEntity.setFilterList(filterList);
+            allFilterList.removeAll(filterList);
+
+
+            /*sysEntity.setRelationList(sysRelationService.parse(sysRelationService.selectList(map)));
             sysEntity.setButtonList(sysButtonService.parse(sysButtonService.selectList(map)));
             sysEntity.setQueryList(sysQueryService.parse(sysQueryService.selectList(map)));
-            sysEntity.setPermissionList(sysPermissionService.selectList(UnaMapUtil.getMap("entityId",sysEntity.getId())));
+            sysEntity.setPermissionList(sysPermissionService.selectList(map));
             sysEntity.setSortList(sysSortService.parse(sysSortService.selectList(map)));
-            List<SysFilter> filterList = sysFilterService.parse(sysFilterService.selectList(map));
-            if(CollectionUtils.isNotEmpty(filterList)){
-                List<SysFilter> newFilterList = UnaListUtil.getList((SysFilter)new SysFilter().setName("全部"));
-                newFilterList.addAll(filterList);
-                sysEntity.setFilterList(newFilterList);
-            }
+            List<SysFilter> filterList = sysFilterService.parse(sysFilterService.selectList(map));*/
+
             if(StrUtil.isNotBlank(sysEntity.getKeywordFieldIds())){
                 List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.getMap("in:id", sysEntity.getKeywordFieldIds()));
                 if(CollUtil.isNotEmpty(sysFieldList)){
