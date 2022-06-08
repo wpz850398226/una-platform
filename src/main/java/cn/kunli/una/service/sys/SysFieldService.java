@@ -472,16 +472,16 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 record.setSelectSubIds(idStr);
             }
 
-            //隐藏子组件
-            List<SysField> hiddenChildren = sysFieldService.selectList(UnaMapUtil.getMap("hideFieldId", record.getId()));
+            //获取隐藏子组件，放在触发隐藏字段下
+            List<SysField> hiddenChildren = sysFieldService.selectList(UnaMapUtil.getMap("hideSwitchFieldId", record.getId()));
             if(CollectionUtils.isNotEmpty(hiddenChildren)){
                 Map<String,String> map = new HashMap<>();
                 for (SysField sysField : hiddenChildren) {
-                    if(map.containsKey(sysField.getHideFieldValue())){
+                    if(map.containsKey(sysField.getHideSwitchFieldValue())){
                         //触发多个隐藏
-                        map.put(sysField.getHideFieldValue(),map.get(sysField.getHideFieldValue())+","+sysField.getId());
+                        map.put(sysField.getHideSwitchFieldValue(),map.get(sysField.getHideSwitchFieldValue())+","+sysField.getId());
                     }else{
-                        map.put(sysField.getHideFieldValue(),String.valueOf(sysField.getId()));
+                        map.put(sysField.getHideSwitchFieldValue(),String.valueOf(sysField.getId()));
                     }
                 }
                 record.setHideSubMap(map);

@@ -54,6 +54,8 @@ public class SysField extends BasePojo implements Serializable {
     private String dataCheckTypeDcode;
     //是否必填
     private Boolean isRequired;
+    //是否初始化隐藏
+    private Boolean isHidden;
     //是否排序展示
     private Boolean isSort;
     //是否可修改；0不可以，1可以
@@ -93,9 +95,9 @@ public class SysField extends BasePojo implements Serializable {
     //列固定方式：左，右，无
     private String fixedType;
     //触发隐藏的字段
-    private Integer hideFieldId;
+    private Integer hideSwitchFieldId;
     //触发隐藏的选项值
-    private String hideFieldValue;
+    private String hideSwitchFieldValue;
     //是否生效
     private Boolean isEffect;
 
