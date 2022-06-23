@@ -389,7 +389,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         super.initialize(obj);
         if (StrUtil.isNotBlank(obj.getRadioOptions())) obj.setRadioOptions(obj.getRadioOptions().replace("，", ","));
         if (StrUtil.isNotBlank(obj.getAssignmentCode()) && StrUtil.isBlank(obj.getDisplayCode())) obj.setDisplayCode(obj.getAssignmentCode());
-        if(StrUtil.isNotBlank(obj.getColumnTypeDcode())){
+        if(StrUtil.isNotBlank(obj.getColumnTypeDcode()) && obj.getStorageLength()==null){
             switch(obj.getColumnTypeDcode()){
                 case "field_storage_VARCHAR":
                     obj.setStorageLength(255);
@@ -451,11 +451,13 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             if(CollectionUtils.isNotEmpty(hiddenChildren)){
                 Map<String,String> map = new HashMap<>();
                 for (SysField sysField : hiddenChildren) {
-                    if(map.containsKey(sysField.getHideSwitchFieldValue())){
-                        //触发多个隐藏
-                        map.put(sysField.getHideSwitchFieldValue(),map.get(sysField.getHideSwitchFieldValue())+","+sysField.getId());
-                    }else{
-                        map.put(sysField.getHideSwitchFieldValue(),String.valueOf(sysField.getId()));
+                    if(StrUtil.isNotBlank(sysField.getHideSwitchFieldValue()) ){
+                        if(map.containsKey(sysField.getHideSwitchFieldValue())){
+                            //触发多个隐藏
+                            map.put(sysField.getHideSwitchFieldValue(),map.get(sysField.getHideSwitchFieldValue())+","+sysField.getId());
+                        }else{
+                            map.put(sysField.getHideSwitchFieldValue(),String.valueOf(sysField.getId()));
+                        }
                     }
                 }
                 record.setHideSubMap(map);

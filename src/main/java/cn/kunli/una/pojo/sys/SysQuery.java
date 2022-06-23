@@ -45,8 +45,6 @@ public class SysQuery extends BasePojo implements Serializable {
     @TableField(exist = false)
     private String fieldCode;
     @TableField(exist = false)
-    private String optionEntityName;
-    @TableField(exist = false)
     private String optionEntityPath;
     @TableField(exist = false)
     private String selectSubIds;                //联动子id，用,分隔

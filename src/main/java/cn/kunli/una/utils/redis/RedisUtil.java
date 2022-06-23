@@ -724,4 +724,12 @@ public class RedisUtil<T> {
         }
     }
 
+    //通过实体编码所有相关缓存
+    public boolean removeByEntityCode(String entityCode){
+        String partten = "list::"+entityCode+"Service:*";
+        Set<String> set = hasKeys(partten);
+        delKeys(set);
+        return true;
+    }
+
 }
