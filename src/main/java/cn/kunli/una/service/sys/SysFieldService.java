@@ -9,9 +9,6 @@ import cn.kunli.una.pojo.sys.SysField;
 import cn.kunli.una.pojo.sys.SysPermission;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
-import cn.kunli.una.service.duohui.chanpin.CpGoodsService;
-import cn.kunli.una.service.duohui.chanpin.CpModelService;
-import cn.kunli.una.service.duohui.toubiao.BidProjectService;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
@@ -54,13 +51,6 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
     @Autowired
     private SysDepartmentService sysDepartmentService;
-    @Autowired
-    private CpGoodsService cpGoodsService;
-    @Autowired
-    private CpModelService cpModelService;
-
-    @Autowired
-    private BidProjectService bidProjectService;
     @Autowired
     private GaGeneService gaGeneService;
 
@@ -124,17 +114,9 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "fieldId"://字段 fieldId
                     resultList = sysFieldService.selectList(UnaMapUtil.getMap("id",value));
                     break;
-                case "GoodsId"://商品 goodsId
-                case "goodsId"://商品 goodsId
-                    resultList = cpGoodsService.selectList(UnaMapUtil.getMap("id",value));
-                    break;
                 case "fileIds"://流程节点 entityId
                 case "FileIds"://流程节点 entityId
                     resultList = sysFileService.parse(sysFileService.selectList(UnaMapUtil.getMap("in:id", value)));
-                    break;
-                case "modelId"://商品型号
-                case "ModelId"://商品型号
-                    resultList = cpModelService.selectList(UnaMapUtil.getMap("id", value));
                     break;
             }
         }
@@ -169,10 +151,10 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "artmentId"://部门 departmentId
                     resultList = sysDepartmentService.selectList(UnaMapUtil.getMap("id",value));
                     break;
-                case "ProjectId"://项目
-                case "projectId":
-                    resultList = bidProjectService.selectList(UnaMapUtil.getMap("id",value));
-                    break;
+//                case "ProjectId"://项目
+//                case "projectId":
+//                    resultList = bidProjectService.selectList(UnaMapUtil.getMap("id",value));
+//                    break;
                 case "accountId"://账号 accountId
                 case "AccountId"://账号 accountId
                     resultList = sysAccountService.selectList(UnaMapUtil.getMap("id",value));
@@ -313,14 +295,6 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 case "FieldName"://字段 fieldId
                 case "fieldName"://字段 fieldId
                     resultList = sysFieldService.selectList(UnaMapUtil.getMap(":name",value));
-                    break;
-                case "GoodsName"://商品 goodsId
-                case "goodsName"://商品 goodsId
-                    resultList = cpGoodsService.selectList(UnaMapUtil.getMap(":name",value));
-                    break;
-                case "modelName"://商品型号
-                case "ModelName"://商品型号
-                    resultList = cpModelService.selectList(UnaMapUtil.getMap(":name", value));
                     break;
             }
         }
