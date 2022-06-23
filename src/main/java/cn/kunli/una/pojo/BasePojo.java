@@ -28,7 +28,7 @@ public class BasePojo implements Serializable{
 
 	private String name;					//名称（中文名）
 
-	private String remark;
+	private String description;
 
 	//权重
 	private Integer weight;

@@ -52,7 +52,7 @@ public class SysAccountService extends BasicService<SysAccountMapper, SysAccount
                 if(companyResult.getIsSuccess()){
                     entity.setCompanyId(sysCompany.getId());
                 }else{
-                    entity.setRemark(entity.getRemark()+"|"+companyResult.getMessage());
+                    entity.setDescription(entity.getDescription()+"|"+companyResult.getMessage());
                 }
             }
         }

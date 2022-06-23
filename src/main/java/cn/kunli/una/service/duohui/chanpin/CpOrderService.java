@@ -155,7 +155,7 @@ public class CpOrderService extends BasicService<CpOrderMapper, CpOrder> {
         orderParam.put("WIDsubject", sample.getCode());    //订单名称
         if(sample.getBargainAmount()==null) return SysResult.fail("订单成交价异常，结算失败");
         orderParam.put("WIDtotal_amount", String.valueOf(sample.getBargainAmount()));    //成交金额
-        if(StrUtil.isNotBlank(sample.getRemark()))orderParam.put("WIDout_trade_no", sample.getRemark());    //商品描述，可空
+        if(StrUtil.isNotBlank(sample.getDescription()))orderParam.put("WIDout_trade_no", sample.getDescription());    //商品描述，可空
         SysResult toPayResult = alipayService.toPay(orderParam);
         return toPayResult;
     }

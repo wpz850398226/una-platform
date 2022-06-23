@@ -494,7 +494,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
             if(StrUtil.isNotBlank(record.getAssignmentModeDcode())){
                 SysDictionary assignmentModeDic = sysDictionaryService.selectOne(UnaMapUtil.getMap("code", record.getAssignmentModeDcode()));
                 if(assignmentModeDic!=null){
-                    record.setAssignmentType(assignmentModeDic.getRemark());
+                    record.setAssignmentType(assignmentModeDic.getDescription());
                 }
             }
 
