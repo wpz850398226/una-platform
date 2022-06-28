@@ -1,5 +1,7 @@
 package cn.kunli.una.controller.sys;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.kunli.una.controller.BaseController;
 
 import cn.kunli.una.pojo.sys.SysAccount;
@@ -60,7 +62,7 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     @ResponseBody
     public SysResult setPassword(Integer id,String password) {
 
-        if(id==null||password==null)return SysResult.fail();
+        if(id==null || StrUtil.isBlank(password))return SysResult.fail();
 
         SysResult sysResult = service.updateRecordById((SysAccount) new SysAccount().setPassword(password).setId(id));
 
@@ -68,4 +70,26 @@ public class SysAccountController extends BaseController<SysAccountService, SysA
     }
 
 
+    //注册
+    @PutMapping("/hideField")
+    @ResponseBody
+    public SysResult hideField(@RequestBody SysAccount sysAccount) {
+
+        if(sysAccount.getId()==null)return SysResult.fail("修改失败：未指定实体id");
+        SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
+        SysAccount sample = service.getById(loginUser.getId());
+
+        String hideFieldIds = sample.getHideFieldIds();
+        JSONObject jsonObject = JSONUtil.parseObj(hideFieldIds);
+
+        if(StrUtil.isNotBlank(sysAccount.getHideFieldIds())){
+            jsonObject.set(String.valueOf(sysAccount.getId()),sysAccount.getHideFieldIds());
+        }else{
+            //为指定隐藏字段，移除对应实体id的记录
+            jsonObject.remove(String.valueOf(sysAccount.getId()));
+        }
+
+        SysResult sysResult = service.updateRecordById((SysAccount) new SysAccount().setHideFieldIds(JSONUtil.toJsonStr(jsonObject)).setId(sample.getId()));
+        return sysResult;
+    }
 }

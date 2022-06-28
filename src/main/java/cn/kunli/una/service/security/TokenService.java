@@ -1,5 +1,6 @@
 package cn.kunli.una.service.security;
 
+import cn.kunli.una.annotation.LogAnnotation;
 import cn.kunli.una.pojo.vo.SysLoginAccount;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysToken;
@@ -29,13 +30,12 @@ public class TokenService {
     private static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
 
     //生成token
+    @LogAnnotation(methodType = "log_operate_login")
     public SysToken saveToken(SysLoginAccountDetails obj){
         String token = UUID.randomUUID().toString().replace("-","");
         obj.setToken(token);
         //用户信息入缓存
         cacheLoginAccount(obj);
-        //登录日志
-
         //生成jwttoken
         String jwtToken = createJWTToken(obj);
 

@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //表单提交
         http.formLogin()
                 //自定义登录页面
-                .loginPage("/duohui/login/toLogin")
+                .loginPage("/una/toLogin")
                 //登录表单提交地址
                 .loginProcessingUrl("/sys/login/login")
                 //登录成功后跳转的页面，必须是post请求

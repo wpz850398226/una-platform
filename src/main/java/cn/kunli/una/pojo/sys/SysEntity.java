@@ -34,6 +34,8 @@ public class SysEntity extends BasePojo implements Serializable {
     private String keywordFieldIds;
     //url前缀
     private String path;
+    //表格步长
+    private Integer pageSize;
     //是否虚拟实体
     private Boolean isVirtual;
     //可否手动添加数据

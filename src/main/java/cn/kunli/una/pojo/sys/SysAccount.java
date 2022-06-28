@@ -63,6 +63,9 @@ public class SysAccount extends BasePojo implements Serializable {
     private String regionIds;
     //会员截止日期
     private Date memberDeadline;
+    //隐藏字段id
+//    @TableField(typeHandler = FastjsonTypeHandler.class)
+    private String hideFieldIds;
 
 
 
