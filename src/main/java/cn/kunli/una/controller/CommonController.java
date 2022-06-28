@@ -383,7 +383,7 @@ public class CommonController {
 
                 }
                 if ("field_assignment_radio".equals(fieldList.get(i).getAssignmentModeDcode())) {
-                    downData.add(fieldList.get(i).getRadioOptions().split(","));
+                    downData.add(fieldList.get(i).getThreshold().split(","));
                 }
 
             }

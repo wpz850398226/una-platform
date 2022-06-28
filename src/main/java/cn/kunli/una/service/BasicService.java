@@ -1,5 +1,9 @@
 package cn.kunli.una.service;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.kunli.una.annotation.LogAnnotation;
@@ -38,10 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Primary
@@ -319,8 +321,6 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     public void saveValidate(T obj){
-        //反射获取需要验证的字段值
-        Map<String, Object> map = new HashMap<String, Object>();
         //获取当前类对应实体类对象
         SysEntity sysEntity = getEntity();
         if(sysEntity!=null){
@@ -346,7 +346,75 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 }
             }
 
-            Field[] declaredFields = entityClass.getDeclaredFields();
+            //查询数据校验不为空的字段
+            List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.buildHashMap()
+                    .put("entityId", sysEntity.getId()).put("isNotNull","dataCheckTypeDcode").build());
+
+            if(CollUtil.isNotEmpty(sysFieldList)){
+                for (SysField sysField : sysFieldList) {
+                    String dataCheckTypeDcode = sysField.getDataCheckTypeDcode();
+                    String dataCheckValue = sysField.getThreshold();
+                    //当数据校验不为重复校验且未设置数据校验值时，报错
+                    if(!dataCheckTypeDcode.equals("field_dataDetection_unique") && StrUtil.isBlank(dataCheckValue)){
+                        throw new UnaResponseException("保存失败："+sysField.getName()+"数据校验值为空");
+                    }
+                    String fieldCode = sysField.getAssignmentCode();
+                    Field declaredField = entityClass.getDeclaredField(fieldCode);
+                    declaredField.setAccessible(true);
+                    //获取该字段值
+                    Object fieldValueObject = declaredField.get(obj);
+                    if(fieldValueObject!=null&&StrUtil.isNotBlank(fieldValueObject.toString())){
+                        switch(dataCheckTypeDcode){
+                            case "field_dataDetection_unique":      //重复校验
+                                List<T> resultList = getThisProxy().getList(MapUtil.of(fieldCode,fieldValueObject));
+                                if(CollectionUtils.isNotEmpty(resultList)&&!resultList.get(0).getId().equals(obj.getId())) {
+                                    //通过新文件的编码查询到数据
+                                    throw new UnaResponseException("保存失败："+sysField.getName()+"重复");
+                                }
+                                break;
+                            case "field_dataDetection_threshold":   //阈值校验
+                                String[] thresholdValueArray = dataCheckValue.split(",");
+                                if(thresholdValueArray.length!=2){
+                                    throw new UnaResponseException("保存失败："+sysField.getName()+"阈值设置数量有误");
+                                }
+
+                                Double minThreshold = Double.valueOf(thresholdValueArray[0]);
+                                Double maxThreshold = Double.valueOf(thresholdValueArray[1]);
+                                Double fieldValueDouble = Double.valueOf(String.valueOf(fieldValueObject));
+                                if(fieldValueDouble>maxThreshold || fieldValueDouble<minThreshold){
+                                    throw new UnaResponseException("保存失败："+sysField.getName()+"不满足阈值范围");
+                                }
+                                break;
+                            case "field_dataDetection_amplitude":   //振幅校验
+                                break;
+                            case "field_dataDetection_effective":   //有效校验
+                                String[] effectiveValueArray = dataCheckValue.split(",");
+                                if(!Arrays.asList(effectiveValueArray).contains(fieldValueObject)){
+                                    //如果有效值集合中不包含字段值，则说明字段值无效
+                                    throw new UnaResponseException("保存失败："+sysField.getName()+"值无效");
+                                }
+                                break;
+                            case "field_dataDetection_invalid":   //无效校验
+                                String[] invalidValueArray = dataCheckValue.split(",");
+                                for (String s : invalidValueArray) {
+                                    if(String.valueOf(fieldValueObject).contains(s)){
+                                        //如果字段值包含任何无效值，则说明字段值无效
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"值包含无效内容");
+                                    }
+                                }
+                                break;
+                            case "field_dataDetection_length":   //长度校验
+                                if(String.valueOf(fieldValueObject).length()>Integer.valueOf(dataCheckValue)){
+                                    throw new UnaResponseException("保存失败："+sysField.getName()+"值超过规定长度");
+                                }
+                                break;
+                        }
+                    }
+
+                }
+            }
+
+            /*Field[] declaredFields = entityClass.getDeclaredFields();
             for (Field declaredField : declaredFields) {
                 if(declaredField.getName().equals("code")){
                     //如果有code字段
@@ -362,7 +430,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     }
                     break;
                 }
-            }
+            }*/
         }
         //如果通过全部格式验证，则设置code=200，表示通过验证；
 //        return SysResult.success();

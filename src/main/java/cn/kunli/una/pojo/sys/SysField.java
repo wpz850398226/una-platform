@@ -52,6 +52,8 @@ public class SysField extends BasePojo implements Serializable {
     private String formatCheckTypeDcode;
     //数据检测类型 复数
     private String dataCheckTypeDcode;
+    //阈值（数据校验阈值/波幅/有效值/无效值/备选值）
+    private String threshold;
     //是否必填
     private Boolean isRequired;
     //是否初始化隐藏
@@ -87,9 +89,9 @@ public class SysField extends BasePojo implements Serializable {
     //选项保存值字段id
     private String optionValueFieldCode;
     //选项查询语句
-    private String optionSql;
+//    private String optionSql;
     //单选备选值，逗号隔开
-    private String radioOptions;
+//    private String radioOptions;
     //下拉联动父id
     private Integer selectParentId;
     //列固定方式：左，右，无

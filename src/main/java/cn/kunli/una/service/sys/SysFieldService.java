@@ -387,7 +387,7 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      */
     public SysField initialize(SysField obj) {
         super.initialize(obj);
-        if (StrUtil.isNotBlank(obj.getRadioOptions())) obj.setRadioOptions(obj.getRadioOptions().replace("，", ","));
+        if (StrUtil.isNotBlank(obj.getThreshold())) obj.setThreshold(obj.getThreshold().replace("，", ","));
         if (StrUtil.isNotBlank(obj.getAssignmentCode()) && StrUtil.isBlank(obj.getDisplayCode())) obj.setDisplayCode(obj.getAssignmentCode());
         if(StrUtil.isNotBlank(obj.getColumnTypeDcode()) && obj.getStorageLength()==null){
             switch(obj.getColumnTypeDcode()){
@@ -463,14 +463,14 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
                 record.setHideSubMap(map);
             }
 
-            if (StrUtil.isNotBlank(record.getRadioOptions())){
-                record.setRadioOptionArray(StrUtil.splitToArray(record.getRadioOptions(), ","));
-            }
-
             if(StrUtil.isNotBlank(record.getAssignmentModeDcode())){
                 SysDictionary assignmentModeDic = sysDictionaryService.selectOne(UnaMapUtil.getMap("code", record.getAssignmentModeDcode()));
                 if(assignmentModeDic!=null){
                     record.setAssignmentType(assignmentModeDic.getDescription());
+                }
+
+                if ("field_assignment_radio".equals(record.getAssignmentModeDcode()) && StrUtil.isNotBlank(record.getThreshold())){
+                    record.setRadioOptionArray(StrUtil.splitToArray(record.getThreshold(), ","));
                 }
             }
 
