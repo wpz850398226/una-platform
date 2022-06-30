@@ -353,64 +353,66 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             if(CollUtil.isNotEmpty(sysFieldList)){
                 for (SysField sysField : sysFieldList) {
                     String dataCheckTypeDcode = sysField.getDataCheckTypeDcode();
-                    String dataCheckValue = sysField.getThreshold();
-                    //当数据校验不为重复校验且未设置数据校验值时，报错
-                    if(!dataCheckTypeDcode.equals("field_dataDetection_unique") && StrUtil.isBlank(dataCheckValue)){
-                        throw new UnaResponseException("保存失败："+sysField.getName()+"数据校验值为空");
-                    }
-                    String fieldCode = sysField.getAssignmentCode();
-                    Field declaredField = entityClass.getDeclaredField(fieldCode);
-                    declaredField.setAccessible(true);
-                    //获取该字段值
-                    Object fieldValueObject = declaredField.get(obj);
-                    if(fieldValueObject!=null&&StrUtil.isNotBlank(fieldValueObject.toString())){
-                        switch(dataCheckTypeDcode){
-                            case "field_dataDetection_unique":      //重复校验
-                                List<T> resultList = getThisProxy().getList(MapUtil.of(fieldCode,fieldValueObject));
-                                if(CollectionUtils.isNotEmpty(resultList)&&!resultList.get(0).getId().equals(obj.getId())) {
-                                    //通过新文件的编码查询到数据
-                                    throw new UnaResponseException("保存失败："+sysField.getName()+"重复");
-                                }
-                                break;
-                            case "field_dataDetection_threshold":   //阈值校验
-                                String[] thresholdValueArray = dataCheckValue.split(",");
-                                if(thresholdValueArray.length!=2){
-                                    throw new UnaResponseException("保存失败："+sysField.getName()+"阈值设置数量有误");
-                                }
-
-                                Double minThreshold = Double.valueOf(thresholdValueArray[0]);
-                                Double maxThreshold = Double.valueOf(thresholdValueArray[1]);
-                                Double fieldValueDouble = Double.valueOf(String.valueOf(fieldValueObject));
-                                if(fieldValueDouble>maxThreshold || fieldValueDouble<minThreshold){
-                                    throw new UnaResponseException("保存失败："+sysField.getName()+"不满足阈值范围");
-                                }
-                                break;
-                            case "field_dataDetection_amplitude":   //振幅校验
-                                break;
-                            case "field_dataDetection_effective":   //有效校验
-                                String[] effectiveValueArray = dataCheckValue.split(",");
-                                if(!Arrays.asList(effectiveValueArray).contains(fieldValueObject)){
-                                    //如果有效值集合中不包含字段值，则说明字段值无效
-                                    throw new UnaResponseException("保存失败："+sysField.getName()+"值无效");
-                                }
-                                break;
-                            case "field_dataDetection_invalid":   //无效校验
-                                String[] invalidValueArray = dataCheckValue.split(",");
-                                for (String s : invalidValueArray) {
-                                    if(String.valueOf(fieldValueObject).contains(s)){
-                                        //如果字段值包含任何无效值，则说明字段值无效
-                                        throw new UnaResponseException("保存失败："+sysField.getName()+"值包含无效内容");
+                    if(StrUtil.isNotBlank(dataCheckTypeDcode)){
+                        String dataCheckValue = sysField.getThreshold();
+                        //当数据校验不为重复校验且未设置数据校验值时，报错
+                        if(StrUtil.isNotBlank(dataCheckTypeDcode) && !dataCheckTypeDcode.equals("field_dataDetection_unique") && StrUtil.isBlank(dataCheckValue)){
+                            throw new UnaResponseException("保存失败：["+sysField.getName()+"]数据校验值为空");
+                        }
+                        String fieldCode = sysField.getAssignmentCode();
+                        log.info("校验数据格式的字段为[{}]",fieldCode);
+                        Field declaredField = entityClass.getDeclaredField(fieldCode);
+                        declaredField.setAccessible(true);
+                        //获取该字段值
+                        Object fieldValueObject = declaredField.get(obj);
+                        if(fieldValueObject!=null&&StrUtil.isNotBlank(fieldValueObject.toString())){
+                            switch(dataCheckTypeDcode){
+                                case "field_dataDetection_unique":      //重复校验
+                                    List<T> resultList = getThisProxy().getList(MapUtil.of(fieldCode,fieldValueObject));
+                                    if(CollectionUtils.isNotEmpty(resultList)&&!resultList.get(0).getId().equals(obj.getId())) {
+                                        //通过新文件的编码查询到数据
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"重复");
                                     }
-                                }
-                                break;
-                            case "field_dataDetection_length":   //长度校验
-                                if(String.valueOf(fieldValueObject).length()>Integer.valueOf(dataCheckValue)){
-                                    throw new UnaResponseException("保存失败："+sysField.getName()+"值超过规定长度");
-                                }
-                                break;
+                                    break;
+                                case "field_dataDetection_threshold":   //阈值校验
+                                    String[] thresholdValueArray = dataCheckValue.split(",");
+                                    if(thresholdValueArray.length!=2){
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"阈值设置数量有误");
+                                    }
+
+                                    Double minThreshold = Double.valueOf(thresholdValueArray[0]);
+                                    Double maxThreshold = Double.valueOf(thresholdValueArray[1]);
+                                    Double fieldValueDouble = Double.valueOf(String.valueOf(fieldValueObject));
+                                    if(fieldValueDouble>maxThreshold || fieldValueDouble<minThreshold){
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"不满足阈值范围");
+                                    }
+                                    break;
+                                case "field_dataDetection_amplitude":   //振幅校验
+                                    break;
+                                case "field_dataDetection_effective":   //有效校验
+                                    String[] effectiveValueArray = dataCheckValue.split(",");
+                                    if(!Arrays.asList(effectiveValueArray).contains(fieldValueObject)){
+                                        //如果有效值集合中不包含字段值，则说明字段值无效
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"值无效");
+                                    }
+                                    break;
+                                case "field_dataDetection_invalid":   //无效校验
+                                    String[] invalidValueArray = dataCheckValue.split(",");
+                                    for (String s : invalidValueArray) {
+                                        if(String.valueOf(fieldValueObject).contains(s)){
+                                            //如果字段值包含任何无效值，则说明字段值无效
+                                            throw new UnaResponseException("保存失败："+sysField.getName()+"值包含无效内容");
+                                        }
+                                    }
+                                    break;
+                                case "field_dataDetection_length":   //长度校验
+                                    if(String.valueOf(fieldValueObject).length()>Integer.valueOf(dataCheckValue)){
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"值超过规定长度");
+                                    }
+                                    break;
+                            }
                         }
                     }
-
                 }
             }
 
@@ -573,45 +575,43 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     public Map<String,Object> format(Map<String,Object> map) {
 
         if(map==null)map=new HashMap<>();
-        if(map.containsKey("isFormat") && map.get("isFormat").equals(true)){
-            SysEntity sysEntity = getEntity();
-            //如果没有指定排序条件，则启用自定义设置的排序方式
-            if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
-                if(sysEntity!=null) {
-                    //查询本实体综合排序方法
-                    List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
-                    //格式化排序条件，转为查询语句，并将语句赋值给查询对象
-                    if(CollectionUtils.isNotEmpty(sortList)){
-                        int size = sortList.size();
-                        String [][] orderArray = new String[size+1][2];
-                        orderArray[0][0] = "orderByDesc";
-                        orderArray[0][1] = "weight";
-                        for (int i = 0; i < size; i++) {
-                            SysSort sysSort = sortList.get(i);
-                            String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
-                            orderArray[i+1][1] = assignmentCode;
-                            if(sysSort.getSortord()){
-                                orderArray[i+1][0] = "orderByAsc";
-                            }else{
-                                orderArray[i+1][0] = "orderByDesc";
-                            }
+        SysEntity sysEntity = getEntity();
+        //如果没有指定排序条件，则启用自定义设置的排序方式
+        if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
+            if(sysEntity!=null) {
+                //查询本实体综合排序方法
+                List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
+                //格式化排序条件，转为查询语句，并将语句赋值给查询对象
+                if(CollectionUtils.isNotEmpty(sortList)){
+                    int size = sortList.size();
+                    String [][] orderArray = new String[size+1][2];
+                    orderArray[0][0] = "orderByDesc";
+                    orderArray[0][1] = "weight";
+                    for (int i = 0; i < size; i++) {
+                        SysSort sysSort = sortList.get(i);
+                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
+                        orderArray[i+1][1] = assignmentCode;
+                        if(sysSort.getSortord()){
+                            orderArray[i+1][0] = "orderByAsc";
+                        }else{
+                            orderArray[i+1][0] = "orderByDesc";
                         }
-                        map.put("#orderArray",orderArray);
                     }
+                    map.put("#orderArray",orderArray);
                 }
+            }
 
-                if(map.get("#orderArray")==null) {
-                    //默认排序 1、权重倒叙 2、顺序正序
-                    String [][] defaultOrderArray = {{"orderByDesc","weight"},{"orderByAsc","sortOrder"}};
-                    map.put("#orderArray",defaultOrderArray);
+            if(map.get("#orderArray")==null) {
+                //默认排序 1、权重倒叙 2、顺序正序
+                String [][] defaultOrderArray = {{"orderByDesc","weight"},{"orderByAsc","sortOrder"}};
+                map.put("#orderArray",defaultOrderArray);
 //                map.put("orderByAsc","sortOrder");
-                }
             }
+        }
 
-            if(map.containsKey("rootTreeIds")){
-                map.put("in:id",map.get("rootTreeIds"));
-                map.remove("rootTreeIds");
-            }
+        if(map.containsKey("rootTreeIds")){
+            map.put("in:id",map.get("rootTreeIds"));
+            map.remove("rootTreeIds");
         }
 
         map.remove("isFormat");

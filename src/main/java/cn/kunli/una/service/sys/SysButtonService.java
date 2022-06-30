@@ -34,7 +34,7 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
     @Autowired
     private SysPermissionService sysPermissionService;
 
-    @Override
+    /*@Override
     @SneakyThrows
     public void saveValidate(SysButton obj) {
         super.saveValidate(obj);
@@ -44,7 +44,7 @@ public class SysButtonService extends BasicService<SysButtonMapper, SysButton> {
                 throw new UnaResponseException("事件名重复，保存失败:" + obj.getEvent());
             }
         }
-    }
+    }*/
 
     @Override
     public List<SysButton> parse(List<SysButton> list) {

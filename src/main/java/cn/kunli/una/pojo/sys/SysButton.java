@@ -33,12 +33,12 @@ public class SysButton extends BasePojo implements Serializable {
     private String event;
     //点击事件方法
     private String onclick;
-    //class值
-    private String classValue;
+    //是否刷新
+    private Boolean isRefresh;
     //图标
     private String iconDcode;
-    //标签
-    private String label;
+    //提示标签
+    private String tip;
     //警示语
     private String warning;
     //表单实体id
