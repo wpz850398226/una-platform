@@ -3,6 +3,7 @@ package cn.kunli.una.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.math.MathUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -22,6 +23,7 @@ import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.service.sys.*;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import cn.kunli.una.utils.common.UnaMathUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.common.WrapperUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
@@ -342,7 +344,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 List<T> nameResultList = getThisProxy().list(getWrapper(nameParamMap));
                 if(CollectionUtils.isNotEmpty(nameResultList)&&!nameResultList.get(0).getId().equals(obj.getId())) {
                     //通过新文件的名称查询到数据
-                    throw new UnaResponseException("名称重复，保存失败");
+                    throw new UnaResponseException("保存失败：名称重复");
                 }
             }
 
@@ -367,14 +369,24 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                         Object fieldValueObject = declaredField.get(obj);
                         if(fieldValueObject!=null&&StrUtil.isNotBlank(fieldValueObject.toString())){
                             switch(dataCheckTypeDcode){
-                                case "field_dataDetection_unique":      //重复校验
+                                case "field_dataDetection_unique":{
+                                    //重复校验
                                     List<T> resultList = getThisProxy().getList(MapUtil.of(fieldCode,fieldValueObject));
                                     if(CollectionUtils.isNotEmpty(resultList)&&!resultList.get(0).getId().equals(obj.getId())) {
                                         //通过新文件的编码查询到数据
                                         throw new UnaResponseException("保存失败："+sysField.getName()+"重复");
                                     }
-                                    break;
-                                case "field_dataDetection_threshold":   //阈值校验
+                                }
+                                break;
+                                case "field_dataDetection_length":{
+                                    //长度校验
+                                    if(String.valueOf(fieldValueObject).length()>Integer.valueOf(dataCheckValue)){
+                                        throw new UnaResponseException("保存失败："+sysField.getName()+"值超过规定长度");
+                                    }
+                                }
+                                break;
+                                case "field_dataDetection_threshold":{
+                                    //阈值校验
                                     String[] thresholdValueArray = dataCheckValue.split(",");
                                     if(thresholdValueArray.length!=2){
                                         throw new UnaResponseException("保存失败："+sysField.getName()+"阈值设置数量有误");
@@ -386,17 +398,19 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                                     if(fieldValueDouble>maxThreshold || fieldValueDouble<minThreshold){
                                         throw new UnaResponseException("保存失败："+sysField.getName()+"不满足阈值范围");
                                     }
-                                    break;
-                                case "field_dataDetection_amplitude":   //振幅校验
-                                    break;
-                                case "field_dataDetection_effective":   //有效校验
+                                }
+                                break;
+                                case "field_dataDetection_effective":{
+                                    //有效校验
                                     String[] effectiveValueArray = dataCheckValue.split(",");
                                     if(!Arrays.asList(effectiveValueArray).contains(fieldValueObject)){
                                         //如果有效值集合中不包含字段值，则说明字段值无效
                                         throw new UnaResponseException("保存失败："+sysField.getName()+"值无效");
                                     }
-                                    break;
-                                case "field_dataDetection_invalid":   //无效校验
+                                }
+                                break;
+                                case "field_dataDetection_invalid":{
+                                    //无效校验
                                     String[] invalidValueArray = dataCheckValue.split(",");
                                     for (String s : invalidValueArray) {
                                         if(String.valueOf(fieldValueObject).contains(s)){
@@ -404,38 +418,101 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                                             throw new UnaResponseException("保存失败："+sysField.getName()+"值包含无效内容");
                                         }
                                     }
-                                    break;
-                                case "field_dataDetection_length":   //长度校验
-                                    if(String.valueOf(fieldValueObject).length()>Integer.valueOf(dataCheckValue)){
-                                        throw new UnaResponseException("保存失败："+sysField.getName()+"值超过规定长度");
+                                }
+                                break;
+                                case "field_dataDetection_averageAmplitude":{
+                                    //均值振幅校验
+                                    QueryWrapper<T> queryWrapper = new QueryWrapper();
+                                    queryWrapper.select("AVG(column_name) as "+StrUtil.toUnderlineCase(fieldCode));
+//                                    queryWrapper.apply("SUBSTRING(CODE,1," + prefixLength + ") = '" + codePrefix + "'");
+                                    T one = super.getOne(queryWrapper);
+                                    if(one!=null){
+                                        //阈值百分比
+                                        Double thresholdPercent = Double.valueOf(dataCheckValue);
+                                        //获取平均值
+                                        Object fieldAverageValueObject = declaredField.get(one);
+                                        Double fieldValueDouble = Double.valueOf(String.valueOf(fieldValueObject));
+                                        Double fieldAverageValueDouble = Double.valueOf(String.valueOf(fieldAverageValueObject));
+                                        double factualPercent = Math.abs(fieldValueDouble - fieldAverageValueDouble) / fieldAverageValueDouble;
+                                        if(factualPercent>thresholdPercent){
+                                            throw new UnaResponseException("保存失败："+sysField.getName()+"值与均值偏差超过振幅阈值");
+                                        }
                                     }
-                                    break;
+                                }
+                                break;
+                                case "field_dataDetection_medianAmplitude":{
+                                    //中值振幅校验
+                                    List<T> orderByAsc = getThisProxy().selectList(MapUtil.of("orderByAsc", fieldCode));
+                                    if(CollUtil.isNotEmpty(orderByAsc)){
+                                        Double thresholdPercent = Double.valueOf(dataCheckValue);
+                                        Double fieldValueDouble = Double.valueOf(String.valueOf(fieldValueObject));
+
+                                        int size = orderByAsc.size();
+                                        int midSize = 0;
+
+                                        if(size % 2 == 0){
+                                            //偶数
+                                            midSize = size / 2 + 1;
+                                        } else {
+                                            midSize = ++size/2;
+                                        }
+
+                                        //获取中值
+                                        T one = orderByAsc.get(midSize);
+                                        Object fieldMidValueObject = declaredField.get(one);
+
+                                        Double fieldMidValueDouble = Double.valueOf(String.valueOf(fieldMidValueObject));
+                                        double factualMidPercent = Math.abs(fieldValueDouble - fieldMidValueDouble) / fieldMidValueDouble;
+                                        if(factualMidPercent>thresholdPercent){
+                                            throw new UnaResponseException("保存失败："+sysField.getName()+"值与中值偏差超过振幅阈值");
+                                        }
+                                    }
+                                }
+                                break;
+                                case "field_dataDetection_varianceThreshold":{
+                                    //方差阈值校验
+                                    QueryWrapper<T> queryWrapper = new QueryWrapper();
+                                    queryWrapper.select(StrUtil.toUnderlineCase(fieldCode)+" as description");
+                                    List<T> list = getThisProxy().list(queryWrapper);
+
+                                    if(CollUtil.isNotEmpty(list)){
+                                        //方差阈值
+                                        Double threshold = Double.valueOf(dataCheckValue);
+                                        List<String> strValueList = list.stream().map(T::getDescription).collect(Collectors.toList());
+                                        Double[] doubles = strValueList.stream().toArray(Double[]::new);
+                                        //求方差
+                                        double variance = UnaMathUtil.Variance(doubles);
+                                        if(variance>threshold){
+                                            throw new UnaResponseException("保存失败："+sysField.getName()+"值导致方差超过方差阈值"+dataCheckValue);
+                                        }
+                                    }
+                                }
+                                break;
+                                case "field_dataDetection_stdThreshold":{
+                                    //标准差阈值校验
+                                    QueryWrapper<T> queryWrapper = new QueryWrapper();
+                                    queryWrapper.select(StrUtil.toUnderlineCase(fieldCode)+" as description");
+                                    List<T> list = getThisProxy().list(queryWrapper);
+
+                                    if(CollUtil.isNotEmpty(list)){
+                                        //标准差阈值
+                                        Double threshold = Double.valueOf(dataCheckValue);
+                                        List<String> strValueList = list.stream().map(T::getDescription).collect(Collectors.toList());
+                                        Double[] doubles = strValueList.stream().toArray(Double[]::new);
+                                        //求标准差
+                                        double standardDiviation = UnaMathUtil.StandardDiviation(doubles);
+                                        if(standardDiviation>threshold){
+                                            throw new UnaResponseException("保存失败："+sysField.getName()+"值导致标准差超过标准差阈值"+dataCheckValue);
+                                        }
+                                    }
+                                }
+                                break;
                             }
                         }
                     }
                 }
             }
-
-            /*Field[] declaredFields = entityClass.getDeclaredFields();
-            for (Field declaredField : declaredFields) {
-                if(declaredField.getName().equals("code")){
-                    //如果有code字段
-                    declaredField.setAccessible(true);
-                    Object codeObject = declaredField.get(obj);
-                    //如果传入了code值，验证code全局唯一性
-                    if(codeObject!=null&&StrUtil.isNotBlank(codeObject.toString())){
-                        List<T> codeResultList = getThisProxy().getList(UnaMapUtil.getMap("code",codeObject));
-                        if(CollectionUtils.isNotEmpty(codeResultList)&&!codeResultList.get(0).getId().equals(obj.getId())) {
-                            //通过新文件的编码查询到数据
-                            throw new UnaResponseException("编码重复，保存失败");
-                        }
-                    }
-                    break;
-                }
-            }*/
         }
-        //如果通过全部格式验证，则设置code=200，表示通过验证；
-//        return SysResult.success();
     }
 
     /**

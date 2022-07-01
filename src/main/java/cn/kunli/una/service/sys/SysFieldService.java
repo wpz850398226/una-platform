@@ -1,6 +1,8 @@
 package cn.kunli.una.service.sys;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysFieldMapper;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.SysDictionary;
@@ -379,6 +381,15 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         return SysResult.fail("查询无数据");
     }
 
+    @Override
+    @SneakyThrows
+    public void saveValidate(SysField obj) {
+        super.saveValidate(obj);
+        if(StrUtil.isNotBlank(obj.getDataCheckTypeDcode()) && !"field_dataDetection_unique".equals(obj.getDataCheckTypeDcode()) && StrUtil.isBlank(obj.getThreshold())){
+            throw new UnaResponseException("保存失败：当前数据校验类型要求阈值不能为空");
+        }
+    }
+
     /**
      * 保存实例格式化
      *
@@ -387,8 +398,11 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
      */
     public SysField initialize(SysField obj) {
         super.initialize(obj);
+        //格式化阈值内的逗号标点
         if (StrUtil.isNotBlank(obj.getThreshold())) obj.setThreshold(obj.getThreshold().replace("，", ","));
+        // 展示编码为空则默认用赋值编码
         if (StrUtil.isNotBlank(obj.getAssignmentCode()) && StrUtil.isBlank(obj.getDisplayCode())) obj.setDisplayCode(obj.getAssignmentCode());
+        //设置默认 数据库 字段长度
         if(StrUtil.isNotBlank(obj.getColumnTypeDcode()) && obj.getStorageLength()==null){
             switch(obj.getColumnTypeDcode()){
                 case "field_storage_VARCHAR":
@@ -410,6 +424,12 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         }else{
             if(obj.getOptionNameFieldCode()!=null&&obj.getOptionNameFieldCode().equals(""))obj.setOptionNameFieldCode("name");
             if(obj.getOptionValueFieldCode()!=null&&obj.getOptionValueFieldCode().equals(""))obj.setOptionValueFieldCode("id");
+        }
+
+        if(StrUtil.isBlank(obj.getTip()) && StrUtil.isNotBlank(obj.getDataCheckTypeDcode())){
+            //如果提示为空且数据校验类型不为空，则默认设置提示为数据校验的具体内容
+            SysDictionary dataCheckTypeDic = sysDictionaryService.selectOne(MapUtil.of("code", obj.getDataCheckTypeDcode()));
+            obj.setTip("数据校验："+dataCheckTypeDic.getName()+";校验内容："+obj.getThreshold());
         }
 
         if(obj.getPermissionId()!=null){
