@@ -1,6 +1,8 @@
 package cn.kunli.una.service.sys;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.math.MathUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.SysFieldMapper;
@@ -24,10 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
@@ -388,6 +389,13 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
         if(StrUtil.isNotBlank(obj.getDataCheckTypeDcode()) && !"field_dataDetection_unique".equals(obj.getDataCheckTypeDcode()) && StrUtil.isBlank(obj.getThreshold())){
             throw new UnaResponseException("保存失败：当前数据校验类型要求阈值不能为空");
         }
+
+        if(obj.getParentId()!=null){
+            SysField parent = (SysField) getThisProxy().getById(obj.getParentId());
+            if(parent.getParentId()!=null){
+                throw new UnaResponseException("保存失败：子表单不能嵌套子表单");
+            }
+        }
     }
 
     /**
@@ -491,6 +499,30 @@ public class SysFieldService extends BasicService<SysFieldMapper, SysField> {
 
                 if ("field_assignment_radio".equals(record.getAssignmentModeDcode()) && StrUtil.isNotBlank(record.getThreshold())){
                     record.setRadioOptionArray(StrUtil.splitToArray(record.getThreshold(), ","));
+                }else if ("field_assignment_subForm".equals(record.getAssignmentModeDcode())){
+                    //子表单类型的字段，需要查询所有的子字段
+                    List<SysField> subFieldList = sysFieldService.selectList(MapUtil.of("parentId", record.getId()));
+                    //按照groupNum分组存放
+                    if(CollUtil.isNotEmpty(subFieldList)){
+                        Map<Integer,List<SysField>> subFieldListInGroup = new HashMap<>();
+                        for (SysField sysField : subFieldList) {
+                            if(!subFieldListInGroup.containsKey(sysField.getGroupNum())){
+                                subFieldListInGroup.put(sysField.getGroupNum(),new ArrayList<>());
+                            }
+                            subFieldListInGroup.get(sysField.getGroupNum()).add(sysField);
+                        }
+                        //组号 升序排序
+                        Set<Integer> integers = subFieldListInGroup.keySet();
+                        List<Integer> sortedKeyList = integers.stream().sorted().collect(Collectors.toList());
+                        List<List<SysField>> fieldListInGroup = new ArrayList<>();
+                        // 按组号升序排序取出 子字段组
+                        for (Integer key : sortedKeyList) {
+                            fieldListInGroup.add(subFieldListInGroup.get(key));
+                        }
+
+                        record.setChildren(fieldListInGroup);
+                    }
+
                 }
             }
 

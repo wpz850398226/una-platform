@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -102,6 +103,10 @@ public class SysField extends BasePojo implements Serializable {
     private String hideSwitchFieldValue;
     //是否生效
     private Boolean isEffect;
+    //所属父字段id
+    private Integer parentId;
+    //所属组
+    private Integer groupNum;
 
 
     //非持久化字段
@@ -115,5 +120,7 @@ public class SysField extends BasePojo implements Serializable {
     private String assignmentType;      //赋值类型：手动赋值，自动赋值
     @TableField(exist = false)
     private Map<String,String> hideSubMap;   //联动隐藏子组件，map<组件id，触发值>
+    @TableField(exist = false)
+    private List<List<SysField>> children;    //子表单组
 
 }

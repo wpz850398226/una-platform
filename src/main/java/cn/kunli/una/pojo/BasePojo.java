@@ -30,8 +30,7 @@ public class BasePojo implements Serializable{
 
 	private String description;
 
-	//权重
-	private Integer weight;
+	private Integer weight;		//权重
 
 	@ApiModelProperty(value = "创建时间")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -73,9 +72,9 @@ public class BasePojo implements Serializable{
 	@TableField(exist = false)
 	private String ids;					//批量操作时，接收批量ids
 	@TableField(exist = false)
-	private String rootTreeIds;			//加载带结构树的表格时，如果树结构与表格实体一致，接收树结构更目录ids
-	@TableField(exist = false)
-	private String tempData;			//临时数据，接收临时数据
+	private String rootTreeIds;			//加载带结构树的表格时，如果树结构与表格实体一致，接收树结构根目录ids
+//	@TableField(exist = false)
+//	private String tempData;			//临时数据，接收临时数据
 	@TableField(exist = false)
 	private String paramName;			//redis或session中存储查询结果的参数名称
 	@TableField(exist = false)
