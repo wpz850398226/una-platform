@@ -1,5 +1,6 @@
 package cn.kunli.una.service.sys;
 
+import cn.hutool.core.map.MapUtil;
 import cn.kunli.una.mapper.SysDataMapper;
 import cn.kunli.una.pojo.sys.SysData;
 import cn.kunli.una.pojo.sys.SysEntity;
@@ -90,6 +91,9 @@ public class SysDataService extends BasicService<SysDataMapper, SysData> {
                     if(map==null)map = new HashMap<>();
                     map.put("entityName", sysEntity.getName());
                     sysData.setMap(map);
+                }else{
+                    //实体被删除了
+                    sysData.setMap(MapUtil.of("entityName","已删除"));
                 }
             }
         }

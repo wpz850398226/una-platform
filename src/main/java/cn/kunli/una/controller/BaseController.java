@@ -295,7 +295,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
             //如果是虚拟实体
 			if(entityClassName.equals("SysData")&&map.containsKey("entityId")){
 				sysEntity = sysEntityService.getById(map.get("entityId").toString());
-				map.remove("entityId");
+//				map.remove("entityId");
 			}
 
 			//处理模糊查询条件
