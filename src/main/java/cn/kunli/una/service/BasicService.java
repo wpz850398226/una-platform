@@ -167,7 +167,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             }
 
             //级联删除
-            List<SysRelation> sysRelationList = sysRelationService.selectList(UnaMapUtil.getMap("parentEntityId", sysEntity.getId()));
+            List<SysRelation> sysRelationList = sysRelationService.selectList(MapUtil.of("parentEntityId", sysEntity.getId()));
             if(CollectionUtils.isNotEmpty(sysRelationList)){
                 for (SysRelation sysRelation : sysRelationList) {
                     //需要级联删除的记录所属实体类
@@ -180,11 +180,12 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                     //获取service名称，并动态获取service
                     String serviceName = StrUtil.lowerFirst(relatedEntity.getCode())+"Service";
                     Object bean = SpringUtil.getBean(serviceName);
+                    SysRelationService bean1 = SpringUtil.getBean(SysRelationService.class);
                     if(bean!=null){
                         BasicService<BasicMapper<BasePojo>, BasePojo> thisProxy = (BasicService<BasicMapper<BasePojo>, BasePojo>)bean;
 
                         if(thisProxy!=null){
-                            List<BasePojo> pojoList = thisProxy.selectList(UnaMapUtil.getMap(relatedField.getAssignmentCode(), id));
+                            List<BasePojo> pojoList = thisProxy.selectList(MapUtil.of(relatedField.getAssignmentCode(), id));
                             if(CollectionUtils.isNotEmpty(pojoList)){
                                 for (BasePojo pojo : pojoList) {
                                     thisProxy.deleteById(pojo.getId());

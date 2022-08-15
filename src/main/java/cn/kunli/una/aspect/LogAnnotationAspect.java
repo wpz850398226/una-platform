@@ -1,13 +1,17 @@
 package cn.kunli.una.aspect;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.annotation.LogAnnotation;
+import cn.kunli.una.pojo.sys.SysDictionary;
 import cn.kunli.una.pojo.sys.SysEntity;
 import cn.kunli.una.pojo.sys.SysLog;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
+import cn.kunli.una.service.sys.SysDictionaryService;
 import cn.kunli.una.service.sys.SysLogService;
 import cn.kunli.una.utils.common.UserUtil;
 import com.alibaba.fastjson.JSON;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -35,12 +39,14 @@ public class LogAnnotationAspect {
 
     @Resource
     private SysLogService sysLogService;
+    @Resource
+    private SysDictionaryService sysDictionaryService;
 //    @Resource
 //    private Map<String,String> globalDictionaryMap;
 
-    @Async
+    @SneakyThrows
     @AfterReturning(value = "@annotation(cn.kunli.una.annotation.LogAnnotation)", returning = "result")
-    public void saveLog(JoinPoint point, Object result) throws Throwable {
+    public void makeLogAfterReturn(JoinPoint point, Object result) {
         SysEntity sysEntity = new SysEntity();
         //注解所在类 的实例对象
         Object classInstance = point.getThis();
@@ -71,11 +77,14 @@ public class LogAnnotationAspect {
             sysEntity =(SysEntity) classInstance.getClass().getMethod("getEntity").invoke(classInstance);
         } catch (NoSuchMethodException e) {
             log.warn("日志记录无法获取实体类");
+            return;
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
 
         String methodTypeDcode = logAnnotation.methodType();
+
         //id入参名称
         String idParamName = logAnnotation.idParamName();
 
@@ -112,7 +121,7 @@ public class LogAnnotationAspect {
             }
         }
 
-
+        SysDictionary methodTypeDic = sysDictionaryService.selectOne(MapUtil.of("code", methodTypeDcode));
 
         //通过操作类型，区分并设置日志类型
         switch (methodTypeDcode) {
@@ -150,9 +159,14 @@ public class LogAnnotationAspect {
             sysLog.setIpAddress(loginUser.getLoginIp())
                     .setCreatorId(loginUser.getId())
                     .setCreatorName(loginUser.getName())
-                    .setName(methodTypeDcode+sysEntity.getName()+System.currentTimeMillis());
+                    .setName(methodTypeDic.getName()+sysEntity.getName()+":"+System.currentTimeMillis());
         }
 
+        this.saveLog(sysLog);
+    }
+
+    @Async
+    public void saveLog(SysLog sysLog) throws Throwable {
         sysLogService.save(sysLog);
     }
 }

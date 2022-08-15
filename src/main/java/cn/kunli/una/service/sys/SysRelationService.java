@@ -35,7 +35,12 @@ public class SysRelationService extends BasicService<SysRelationMapper, SysRelat
 
             if(sysRelation.getParentEntityId()!=null){
                 SysEntity parentEntity = sysEntityService.getById(sysRelation.getParentEntityId());
-                sysRelation.setParentEntityName(parentEntity.getName()).setParentEntityPath(parentEntity.getPath());
+                if(parentEntity!=null){
+                    sysRelation.setParentEntityName(parentEntity.getName()).setParentEntityPath(parentEntity.getPath());
+                }else{
+                    System.out.println(sysRelation.getParentEntityId());
+                }
+
             }
 
             if(sysRelation.getParentDataFieldId()!=null){
