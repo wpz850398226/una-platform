@@ -13,10 +13,7 @@ import cn.kunli.una.handler.BasicMapper;
 import cn.kunli.una.handler.UnaResponseException;
 import cn.kunli.una.mapper.CommonMapper;
 import cn.kunli.una.pojo.BasePojo;
-import cn.kunli.una.pojo.sys.SysEntity;
-import cn.kunli.una.pojo.sys.SysField;
-import cn.kunli.una.pojo.sys.SysRelation;
-import cn.kunli.una.pojo.sys.SysSort;
+import cn.kunli.una.pojo.sys.*;
 import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowInstanceService;
@@ -41,6 +38,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -99,6 +97,8 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     protected FlowInstanceService flowInstanceService;
     @Autowired
     protected FlowTaskService flowTaskService;
+    @Resource
+    protected SysDataPermissionService sysDataPermissionService;
     @Autowired
     protected CommonMapper commonMapper;
 
@@ -351,7 +351,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
 
             //查询数据校验不为空的字段
             List<SysField> sysFieldList = sysFieldService.selectList(UnaMapUtil.buildHashMap()
-                    .put("entityId", sysEntity.getId()).put("isNotNull","dataCheckTypeDcode").build());
+                    .put("entityId", sysEntity.getId()).put("isNotNull","dataCheckTypeDcode").put("isEffect",true).build());
 
             if(CollUtil.isNotEmpty(sysFieldList)){
                 for (SysField sysField : sysFieldList) {
@@ -651,9 +651,50 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     public Map<String,Object> format(Map<String,Object> map) {
-
         if(map==null)map=new HashMap<>();
         SysEntity sysEntity = getEntity();
+
+        SysLoginAccountDetails loginAccount = UserUtil.getLoginAccount();
+        String roleIds = loginAccount.getRoleId();
+
+        if(StrUtil.isNotBlank(roleIds)){
+            //处理数据权限
+            QueryWrapper<SysDataPermission> queryWrapper = new QueryWrapper<SysDataPermission>().eq("entity_id", sysEntity.getId()).in("role_id",roleIds);
+            List<SysDataPermission> sysDataPermissionList = sysDataPermissionService.list(queryWrapper);
+            if(CollUtil.isNotEmpty(sysDataPermissionList)){
+                for (SysDataPermission sysDataPermission : sysDataPermissionList) {
+                    SysField sysField = sysFieldService.getById(sysDataPermission.getFieldId());
+                    String ruleTypeDcode = sysDataPermission.getRuleTypeDcode();
+                    switch(ruleTypeDcode){
+                        case "permission_dataRuleType_equal":
+                            map.put(sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_unequal":
+                            map.put("ne:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_greater":
+                            map.put("gt:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_less":
+                            map.put("lt:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_greaterEqual":
+                            map.put("ge:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_lessEqual":
+                            map.put("le:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_include":
+                            map.put("like:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                        case "permission_dataRuleType_beIncluded":
+                            map.put("in:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                            break;
+                    }
+                }
+            }
+        }
+
         //如果没有指定排序条件，则启用自定义设置的排序方式
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
             if(sysEntity!=null) {

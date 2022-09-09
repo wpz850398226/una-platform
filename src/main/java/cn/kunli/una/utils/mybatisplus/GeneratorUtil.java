@@ -27,7 +27,7 @@ public class GeneratorUtil {
         }
 
         if(StrUtil.isBlank(info.getPassword()) || StrUtil.isBlank(info.getUsername())){
-            return SysResult.fail("创建失败，数据库账号密码信息确实");
+            return SysResult.fail("创建失败，数据库账号密码信息缺失");
         }
 
         if((StrUtil.isBlank(info.getUrl()) && (StrUtil.isBlank(info.getIp()) || StrUtil.isBlank(info.getDatabase()))) || StrUtil.isBlank(info.getDriverName())){

@@ -75,6 +75,7 @@ public class LogAnnotationAspect {
         //获取指定的模块名称
         try {
             sysEntity =(SysEntity) classInstance.getClass().getMethod("getEntity").invoke(classInstance);
+            if(sysEntity==null)return;
         } catch (NoSuchMethodException e) {
             log.warn("日志记录无法获取实体类");
             return;
