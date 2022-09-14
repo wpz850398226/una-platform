@@ -653,6 +653,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     public Map<String,Object> format(Map<String,Object> map) {
         if(map==null)map=new HashMap<>();
         SysEntity sysEntity = getEntity();
+        if(sysEntity==null)return map;
 
         SysLoginAccountDetails loginAccount = UserUtil.getLoginAccount();
         String roleIds = loginAccount.getRoleId();
@@ -661,70 +662,25 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
             //处理数据权限
             QueryWrapper<SysDataPermission> queryWrapper = new QueryWrapper<SysDataPermission>().eq("entity_id", sysEntity.getId()).in("role_id",roleIds);
             List<SysDataPermission> sysDataPermissionList = sysDataPermissionService.list(queryWrapper);
-            if(CollUtil.isNotEmpty(sysDataPermissionList)){
-                for (SysDataPermission sysDataPermission : sysDataPermissionList) {
-                    SysField sysField = sysFieldService.getById(sysDataPermission.getFieldId());
-                    String ruleTypeDcode = sysDataPermission.getRuleTypeDcode();
-                    switch(ruleTypeDcode){
-                        case "permission_dataRuleType_equal":
-                            map.put(sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_unequal":
-                            map.put("ne:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_greater":
-                            map.put("gt:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_less":
-                            map.put("lt:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_greaterEqual":
-                            map.put("ge:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_lessEqual":
-                            map.put("le:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_include":
-                            map.put("like:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                        case "permission_dataRuleType_beIncluded":
-                            map.put("in:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
-                            break;
-                    }
-                }
-            }
+            map = dataPermissionFormat(map, sysDataPermissionList);
         }
 
         //如果没有指定排序条件，则启用自定义设置的排序方式
         if(map.get("orderByAsc")==null&&map.get("orderByDesc")==null) {
-            if(sysEntity!=null) {
-                //查询本实体综合排序方法
-                List<SysSort> sortList = sysSortService.selectList(UnaMapUtil.buildHashMap().put("entityId",sysEntity.getId()).put("orderByAsc","sortOrder").build());
-                //格式化排序条件，转为查询语句，并将语句赋值给查询对象
-                if(CollectionUtils.isNotEmpty(sortList)){
-                    int size = sortList.size();
-                    String [][] orderArray = new String[size+1][2];
-                    orderArray[0][0] = "orderByDesc";
-                    orderArray[0][1] = "weight";
-                    for (int i = 0; i < size; i++) {
-                        SysSort sysSort = sortList.get(i);
-                        String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
-                        orderArray[i+1][1] = assignmentCode;
-                        if(sysSort.getSortord()){
-                            orderArray[i+1][0] = "orderByAsc";
-                        }else{
-                            orderArray[i+1][0] = "orderByDesc";
-                        }
-                    }
-                    map.put("#orderArray",orderArray);
+            //按顺序查询本实体综合排序方法
+            QueryWrapper<SysSort> queryWrapper = new QueryWrapper<SysSort>().eq("entity_id", sysEntity.getId()).orderByDesc("weight").orderByAsc("sort_order");
+            List<SysSort> sortList = sysSortService.list(queryWrapper);
+            //格式化排序条件，转为查询语句，并将语句赋值给查询对象
+            if(CollectionUtils.isNotEmpty(sortList)){
+                for (SysSort sysSort : sortList) {
+                    String assignmentCode = sysFieldService.getById(sysSort.getFieldId()).getAssignmentCode();
+                    String sortTypeStr = sysSort.getSortord()?"orderByAsc":"orderByDesc";
+                    map.put(sortTypeStr+":"+ System.currentTimeMillis(),assignmentCode);
                 }
-            }
-
-            if(map.get("#orderArray")==null) {
-                //默认排序 1、权重倒叙 2、顺序正序
-                String [][] defaultOrderArray = {{"orderByDesc","weight"},{"orderByAsc","sortOrder"}};
-                map.put("#orderArray",defaultOrderArray);
-//                map.put("orderByAsc","sortOrder");
+            }else{
+                //默认首先以权重倒叙排序
+                map.put("orderByDesc:"+ System.currentTimeMillis(),"weight");
+                map.put("orderByAsc:"+ System.currentTimeMillis(),"sortOrder");
             }
         }
 
@@ -734,6 +690,49 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         }
 
         map.remove("isFormat");
+        return map;
+    }
+
+    //数据权限查询前处理
+    private Map<String,Object> dataPermissionFormat(Map<String,Object> map, List<SysDataPermission> sysDataPermissionList){
+        if(CollUtil.isEmpty(sysDataPermissionList))return map;
+        for (SysDataPermission sysDataPermission : sysDataPermissionList) {
+            if(CollUtil.isNotEmpty(sysDataPermission.getChildren())){
+                //有子权限，“或”处理
+                Map<String, Object> orResultMap = dataPermissionFormat(new HashMap<>(), sysDataPermission.getChildren());
+                map.put("or:"+System.currentTimeMillis(),orResultMap);
+            }else{
+                //无子权限，“与”处理
+                SysField sysField = sysFieldService.getById(sysDataPermission.getFieldId());
+                String ruleTypeDcode = sysDataPermission.getRuleTypeDcode();
+                switch(ruleTypeDcode){
+                    case "permission_dataRuleType_equal":
+                        map.put(sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_unequal":
+                        map.put("ne:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_greater":
+                        map.put("gt:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_less":
+                        map.put("lt:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_greaterEqual":
+                        map.put("ge:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_lessEqual":
+                        map.put("le:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_include":
+                        map.put("like:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                    case "permission_dataRuleType_beIncluded":
+                        map.put("in:"+sysField.getAssignmentCode(),sysDataPermission.getThreshold());
+                        break;
+                }
+            }
+        }
         return map;
     }
 

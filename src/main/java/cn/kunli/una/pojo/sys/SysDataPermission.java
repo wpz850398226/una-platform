@@ -1,12 +1,15 @@
 package cn.kunli.una.pojo.sys;
 
 import cn.kunli.una.pojo.BasePojo;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * <p>
@@ -34,6 +37,9 @@ public class SysDataPermission extends BasePojo {
     @ApiModelProperty(value = "所属字段")
     private Integer fieldId;
 
+    @ApiModelProperty(value = "所属父权限")
+    private Integer parentId;
+
     @ApiModelProperty(value = "功能权限类型")
     private String functionTypeDcode;
 
@@ -43,4 +49,8 @@ public class SysDataPermission extends BasePojo {
     @ApiModelProperty(value = "阈值")
     private String threshold;
 
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "子权限，‘或’条件")
+    private List<SysDataPermission> children;
 }

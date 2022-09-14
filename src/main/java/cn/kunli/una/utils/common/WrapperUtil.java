@@ -3,6 +3,7 @@ package cn.kunli.una.utils.common;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,11 @@ public class WrapperUtil<T> {
                             };
                             queryWrapper.and(consumer);
                             break;
+                        case "or"://子条件，“或”处理
+                            Map<String,Object> subParamMap = (Map<String,Object>)value;
+                            QueryWrapper<T> subWrapper = mapToQueryWrapper(subParamMap);
+//                            queryWrapper.and(subWrapper.);
+                            break;
                         case "in":
                             queryWrapper.in(column,value.toString().split(","));
                             break;
@@ -86,9 +92,16 @@ public class WrapperUtil<T> {
                         case "apply":
                             queryWrapper.apply(value.toString());
                             break;
+                        case "orderByAsc":
+                            queryWrapper.orderByAsc(value.toString().split(","));
+                            break;
+                        case "orderByDesc":
+                            queryWrapper.orderByDesc(value.toString().split(","));
+                            break;
                     }
                     continue;
-                }if(key.contains("#")){
+                }
+                /*if(key.contains("#")){
                     int index = key.indexOf("#");
                     String item = key.substring(index + 1);
                     switch(item){
@@ -108,7 +121,8 @@ public class WrapperUtil<T> {
                             break;
                     }
                     continue;
-                }else{
+                }*/
+                else{
                     String[] fieldCodeArray = value.toString().split(",");
                     String[] columnArray = UnaArrayUtil.upperCharToUnderLine(fieldCodeArray);
 
@@ -140,19 +154,10 @@ public class WrapperUtil<T> {
                             queryWrapper.groupBy(value.toString());
                             break;
                         case "orderByAsc":
-                            for (String column : columnArray) {
-                                queryWrapper.orderByAsc(column);
-                            }
+                            queryWrapper.orderByAsc(columnArray);
                             break;
                         case "orderByDesc":
-                            for (String column : columnArray) {
-                                queryWrapper.orderByDesc(column);
-                            }
-                            break;
-                        case "orderArray":
-                            for (String column : columnArray) {
-                                queryWrapper.orderByDesc(column);
-                            }
+                            queryWrapper.orderByDesc(columnArray);
                             break;
                         case "last":
                             queryWrapper.last(value.toString());
@@ -236,11 +241,17 @@ public class WrapperUtil<T> {
                         case "apply":
                             updateWrapper.apply(value.toString());
                             break;
+                        case "orderByAsc":
+                            updateWrapper.orderByAsc(value.toString().split(","));
+                            break;
+                        case "orderByDesc":
+                            updateWrapper.orderByDesc(value.toString().split(","));
+                            break;
                     }
                     continue;
                 }
 
-                if(key.contains("#")){
+                /*if(key.contains("#")){
                     int index = key.indexOf("#");
                     String item = key.substring(index + 1);
                     switch(item){
@@ -260,7 +271,8 @@ public class WrapperUtil<T> {
                             break;
                     }
                     continue;
-                }else{
+                }*/
+                else{
                     String[] fieldCodeArray = value.toString().split(",");
                     String[] columnArray = UnaArrayUtil.upperCharToUnderLine(fieldCodeArray);
 
@@ -284,19 +296,10 @@ public class WrapperUtil<T> {
                             updateWrapper.groupBy(value.toString());
                             break;
                         case "orderByAsc":
-                            for (String column : columnArray) {
-                                updateWrapper.orderByAsc(column);
-                            }
+                            updateWrapper.orderByAsc(columnArray);
                             break;
                         case "orderByDesc":
-                            for (String column : columnArray) {
-                                updateWrapper.orderByDesc(column);
-                            }
-                            break;
-                        case "orderArray":
-                            for (String column : columnArray) {
-                                updateWrapper.orderByDesc(column);
-                            }
+                            updateWrapper.orderByDesc(columnArray);
                             break;
                         case "last":
                             updateWrapper.last(value.toString());
