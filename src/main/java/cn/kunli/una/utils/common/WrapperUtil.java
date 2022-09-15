@@ -51,7 +51,8 @@ public class WrapperUtil<T> {
                         case "or"://子条件，“或”处理
                             Map<String,Object> subParamMap = (Map<String,Object>)value;
                             QueryWrapper<T> subWrapper = mapToQueryWrapper(subParamMap);
-//                            queryWrapper.and(subWrapper.);
+                            Consumer<QueryWrapper<T>> subOrConsumer = mapToOrConsumer(subParamMap);
+                            queryWrapper.and(subOrConsumer);
                             break;
                         case "in":
                             queryWrapper.in(column,value.toString().split(","));
@@ -93,10 +94,10 @@ public class WrapperUtil<T> {
                             queryWrapper.apply(value.toString());
                             break;
                         case "orderByAsc":
-                            queryWrapper.orderByAsc(value.toString().split(","));
+                            queryWrapper.orderByAsc(UnaArrayUtil.upperCharToUnderLine(value.toString().split(",")));
                             break;
                         case "orderByDesc":
-                            queryWrapper.orderByDesc(value.toString().split(","));
+                            queryWrapper.orderByDesc(UnaArrayUtil.upperCharToUnderLine(value.toString().split(",")));
                             break;
                     }
                     continue;
@@ -128,11 +129,6 @@ public class WrapperUtil<T> {
 
                     switch(key){
                         case "select":
-                            /*for (String s : columnArray) {
-                                String carrier = s.substring(s.lastIndexOf("as ") + 1);
-                                String humpCarrier = StringUtil.underLineToUpperChar(carrier);
-                                s.replace(carrier,humpCarrier);
-                            }*/
                             queryWrapper.select(fieldCodeArray);
                             break;
                         case "isNull":
@@ -146,9 +142,7 @@ public class WrapperUtil<T> {
                             }
                             break;
                         case "groupBy":
-                            for (String column : columnArray) {
-                                queryWrapper.groupBy(column);
-                            }
+                            queryWrapper.groupBy(columnArray);
                             break;
                         case "groupBySql":
                             queryWrapper.groupBy(value.toString());
@@ -177,6 +171,102 @@ public class WrapperUtil<T> {
             }
         }
         return queryWrapper;
+    }
+
+    //获取“或”连接的条件
+    private Consumer<QueryWrapper<T>> mapToOrConsumer(Map<String,Object> map) {
+        Consumer<QueryWrapper<T>> consumer = queryWrapper -> {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                if(value!=null&&StrUtil.isNotBlank(value.toString())){
+                    if(key.contains(":")){
+                        int index = key.indexOf(":");
+                        String condition = key.substring(0, index);
+                        String fieldCode = key.substring(index + 1);
+                        String column = StrUtil.toUnderlineCase(fieldCode);
+
+                        if(StrUtil.isBlank(fieldCode))continue;
+
+                        switch(condition){
+                            case "":
+                            case "like":
+                                String[] columnArray = column.split(",");
+                                for (String s : columnArray) {
+                                    queryWrapper.like(s,value).or();
+                                }
+                                break;
+                            case "in":
+                                queryWrapper.in(column,value.toString().split(",")).or();
+                                break;
+                            case "notIn":
+                                queryWrapper.notIn(column,value.toString().split(",")).or();
+                                break;
+                            case "ne"://不等于
+                                queryWrapper.ne(column,value).or();
+                                break;
+                            case "gt"://大于
+                                queryWrapper.gt(column,value).or();
+                                break;
+                            case "ge"://大于等于
+                                queryWrapper.ge(column,value).or();
+                                break;
+                            case "lt"://小于
+                                queryWrapper.lt(column,value).or();
+                                break;
+                            case "le"://小于等于
+                                queryWrapper.le(column,value).or();
+                                break;
+                            case "notLike":
+                                queryWrapper.notLike(column,value).or();
+                                break;
+                            case "likeLeft":
+                                queryWrapper.likeLeft(column,value).or();
+                                break;
+                            case "likeRight":
+                                queryWrapper.likeRight(column,value).or();
+                                break;
+                            case "inSql":
+                                queryWrapper.inSql(column,value.toString()).or();
+                                break;
+                            case "notInSql":
+                                queryWrapper.notInSql(column,value.toString()).or();
+                                break;
+                        }
+                        continue;
+                    }else{
+                        String[] fieldCodeArray = value.toString().split(",");
+                        String[] columnArray = UnaArrayUtil.upperCharToUnderLine(fieldCodeArray);
+
+                        switch(key){
+                            case "isNull":
+                                for (String column : columnArray) {
+                                    queryWrapper.isNull(column).or();
+                                }
+                                break;
+                            case "isNotNull":
+                                for (String column : columnArray) {
+                                    queryWrapper.isNotNull(column).or();
+                                }
+                                break;
+                            case "exists":
+                                queryWrapper.exists(value.toString()).or();
+                                break;
+                            case "notExists":
+                                queryWrapper.notExists(value.toString()).or();
+                                break;
+                            default:
+                                //其他条件默认为精确匹配
+                                queryWrapper.eq(StrUtil.toUnderlineCase(key),value).or();
+                                break;
+                        }
+                    }
+                }
+            }
+        };
+
+        return consumer;
     }
 
     public UpdateWrapper<T> mapToUpdateWrapper(Map<String,Object> map) {
