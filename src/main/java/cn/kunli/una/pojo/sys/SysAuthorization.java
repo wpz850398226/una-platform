@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * (SysRolePermission)实体类
+ * (SysAuthorization)实体类
  *
  * @author Ponzio
  * @since 2020-05-07 08:56:34
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class SysRolePermission extends BasePojo implements Serializable {
+public class SysAuthorization extends BasePojo implements Serializable {
     private static final long serialVersionUID = 867842599456264820L;
 
     private Integer roleId;

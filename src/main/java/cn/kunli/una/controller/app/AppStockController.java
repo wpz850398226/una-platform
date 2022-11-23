@@ -18,7 +18,7 @@ import io.swagger.annotations.Api;
  * @since 2022-04-21
  */
 @RestController
-@Api(value="股票前端控制器")
+@Api(value="小程序-股票")
 @RequestMapping("/app/stock")
 public class AppStockController extends BaseController<AppStockService, AppStock> {
 }

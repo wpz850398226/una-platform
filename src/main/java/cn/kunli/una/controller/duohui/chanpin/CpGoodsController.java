@@ -11,6 +11,7 @@ import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.util.List;
  * @since 2021-06-23 23:40:00
  */
 @Controller
+@Api(tags = "商城-商品")
 @RequestMapping("/cp/goods")
 public class CpGoodsController extends BaseController<CpGoodsService, CpGoods> {
 

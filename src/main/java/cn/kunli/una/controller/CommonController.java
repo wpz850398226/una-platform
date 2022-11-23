@@ -7,6 +7,7 @@ import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.sys.*;
 import cn.kunli.una.utils.common.*;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -32,6 +33,7 @@ import java.util.*;
  * 通用接口
  */
 @Controller
+@Api(tags = "系统-通用")
 @RequestMapping("/sys")
 public class CommonController {
 

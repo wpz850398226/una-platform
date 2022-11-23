@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.sys.SysRegion;
 import cn.kunli.una.service.sys.SysAccountService;
 import cn.kunli.una.service.sys.SysRegionService;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Slf4j
 @Controller
+@Api(tags = "多汇-登录")
 @RequestMapping("/duohui/login")
 public class DhLoginController {
 

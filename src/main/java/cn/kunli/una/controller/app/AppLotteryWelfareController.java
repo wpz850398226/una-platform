@@ -6,6 +6,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.app.AppLotteryWelfare;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.app.AppLotteryWelfareService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import java.util.List;
  * @since 2022-01-14
  */
 @Controller
+@Api(tags = "小程序-彩票记录")
 @RequestMapping("/app/lotteryWelfare")
 public class AppLotteryWelfareController extends BaseController<AppLotteryWelfareService, AppLotteryWelfare> {
 

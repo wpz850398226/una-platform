@@ -8,6 +8,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysArticleService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
+@Api(tags = "系统-文章")
 @RequestMapping("/sys/article")
 public class SysArticleController extends BaseController<SysArticleService, SysArticle> {
 

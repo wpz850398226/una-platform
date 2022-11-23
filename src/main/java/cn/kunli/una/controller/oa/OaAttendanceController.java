@@ -10,6 +10,7 @@ import cn.kunli.una.service.sys.SysPermissionService;
 import cn.kunli.una.utils.common.DateUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +28,7 @@ import java.util.Map;
  * @since 2021-06-26 09:42:20
  */
 @Controller
+@Api(tags = "办公-考勤")
 @RequestMapping("/oa/attendance")
 public class OaAttendanceController extends BaseController<OaAttendanceService, OaAttendance> {
 
@@ -47,13 +49,13 @@ public class OaAttendanceController extends BaseController<OaAttendanceService, 
             SysPermission permission = sysPermissionService.selectOne(UnaMapUtil.buildHashMap().put("type_dcode", "permission_type_update")
                             .put("entityId", sysEntity.getId()).build());
             if(permission!=null){
-                List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(UnaMapUtil.buildHashMap().put("permissionId", permission.getId())
+                List<SysAuthorization> authorizationList = sysAuthorizationService.selectList(UnaMapUtil.buildHashMap().put("permissionId", permission.getId())
                                 .put("ne:scope_dcode", "permission_scope_0").build());
 
-                if(CollectionUtils.isNotEmpty(rolePermissionList)){
+                if(CollectionUtils.isNotEmpty(authorizationList)){
                     StringBuffer stringBuffer = new StringBuffer();
-                    for (SysRolePermission sysRolePermission : rolePermissionList) {
-                        stringBuffer.append(",").append(sysRolePermission.getRoleId());
+                    for (SysAuthorization sysAuthorization : authorizationList) {
+                        stringBuffer.append(",").append(sysAuthorization.getRoleId());
                     }
                     //获取到所有需要考勤的角色id
                     String roleIds = stringBuffer.delete(0, 1).toString();

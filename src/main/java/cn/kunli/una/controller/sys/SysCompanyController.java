@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.sys.SysCompany;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysCompanyService;
 import cn.kunli.una.utils.common.DateUtil;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ import java.util.Date;
  * @since 2020-06-03 15:58:32
  */
 @Controller
+@Api(tags = "系统-公司/组织")
 @RequestMapping("/sys/company")
 public class SysCompanyController extends BaseController<SysCompanyService, SysCompany> {
 

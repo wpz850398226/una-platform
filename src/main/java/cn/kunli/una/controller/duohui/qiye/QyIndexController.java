@@ -10,6 +10,7 @@ import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.*;
 
 @Controller
+@Api(tags = "企业-主页")
 @RequestMapping("/duohui/qiye")
 public class QyIndexController {
 

@@ -4,6 +4,7 @@ package cn.kunli.una.controller.geneticAlgorithm;
 import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.geneticAlgorithm.GaGene;
 import cn.kunli.una.service.geneticAlgorithm.GaGeneService;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2022-01-14
  */
 @Controller
+@Api(tags = "遗传算法-表示/染色体")
 @RequestMapping("/ga/gene")
 public class GaGeneController extends BaseController<GaGeneService, GaGene> {
 

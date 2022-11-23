@@ -25,7 +25,7 @@ import java.util.List;
 @Transactional
 public class SysPermissionService extends BasicService<SysPermissionMapper, SysPermission> {
     @Autowired
-    private SysRolePermissionService sysRolePermissionService;
+    private SysAuthorizationService sysAuthorizationService;
     @Autowired
     private SysPermissionService thisProxy;
 
@@ -46,7 +46,7 @@ public class SysPermissionService extends BasicService<SysPermissionMapper, SysP
         SysResult sysResult = super.saveRecord(entity);
         if(sysResult.getIsSuccess()){
             //通过权限id匹配所有角色，新增roleFunction
-            sysRolePermissionService.insertByPermissionId(entity.getId());
+            sysAuthorizationService.insertByPermissionId(entity.getId());
         }
         return sysResult;
     }

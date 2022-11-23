@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiModel;
  * @since 2022-04-08
  */
 @RestController
-@ApiModel(value="SysKnowledge前端控制器", description="知识")
+@ApiModel(value="系统-知识", description="知识")
 @RequestMapping("/sys/knowledge")
 public class SysKnowledgeController extends BaseController<SysKnowledgeService, SysKnowledge> {
 }

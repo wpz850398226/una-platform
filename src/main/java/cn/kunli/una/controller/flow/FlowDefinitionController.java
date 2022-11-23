@@ -6,6 +6,7 @@ import cn.kunli.una.pojo.flow.FlowInstance;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.flow.FlowDefinitionService;
 import cn.kunli.una.service.flow.FlowInstanceService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.io.Serializable;
  * @since 2021-05-12 22:04:07
  */
 @Controller
+@Api(tags = "流程-定义")
 @RequestMapping("/flow/definition")
 public class FlowDefinitionController extends BaseController<FlowDefinitionService, FlowDefinition> {
 

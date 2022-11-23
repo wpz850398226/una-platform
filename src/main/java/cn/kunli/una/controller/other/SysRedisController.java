@@ -3,6 +3,7 @@ package cn.kunli.una.controller.other;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.redis.UserVehicleDispatchExpiredListener;
 import cn.kunli.una.utils.redis.RedisUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -20,8 +21,8 @@ import java.util.Set;
  * @author Ponzio
  * @version 2020年6月10日14:10:05
  */
-@Slf4j
 @Controller
+@Api(tags = "系统-缓存")
 @RequestMapping("/sys/redis")
 @Order(value = 1)
 //public class SysRedisController implements ApplicationRunner {

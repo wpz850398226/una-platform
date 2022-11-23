@@ -10,6 +10,7 @@ import cn.kunli.una.service.flow.FlowInstanceService;
 import cn.kunli.una.service.flow.FlowNodeService;
 import cn.kunli.una.service.flow.FlowTaskService;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ import java.util.List;
  * @since 2021-05-12 22:29:49
  */
 @Controller
+@Api(tags = "流程-实例")
 @RequestMapping("/flow/instance")
 public class FlowInstanceController extends BaseController<FlowInstanceService, FlowInstance> {
 

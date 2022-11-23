@@ -2,6 +2,7 @@ package cn.kunli.una.controller.ali;
 
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.ali.AlipayService;
+import io.swagger.annotations.Api;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 /*支付宝功能控制*/
 @Controller
+@Api(tags = "阿里-支付宝")
 @RequestMapping("/alipay")
 public class AlipayController {
 

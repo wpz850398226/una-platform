@@ -86,7 +86,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     @Autowired
     protected SysDictionaryService sysDictionaryService;
     @Autowired
-    protected SysRolePermissionService sysRolePermissionService;
+    protected SysAuthorizationService sysAuthorizationService;
     @Autowired
     protected SysPermissionService sysPermissionService;
     @Autowired

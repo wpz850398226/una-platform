@@ -7,6 +7,7 @@ import cn.kunli.una.pojo.vo.SysResponseParameter;
 import cn.kunli.una.service.sys.SysFieldService;
 import cn.kunli.una.utils.common.JSONUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import java.util.Map;
  * 菜单管理
  */
 @Controller
+@Api(tags = "系统-字段")
 @RequestMapping("/sys/field")
 public class SysFieldController extends BaseController<SysFieldService, SysField> {
 

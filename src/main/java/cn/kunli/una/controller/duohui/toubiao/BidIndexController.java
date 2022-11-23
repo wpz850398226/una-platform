@@ -10,6 +10,7 @@ import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Api(tags = "投标-主页")
 @RequestMapping("/duohui/toubiao")
 public class BidIndexController {
     @Autowired

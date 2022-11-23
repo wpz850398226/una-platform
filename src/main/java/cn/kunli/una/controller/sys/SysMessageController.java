@@ -9,6 +9,7 @@ import cn.kunli.una.service.sys.SysMessageService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import cn.hutool.core.util.StrUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import java.util.Date;
  * @since 2020-06-05 11:38:30
  */
 @Controller
+@Api(tags = "系统-消息")
 @RequestMapping("/sys/message")
 public class SysMessageController extends BaseController<SysMessageService, SysMessage> {
 

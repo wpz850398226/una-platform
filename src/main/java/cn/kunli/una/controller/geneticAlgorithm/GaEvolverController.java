@@ -5,6 +5,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.geneticAlgorithm.GaEvolver;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.geneticAlgorithm.GaEvolverService;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 2022-01-14
  */
 @Controller
+@Api(tags = "遗传算法-进化者/最优解")
 @RequestMapping("/ga/evolver")
 public class GaEvolverController extends BaseController<GaEvolverService, GaEvolver> {
 

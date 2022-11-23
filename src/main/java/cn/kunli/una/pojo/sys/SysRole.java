@@ -40,7 +40,7 @@ public class SysRole extends BasePojo implements Serializable {
     @TableField(exist = false)
     private List<String> permissionIdList;
     @TableField(exist = false)
-    private List<SysRolePermission> rolePermissionList;
+    private List<SysAuthorization> authorizationList;
     @TableField(exist = false)
     private List<SysIndex> indexList;
     @TableField(exist = false)

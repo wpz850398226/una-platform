@@ -3,6 +3,7 @@ package cn.kunli.una.controller.duohui.toubiao;
 import cn.kunli.una.pojo.bid.BidBidder;
 import cn.kunli.una.service.duohui.toubiao.BidBidderService;
 import cn.kunli.una.controller.BaseController;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2021-07-17 13:19:43
  */
 @Controller
+@Api(tags = "投标-投标信息")
 @RequestMapping("/bid/bidder")
 public class BidBidderController extends BaseController<BidBidderService, BidBidder> {
 }

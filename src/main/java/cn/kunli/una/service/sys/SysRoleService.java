@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
     @Autowired
-    private SysRolePermissionService sysRolePermissionService;
+    private SysAuthorizationService sysAuthorizationService;
     @Autowired
     private SysRoleService thisProxy;
 
@@ -38,8 +38,8 @@ public class SysRoleService extends BasicService<SysRoleMapper, SysRole> {
     public SysResult saveRecord(SysRole entity) {
         SysResult sysResult = super.saveRecord(entity);
         if(sysResult.getIsSuccess()){
-            //通过角色id匹配所有权限，新增rolePermission
-            sysRolePermissionService.insertByRoleId(entity.getId());
+            //通过角色id匹配所有权限，新增授权信息
+            sysAuthorizationService.insertByRoleId(entity.getId());
         }
         return sysResult;
     }

@@ -13,6 +13,7 @@ import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import cn.kunli.una.utils.redis.RedisUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
+@Api(tags = "商城-主页")
 @RequestMapping("/duohui/chanpin")
 public class CpIndexController {
     @Autowired

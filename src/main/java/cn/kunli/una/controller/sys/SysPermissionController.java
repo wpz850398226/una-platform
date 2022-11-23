@@ -6,6 +6,7 @@ import cn.kunli.una.pojo.vo.SysLoginAccountDetails;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysPermissionService;
 import cn.kunli.una.utils.common.UserUtil;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.List;
  * @since 2020-05-10 06:46:06
  */
 @Controller
+@Api(tags = "系统-权限")
 @RequestMapping("/sys/permission")
 public class SysPermissionController extends BaseController<SysPermissionService, SysPermission> {
 

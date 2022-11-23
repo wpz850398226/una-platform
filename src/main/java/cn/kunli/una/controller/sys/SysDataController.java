@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.sys.SysData;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysDataService;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.Map;
  * @since 2021-04-02 16:14:24
  */
 @Controller
+@Api(tags = "系统-数据")
 @RequestMapping("/sys/data")
 public class SysDataController extends BaseController<SysDataService, SysData> {
 

@@ -1,9 +1,10 @@
 package cn.kunli.una.controller.sys;
 
 import cn.kunli.una.controller.BaseController;
-import cn.kunli.una.pojo.sys.SysRolePermission;
+import cn.kunli.una.pojo.sys.SysAuthorization;
 import cn.kunli.una.pojo.vo.SysResult;
-import cn.kunli.una.service.sys.SysRolePermissionService;
+import cn.kunli.una.service.sys.SysAuthorizationService;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Controller;
@@ -16,22 +17,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * (SysRolePermission)表控制层
+ * (SysAuthorization)表控制层
  *
  * @author Ponzio
  * @since 2020-05-16 15:32:52
  */
 @Controller
+@Api(tags = "系统-授权")
 @RequestMapping("/sys/rolePermission")
-public class SysRolePermissionController extends BaseController<SysRolePermissionService, SysRolePermission> {
+public class SysAuthorizationController extends BaseController<SysAuthorizationService, SysAuthorization> {
 
     @PutMapping("/batch")
     @ResponseBody
-    public SysResult update(@RequestBody List<SysRolePermission> list) {
+    public SysResult update(@RequestBody List<SysAuthorization> list) {
         if(CollectionUtils.isNotEmpty(list)){
-            for (SysRolePermission sysRolePermission : list) {
-                if(sysRolePermission.getId()!=null){
-                    SysResult sysResult = service.updateRecordById(sysRolePermission);
+            for (SysAuthorization sysAuthorization : list) {
+                if(sysAuthorization.getId()!=null){
+                    SysResult sysResult = service.updateRecordById(sysAuthorization);
                     if(!sysResult.getIsSuccess())return sysResult;
                 }
             }
@@ -41,7 +43,7 @@ public class SysRolePermissionController extends BaseController<SysRolePermissio
 
     @PutMapping("/batchUpdate")
     @ResponseBody
-    public SysResult batchUpdate(SysRolePermission obj) {
+    public SysResult batchUpdate(SysAuthorization obj) {
         if(MapUtils.isNotEmpty(obj.getMap())){
             for (Map.Entry<String, Object> entry : obj.getMap().entrySet()) {
                 String id = entry.getKey();
@@ -61,7 +63,7 @@ public class SysRolePermissionController extends BaseController<SysRolePermissio
                         code = "permission_scope_"+value;
                         break;
                 }
-                service.updateRecordById((SysRolePermission) new SysRolePermission().setScopeDcode(code).setId(Integer.valueOf(id)));
+                service.updateRecordById((SysAuthorization) new SysAuthorization().setScopeDcode(code).setId(Integer.valueOf(id)));
             }
         }
         return SysResult.success();

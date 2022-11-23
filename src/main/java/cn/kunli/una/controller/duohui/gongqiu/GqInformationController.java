@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.gongqiu.GqInformation;
 import cn.kunli.una.service.duohui.gongqiu.GqInformationService;
 import cn.kunli.una.utils.common.UnaListUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2021-07-21 21:17:31
  */
 @Controller
+@Api(tags = "供求-信息")
 @RequestMapping("/gq/information")
 public class GqInformationController extends BaseController<GqInformationService, GqInformation> {
 

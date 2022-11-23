@@ -58,7 +58,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@Autowired
 	protected SysDictionaryService sysDictionaryService;
 	@Autowired
-	protected SysRolePermissionService sysRolePermissionService;
+	protected SysAuthorizationService sysAuthorizationService;
 	@Autowired
 	protected SysDataService sysDataService;
 	@Autowired
@@ -251,11 +251,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 			SysPermission sysPermission = sysPermissionService.selectOne(UnaMapUtil.buildHashMap().put("entityId", sysEntity.getId()).put("type_dcode", "permission_type_retrieve").build());
 			if(sysPermission!=null&&loginUser!=null){
 				Integer scopeCode = 0;
-				List<SysRolePermission> rolePermissionList = sysRolePermissionService.selectList(UnaMapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build());
-				if(CollectionUtils.isNotEmpty(rolePermissionList)){
-					for (SysRolePermission sysRolePermission : rolePermissionList) {
-						if(StrUtil.isNotBlank(sysRolePermission.getScopeDcode())){
-							String scopeDcode = sysRolePermission.getScopeDcode();
+				List<SysAuthorization> authorizationList = sysAuthorizationService.selectList(UnaMapUtil.buildHashMap().put("permissionId", sysPermission.getId()).put("in:roleId", loginUser.getRoleId()).build());
+				if(CollectionUtils.isNotEmpty(authorizationList)){
+					for (SysAuthorization sysAuthorization : authorizationList) {
+						if(StrUtil.isNotBlank(sysAuthorization.getScopeDcode())){
+							String scopeDcode = sysAuthorization.getScopeDcode();
 							Integer scope = Integer.valueOf(scopeDcode.substring(scopeDcode.lastIndexOf("_")+1));
 							if(scope>scopeCode)scopeCode = scope;
 						}

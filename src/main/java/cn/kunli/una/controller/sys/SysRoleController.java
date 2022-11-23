@@ -7,6 +7,7 @@ import cn.kunli.una.pojo.sys.SysRole;
 import cn.kunli.una.service.sys.SysPermissionService;
 import cn.kunli.una.service.sys.SysRoleService;
 import cn.kunli.una.utils.common.UnaMapUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import java.util.List;
  * @since 2020-05-08 18:04:54
  */
 @Controller
+@Api(tags = "系统-角色")
 @RequestMapping("/sys/role")
 public class SysRoleController extends BaseController<SysRoleService, SysRole> {
 
@@ -52,7 +54,7 @@ public class SysRoleController extends BaseController<SysRoleService, SysRole> {
         if (obj.getPermMap() != null) {
             for (Map.Entry<Integer, String> entry : obj.getPermMap().entrySet()) {
                 boolean updateResult = sysRolePermissionService.updateById(
-                        (SysRolePermission) new SysRolePermission().setScopeDcode(entry.getValue()).setId(entry.getKey()));
+                        (SysAuthorization) new SysAuthorization().setScopeDcode(entry.getValue()).setId(entry.getKey()));
                 if (!updateResult) return SysResult.fail();
             }
             return SysResult.success();

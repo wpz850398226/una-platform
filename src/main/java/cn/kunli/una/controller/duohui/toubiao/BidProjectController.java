@@ -11,6 +11,7 @@ import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 2021-07-17 13:19:47
  */
 @Controller
+@Api(tags = "投标-项目")
 @RequestMapping("/bid/project")
 public class BidProjectController extends BaseController<BidProjectService, BidProject> {
 

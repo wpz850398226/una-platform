@@ -10,6 +10,7 @@ import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysAccountService;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Ponzio
  * @since 2020-05-08 09:16:54
  */
-@Slf4j
 @Controller
+@Api(tags = "系统-账号")
 @RequestMapping("/sys/account")
 public class SysAccountController extends BaseController<SysAccountService, SysAccount> {
 

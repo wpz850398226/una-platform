@@ -4,6 +4,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.pojo.sys.SysEntity;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysEntityService;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  * 实体管理
  */
 @Controller
+@Api(tags = "系统-实体")
 @RequestMapping("/sys/entity")
 public class SysEntityController extends BaseController<SysEntityService, SysEntity> {
 

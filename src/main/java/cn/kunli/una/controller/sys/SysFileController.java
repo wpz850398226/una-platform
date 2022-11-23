@@ -10,6 +10,7 @@ import cn.kunli.una.service.sys.SysFileService;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.MinIoUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,8 @@ import javax.validation.Valid;
  * @author Ponzio
  * @since 2020-05-16 22:04:52
  */
-@Slf4j
 @Controller
+@Api(tags = "系统-文件")
 @RequestMapping("/sys/file")
 public class SysFileController extends BaseController<SysFileService, SysFile> {
 

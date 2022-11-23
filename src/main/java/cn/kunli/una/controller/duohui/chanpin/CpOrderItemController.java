@@ -3,6 +3,7 @@ package cn.kunli.una.controller.duohui.chanpin;
 import cn.kunli.una.pojo.chanpin.CpOrderItem;
 import cn.kunli.una.service.duohui.chanpin.CpOrderItemService;
 import cn.kunli.una.controller.BaseController;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2021-06-23 23:40:03
  */
 @Controller
+@Api(tags = "商城-订单明细")
 @RequestMapping("/cp/orderItem")
 public class CpOrderItemController extends BaseController<CpOrderItemService, CpOrderItem> {
 }

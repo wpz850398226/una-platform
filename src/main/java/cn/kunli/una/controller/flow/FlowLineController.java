@@ -3,6 +3,7 @@ package cn.kunli.una.controller.flow;
 import cn.kunli.una.pojo.flow.FlowLine;
 import cn.kunli.una.service.flow.FlowLineService;
 import cn.kunli.una.controller.BaseController;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2021-05-12 22:29:50
  */
 @Controller
+@Api(tags = "流程-连线")
 @RequestMapping("/flow/line")
 public class FlowLineController extends BaseController<FlowLineService, FlowLine> {
 }

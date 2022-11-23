@@ -5,6 +5,7 @@ import cn.kunli.una.pojo.sys.SysAccount;
 import cn.kunli.una.pojo.sys.SysMenu;
 import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.sys.SysMenuService;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.List;
  * 菜单管理
  */
 @Controller
+@Api(tags = "系统-菜单")
 @RequestMapping("/sys/menu")
 public class SysMenuController extends BaseController<SysMenuService, SysMenu> {
 

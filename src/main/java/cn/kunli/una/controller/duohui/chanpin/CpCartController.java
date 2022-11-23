@@ -7,6 +7,7 @@ import cn.kunli.una.controller.BaseController;
 import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @since 2021-06-23 23:39:02
  */
 @Controller
+@Api(tags = "商城-购物车")
 @RequestMapping("/cp/cart")
 public class CpCartController extends BaseController<CpCartService, CpCart> {
 

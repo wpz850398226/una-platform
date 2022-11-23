@@ -6,6 +6,7 @@ import cn.kunli.una.pojo.vo.Constant;
 import cn.kunli.una.service.sys.SysVersionService;
 import cn.kunli.una.utils.common.FileUtils;
 import cn.hutool.core.util.StrUtil;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @since 2020-07-08 11:41:50
  */
 @Controller
+@Api(tags = "系统-版本")
 @RequestMapping("/sys/version")
 public class SysVersionController extends BaseController<SysVersionService, SysVersion> {
 

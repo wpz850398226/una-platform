@@ -18,6 +18,7 @@ import cn.kunli.una.utils.common.UnaListUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.UserUtil;
 import com.alibaba.fastjson.JSONArray;
+import io.swagger.annotations.Api;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,7 @@ import java.util.Map;
  * @since 2021-06-23 23:40:02
  */
 @Controller
+@Api(tags = "商城-订单")
 @RequestMapping("/cp/order")
 public class CpOrderController extends BaseController<CpOrderService, CpOrder> {
 
