@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.sys;
 import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@ApiModel(value="系统-消息", description="")
 public class SysMessage extends BasePojo implements Serializable {
     private static final long serialVersionUID = -23693590497690198L;
     //消息类型

@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("sys_knowledge")
-@ApiModel(value="SysKnowledge对象", description="知识")
+@ApiModel(value="系统-知识", description="知识")
 public class SysKnowledge extends BasePojo {
 
     private static final long serialVersionUID = 1L;

@@ -25,7 +25,7 @@ public class TdEtymology extends BasePojo {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "类型")
+    @ApiModelProperty(value = "类型",dataType = "String")
     private String typeDcode;
 
     @ApiModelProperty(value = "来源")

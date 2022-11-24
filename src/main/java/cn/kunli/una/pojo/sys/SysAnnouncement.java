@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.sys;
 import cn.kunli.una.pojo.BasePojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@ApiModel(value="系统-公告", description="")
 public class SysAnnouncement extends BasePojo implements Serializable {
     private static final long serialVersionUID = -90237312437025059L;
     //是否发送至微信公众号

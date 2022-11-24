@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.sys;
 import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@ApiModel(value="系统-地区", description="")
 public class SysRegion extends BasePojo implements Serializable {
     private static final long serialVersionUID = -94885096018253815L;
     //类型字典id

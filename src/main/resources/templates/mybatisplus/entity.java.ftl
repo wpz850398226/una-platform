@@ -59,7 +59,7 @@ public class ${entity} implements Serializable {
 
     <#if field.comment!?length gt 0>
         <#if swagger2>
-    @ApiModelProperty(value = "${field.comment}")
+    @ApiModelProperty(value = "${field.comment}", dataType="${field.propertyType}")
         <#else>
     /**
      * ${field.comment}

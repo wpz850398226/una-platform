@@ -3,6 +3,7 @@ package cn.kunli.una.pojo.sys;
 import cn.kunli.una.pojo.BasePojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.Map;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@ApiModel(value="系统-角色", description="")
 public class SysRole extends BasePojo implements Serializable {
     private static final long serialVersionUID = 535825710305670374L;
     //公司类型id
