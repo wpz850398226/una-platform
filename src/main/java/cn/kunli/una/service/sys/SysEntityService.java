@@ -24,6 +24,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -193,7 +194,8 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
     }
 
     @Override
-    public SysResult afterSaveSuccess(SysEntity obj) {
+    @Transactional(rollbackFor = Exception.class)
+    public void afterSaveSuccess(SysEntity obj) {
         if(obj.getModifyTime()==null){
             //新建实体类，自动增加系统公共字段
             Integer entityId = obj.getId();
@@ -202,11 +204,9 @@ public class SysEntityService extends BasicService<SysEntityMapper, SysEntity> {
                 for (SysField sysField : sysFieldList) {
                     sysField.setEntityId(entityId).setId(null);
                     SysResult sysResult = sysFieldService.saveRecord(sysField);
-                    if(!sysResult.getIsSuccess())return sysResult;
                 }
             }
         }
-        return SysResult.success();
     }
 
     @Override

@@ -4,9 +4,9 @@ import cn.kunli.una.mapper.SysQueryMapper;
 import cn.kunli.una.pojo.sys.SysEntity;
 import cn.kunli.una.pojo.sys.SysField;
 import cn.kunli.una.pojo.sys.SysQuery;
-import cn.kunli.una.pojo.vo.SysResult;
 import cn.kunli.una.service.BasicService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,9 +42,10 @@ public class SysQueryService extends BasicService<SysQueryMapper, SysQuery> {
     }
 
     @Override
-    public SysResult afterSaveSuccess(SysQuery obj) {
+    @Transactional(rollbackFor = Exception.class)
+    public void afterSaveSuccess(SysQuery obj) {
+        super.afterSaveSuccess(obj);
         //移除 实体类 缓存
         redisUtil.removeByEntityCode("SysEntity");
-        return super.afterSaveSuccess(obj);
     }
 }

@@ -126,18 +126,16 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     @SneakyThrows
     @LogAnnotation
     @MyCacheEvict(value = "list")
+    @Transactional(rollbackFor = Exception.class)
     public SysResult saveRecord(T entity) {
         //数据校验
         saveValidate(entity);
         //保存数据，保存前进行初始化
         boolean saveResult = super.save(initialize(entity));
         if(saveResult){
-            //保存成功的结果
-            SysResult success = new SysResult().success(entity.getId());
             //保存成功后的操作
-            SysResult sysResult = afterSaveSuccess(entity);
-            if(!sysResult.getIsSuccess())success.setMessage(success.getMessage()+","+sysResult.getMessage());
-            return success;
+            afterSaveSuccess(entity);
+            return new SysResult().success(entity.getId());
         }
         return SysResult.fail();
     }
@@ -150,53 +148,14 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      */
     @SneakyThrows
     @LogAnnotation
+    @Transactional(rollbackFor = Exception.class)
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public boolean deleteById(Serializable id) {
+        beforeDelete(id);
         boolean removeResult = super.removeById(id);
         if(removeResult){
-            //获取当前类对应实体类对象
-            SysEntity sysEntity = getEntity();
-            //后续记录升序
-            if(sysEntity!=null) {
-                //获取父字段字段类对象
-                SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
-                String tableName = StrUtil.toUnderlineCase(entityClass.getSimpleName());
-                String fieldCode = sysField == null ? "" : StrUtil.toUnderlineCase(sysField.getAssignmentCode());
-                commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
-            }
-
-            //级联删除
-            List<SysRelation> sysRelationList = sysRelationService.selectList(MapUtil.of("parentEntityId", sysEntity.getId()));
-            if(CollectionUtils.isNotEmpty(sysRelationList)){
-                for (SysRelation sysRelation : sysRelationList) {
-                    //需要级联删除的记录所属实体类
-                    Integer relatedEntityId = sysRelation.getEntityId();
-                    Integer relatedFieldId = sysRelation.getRelatedFieldId();
-
-                    SysEntity relatedEntity = sysEntityService.getById(relatedEntityId);
-                    SysField relatedField = sysFieldService.getById(relatedFieldId);
-
-                    //获取service名称，并动态获取service
-                    String serviceName = StrUtil.lowerFirst(relatedEntity.getCode())+"Service";
-                    Object bean = SpringUtil.getBean(serviceName);
-                    SysRelationService bean1 = SpringUtil.getBean(SysRelationService.class);
-                    if(bean!=null){
-                        BasicService<BasicMapper<BasePojo>, BasePojo> thisProxy = (BasicService<BasicMapper<BasePojo>, BasePojo>)bean;
-
-                        if(thisProxy!=null){
-                            List<BasePojo> pojoList = thisProxy.selectList(MapUtil.of(relatedField.getAssignmentCode(), id));
-                            if(CollectionUtils.isNotEmpty(pojoList)){
-                                for (BasePojo pojo : pojoList) {
-                                    thisProxy.deleteById(pojo.getId());
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-
+            afterDeleteSuccess(id);
         }
 
         return removeResult;
@@ -243,12 +202,9 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         //保存数据，保存前进行初始化
         boolean result = super.updateById(initialize(entity));
         if(result){
-            //保存成功的结果
-            SysResult success = SysResult.success();
             //保存成功后的操作
-            SysResult sysResult = afterSaveSuccess(entity);
-            if(!sysResult.getIsSuccess())success.setMessage(success.getMessage()+","+sysResult.getMessage());
-            return success;
+            afterSaveSuccess(entity);
+            return SysResult.success();
         }
         return SysResult.fail();
     }
@@ -364,7 +320,14 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                         }
                         String fieldCode = sysField.getAssignmentCode();
                         log.info("校验数据格式的字段为[{}]",fieldCode);
-                        Field declaredField = entityClass.getDeclaredField(fieldCode);
+                        Field declaredField = null;
+                        try {
+                            declaredField = entityClass.getDeclaredField(fieldCode);
+                        } catch (NoSuchFieldException e) {
+                            declaredField = entityClass.getSuperclass().getDeclaredField(fieldCode);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         declaredField.setAccessible(true);
                         //获取该字段值
                         Object fieldValueObject = declaredField.get(obj);
@@ -586,8 +549,67 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
      * @return
      */
     @SneakyThrows
-    public SysResult afterSaveSuccess(T obj) {
-        return SysResult.success();
+    public void afterSaveSuccess(T obj) {
+    }
+
+    /**
+     * 删除前的逻辑
+     * @param obj
+     * @return
+     */
+    @SneakyThrows
+    public void beforeDelete(Serializable id) {
+    }
+
+    /**
+     * 删除成功后的逻辑
+     * @param obj
+     * @return
+     */
+    @SneakyThrows
+    public void afterDeleteSuccess(Serializable id) {
+        //获取当前类对应实体类对象
+        SysEntity sysEntity = getEntity();
+        //后续记录升序
+        if(sysEntity!=null) {
+            //获取父字段字段类对象
+            SysField sysField = sysFieldService.getById(sysEntity.getParentFieldId());
+            String tableName = StrUtil.toUnderlineCase(entityClass.getSimpleName());
+            String fieldCode = sysField == null ? "" : StrUtil.toUnderlineCase(sysField.getAssignmentCode());
+            commonMapper.increaseOrderBehindById(tableName, fieldCode, id);
+        }
+
+        //级联删除
+        List<SysRelation> sysRelationList = sysRelationService.selectList(MapUtil.of("parentEntityId", sysEntity.getId()));
+        if(CollectionUtils.isNotEmpty(sysRelationList)){
+            for (SysRelation sysRelation : sysRelationList) {
+                //需要级联删除的记录所属实体类
+                Integer relatedEntityId = sysRelation.getEntityId();
+                Integer relatedFieldId = sysRelation.getRelatedFieldId();
+
+                SysEntity relatedEntity = sysEntityService.getById(relatedEntityId);
+                SysField relatedField = sysFieldService.getById(relatedFieldId);
+
+                //获取service名称，并动态获取service
+                String serviceName = StrUtil.lowerFirst(relatedEntity.getCode())+"Service";
+                Object bean = SpringUtil.getBean(serviceName);
+                SysRelationService bean1 = SpringUtil.getBean(SysRelationService.class);
+                if(bean!=null){
+                    BasicService<BasicMapper<BasePojo>, BasePojo> thisProxy = (BasicService<BasicMapper<BasePojo>, BasePojo>)bean;
+
+                    if(thisProxy!=null){
+                        List<BasePojo> pojoList = thisProxy.selectList(MapUtil.of(relatedField.getAssignmentCode(), id));
+                        if(CollectionUtils.isNotEmpty(pojoList)){
+                            for (BasePojo pojo : pojoList) {
+                                thisProxy.deleteById(pojo.getId());
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
     }
 
     /**
