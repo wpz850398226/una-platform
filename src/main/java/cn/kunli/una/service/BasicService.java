@@ -1,10 +1,7 @@
 package cn.kunli.una.service;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.math.MathUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.kunli.una.annotation.LogAnnotation;
@@ -36,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -61,7 +59,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         this.mapper = mapper;
     }
 
-
+    public String entityName = entityClass.getSimpleName();
 
     @Autowired
     protected HttpServletRequest request;
@@ -127,6 +125,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     @LogAnnotation
     @MyCacheEvict(value = "list")
     @Transactional(rollbackFor = Exception.class)
+    @PreAuthorize("hasAnyAuthorityByEntity(#entity,'create')")
     public SysResult saveRecord(T entity) {
         //数据校验
         saveValidate(entity);
@@ -150,12 +149,13 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     @LogAnnotation
     @Transactional(rollbackFor = Exception.class)
     @MyCacheEvict(value = {"list","record:one"})
+    @PreAuthorize("hasAnyAuthorityByEntity(#entity,'delete')")
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
-    public boolean deleteById(Serializable id) {
-        beforeDelete(id);
-        boolean removeResult = super.removeById(id);
+    public boolean deleteById(T entity) {
+        beforeDelete(entity.getId());
+        boolean removeResult = super.removeById(entity.getId());
         if(removeResult){
-            afterDeleteSuccess(id);
+            afterDeleteSuccess(entity.getId());
         }
 
         return removeResult;
@@ -195,6 +195,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
     @SneakyThrows
     @LogAnnotation
     @MyCacheEvict(value = {"list","record:one"})
+    @PreAuthorize("hasAnyAuthorityByEntity(#entity,'update')")
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
     public SysResult updateRecordById(T entity) {
         //数据校验
@@ -234,12 +235,16 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
         return super.getById(id);
     }
 
-    public Page<T> page(Object current, Object size, Map<String,Object> map) {
-        if(current==null)current = 1;
-        if(size==null)size = 10;
+    @PreAuthorize("hasAnyAuthorityByEntity(#entity,'retrieve')")
+//    @PreAuthorize("@customPreAuthorizer.hasAuthorityByEntity(#map,'SysField:retrieve')")
+//    public Page<T> page(Object current, Object size, Map<String,Object> map) {
+    public Page<T> page(T entity, Map<String,Object> map) {
+//        if(t.getPageNum()==null)t.setPageNum(1);
+//        if(t.getPageSize()==null)t.setPageSize(10);
         map.remove("pageNum");
         map.remove("pageSize");
-        Page<T> pageObj = new Page<T>().setCurrent(Long.parseLong(current.toString())).setSize(Long.parseLong(size.toString()));
+//        Page<T> pageObj = new Page<T>().setCurrent(Long.parseLong(current.toString())).setSize(Long.parseLong(size.toString()));
+        Page<T> pageObj = new Page<T>().setCurrent(entity.getPageNum()).setSize(entity.getPageSize());
         return super.page(pageObj,wrapperUtil.mapToQueryWrapper(format(map)));
     }
 
@@ -593,7 +598,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 //获取service名称，并动态获取service
                 String serviceName = StrUtil.lowerFirst(relatedEntity.getCode())+"Service";
                 Object bean = SpringUtil.getBean(serviceName);
-                SysRelationService bean1 = SpringUtil.getBean(SysRelationService.class);
+//                SysRelationService bean1 = SpringUtil.getBean(SysRelationService.class);
                 if(bean!=null){
                     BasicService<BasicMapper<BasePojo>, BasePojo> thisProxy = (BasicService<BasicMapper<BasePojo>, BasePojo>)bean;
 
@@ -601,7 +606,7 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                         List<BasePojo> pojoList = thisProxy.selectList(MapUtil.of(relatedField.getAssignmentCode(), id));
                         if(CollectionUtils.isNotEmpty(pojoList)){
                             for (BasePojo pojo : pojoList) {
-                                thisProxy.deleteById(pojo.getId());
+                                thisProxy.deleteById(pojo);
                             }
                         }
                     }

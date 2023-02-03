@@ -1,6 +1,7 @@
 package cn.kunli.una.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.kunli.una.pojo.BasePojo;
 import cn.kunli.una.pojo.sys.*;
@@ -125,10 +126,15 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ResponseBody
 	@ApiOperation(value = "id删除",notes = "支持批量删除")
 	public SysResult delete(@PathVariable Integer... ids) {
-		for (Integer id : ids) {
-			boolean deleteResult = service.deleteById(id);
-			if(!deleteResult)return SysResult.fail();
+		try {
+			for (Integer id : ids) {
+				boolean deleteResult = service.deleteById(entityClass.newInstance().setId(id));
+				if(!deleteResult)return SysResult.fail();
+			}
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
+
 		return SysResult.success();
 	}
 
@@ -238,10 +244,11 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
 	@ApiOperation(value = "分页查询",notes = "")
 	public SysResult page(@RequestParam Map<String, Object> map) {
 		SysLoginAccountDetails loginUser = UserUtil.getLoginAccount();
-		Object current = map.get("pageNum");
-		Object size = map.get("pageSize");
-		map.remove("pageNum");
-		map.remove("pageSize");
+		T t = BeanUtil.toBean(map, entityClass);
+//		Object current = map.get("pageNum");
+//		Object size = map.get("pageSize");
+//		map.remove("pageNum");
+//		map.remove("pageSize");
 		//经过处理的请求参数
 		Map<String,Object> handledParamMap = new HashMap<>();
 
@@ -323,7 +330,7 @@ public abstract class BaseController<S extends BasicService,T extends BasePojo>{
                 }
             }
         }
-		IPage page = service.page(current,size, handledParamMap);
+		IPage page = service.page(t, handledParamMap);
 		List<T> list = service.parse(page.getRecords());
 		//判断是否是统计查询
 		if(map.containsKey("groupBy")&&CollectionUtils.isNotEmpty(list)){

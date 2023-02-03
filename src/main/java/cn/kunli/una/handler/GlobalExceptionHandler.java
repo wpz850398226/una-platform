@@ -203,6 +203,12 @@ public class GlobalExceptionHandler {
         return new SysResult().fail("错误：参数类型不匹配", sysException);
     }
 
+    /**
+     * 自定义异常类型，返回前端
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(value = UnaResponseException.class)
     public SysResult unaExceptionHandler(UnaResponseException unaResponseException) {
         return new SysResult().fail(unaResponseException.getMessage());

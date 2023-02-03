@@ -1,11 +1,13 @@
 package cn.kunli.una.config;
 
+import cn.kunli.una.handler.MyMethodSecurityExpressionHandler;
 import cn.kunli.una.handler.GlobalExceptionHandler;
 import cn.kunli.una.interceptor.AuthInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 全局跨域访问
@@ -58,6 +60,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         ,"/api/access/insertAccess"
                         ,"/positioning/addPositioning");
     }*/
+
+    //自定义鉴权注解-鉴权方法
+    @Bean
+    MyMethodSecurityExpressionHandler customMethodSecurityExpressionHandler() {
+        return new MyMethodSecurityExpressionHandler();
+    }
 
 
 }

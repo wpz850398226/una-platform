@@ -2,6 +2,7 @@ package cn.kunli.una.config;
 
 import cn.kunli.una.filter.TokenFilter;
 import cn.kunli.una.filter.UserAuthenticationFilter;
+import cn.kunli.una.handler.MyAccessDeniedHandler;
 import cn.kunli.una.handler.MyAuthenticationFailureHandler;
 import cn.kunli.una.handler.MyAuthenticationSuccessHandler;
 import cn.kunli.una.handler.MyLogoutSuccessHandler;
@@ -30,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private MyLogoutSuccessHandler myLogoutSuccessHandler;
     @Autowired
     private UserAuthenticationFilter userAuthenticationFilter;
+    @Autowired
+    private MyAccessDeniedHandler myAccessDeniedHandler;
 
 
     //配置密码编码器
@@ -84,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //添加过滤器
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterAt(UserAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler);
 
     }
 
@@ -114,7 +118,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
 

@@ -78,9 +78,9 @@ public class BasePojo implements Serializable{
 	@TableField(exist = false)
 	private String paramName;			//redis或session中存储查询结果的参数名称
 	@TableField(exist = false)
-	private Integer pageNum;			// 当前页数,从客户端传递到服务端
+	private Integer pageNum = 1;			// 当前页数,从客户端传递到服务端
 	@TableField(exist = false)
-	private Integer pageSize;  			//每页显示的条数,固定的
+	private Integer pageSize = 10;  			//每页显示的条数,固定的
 	@TableField(exist = false)
 	private Integer count;				//数量，查询统计表用
 	@TableField(exist = false)

@@ -8,6 +8,7 @@ import cn.kunli.una.service.sys.SysFieldService;
 import cn.kunli.una.utils.common.JSONUtil;
 import cn.kunli.una.utils.common.UnaMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,7 @@ public class SysFieldController extends BaseController<SysFieldService, SysField
      * @param params
      * @return
      */
-    //@PreAuthorize("hasAnyAuthority('SysField:insert','SysField:update')")
+    @PreAuthorize("hasAnyAuthority('SysField:insert','SysField:update')")
     @RequestMapping("form")
     public String form(Model model, @RequestParam Map<String, Object> params) throws IllegalAccessException {
         if (params.get("id") != null) {

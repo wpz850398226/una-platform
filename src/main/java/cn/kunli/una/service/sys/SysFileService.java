@@ -57,12 +57,13 @@ public class SysFileService extends BasicService<SysFileMapper, SysFile> {
     @Override
     @MyCacheEvict(value = {"list","record:one"})
     @CacheEvict(value = "record:id", keyGenerator = "myCacheKeyGenerator")
-    public boolean deleteById(Serializable id) {
-        SysFile record = thisProxy.getById(id);
+//    public boolean deleteById(Serializable id) {
+    public boolean deleteById(SysFile entity) {
+        SysFile record = thisProxy.getById(entity.getId());
         if(record!=null&&StrUtil.isNotBlank(record.getPath())){
             minIoUtil.delete(record.getPath());
         }
-        return super.deleteById(id);
+        return super.deleteById(entity);
     }
 
     /**

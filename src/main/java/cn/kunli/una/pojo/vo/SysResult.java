@@ -78,6 +78,10 @@ public class SysResult<T> implements Serializable{
         return new SysResult(false,SysHttpCode.BAD_REQUEST,message,null,null);
     }
 
+    public static SysResult fail(Integer code, String message) {
+        return new SysResult(false,code,message,null,null);
+    }
+
     public SysResult fail(String message, T data) {
         return new SysResult(false,SysHttpCode.BAD_REQUEST,message,data,null);
     }
