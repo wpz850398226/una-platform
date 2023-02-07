@@ -1,17 +1,14 @@
 package cn.kunli.una.utils;
 
 import cn.kunli.una.service.sys.SysConfigurationService;
-import cn.kunli.una.utils.common.UnaMapUtil;
 import cn.kunli.una.utils.common.DateUtil;
+import cn.kunli.una.utils.common.UnaMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Decoder;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.UUID;
 
@@ -20,35 +17,6 @@ public class SavePicUtils {
 
 	@Autowired
 	private SysConfigurationService sysConfigurationService;
-
-
-	public static String base64ToPic(String imgStr) throws IOException{
-		String picSaveUrl = GetPicUrlUtils.getPicUrl();
-		BASE64Decoder decoder = new BASE64Decoder();
-		String imgFilePath = "";
-        try {
-            //Base64解码
-            byte[] b = decoder.decodeBuffer(imgStr);
-            for(int i=0;i<b.length;++i)
-            {
-                if(b[i]<0)
-                {//调整异常数据
-                    b[i]+=256;
-                }
-            }
-            //生成jpeg图片
-            imgFilePath = UUID.randomUUID()+".jpg";//新生成的图片
-            String url = picSaveUrl + imgFilePath;
-            OutputStream out = new FileOutputStream(url);
-            out.write(b);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-        	e.printStackTrace();
-        	return "";
-        }
-        return imgFilePath;
-	}
 
 
 	public String saveUpload(MultipartFile file, Integer entityId) throws IOException{
