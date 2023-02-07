@@ -536,6 +536,19 @@ public abstract class BasicService<M extends BaseMapper<T>,T extends BasePojo> e
                 //给保存对象顺序字段赋值
                 obj.setSortOrder(num);
             }
+
+            /*if(StrUtil.isBlank(obj.getCode())){
+                //如果未传入编码，则根据默认规则生成编码
+                QueryWrapper<T> queryWrapper = new QueryWrapper();
+                int prefixLength = codePrefix.length();
+                int prefixNextLocation = prefixLength + 1;
+                queryWrapper.select("CONCAT('" + codePrefix + "',IF(MAX(SUBSTRING(CODE," + prefixNextLocation + ")) IS NULL,10000, MAX(SUBSTRING(CODE," + prefixNextLocation + ")))+1) AS CODE");
+                queryWrapper.apply("SUBSTRING(CODE,1," + prefixLength + ") = '" + codePrefix + "'");
+                T one = super.getOne(queryWrapper);
+                if (one != null) {
+                    obj.setCode(one.getCode());
+                }
+            }*/
         }else{
             obj.setModifyTime(new Date());
             if(loginUser!=null){
